@@ -1,6 +1,9 @@
-name: CI Pipeline
+name: EuroPython Discord Bot CI
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
       - main
