@@ -1,6 +1,10 @@
 import discord
 
-from pretix_connector import TicketRole, get_ticket_roles_from_message_with_ticket_id
+from pretix_connector import (
+    get_ticket_roles_from_message_with_ticket_id,
+    TicketRole,
+    TicketValidationError,
+)
 from settings import BOT_TOKEN
 
 
@@ -36,7 +40,7 @@ async def on_message(message):
         content = message.content
 
         await message.channel.send(
-            f"Hello, {message.author.mention}! I understood {content}"
+            f"Hello, {message.author.mention}! I understood '{content}'"
         )
 
         # make questions votable
@@ -63,17 +67,23 @@ async def on_message(message):
         role = discord.utils.get(message.guild.roles, name="new role")
 
         if role not in message.author.roles:
-            user_roles = get_ticket_roles_from_message_with_ticket_id(message=content,
-                                                                      screen_name=message.author)
-            if user_roles:
-                if TicketRole.ATTENDENT in user_roles:
-                     await message.author.add_roles(role)
-                     await message.channel.send(
-                        f"You have been assigned attendent roles"
-                     )
-            else:
+            try:
+                user_roles = get_ticket_roles_from_message_with_ticket_id(
+                    message=content, screen_name=message.author
+                )
+                if user_roles:
+                    if TicketRole.ATTENDENT in user_roles:
+                        await message.author.add_roles(role)
+                        await message.channel.send(
+                            f"You have been assigned attendent roles"
+                        )
+                else:
+                    await message.channel.send(
+                        f"Please reply with your ticket code (example V001, S001, etc..)"
+                    )
+            except TicketValidationError as e:
                 await message.channel.send(
-                    f"Please reply with your ticket code (example V001, S001, etc..)"
+                    f"There has been a problem with your ticket code. {e}"
                 )
 
 

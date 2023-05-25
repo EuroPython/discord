@@ -10,6 +10,10 @@ class TicketRole(Enum):
     ATTENDENT = "attendent"
     # TODO - decide on roles
 
+class TicketValidationError(Exception):
+    pass
+
+
 
 def get_ticket_roles_from_message_with_ticket_id(message, screen_name) -> Optional[List[TicketRole]]:
     """accepts any string message and a discord screen name"""
@@ -20,6 +24,9 @@ def get_ticket_roles_from_message_with_ticket_id(message, screen_name) -> Option
         translator = str.maketrans("", "", string.punctuation)
         message_words = message.translate(translator).split()
         if "V001" in message_words:
+            # This is how to communicate a ticket error
+            if False:
+                raise TicketValidationError("Check that your screen name matches the ticket")
             return [TicketRole.VOLUNTEER, TicketRole.ATTENDENT]
         if "T001" in message_words:
             return [TicketRole.ATTENDENT]
