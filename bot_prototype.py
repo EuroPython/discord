@@ -33,17 +33,25 @@ async def on_message(message):
     if message.author.bot:
         return
 
+    # different channels need different behaviour.
+    # for now just channels one room
+
     if message.channel.name == "general":
+
+        # debug via print
         print(f"Message from {message.author}: {message.content}")
         print(f"Guild {message.guild.name}")
         print(f"{message.author.display_name=}")
+
         content = message.content
 
+        # just echo something
         await message.channel.send(
             f"Hello, {message.author.mention}! I understood '{content}'"
         )
 
         # make questions votable
+        # for rooms that allow questions, of course.
         if content:
             if any(
                 (
@@ -51,10 +59,25 @@ async def on_message(message):
                     content.lower().startswith("question"),
                 )
             ):
+                # in each of these the bot tracks the questions
+                # and provides a secret interface for the session host to
+                # read them
+                # there will also be a feature that resets the question,
+                # the votes will stay. but it will no longer show up for the
+                # session host. Including a feature to reset all questions at the
+                # start of the next session
+
+                # my plan is to use a local sqlite3 database to persist this info
+                # to make it survive restarts
+                # for now, just tack on a voting icon
+
+                # TODO - prevent voting for your own question!!!
+
                 await message.add_reaction("0️⃣")
                 await message.channel.send(
-                    f"Thanks for the question, please vote for it"
+                    f"Thanks for the question, other people - please vote for it"
                 )
+
 
         # Check if user has the role, assign if not
         # Get the role to assign
