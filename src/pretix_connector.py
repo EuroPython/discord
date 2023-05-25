@@ -1,18 +1,7 @@
-
-from enum import Enum
 import string
 from typing import Optional, List
 
-
-class TicketRole(Enum):
-    VOLUNTEER = "volunteer"
-    SPEAKER = "speaker"
-    ATTENDENT = "attendent"
-    # TODO - decide on roles
-
-class TicketValidationError(Exception):
-    pass
-
+from model import TicketRole, TicketValidationError
 
 
 def get_ticket_roles_from_message_with_ticket_id(message, screen_name) -> Optional[List[TicketRole]]:
@@ -32,5 +21,3 @@ def get_ticket_roles_from_message_with_ticket_id(message, screen_name) -> Option
             return [TicketRole.ATTENDENT]
         if "S001" in message_words:
             return [TicketRole.ATTENDENT, TicketRole.SPEAKER]
-
-

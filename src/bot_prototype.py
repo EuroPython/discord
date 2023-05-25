@@ -1,9 +1,11 @@
 import discord
 from discord.errors import Forbidden
 
-from pretix_connector import (
+from model import (
     TicketRole,
     TicketValidationError,
+)
+from pretix_connector import (
     get_ticket_roles_from_message_with_ticket_id,
 )
 from question_handling import message_is_question, handle_question
@@ -177,9 +179,10 @@ async def on_raw_reaction_remove(payload):
     message = await channel.fetch_message(payload.message_id)  # Get the message
     print(f"A reaction has been removed from a message with content: {message.content}")
 
+
 def main():
     client.run(BOT_TOKEN)
 
+
 if __name__ == "__main__":
     main()
-
