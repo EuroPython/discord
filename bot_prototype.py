@@ -53,6 +53,9 @@ async def on_message(message):
         content = message.content
 
         global_greeting = "Howdy"
+        # TODO - checking for guild is done to protect against DMs which may not communicate the client
+        # Maybe remove later if this turns out to be OK
+        
         if message.guild is not None:
             # if you don't have the client, access it this way
             # global_greeting = message._state._get_client().my_global_greeting
