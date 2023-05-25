@@ -1,6 +1,8 @@
 import discord
 
+from pretix_connector import TicketRole, get_ticket_roles_from_message_with_ticket_id
 from settings import BOT_TOKEN
+
 
 intents = discord.Intents.default()
 intents.messages = True
@@ -55,10 +57,24 @@ async def on_message(message):
         # TODO - validate if role should be assigned.
         # 1 - check if role is assigned
         # 2 - if not - parse question for ticket ID and call validation
+
         # "role": This here should be done on startup!
+        # There should also be more
         role = discord.utils.get(message.guild.roles, name="new role")
+
         if role not in message.author.roles:
-            await message.author.add_roles(role)
+            user_roles = get_ticket_roles_from_message_with_ticket_id(message=content,
+                                                                      screen_name=message.author)
+            if user_roles:
+                if TicketRole.ATTENDENT in user_roles:
+                     await message.author.add_roles(role)
+                     await message.channel.send(
+                        f"You have been assigned attendent roles"
+                     )
+            else:
+                await message.channel.send(
+                    f"Please reply with your ticket code (example V001, S001, etc..)"
+                )
 
 
 @client.event
