@@ -16,6 +16,10 @@ intents.message_content = True
 intents.reactions = True
 
 client = discord.Client(intents=intents)
+# the line below is a test of storing globals in the client object.
+# it seems that you can access the client from the message
+# like this "message._state._get_client()"
+client.my_global_greeting = "Hey"
 
 
 @client.event
@@ -48,9 +52,15 @@ async def on_message(message):
 
         content = message.content
 
+        global_greeting = "Howdy"
+        if message.guild is not None:
+            # if you don't have the client, access it this way
+            # global_greeting = message._state._get_client().my_global_greeting
+            global_greeting = client.my_global_greeting
+
         # just echo something
         await message.channel.send(
-            f"Hello, {message.author.mention}! I understood '{content}'"
+            f"{global_greeting}, {message.author.mention}! I understood '{content}'"
         )
 
         # make questions votable
