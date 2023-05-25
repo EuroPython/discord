@@ -72,6 +72,7 @@ async def on_message(message):
                 # for now, just tack on a voting icon
 
                 # TODO - prevent voting for your own question!!!
+                # TODO - limit the character length of questions
 
                 await message.add_reaction("0️⃣")
                 await message.channel.send(
@@ -108,6 +109,20 @@ async def on_message(message):
                 await message.channel.send(
                     f"There has been a problem with your ticket code. {e}"
                 )
+
+
+@client.event
+async def on_message_edit(before, after):
+    if before.author.bot:
+        return
+
+    if before.content != after.content:
+        print(f"Message from {before.author} edited from {before.content} to {after.content}")
+
+    # TODO - if this message is a question we need to decide on behaviour.
+    # we can't prevent this but may reset the vote
+    # also we need to do something about messages that become a question or
+    # lose questions later.
 
 
 @client.event
