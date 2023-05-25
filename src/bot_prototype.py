@@ -55,7 +55,7 @@ async def on_message(message):
         global_greeting = "Howdy"
         # TODO - checking for guild is done to protect against DMs which may not communicate the client
         # Maybe remove later if this turns out to be OK
-        
+
         if message.guild is not None:
             # if you don't have the client, access it this way
             # global_greeting = message._state._get_client().my_global_greeting
@@ -177,6 +177,9 @@ async def on_raw_reaction_remove(payload):
     message = await channel.fetch_message(payload.message_id)  # Get the message
     print(f"A reaction has been removed from a message with content: {message.content}")
 
+def main():
+    client.run(BOT_TOKEN)
 
 if __name__ == "__main__":
-    client.run(BOT_TOKEN)
+    main()
+
