@@ -6,6 +6,7 @@ from pretix_connector import (
     TicketValidationError,
     get_ticket_roles_from_message_with_ticket_id,
 )
+from question_handling import message_is_question, handle_question
 from settings import BOT_TOKEN
 
 intents = discord.Intents.default()
@@ -54,32 +55,9 @@ async def on_message(message):
 
         # make questions votable
         # for rooms that allow questions, of course.
-        if content:
-            if any(
-                (
-                    content.lower().startswith("q:"),
-                    content.lower().startswith("question"),
-                )
-            ):
-                # in each of these the bot tracks the questions
-                # and provides a secret interface for the session host to
-                # read them
-                # there will also be a feature that resets the question,
-                # the votes will stay. but it will no longer show up for the
-                # session host. Including a feature to reset all questions at the
-                # start of the next session
-
-                # my plan is to use a local sqlite3 database to persist this info
-                # to make it survive restarts
-                # for now, just tack on a voting icon
-
-                # TODO - prevent voting for your own question!!!
-                # TODO - limit the character length of questions
-
-                await message.add_reaction("0️⃣")
-                await message.channel.send(
-                    f"Thanks for the question, other people - please vote for it"
-                )
+        if await message_is_question(content=content):
+            await handle_question(message=message)
+            return
 
         # test to init a private CoC chat
         if content:
@@ -140,10 +118,12 @@ async def on_message_edit(before, after):
             f"Message from {before.author} edited from {before.content} to {after.content}"
         )
 
-    # TODO - if this message is a question we need to decide on behaviour.
-    # we can't prevent this but may reset the vote
-    # also we need to do something about messages that become a question or
-    # lose questions later.
+    if message_is_question(before.content) or message_is_question(after.content):
+        # TODO - if this message is a question we need to decide on behaviour.
+        # we can't prevent this but may reset the vote
+        # also we need to do something about messages that become a question or
+        # lose questions later.
+        pass
 
 
 @client.event
