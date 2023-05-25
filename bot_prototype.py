@@ -1,12 +1,12 @@
 import discord
+from discord.errors import Forbidden
 
 from pretix_connector import (
-    get_ticket_roles_from_message_with_ticket_id,
     TicketRole,
     TicketValidationError,
+    get_ticket_roles_from_message_with_ticket_id,
 )
 from settings import BOT_TOKEN
-
 
 intents = discord.Intents.default()
 intents.messages = True
@@ -23,13 +23,15 @@ async def on_ready():
     # TODO - set rights for pinning!
     # TODO - prototype pinned message change
     channel = discord.utils.get(client.get_all_channels(), name="general")
-    message = await channel.send("This is a pinned message - the bot is ready!")
-    await message.pin()
+    try:
+        message = await channel.send("This is a pinned message - the bot is ready!")
+        await message.pin()
+    except Forbidden as e:
+        print(e)
 
 
 @client.event
 async def on_message(message):
-
     if message.author.bot:
         return
 
@@ -79,6 +81,23 @@ async def on_message(message):
                     f"Thanks for the question, other people - please vote for it"
                 )
 
+        # test to init a private CoC chat
+        if content:
+            if "coc" in content.lower():
+                try:
+                    # Try to send a private message
+                    await message.author.send("Do you need CoC help?")
+                except Forbidden:
+                    print(
+                        f"Could not send a DM to {message.author}. They may have blocked DMs."
+                    )
+                try:
+                    # for security reason, maybe delete this?
+                    await message.delete()
+                except Forbidden:
+                    print(f"Could not remove coc message.")
+
+        # assign role
 
         # Check if user has the role, assign if not
         # Get the role to assign
@@ -117,7 +136,9 @@ async def on_message_edit(before, after):
         return
 
     if before.content != after.content:
-        print(f"Message from {before.author} edited from {before.content} to {after.content}")
+        print(
+            f"Message from {before.author} edited from {before.content} to {after.content}"
+        )
 
     # TODO - if this message is a question we need to decide on behaviour.
     # we can't prevent this but may reset the vote
