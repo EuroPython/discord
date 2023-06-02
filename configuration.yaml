@@ -1,0 +1,11 @@
+defaults:
+  - hello: world
+
+bot:
+  - token: MTEwNzY4NzU5ODU0MzA4MTQ5Mg.GoJmCm.6OmQwrUlXqa3Am67eJ9SI7shzTAjuH5UTX21ms
+
+discord_channels:
+  - onboard_channel_name: general
+
+discord_role_names:
+  - attendant: new role
