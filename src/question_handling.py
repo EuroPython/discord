@@ -38,5 +38,5 @@ async def handle_question(
 
     await message.add_reaction("0️⃣")
     await message.channel.send(
-        f"Thanks for the question, other people - please vote for it"
+        "Thanks for the question, other people - please vote for it"
     )
