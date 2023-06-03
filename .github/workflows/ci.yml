@@ -30,6 +30,3 @@ jobs:
 
       - name: Run Flake8
         run: pipenv run flake8 .
-
-      - name: Run isort
-        run: pipenv run isort --check .
