@@ -24,9 +24,23 @@ except FileNotFoundError:
 
 data = yaml.safe_load(configuration)
 
-BOT_TOKEN = data.get("bot")["token"]
-DISCORD_SERVER_ID = data.get("bot")["server_id"]
-BOT_ECHO_MODE = data.get("bot")["echo_mode"]
+try:
+    secret_text = Path(".env").read_text(encoding="utf-8")
+    # quick and dirty env parsing
+    secrets = {l.split('=')[0]: l.split('=')[1] for l in secret_text.splitlines() if l}
+except FileNotFoundError:
+    secrets = {}
+
+
+DISCORD_BOT_TOKEN = data.get("discord_bot")["token"]
+DISCORD_BOT_ECHO_MODE = data.get("discord_bot")["echo_mode"]
+DISCORD_SERVER_ID = data.get("discord")["server_id"]
+
+# override secrets from ".env"
+if DISCORD_SERVER_ID == "*":
+    DISCORD_SERVER_ID = int(secrets.get("DISCORD_SERVER_ID"))
+if DISCORD_BOT_TOKEN == "*":
+    DISCORD_BOT_TOKEN = secrets.get("DISCORD_BOT_TOKEN")
 
 ONBOARD_CHANNEL_NAME = data.get("discord_channels")["onboard_channel_name"]
 

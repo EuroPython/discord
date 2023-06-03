@@ -19,11 +19,16 @@ You need to be logged in into Discord for this to work.
 
 
 # Use
-Using Python 3.9 or better create a virtual environment and install the
+Using Python 3.10 or better create a virtual environment and install the
 libraries from the requirements.txt file. Or use your favourite tool to do it.
 
 Create a configuation.yaml copy (or change it) to reflect your own bot,
 discord server, role and channel names
+
+You can hide configuration secrets in the file by setting them to "*".
+If you do that, the code will look in your ".env" file and/or may later
+search your environment as well. Secrets currently are DISCORD_BOT_TOKEN and
+DISCORD_SERVER_ID.
 
 Then start the bot with 
 

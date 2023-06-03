@@ -10,8 +10,8 @@ from pretix_connector import get_ticket_roles_from_message_with_ticket_id
 from question_handling import handle_question, message_is_question
 from settings import (
     ATTENDANT_ROLE_NAME,
-    BOT_ECHO_MODE,
-    BOT_TOKEN,
+    DISCORD_BOT_ECHO_MODE,
+    DISCORD_BOT_TOKEN,
     DISCORD_SERVER_ID,
     ONBOARD_CHANNEL_NAME,
 )
@@ -79,7 +79,7 @@ async def on_message(message):
             global_greeting = bot.my_global_greeting
 
         # For debugging allow echoes
-        if BOT_ECHO_MODE:
+        if DISCORD_BOT_ECHO_MODE:
             await message.channel.send(
                 f"{global_greeting}, {message.author.mention}! I understood '{content}'"
             )
@@ -216,7 +216,7 @@ async def on_raw_reaction_remove(payload):
 
 
 def main():
-    bot.run(BOT_TOKEN)
+    bot.run(DISCORD_BOT_TOKEN)
 
 
 if __name__ == "__main__":

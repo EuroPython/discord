@@ -3,11 +3,16 @@ defaults:
   - hello: world
 
 # values for the bot
-bot:
-  token: MTEwNzY4NzU5ODU0MzA4MTQ5Mg.GIwo_s.HLSkIX5OR_TMcq0aNPTUM6JjzC3VDd8h4w-t28
-  server_id: 1108439633789984930
+# values with "*" will be read from a ".env" file
+# with an uppercase name that is combined from the group and key
+# for example, the bot token is called DISCORD_BOT_TOKEN
+discord_bot:
+  token: "*"
   # for debugging the bot can repeat anything it heard
   echo_mode: true
+
+discord:
+  server_id: "*"
 
 # define channels for the bot to listen for specific actions
 discord_channels:
