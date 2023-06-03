@@ -25,5 +25,9 @@ jobs:
         run: |
             service ssh status
             eval `ssh-agent -s`
-#      - name: Run ansible
-#        run: pipenv run ansible all -i 157.90.236.158, -a "date"
+            touch /home/runner/.ssh/id_rsa
+            chmod 700 /home/runner/.ssh/id_rsa
+            echo -e "${{secrets.ANSIBLE_DEPLOY_SSH_KEY}}" > /home/runner/.ssh/id_rsa
+            ssh-keyscan -t ed25519 ${{secrets.BOT_HOST_IP}} >> /home/runner/.ssh/known_hosts
+      - name: Run ansible
+        run: pipenv run ansible all -i "${{secrets.BOT_HOST_IP}}", -a "date"
