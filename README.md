@@ -18,9 +18,9 @@ You need to be logged in into Discord for this to work.
 *TBD: The exact minimum permissions we expect.*
 
 
-# Use
-Using Python 3.10 or better create a virtual environment and install the
-libraries from the requirements.txt file. Or use your favourite tool to do it.
+# How to setup and start-
+We are targeting Python 3.10 with pipenv. For other tools, look at the pipfile and
+create a virtual environment and install the libraries manually.
 
 Create a configuation.yaml copy (or change it) to reflect your own bot,
 discord server, role and channel names
@@ -32,7 +32,9 @@ DISCORD_SERVER_ID.
 
 Then start the bot with 
 
-    python src/main.py *configuation.yaml*  - where *configuation.yaml* is the name of the file.
+    python src/main.py *configuation.yaml*
+
+where *configuation.yaml* is the name of the file.
 
 
 # Pretix integration
