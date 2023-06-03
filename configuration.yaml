@@ -4,8 +4,6 @@ defaults:
 
 # values for the bot
 bot:
-  token: MTEwNzY4NzU5ODU0MzA4MTQ5Mg.GIwo_s.HLSkIX5OR_TMcq0aNPTUM6JjzC3VDd8h4w-t28
-  server_id: 1108439633789984930
   # for debugging the bot can repeat anything it heard
   echo_mode: true
 

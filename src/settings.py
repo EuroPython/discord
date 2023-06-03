@@ -1,7 +1,9 @@
+import os
 import sys
 from pathlib import Path
 
 import yaml
+from dotenv import load_dotenv
 
 # Locate and load the configuration
 # Inform the user
@@ -22,12 +24,13 @@ except FileNotFoundError:
 
 # from this point, parse the yaml and assign globals
 
-data = yaml.safe_load(configuration)
+load_dotenv()
+DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
+DISCORD_SERVER_ID = os.getenv("DISCORD_SERVER_ID")
 
-BOT_TOKEN = data.get("bot")["token"]
-DISCORD_SERVER_ID = data.get("bot")["server_id"]
-BOT_ECHO_MODE = data.get("bot")["echo_mode"]
-
-ONBOARD_CHANNEL_NAME = data.get("discord_channels")["onboard_channel_name"]
-
-ATTENDANT_ROLE_NAME = data.get("discord_role_names")["attendant"]
+configuration = yaml.safe_load(configuration)
+BOT_ECHO_MODE = configuration.get("bot")["echo_mode"]
+ONBOARD_CHANNEL_NAME = configuration.get("discord_channels")[
+    "onboard_channel_name"
+]
+ATTENDANT_ROLE_NAME = configuration.get("discord_role_names")["attendant"]

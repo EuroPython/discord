@@ -11,8 +11,8 @@ from question_handling import handle_question, message_is_question
 from settings import (
     ATTENDANT_ROLE_NAME,
     BOT_ECHO_MODE,
-    BOT_TOKEN,
     DISCORD_SERVER_ID,
+    DISCORD_TOKEN,
     ONBOARD_CHANNEL_NAME,
 )
 
@@ -70,7 +70,8 @@ async def on_message(message):
         content = message.content
 
         global_greeting = "Howdy"
-        # TODO - checking for guild is done to protect against DMs which may not communicate the client
+        # TODO - checking for guild is done to protect against DMs
+        # which may not communicate the client
         # Maybe remove later if this turns out to be OK
 
         if message.guild is not None:
@@ -81,7 +82,8 @@ async def on_message(message):
         # For debugging allow echoes
         if BOT_ECHO_MODE:
             await message.channel.send(
-                f"{global_greeting}, {message.author.mention}! I understood '{content}'"
+                f"{global_greeting}, {message.author.mention}!"
+                f" I understood '{content}'"
             )
 
         # make questions votable
@@ -98,13 +100,14 @@ async def on_message(message):
                     await message.author.send("Do you need CoC help?")
                 except Forbidden:
                     print(
-                        f"Could not send a DM to {message.author}. They may have blocked DMs."
+                        f"Could not send a DM to {message.author}."
+                        f"They may have blocked DMs."
                     )
                 try:
                     # for security reason, maybe delete this?
                     await message.delete()
                 except Forbidden:
-                    print(f"Could not remove coc message.")
+                    print("Could not remove coc message.")
 
         # assign role
 
@@ -129,11 +132,12 @@ async def on_message(message):
                     if TicketRole.ATTENDENT in user_roles:
                         await message.author.add_roles(attendant_role)
                         await message.channel.send(
-                            f"You have been assigned attendant role"
+                            "You have been assigned attendant role"
                         )
                 else:
                     await message.channel.send(
-                        f"Please reply with your ticket code (example V001, S001, etc..)"
+                        "Please reply with your ticket code "
+                        "(example V001, S001, etc..)"
                     )
             except TicketValidationError as e:
                 await message.channel.send(
@@ -151,7 +155,8 @@ async def on_message_edit(message_before, message_after):
 
     if message_before.content != message_after.content:
         print(
-            f"Message from {message_before.author} edited from {message_before.content} to {message_after.content}"
+            f"Message from {message_before.author} edited from "
+            f"{message_before.content} to {message_after.content}"
         )
 
     if message_is_question(message_before.content) or message_is_question(
@@ -173,7 +178,8 @@ async def on_reaction_add(reaction, user):
     if user.bot:
         return
     print(
-        f"{user} has added {reaction.emoji} to a message with content: {reaction.message.content}"
+        f"{user} has added {reaction.emoji} to a message "
+        f"with content: {reaction.message.content}"
     )
 
 
@@ -185,7 +191,8 @@ async def on_reaction_remove(reaction, user):
     if user.bot:
         return
     print(
-        f"{user} has removed {reaction.emoji} from a message with content: {reaction.message.content}"
+        f"{user} has removed {reaction.emoji} from a message "
+        f"with content: {reaction.message.content}"
     )
 
 
@@ -200,7 +207,8 @@ async def on_raw_reaction_add(payload):
     channel = bot.get_channel(payload.channel_id)  # Get the channel
     message = await channel.fetch_message(payload.message_id)  # Get the message
     print(
-        f"{payload.member} has added {payload.emoji} to a message with content: {message.content}"
+        f"{payload.member} has added {payload.emoji} to a message "
+        f"with content: {message.content}"
     )
 
 
@@ -215,8 +223,9 @@ async def on_raw_reaction_remove(payload):
     print(f"A reaction has been removed from a message with content: {message.content}")
 
 
+
 def main():
-    bot.run(BOT_TOKEN)
+    bot.run(DISCORD_TOKEN)
 
 
 if __name__ == "__main__":

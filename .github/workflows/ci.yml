@@ -26,10 +26,7 @@ jobs:
       - run: pipenv install --dev
 
       - name: Run Black
-        run: pipenv run black --check .
+        run: pipenv run black --line-length=79 --check .
 
       - name: Run Flake8
         run: pipenv run flake8 .
-
-      - name: Run isort
-        run: pipenv run isort --check .
