@@ -11,7 +11,9 @@
       apt:
         upgrade: dist
 
-    - name: Create an /app directory
-      file:
-        path: /app
-        state: directory
+    - name: Clone the repository
+      git:
+        repo: https://github.com/EuroPython/discord.git
+        dest: /app
+        version: main
+        force: yes
