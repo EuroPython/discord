@@ -31,4 +31,4 @@ jobs:
             echo -e "${{secrets.ANSIBLE_DEPLOY_SSH_KEY}}" > /home/runner/.ssh/id_rsa
             ssh-keyscan -t ed25519 ${{secrets.BOT_HOST_IP}} >> /home/runner/.ssh/known_hosts
       - name: Run ansible
-        run: pipenv run ansible all -i "${{secrets.BOT_HOST_IP}}", -a "date" --private-key="/home/runner/.ssh/id_rsa" --user=root
+        run: pipenv run ansible-playbook -i ansible/inventory.ini ansible/deploy-playbook.yml --private-key="/home/runner/.ssh/id_rsa" --user=root
