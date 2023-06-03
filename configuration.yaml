@@ -4,7 +4,7 @@ defaults:
 
 # values for the bot
 bot:
-  # for debugging the bot can repeat anything it  heard
+  # for debugging the bot can repeat anything it heard
   echo_mode: true
 
 # define channels for the bot to listen for specific actions
