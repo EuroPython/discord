@@ -1,3 +1,6 @@
+# do not check for line length while prototyping
+# flake8: noqa: E501
+
 from discord.errors import Forbidden
 from discord.ext import commands
 
@@ -42,9 +45,7 @@ async def on_ready():
 
     channel = discord.utils.get(bot.get_all_channels(), name="general")
     try:
-        message = await channel.send(
-            "This is a pinned message - the bot is ready!"
-        )
+        message = await channel.send("This is a pinned message - the bot is ready!")
         await message.pin()
     except Forbidden as e:
         print(e)
@@ -204,9 +205,7 @@ async def on_raw_reaction_add(payload):
     if payload.member.bot:
         return
     channel = bot.get_channel(payload.channel_id)  # Get the channel
-    message = await channel.fetch_message(
-        payload.message_id
-    )  # Get the message
+    message = await channel.fetch_message(payload.message_id)  # Get the message
     print(
         f"{payload.member} has added {payload.emoji} to a message "
         f"with content: {message.content}"
@@ -220,13 +219,9 @@ async def on_raw_reaction_remove(payload):
         return
 
     channel = bot.get_channel(payload.channel_id)  # Get the channel
-    message = await channel.fetch_message(
-        payload.message_id
-    )  # Get the message
-    print(
-        f"A reaction has been removed from a message "
-        f"with content: {message.content}"
-    )
+    message = await channel.fetch_message(payload.message_id)  # Get the message
+    print(f"A reaction has been removed from a message with content: {message.content}")
+
 
 
 def main():
