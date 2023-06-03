@@ -26,6 +26,6 @@
         state: latest
 
     - name: Create Pipenv environment
-      pipenv:
-        path: /app/EuroPython/discord
-        executable: pipenv
+      shell:
+        chdir: /app/EuroPython/discord
+        cmd: pipenv install --dev --python /usr/bin/python3
