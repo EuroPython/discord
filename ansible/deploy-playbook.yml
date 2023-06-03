@@ -19,3 +19,13 @@
         force: yes
         accept_hostkey: yes
         key_file: /root/.ssh/deploy_key
+
+    - name: Install Pipenv
+      pip:
+        name: pipenv
+        state: latest
+
+    - name: Create Pipenv environment
+      pipenv:
+        path: /app/EuroPython/discord
+        executable: pipenv
