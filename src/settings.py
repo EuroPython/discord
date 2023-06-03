@@ -1,3 +1,6 @@
+# do not check for line length while prototyping
+# flake8: noqa: E501
+
 import sys
 from pathlib import Path
 
@@ -27,7 +30,9 @@ data = yaml.safe_load(configuration)
 try:
     secret_text = Path(".env").read_text(encoding="utf-8")
     # quick and dirty env parsing
-    secrets = {l.split('=')[0]: l.split('=')[1] for l in secret_text.splitlines() if l}
+    secrets = {
+        sl.split("=")[0]: sl.split("=")[1] for sl in secret_text.splitlines() if sl
+    }
 except FileNotFoundError:
     secrets = {}
 

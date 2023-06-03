@@ -1,10 +1,9 @@
 # do not check for line length while prototyping
 # flake8: noqa: E501
 
+import discord
 from discord.errors import Forbidden
 from discord.ext import commands
-
-import discord
 from model import TicketRole, TicketValidationError
 from pretix_connector import get_ticket_roles_from_message_with_ticket_id
 from question_handling import handle_question, message_is_question
