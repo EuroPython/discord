@@ -20,7 +20,7 @@
       git:
         repo: git@github.com:EuroPython/discord.git
         dest: /app/EuroPython/discord
-        version: main
+        version: add-deploy
         depth: 1
         force: yes
         key_file: /root/.ssh/deploy_key
