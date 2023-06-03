@@ -11,12 +11,6 @@
       apt:
         upgrade: dist
 
-    - name: Copy GitHub secret to server
-      file:
-        path: /root/.ssh/deploy_key
-        content: "{{ secrets.DEPLOY_KEY }}"
-        mode: 0600
-
     - name: Clone the repository
       git:
         repo: git@github.com:EuroPython/discord.git
