@@ -1,16 +1,11 @@
-import discord
 from discord.errors import Forbidden
 from discord.ext import commands
 
-from model import (
-    TicketRole,
-    TicketValidationError,
-)
-from pretix_connector import (
-    get_ticket_roles_from_message_with_ticket_id,
-)
-from question_handling import message_is_question, handle_question
-from settings import BOT_TOKEN, ONBOARD_CHANNEL_NAME, ATTENDANT_ROLE_NAME
+import discord
+from model import TicketRole, TicketValidationError
+from pretix_connector import get_ticket_roles_from_message_with_ticket_id
+from question_handling import handle_question, message_is_question
+from settings import ATTENDANT_ROLE_NAME, BOT_TOKEN, ONBOARD_CHANNEL_NAME
 
 intents = discord.Intents.default()
 intents.messages = True
@@ -19,7 +14,7 @@ intents.message_content = True
 intents.reactions = True
 
 # bot = discord.Bot(intents=intents)
-bot = commands.Bot(intents=intents, command_prefix='$')
+bot = commands.Bot(intents=intents, command_prefix="$")
 
 # the line below is a test of storing globals in the client object.
 # it seems that you can access the client from the message
@@ -34,7 +29,9 @@ async def on_ready():
     # TODO - prototype pinned message change
     channel = discord.utils.get(bot.get_all_channels(), name="general")
     try:
-        message = await channel.send("This is a pinned message - the bot is ready!")
+        message = await channel.send(
+            "This is a pinned message - the bot is ready!"
+        )
         await message.pin()
     except Forbidden as e:
         print(e)
@@ -49,7 +46,6 @@ async def on_message(message):
     # for now just channels one room
 
     if message.channel.name == ONBOARD_CHANNEL_NAME:
-
         # debug via print
         print(f"Message from {message.author}: {message.content}")
         print(f"Guild {message.guild.name}")
@@ -58,8 +54,9 @@ async def on_message(message):
         content = message.content
 
         global_greeting = "Howdy"
-        # TODO - checking for guild is done to protect against DMs which may not communicate the client
-        # Maybe remove later if this turns out to be OK
+        # TODO - checking for guild is done to protect against DMs which
+        #  may not communicate the client. Maybe remove later if this
+        #  turns out to be OK
 
         if message.guild is not None:
             # if you don't have the client, access it this way
@@ -68,7 +65,8 @@ async def on_message(message):
 
         # just echo something
         await message.channel.send(
-            f"{global_greeting}, {message.author.mention}! I understood '{content}'"
+            f"{global_greeting}, {message.author.mention}!"
+            f" I understood '{content}'"
         )
 
         # make questions votable
@@ -85,13 +83,14 @@ async def on_message(message):
                     await message.author.send("Do you need CoC help?")
                 except Forbidden:
                     print(
-                        f"Could not send a DM to {message.author}. They may have blocked DMs."
+                        f"Could not send a DM to {message.author}. "
+                        "They may have blocked DMs."
                     )
                 try:
                     # for security reason, maybe delete this?
                     await message.delete()
                 except Forbidden:
-                    print(f"Could not remove coc message.")
+                    print("Could not remove coc message.")
 
         # assign role
 
@@ -103,7 +102,9 @@ async def on_message(message):
 
         # "role": This here should be done on startup!
         # There should also be more
-        attendant_role = discord.utils.get(message.guild.roles, name=ATTENDANT_ROLE_NAME)
+        attendant_role = discord.utils.get(
+            message.guild.roles, name=ATTENDANT_ROLE_NAME
+        )
 
         if attendant_role not in message.author.roles:
             try:
@@ -114,11 +115,12 @@ async def on_message(message):
                     if TicketRole.ATTENDENT in user_roles:
                         await message.author.add_roles(attendant_role)
                         await message.channel.send(
-                            f"You have been assigned attendent roles"
+                            "You have been assigned attendent roles"
                         )
                 else:
                     await message.channel.send(
-                        f"Please reply with your ticket code (example V001, S001, etc..)"
+                        "Please reply with your ticket code"
+                        "(example V001, S001, etc..)"
                     )
             except TicketValidationError as e:
                 await message.channel.send(
@@ -133,10 +135,13 @@ async def on_message_edit(before, after):
 
     if before.content != after.content:
         print(
-            f"Message from {before.author} edited from {before.content} to {after.content}"
+            f"Message from {before.author} edited from {before.content}"
+            f"to {after.content}"
         )
 
-    if message_is_question(before.content) or message_is_question(after.content):
+    if message_is_question(before.content) or message_is_question(
+        after.content
+    ):
         # TODO - if this message is a question we need to decide on behaviour.
         # we can't prevent this but may reset the vote
         # also we need to do something about messages that become a question or
@@ -150,7 +155,8 @@ async def on_reaction_add(reaction, user):
     if user.bot:
         return
     print(
-        f"{user} has added {reaction.emoji} to a message with content: {reaction.message.content}"
+        f"{user} has added {reaction.emoji} to a message "
+        f"with content: {reaction.message.content}"
     )
 
 
@@ -159,7 +165,8 @@ async def on_reaction_remove(reaction, user):
     if user.bot:
         return
     print(
-        f"{user} has removed {reaction.emoji} from a message with content: {reaction.message.content}"
+        f"{user} has removed {reaction.emoji} from a message "
+        f"with content: {reaction.message.content}"
     )
 
 
@@ -169,9 +176,12 @@ async def on_raw_reaction_add(payload):
     if payload.member.bot:
         return
     channel = bot.get_channel(payload.channel_id)  # Get the channel
-    message = await channel.fetch_message(payload.message_id)  # Get the message
+    message = await channel.fetch_message(
+        payload.message_id
+    )  # Get the message
     print(
-        f"{payload.member} has added {payload.emoji} to a message with content: {message.content}"
+        f"{payload.member} has added {payload.emoji} to a "
+        f"message with content: {message.content}"
     )
 
 
@@ -179,8 +189,13 @@ async def on_raw_reaction_add(payload):
 @bot.event
 async def on_raw_reaction_remove(payload):
     channel = bot.get_channel(payload.channel_id)  # Get the channel
-    message = await channel.fetch_message(payload.message_id)  # Get the message
-    print(f"A reaction has been removed from a message with content: {message.content}")
+    message = await channel.fetch_message(
+        payload.message_id
+    )  # Get the message
+    print(
+        f"A reaction has been removed from a message "
+        f"with content: {message.content}"
+    )
 
 
 def main():

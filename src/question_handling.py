@@ -17,7 +17,9 @@ async def message_is_question(content: Optional[str]) -> bool:
     return False
 
 
-async def handle_question(message: discord.Message, before_message: Optional[discord.Message] = None) -> None:
+async def handle_question(
+    message: discord.Message, before_message: Optional[discord.Message] = None
+) -> None:
     # the bot tracks the questions
     # and provides a secret interface for the session host to
     # read them
@@ -36,6 +38,5 @@ async def handle_question(message: discord.Message, before_message: Optional[dis
 
     await message.add_reaction("0️⃣")
     await message.channel.send(
-        f"Thanks for the question, other people - please vote for it"
+        "Thanks for the question, other people - please vote for it"
     )
-
