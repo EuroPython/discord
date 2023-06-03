@@ -28,4 +28,4 @@
     - name: Create Pipenv environment
       shell:
         chdir: /app/EuroPython/discord
-        cmd: pipenv install --dev
+        cmd: pipenv install --dev --python /usr/bin/python3
