@@ -15,6 +15,8 @@ Once you have a bot, you can invite the bot to your server through an URL like t
 https://discord.com/api/oauth2/authorize?client_id=YOUR_CLIENT_ID&permissions=YOUR_PERMISSIONS&scope=bot.
 You need to be logged in into Discord for this to work.
 
+*TBD: The exact minimum permissions we expect.*
+
 
 # Use
 Using Python 3.9 or better create a virtual environment and install the
