@@ -10,7 +10,7 @@ You can setup a bot in https://discord.com/developers/applications/
 Here you need to keep a note of the Application ID (also referred to as client_id)
 and the bot token in the "Bot" section. If a bot token is leaked out, you can reset it here.
 
-In the "OAuth2" use the "OAuth2 URL Generator" to create the permissions for the bot
+In the "OAuth2" use the "OAuth2 URL Generator" to create the permissions for the bot.
 Once you have a bot, you can invite the bot to your server through an URL like this:
 https://discord.com/api/oauth2/authorize?client_id=YOUR_CLIENT_ID&permissions=YOUR_PERMISSIONS&scope=bot.
 You need to be logged in into Discord for this to work.
@@ -18,9 +18,9 @@ You need to be logged in into Discord for this to work.
 *TBD: The exact minimum permissions we expect.*
 
 
-# Use
-Using Python 3.10 or better create a virtual environment and install the
-libraries from the requirements.txt file. Or use your favourite tool to do it.
+# How to setup and start
+We are targeting Python 3.10 with pipenv. For other tools, look at the pipfile and
+create a virtual environment and install the libraries manually.
 
 Create a configuation.yaml copy (or change it) to reflect your own bot,
 discord server, role and channel names
@@ -32,7 +32,9 @@ DISCORD_SERVER_ID.
 
 Then start the bot with 
 
-    python src/main.py *configuation.yaml*  - where *configuation.yaml* is the name of the file.
+    python src/main.py *configuation.yaml*
+
+where *configuation.yaml* is the name of the file.
 
 
 # Pretix integration
