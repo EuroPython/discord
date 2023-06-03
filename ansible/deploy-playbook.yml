@@ -14,7 +14,7 @@
     - name: Clone the repository
       git:
         repo: git@github.com:EuroPython/discord.git
-        dest: /app
+        dest: /app/EuroPython/discord
         version: main
         force: yes
         accept_hostkey: yes
