@@ -1,0 +1,31 @@
+---
+- name: Deploy Discord Bot to the server
+  hosts: bot_server
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Upgrade all packages
+      apt:
+        upgrade: dist
+
+    - name: Clone the repository
+      git:
+        repo: git@github.com:EuroPython/discord.git
+        dest: /app/EuroPython/discord
+        version: main
+        force: yes
+        accept_hostkey: yes
+        key_file: /root/.ssh/deploy_key
+
+    - name: Install Pipenv
+      pip:
+        name: pipenv
+        state: latest
+
+    - name: Create Pipenv environment
+      pipenv:
+        path: /app/EuroPython/discord
+        executable: pipenv

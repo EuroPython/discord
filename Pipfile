@@ -11,6 +11,7 @@ pyyaml = "*"
 black = "*"
 flake8 = "*"
 isort = "*"
+ansible = "*"
 
 [requires]
 python_version = "3.10"

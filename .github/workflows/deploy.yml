@@ -1,0 +1,34 @@
+name: Deploy to server
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install pipenv
+        run: curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
+      - run: pipenv install --dev
+      - name: Setup ssh
+        shell: bash
+        run: |
+            service ssh status
+            eval `ssh-agent -s`
+            mkdir /home/runner/.ssh
+            touch /home/runner/.ssh/id_rsa
+            chmod 700 /home/runner/.ssh/id_rsa
+            echo -e "${{secrets.ANSIBLE_DEPLOY_SSH_KEY}}" > /home/runner/.ssh/id_rsa
+            ssh-keyscan -t ed25519 ${{secrets.BOT_HOST_IP}} >> /home/runner/.ssh/known_hosts
+      - name: Run ansible
+        run: pipenv run ansible-playbook -i ansible/inventory.ini ansible/deploy-playbook.yml --private-key="/home/runner/.ssh/id_rsa" --user=root

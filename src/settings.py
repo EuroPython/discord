@@ -31,7 +31,9 @@ try:
     secret_text = Path(".env").read_text(encoding="utf-8")
     # quick and dirty env parsing
     secrets = {
-        sl.split("=")[0]: sl.split("=")[1] for sl in secret_text.splitlines() if sl
+        sl.split("=")[0]: sl.split("=")[1]
+        for sl in secret_text.splitlines()
+        if sl
     }
 except FileNotFoundError:
     secrets = {}
