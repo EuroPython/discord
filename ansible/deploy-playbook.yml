@@ -15,7 +15,6 @@
       file:
         path: /app/EuroPython/discord
         state: absent
-        recursive: true
 
     - name: Clone the repository
       git:
