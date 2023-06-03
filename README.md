@@ -17,7 +17,6 @@ You need to be logged in into Discord for this to work.
 
 *TBD: The exact minimum permissions we expect.*
 
-
 # How to setup and start
 We are targeting Python 3.10 with pipenv. For other tools, look at the pipfile and
 create a virtual environment and install the libraries manually.
