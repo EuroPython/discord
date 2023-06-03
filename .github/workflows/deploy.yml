@@ -20,5 +20,10 @@ jobs:
       - name: Install pipenv
         run: curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
       - run: pipenv install --dev
-      - name: Run ansible
-        run: pipenv run ansible all -i 157.90.236.158, -a "date"
+      - name: Setup ssh
+        shell: bash
+        run: |
+            service ssh status
+            eval `ssh-agent -s`
+#      - name: Run ansible
+#        run: pipenv run ansible all -i 157.90.236.158, -a "date"
