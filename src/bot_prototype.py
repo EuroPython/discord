@@ -5,7 +5,13 @@ import discord
 from model import TicketRole, TicketValidationError
 from pretix_connector import get_ticket_roles_from_message_with_ticket_id
 from question_handling import handle_question, message_is_question
-from settings import ATTENDANT_ROLE_NAME, BOT_TOKEN, ONBOARD_CHANNEL_NAME
+from settings import (
+    ATTENDANT_ROLE_NAME,
+    BOT_ECHO_MODE,
+    DISCORD_SERVER_ID,
+    DISCORD_TOKEN,
+    ONBOARD_CHANNEL_NAME,
+)
 
 intents = discord.Intents.default()
 intents.messages = True
@@ -24,9 +30,16 @@ bot.my_global_greeting = "Hey"
 
 @bot.event
 async def on_ready():
-    print("Bot is ready.")
+    print("Bot is starting up.")
+    guild = bot.get_guild(DISCORD_SERVER_ID)
+    if guild is None:
+        print(f"This bot is not connected to {DISCORD_SERVER_ID}")
+        return
+    print(f"This bot is now connected to {DISCORD_SERVER_ID}")
+
     # TODO - set rights for pinning!
     # TODO - prototype pinned message change
+
     channel = discord.utils.get(bot.get_all_channels(), name="general")
     try:
         message = await channel.send(
@@ -39,6 +52,8 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
+    if message.guild.id != DISCORD_SERVER_ID:
+        return
     if message.author.bot:
         return
 
@@ -54,20 +69,21 @@ async def on_message(message):
         content = message.content
 
         global_greeting = "Howdy"
-        # TODO - checking for guild is done to protect against DMs which
-        #  may not communicate the client. Maybe remove later if this
-        #  turns out to be OK
+        # TODO - checking for guild is done to protect against DMs
+        # which may not communicate the client
+        # Maybe remove later if this turns out to be OK
 
         if message.guild is not None:
             # if you don't have the client, access it this way
             # global_greeting = message._state._get_client().my_global_greeting
             global_greeting = bot.my_global_greeting
 
-        # just echo something
-        await message.channel.send(
-            f"{global_greeting}, {message.author.mention}!"
-            f" I understood '{content}'"
-        )
+        # For debugging allow echoes
+        if BOT_ECHO_MODE:
+            await message.channel.send(
+                f"{global_greeting}, {message.author.mention}!"
+                f" I understood '{content}'"
+            )
 
         # make questions votable
         # for rooms that allow questions, of course.
@@ -83,8 +99,8 @@ async def on_message(message):
                     await message.author.send("Do you need CoC help?")
                 except Forbidden:
                     print(
-                        f"Could not send a DM to {message.author}. "
-                        "They may have blocked DMs."
+                        f"Could not send a DM to {message.author}."
+                        f"They may have blocked DMs."
                     )
                 try:
                     # for security reason, maybe delete this?
@@ -115,11 +131,11 @@ async def on_message(message):
                     if TicketRole.ATTENDENT in user_roles:
                         await message.author.add_roles(attendant_role)
                         await message.channel.send(
-                            "You have been assigned attendent roles"
+                            "You have been assigned attendant role"
                         )
                 else:
                     await message.channel.send(
-                        "Please reply with your ticket code"
+                        "Please reply with your ticket code "
                         "(example V001, S001, etc..)"
                     )
             except TicketValidationError as e:
@@ -129,18 +145,21 @@ async def on_message(message):
 
 
 @bot.event
-async def on_message_edit(before, after):
-    if before.author.bot:
+async def on_message_edit(message_before, message_after):
+    if message_after.guild.id != DISCORD_SERVER_ID:
         return
 
-    if before.content != after.content:
+    if message_before.author.bot:
+        return
+
+    if message_before.content != message_after.content:
         print(
-            f"Message from {before.author} edited from {before.content}"
-            f"to {after.content}"
+            f"Message from {message_before.author} edited from "
+            f"{message_before.content} to {message_after.content}"
         )
 
-    if message_is_question(before.content) or message_is_question(
-        after.content
+    if message_is_question(message_before.content) or message_is_question(
+        message_after.content
     ):
         # TODO - if this message is a question we need to decide on behaviour.
         # we can't prevent this but may reset the vote
@@ -151,6 +170,9 @@ async def on_message_edit(before, after):
 
 @bot.event
 async def on_reaction_add(reaction, user):
+    if reaction.guild.id != DISCORD_SERVER_ID:
+        return
+
     # TODO limit to allowed reactions (for example on questions)
     if user.bot:
         return
@@ -162,6 +184,9 @@ async def on_reaction_add(reaction, user):
 
 @bot.event
 async def on_reaction_remove(reaction, user):
+    if reaction.guild.id != DISCORD_SERVER_ID:
+        return
+
     if user.bot:
         return
     print(
@@ -173,6 +198,9 @@ async def on_reaction_remove(reaction, user):
 # note: raw reactions are to messages existing before the bot's last restart
 @bot.event
 async def on_raw_reaction_add(payload):
+    if payload.guild.id != DISCORD_SERVER_ID:
+        return
+
     if payload.member.bot:
         return
     channel = bot.get_channel(payload.channel_id)  # Get the channel
@@ -180,14 +208,17 @@ async def on_raw_reaction_add(payload):
         payload.message_id
     )  # Get the message
     print(
-        f"{payload.member} has added {payload.emoji} to a "
-        f"message with content: {message.content}"
+        f"{payload.member} has added {payload.emoji} to a message "
+        f"with content: {message.content}"
     )
 
 
 # note: raw reactions are to messages existing before the bot's last restart
 @bot.event
 async def on_raw_reaction_remove(payload):
+    if payload.guild.id != DISCORD_SERVER_ID:
+        return
+
     channel = bot.get_channel(payload.channel_id)  # Get the channel
     message = await channel.fetch_message(
         payload.message_id
@@ -199,7 +230,7 @@ async def on_raw_reaction_remove(payload):
 
 
 def main():
-    bot.run(BOT_TOKEN)
+    bot.run(DISCORD_TOKEN)
 
 
 if __name__ == "__main__":

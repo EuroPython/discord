@@ -1,11 +1,21 @@
+# default section - currently just a test
 defaults:
   - hello: world
 
+# values for the bot
 bot:
-  - token: <TOKEN>
+  # for debugging the bot can repeat anything it heard
+  echo_mode: true
 
+# define channels for the bot to listen for specific actions
 discord_channels:
-  - onboard_channel_name: general
+  # this onboarding channel: The bot will say hello to new users
+  # and request the ticket id
+  onboard_channel_name: general
+  # here we will have the
 
+# roles known to the bot
 discord_role_names:
-  - attendant: new role
+  attendant: new role
+
+
