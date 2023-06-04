@@ -25,6 +25,12 @@
         force: yes
         key_file: /root/.ssh/deploy_key
 
+    - name: Symlink .env file
+      symlink:
+        src: /app/EuroPython/.env
+        dest: /app/EuroPython/discord/.env
+        state: link
+
     - name: Install Pipenv
       pip:
         name: pipenv
@@ -43,4 +49,4 @@
     - name: Create screen session and start the bot
       shell:
         chdir: /app/EuroPython/discord
-        cmd: screen -dmS discord_bot pipenv run /path/to/your_program.py
+        cmd: screen -dmS discord_bot bash -c "pipenv run python src/bot_prototype.py configuration.yaml"
