@@ -26,10 +26,11 @@
         key_file: /root/.ssh/deploy_key
 
     - name: Symlink .env file
-      symlink:
+      file:
         src: /app/EuroPython/.env
         dest: /app/EuroPython/discord/.env
         state: link
+        mode: 0600
 
     - name: Install Pipenv
       pip:
