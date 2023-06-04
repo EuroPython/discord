@@ -34,3 +34,13 @@
       shell:
         chdir: /app/EuroPython/discord
         cmd: pipenv install --dev --python /usr/bin/python3
+
+    - name: Install screen
+      apt:
+        name: screen
+        state: present
+
+    - name: Create screen session and start the bot
+      shell:
+        chdir: /app/EuroPython/discord
+        cmd: screen -dmS discord_bot pipenv run /path/to/your_program.py
