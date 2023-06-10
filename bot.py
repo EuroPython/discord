@@ -1,11 +1,11 @@
 import asyncio
 import os
 
-from cogs.ping import Ping
-from discord.ext import commands
 from dotenv import load_dotenv
 
 import discord
+from cogs.ping import Ping
+from discord.ext import commands
 
 load_dotenv(".secrets")
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
