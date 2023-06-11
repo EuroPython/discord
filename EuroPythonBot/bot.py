@@ -1,13 +1,12 @@
 import asyncio
 import os
+from pathlib import Path
 
+from cogs.ping import Ping
 from dotenv import load_dotenv
 
 import discord
-from cogs.ping import Ping
 from discord.ext import commands
-
-from pathlib import Path
 
 load_dotenv(Path("__file__").absolute().parent.joinpath(".secrets"))
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
@@ -30,6 +29,7 @@ async def main():
     async with bot:
         await bot.add_cog(Ping(bot))
         await bot.start(DISCORD_BOT_TOKEN)
+
 
 if __name__ == "__main__":
     bot = Bot()
