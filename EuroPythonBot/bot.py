@@ -7,7 +7,9 @@ import discord
 from cogs.ping import Ping
 from discord.ext import commands
 
-load_dotenv(".secrets")
+from pathlib import Path
+
+load_dotenv(Path("__file__").absolute().parent.joinpath(".secrets"))
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 
 
@@ -29,7 +31,9 @@ async def main():
         await bot.add_cog(Ping(bot))
         await bot.start(DISCORD_BOT_TOKEN)
 
-
 if __name__ == "__main__":
     bot = Bot()
-    asyncio.run(main())
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("Keyboard Interrupt. Exiting...")

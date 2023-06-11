@@ -1,0 +1,6 @@
+.git*
+.secrets
+.idea
+.vscode
+Dockerfile
+pyproject.toml
