@@ -16,7 +16,7 @@ ENV PATH="/home/bot/.local/bin:$PATH"
 COPY --chown=bot:bot Pipfile Pipfile.lock ./
 COPY --chown=bot:bot EuroPythonBot ./EuroPythonBot
 
-RUN pipenv install --deploy && \
+RUN pipenv sync && \
     rm -rf /home/bot/.cache
 
 ENTRYPOINT ["pipenv", "run", "python", "EuroPythonBot/bot.py"]
