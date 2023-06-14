@@ -1,10 +1,8 @@
 name: EuroPython Discord Bot CI
-run-name: "🛠️ CI: ${{ github.event.head_commit.message }}  (${{ github.sha }})"
+run-name: "🛠️ CI: ${{ github.event.head_commit.message }}"
 
 on:
   push:
-    branches:
-      - main
   pull_request:
 
 jobs:
