@@ -1,12 +1,11 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7e5295445a3d281e2bac3289e256e5fa1df1d15e575ed793b451c24c84775ecc"
+            "sha256": "5658b7332d06705e7685feb4b29a2ea41d54a8fe33632308ab521fbc14d7fea9"
         },
         "pipfile-spec": 6,
         "requires": {
-            "python_full_version": "3.10.11",
-            "python_version": "3.10"
+            "python_full_version": "3.10.12"
         },
         "sources": [
             {
@@ -212,7 +211,7 @@
                 "sha256:f8303414c7b03f794347ad062c0516cee0e15f7a612abd0ce1e25caf6ceb47df",
                 "sha256:fca62a8301b605b954ad2e9c3666f9d97f63872aa4efcae5492baca2056b74ab"
             ],
-            "markers": "python_full_version >= '3.7.0'",
+            "markers": "python_version >= '3.7'",
             "version": "==3.1.0"
         },
         "discord.py": {
@@ -391,6 +390,14 @@
             "markers": "python_version >= '3.7'",
             "version": "==6.0.4"
         },
+        "python-dotenv": {
+            "hashes": [
+                "sha256:a8df96034aae6d2d50a4ebe8216326c61c3eb64836776504fcca410e5937a3ba",
+                "sha256:f5971a9226b701070a4bf2c38c89e5a3f0d64de8debda981d1db98583009122a"
+            ],
+            "index": "pypi",
+            "version": "==1.0.0"
+        },
         "yarl": {
             "hashes": [
                 "sha256:04ab9d4b9f587c06d801c2abfe9317b77cdf996c65a90d5e84ecc45010823571",
@@ -562,11 +569,11 @@
         },
         "platformdirs": {
             "hashes": [
-                "sha256:412dae91f52a6f84830f39a8078cecd0e866cb72294a5c66808e74d5e88d251f",
-                "sha256:e2378146f1964972c03c085bb5662ae80b2b8c06226c54b2ff4aa9483e8a13a5"
+                "sha256:0ade98a4895e87dc51d47151f7d2ec290365a585151d97b4d8d6312ed6132fed",
+                "sha256:e48fabd87db8f3a7df7150a4a5ea22c546ee8bc39bc2473244730d4b56d2cc4e"
             ],
             "markers": "python_version >= '3.7'",
-            "version": "==3.5.1"
+            "version": "==3.5.3"
         },
         "pycodestyle": {
             "hashes": [
