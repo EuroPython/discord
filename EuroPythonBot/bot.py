@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 
 from cogs.ping import Ping
+from cogs.registration import Registration
 from dotenv import load_dotenv
 
 import discord
@@ -28,6 +29,7 @@ class Bot(commands.Bot):
 async def main():
     async with bot:
         await bot.add_cog(Ping(bot))
+        await bot.add_cog(Registration(bot))
         await bot.start(DISCORD_BOT_TOKEN)
 
 
