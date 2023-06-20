@@ -1,6 +1,7 @@
 import discord
 import traceback
 from discord.ext import commands
+from enum import Enum
 
 from configuration import Config
 
@@ -39,17 +40,29 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         required=True,
     )
 
-    # TODO: define the process to add rol after registration
-    # rol = discord.utils.get(self.guild.roles, name=config.PARTICIPANT_ROLE")
+    online_role = discord.utils.get(self.guild.roles, name=config.ONLINE_ROLE)
+    inperson_role = discord.utils.get(self.guild.roles, name=config.INPERSON_ROLE)
 
     async def on_submit(self, interaction: discord.Interaction):
-        # TODO: registration here with the values of:
-        # self.name.value and self.order.value
-        def registration(name, order):
-            return False
+        # TODO
+        # This class (Roles) and method (registration) should be provided
+        # by an external module.
+        class Roles(Enum):
+            ONLINE = 1
+            INPERSON = 2
+            INVALID = 3
 
-        if registration(self.name.value, self.order.value):
-            # await interaction.user.add_roles(role)
+        def registration(name, order):
+            return Roles.ONLINE
+
+        role = registration(self.name.value, self.order.value)
+
+        if role != Roles.INVALID:
+            if role == Roles.ONLINE:
+                await interaction.user.add_roles(online_role)
+            elif role == Roles.INPERSONL:
+                await interaction.user.add_roles(inperson_role)
+
             await interaction.response.send_message(
                 f"Thanks {self.name.value}, you are now registered.!",
                 ephemeral=True,
@@ -64,7 +77,6 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
             )
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
-        # TODO: this variable should be in the configuration
         _msg = f"Something went wrong, ask in <#{config.REG_HELP_CHANNEL}>"
         await interaction.response.send_message(_msg, ephemeral=True, delete_after=20)
 
