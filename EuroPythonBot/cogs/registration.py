@@ -1,9 +1,10 @@
-import discord
 import traceback
-from discord.ext import commands
 from enum import Enum
 
 from configuration import Config
+
+import discord
+from discord.ext import commands
 
 config = Config()
 
