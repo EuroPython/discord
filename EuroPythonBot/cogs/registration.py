@@ -1,18 +1,17 @@
 import traceback
-from enum import Enum
 
-from configuration import Config
+from helpers.pretix_connector import get_ticket_type
 
 import discord
 from discord.ext import commands
 
-config = Config()
-
-emoji_ticket = "\N{ADMISSION TICKETS}"
-emoji_point = "\N{WHITE LEFT POINTING BACKHAND INDEX}"
+EMOJI_TICKET = "\N{ADMISSION TICKETS}"
+EMOJI_POINT = "\N{WHITE LEFT POINTING BACKHAND INDEX}"
 
 
 class RegistrationButton(discord.ui.Button["Registration"]):
+    print("registration button")
+
     def __init__(self, x: int, y: int, label: str, style: discord.ButtonStyle):
         super().__init__(style=discord.ButtonStyle.secondary, label="\u200b", row=y)
         self.x = x
@@ -27,7 +26,8 @@ class RegistrationButton(discord.ui.Button["Registration"]):
         await interaction.response.send_modal(RegistrationForm())
 
 
-class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
+class RegistrationForm(discord.ui.Modal, title="EuroPython 2023 Registration"):
+    print("RegistrationForm")
     name = discord.ui.TextInput(
         label="Name",
         placeholder="Your name as written in your ticket",
@@ -40,48 +40,21 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         required=True,
     )
 
-    online_role = discord.utils.get(self.guild.roles, name=config.ONLINE_ROLE)
-    inperson_role = discord.utils.get(self.guild.roles, name=config.INPERSON_ROLE)
-
     async def on_submit(self, interaction: discord.Interaction):
-        # TODO
-        # This class (Roles) and method (registration) should be provided
-        # by an external module.
-        class Roles(Enum):
-            ONLINE = 1
-            INPERSON = 2
-            INVALID = 3
-
-        def registration(name, order):
-            return Roles.ONLINE
-
-        role = registration(self.name.value, self.order.value)
-
-        if role != Roles.INVALID:
-            if role == Roles.ONLINE:
-                await interaction.user.add_roles(online_role)
-            elif role == Roles.INPERSONL:
-                await interaction.user.add_roles(inperson_role)
-
-            await interaction.response.send_message(
-                f"Thanks {self.name.value}, you are now registered.!",
-                ephemeral=True,
-                delete_after=20,
-            )
-        else:
-            await interaction.response.send_message(
-                (
-                    "There was a problem with the provided information. "
-                    f"Try again, or ask for help in <#{config.REG_HELP_CHANNEL}>"
-                ),
-                ephemeral=True,
-                delete_after=20,
-            )
+        print("on_submit")
+        print(f"{self.name.value}, {self.order.value}")
+        ticket_type = await get_ticket_type(self.order.value, self.name.value)
+        # print(ticket_type)
+        await interaction.response.send_message(
+            f"Thanks, you have {ticket_type}!",
+            ephemeral=True,
+            delete_after=20,
+        )
 
     async def on_error(
         self, interaction: discord.Interaction, error: Exception
     ) -> None:
-        _msg = f"Something went wrong, ask in <#{config.REG_HELP_CHANNEL}>"
+        _msg = "Something went wrong, ask in "
         await interaction.response.send_message(_msg, ephemeral=True, delete_after=20)
 
         # Make sure we know what the error actually is
@@ -96,34 +69,28 @@ class RegistrationView(discord.ui.View):
 
         self.add_item(
             RegistrationButton(
-                0, 0, f"Register here {emoji_point}", discord.ButtonStyle.green
+                0, 0, f"Register here {EMOJI_POINT}", discord.ButtonStyle.green
             )
         )
 
 
 class Registration(commands.Cog):
-    def __init__(self, bot):
-        self.bot = bot
-        self.guild = None
+    def __init__(self, bot: commands.Bot):
+        self.bot: commands.Bot = bot
+        print("Cog 'Registration' ready")
 
-    @commands.Cog.listener()
-    async def on_ready(self):
-        if self.guild is None:
-            self.guild = self.bot.get_guild(config.GUILD)
-
-        channel_reg = self.bot.get_channel(config.REG_CHANNEL)
-        await channel_reg.purge()
-
-        _title = f"Click the button register in the server {emoji_ticket}"
+    # @commands.Cog.listener()
+    @commands.hybrid_command(name="reg", description="Get a discord role")
+    async def registration_command(self, ctx: commands.Context) -> None:
+        print("Registration command triggered")
+        _title = f"Click the button register in the server {EMOJI_TICKET}"
         _desc = (
             "A window will appear so you can provide your `Name` and `Order number`."
         )
-
-        view = RegistrationView(self.guild)
+        view = RegistrationView(ctx.guild)
         embed = discord.Embed(
             title=_title,
             description=_desc,
             colour=0xFF8331,
         )
-
-        await channel_reg.send(embed=embed, view=view)
+        await ctx.send(embed=embed, view=view)
