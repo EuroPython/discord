@@ -14,9 +14,7 @@ emoji_point = "\N{WHITE LEFT POINTING BACKHAND INDEX}"
 
 class RegistrationButton(discord.ui.Button["Registration"]):
     def __init__(self, x: int, y: int, label: str, style: discord.ButtonStyle):
-        super().__init__(
-            style=discord.ButtonStyle.secondary, label="\u200b", row=y
-        )
+        super().__init__(style=discord.ButtonStyle.secondary, label="\u200b", row=y)
         self.x = x
         self.y = y
         self.label = label
@@ -43,9 +41,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
     )
 
     online_role = discord.utils.get(self.guild.roles, name=config.ONLINE_ROLE)
-    inperson_role = discord.utils.get(
-        self.guild.roles, name=config.INPERSON_ROLE
-    )
+    inperson_role = discord.utils.get(self.guild.roles, name=config.INPERSON_ROLE)
 
     async def on_submit(self, interaction: discord.Interaction):
         # TODO
@@ -86,9 +82,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         self, interaction: discord.Interaction, error: Exception
     ) -> None:
         _msg = f"Something went wrong, ask in <#{config.REG_HELP_CHANNEL}>"
-        await interaction.response.send_message(
-            _msg, ephemeral=True, delete_after=20
-        )
+        await interaction.response.send_message(_msg, ephemeral=True, delete_after=20)
 
         # Make sure we know what the error actually is
         traceback.print_exception(type(error), error, error.__traceback__)
@@ -121,7 +115,9 @@ class Registration(commands.Cog):
         await channel_reg.purge()
 
         _title = f"Click the button register in the server {emoji_ticket}"
-        _desc = "A window will appear so you can provide your `Name` and `Order number`."
+        _desc = (
+            "A window will appear so you can provide your `Name` and `Order number`."
+        )
 
         view = RegistrationView(self.guild)
         embed = discord.Embed(
