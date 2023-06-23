@@ -2,11 +2,12 @@ import asyncio
 import os
 from pathlib import Path
 
-import discord
 from cogs.ping import Ping
 from cogs.registration import Registration
-from discord.ext import commands
 from dotenv import load_dotenv
+
+import discord
+from discord.ext import commands
 
 load_dotenv(Path("__file__").absolute().parent.joinpath(".secrets"))
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
