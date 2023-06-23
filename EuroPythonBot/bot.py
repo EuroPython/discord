@@ -16,9 +16,7 @@ DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 class Bot(commands.Bot):
     def __init__(self):
         intents = discord.Intents.default()
-        super().__init__(
-            command_prefix=commands.when_mentioned_or("$"), intents=intents
-        )
+        super().__init__(command_prefix=commands.when_mentioned_or("$"), intents=intents)
         self.guild = None
         self.channels = dict()
 

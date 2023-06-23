@@ -27,7 +27,6 @@ class RegistrationButton(discord.ui.Button["Registration"]):
 
 
 class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
-
     name = discord.ui.TextInput(
         label="Name",
         placeholder="Your name as written in your ticket",
@@ -60,7 +59,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         if role != Roles.INVALID:
             if role == Roles.ONLINE:
                 await interaction.user.add_roles(online_role)
-            elif role == Roles.INPERSONL:
+            elif role == Roles.INPERSON:
                 await interaction.user.add_roles(inperson_role)
 
             await interaction.response.send_message(
@@ -70,8 +69,10 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
             )
         else:
             await interaction.response.send_message(
-                ("There was a problem with the provided information. "
-                 f"Try again, or ask for help in <#{config.REG_HELP_CHANNEL}>"),
+                (
+                    "There was a problem with the provided information. "
+                    f"Try again, or ask for help in <#{config.REG_HELP_CHANNEL}>"
+                ),
                 ephemeral=True,
                 delete_after=20,
             )
@@ -86,11 +87,14 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
 
 class RegistrationView(discord.ui.View):
     def __init__(self, guild):
-        super().__init__()
+        # We don't timeout to have a persistent View
+        super().__init__(timeout=None)
         self.value = None
         self.guild = guild
 
-        self.add_item(RegistrationButton(0, 0, f"Register here {emoji_point}", discord.ButtonStyle.green))
+        self.add_item(
+            RegistrationButton(0, 0, f"Register here {emoji_point}", discord.ButtonStyle.green)
+        )
 
 
 class Registration(commands.Cog):
