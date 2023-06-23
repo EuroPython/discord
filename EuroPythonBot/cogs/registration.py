@@ -27,7 +27,6 @@ class RegistrationButton(discord.ui.Button["Registration"]):
 
 
 class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
-
     def __init__(self, view=None):
         self.view = view
         self.name = discord.ui.TextInput(
