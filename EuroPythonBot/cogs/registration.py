@@ -23,24 +23,24 @@ class RegistrationButton(discord.ui.Button["Registration"]):
         assert self.view is not None
 
         # Launch the modal form
-        await interaction.response.send_modal(RegistrationForm())
+        await interaction.response.send_modal(RegistrationForm(self.view))
 
 
 class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
-    name = discord.ui.TextInput(
-        label="Name",
-        placeholder="Your name as written in your ticket",
-        required=True,
-    )
 
-    order = discord.ui.TextInput(
-        label="Order number",
-        placeholder="The number you find in your ticket",
-        required=True,
-    )
+    def __init__(self, view=None):
+        self.view = view
+        self.name = discord.ui.TextInput(
+            label="Name",
+            placeholder="Your name as written in your ticket",
+            required=True,
+        )
 
-    online_role = discord.utils.get(self.guild.roles, name=config.ONLINE_ROLE)
-    inperson_role = discord.utils.get(self.guild.roles, name=config.INPERSON_ROLE)
+        self.order = discord.ui.TextInput(
+            label="Order number",
+            placeholder="The number you find in your ticket",
+            required=True,
+        )
 
     async def on_submit(self, interaction: discord.Interaction):
         # TODO
@@ -58,9 +58,9 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
 
         if role != Roles.INVALID:
             if role == Roles.ONLINE:
-                await interaction.user.add_roles(online_role)
+                await interaction.user.add_roles(self.view.online_role)
             elif role == Roles.INPERSON:
-                await interaction.user.add_roles(inperson_role)
+                await interaction.user.add_roles(self.view.inperson_role)
 
             await interaction.response.send_message(
                 f"Thanks {self.name.value}, you are now registered.!",
@@ -91,6 +91,9 @@ class RegistrationView(discord.ui.View):
         super().__init__(timeout=None)
         self.value = None
         self.guild = guild
+
+        self.online_role = discord.utils.get(self.guild.roles, name=config.ONLINE_ROLE)
+        self.inperson_role = discord.utils.get(self.guild.roles, name=config.INPERSON_ROLE)
 
         self.add_item(
             RegistrationButton(0, 0, f"Register here {emoji_point}", discord.ButtonStyle.green)
