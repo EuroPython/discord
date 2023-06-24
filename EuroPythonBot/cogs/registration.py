@@ -10,7 +10,7 @@ config = Config()
 
 EMOJI_TICKET = "\N{ADMISSION TICKETS}"
 EMOJI_POINT = "\N{WHITE LEFT POINTING BACKHAND INDEX}"
-ZERO_WIDTH_SPACE = '\N{ZERO WIDTH SPACE}'
+ZERO_WIDTH_SPACE = "\N{ZERO WIDTH SPACE}"
 
 
 class RegistrationButton(discord.ui.Button["Registration"]):
