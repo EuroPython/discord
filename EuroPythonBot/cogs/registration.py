@@ -111,8 +111,8 @@ class Registration(commands.Cog):
         if self.guild is None:
             self.guild = self.bot.get_guild(config.GUILD)
 
-        channel_reg = self.bot.get_channel(config.REG_CHANNEL_ID)
-        await channel_reg.purge()
+        reg_channel = self.bot.get_channel(config.REG_CHANNEL_ID)
+        await reg_channel.purge()
 
         _title = f"Click the 'Register' button in the message {EMOJI_TICKET}"
         _desc = "A window will appear where you can provide your `Name` and `Order number`."
@@ -124,4 +124,4 @@ class Registration(commands.Cog):
             colour=0xFF8331,
         )
 
-        await channel_reg.send(embed=embed, view=view)
+        await reg_channel.send(embed=embed, view=view)
