@@ -27,13 +27,13 @@ class Config(metaclass=Singleton):
 
         try:
             # Server
-            self.GUILD = config["server"]["guild"]
+            self.GUILD = config["server"]["GUILD"]
 
             # Registration
-            self.REG_CHANNEL_ID = config["registration"]["reg_channel_id"]
-            self.REG_HELP_CHANNEL_ID = config["registration"]["reg_help_channel_id"]
-            self.ONLINE_ROLE = config["registration"]["online_role"]
-            self.INPERSON_ROLE = config["registration"]["inperson_role"]
+            self.REG_CHANNEL_ID = config["registration"]["REG_CHANNEL_ID"]
+            self.REG_HELP_CHANNEL_ID = config["registration"]["REG_HELP_CHANNEL_ID"]
+            self.ONLINE_ROLE = config["registration"]["ONLINE_ROLE"]
+            self.INPERSON_ROLE = config["registration"]["INPERSON_ROLE"]
 
         except KeyError:
             print(

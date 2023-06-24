@@ -1,8 +1,8 @@
 [server]
-guild=
+GUILD=
 
 [registration]
-reg_channel_id=
-reg_help_channel_id=
-online_role=
-inperson_role=
+REG_CHANNEL_ID=
+REG_HELP_CHANNEL_ID=
+ONLINE_ROLE=
+INPERSON_ROLE=
