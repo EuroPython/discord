@@ -8,8 +8,8 @@ from discord.ext import commands
 
 config = Config()
 
-emoji_ticket = "\N{ADMISSION TICKETS}"
-emoji_point = "\N{WHITE LEFT POINTING BACKHAND INDEX}"
+EMOJI_TICKET = "\N{ADMISSION TICKETS}"
+EMOJI_POINT = "\N{WHITE LEFT POINTING BACKHAND INDEX}"
 
 
 class RegistrationButton(discord.ui.Button["Registration"]):
@@ -96,7 +96,7 @@ class RegistrationView(discord.ui.View):
         self.inperson_role = discord.utils.get(self.guild.roles, name=config.INPERSON_ROLE)
 
         self.add_item(
-            RegistrationButton(0, 0, f"Register here {emoji_point}", discord.ButtonStyle.green)
+            RegistrationButton(0, 0, f"Register here {EMOJI_POINT}", discord.ButtonStyle.green)
         )
 
 
@@ -113,8 +113,8 @@ class Registration(commands.Cog):
         channel_reg = self.bot.get_channel(config.REG_CHANNEL)
         await channel_reg.purge()
 
-        _title = f"Click the button register in the server {emoji_ticket}"
-        _desc = "A window will appear so you can provide your `Name` and `Order number`."
+        _title = f"Click the 'Register' button in the message {EMOJI_TICKET}"
+        _desc = "A window will appear where you can provide your `Name` and `Order number`."
 
         view = RegistrationView(self.guild)
         embed = discord.Embed(

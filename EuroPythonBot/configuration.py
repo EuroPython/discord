@@ -20,7 +20,7 @@ class Config(metaclass=Singleton):
             config = toml.loads(f.read())
 
         if not config:
-            print("Error: Failed to load the config")
+            print("Error: Failed to load the 'config.toml'")
             sys.exit(-1)
 
         try:
@@ -35,7 +35,8 @@ class Config(metaclass=Singleton):
 
         except KeyError:
             print(
-                "Error while reading the configuration file. "
-                "Make sure it contains all the required field"
+                "Error encountered while reading 'config.toml'"
+                "Ensure that it contains 'GUILD', 'REG_CHANNEL', 'REG_HELP_CHANNEL', "
+                "'ONLINE_ROLE', 'INPERSON_ROLE' fields."
             )
             sys.exit(-1)
