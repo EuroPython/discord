@@ -105,6 +105,7 @@ class Registration(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.guild = None
+        print("Cog 'Registration' ready")
 
     @commands.Cog.listener()
     async def on_ready(self):
