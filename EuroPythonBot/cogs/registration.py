@@ -10,11 +10,12 @@ config = Config()
 
 EMOJI_TICKET = "\N{ADMISSION TICKETS}"
 EMOJI_POINT = "\N{WHITE LEFT POINTING BACKHAND INDEX}"
+ZERO_WIDTH_SPACE = '\N{ZERO WIDTH SPACE}'
 
 
 class RegistrationButton(discord.ui.Button["Registration"]):
     def __init__(self, x: int, y: int, label: str, style: discord.ButtonStyle):
-        super().__init__(style=discord.ButtonStyle.secondary, label="\u200b", row=y)
+        super().__init__(style=discord.ButtonStyle.secondary, label=ZERO_WIDTH_SPACE, row=y)
         self.x = x
         self.y = y
         self.label = label
