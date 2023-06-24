@@ -1,5 +1,4 @@
 import traceback
-from enum import Enum
 
 from configuration import Config
 
@@ -25,58 +24,34 @@ class RegistrationButton(discord.ui.Button["Registration"]):
         assert self.view is not None
 
         # Launch the modal form
-        await interaction.response.send_modal(RegistrationForm(self.view))
+        await interaction.response.send_modal(RegistrationForm())
 
 
 class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
-    def __init__(self, view=None):
-        self.view = view
-        self.name = discord.ui.TextInput(
-            label="Name",
-            placeholder="Your name as written in your ticket",
-            required=True,
-        )
+    name = discord.ui.TextInput(
+        label="Name",
+        required=True,
+        min_length=3,
+        max_length=50,
+        style=discord.TextStyle.short,
+        placeholder="Your name as written in your ticket",
+        default="My Name",
+    )
 
-        self.order = discord.ui.TextInput(
-            label="Order number",
-            placeholder="The number you find in your ticket",
-            required=True,
-        )
+    order = discord.ui.TextInput(
+        label="Order number",
+        required=True,
+        min_length=4,
+        placeholder="The number you find in your ticket",
+        default="XXXX",
+    )
 
     async def on_submit(self, interaction: discord.Interaction) -> None:
-        # TODO
-        # This class (Roles) and method (registration) should be provided
-        # by an external module.
-        class Roles(Enum):
-            ONLINE = 1
-            INPERSON = 2
-            INVALID = 3
-
-        def registration(name, order):
-            return Roles.ONLINE
-
-        role = registration(self.name.value, self.order.value)
-
-        if role != Roles.INVALID:
-            if role == Roles.ONLINE:
-                await interaction.user.add_roles(self.view.online_role)
-            elif role == Roles.INPERSON:
-                await interaction.user.add_roles(self.view.inperson_role)
-
-            await interaction.response.send_message(
-                f"Thanks {self.name.value}, you are now registered.!",
-                ephemeral=True,
-                delete_after=20,
-            )
-        else:
-            await interaction.response.send_message(
-                (
-                    "There was a problem with the provided information. "
-                    f"Try again, or ask for help in <#{config.REG_HELP_CHANNEL_ID}>"
-                ),
-                ephemeral=True,
-                delete_after=20,
-            )
+        await interaction.response.send_message(
+            f"Thanks {self.name.value}, you are now registered.!",
+            ephemeral=True,
+            delete_after=20,
+        )
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
         _msg = f"Something went wrong, ask in <#{config.REG_HELP_CHANNEL_ID}>"
@@ -87,15 +62,10 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
 
 
 class RegistrationView(discord.ui.View):
-    def __init__(self, guild):
+    def __init__(self):
         # We don't timeout to have a persistent View
         super().__init__(timeout=None)
         self.value = None
-        self.guild = guild
-
-        self.online_role = discord.utils.get(self.guild.roles, name=config.ONLINE_ROLE)
-        self.inperson_role = discord.utils.get(self.guild.roles, name=config.INPERSON_ROLE)
-
         self.add_item(
             RegistrationButton(0, 0, f"Register here {EMOJI_POINT}", discord.ButtonStyle.green)
         )
@@ -118,7 +88,7 @@ class Registration(commands.Cog):
         _title = f"Click the 'Register' button in the message {EMOJI_TICKET}"
         _desc = "A window will appear where you can provide your `Name` and `Order number`."
 
-        view = RegistrationView(self.guild)
+        view = RegistrationView()
         embed = discord.Embed(
             title=_title,
             description=_desc,
