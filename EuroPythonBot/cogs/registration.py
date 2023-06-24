@@ -56,7 +56,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
         # Make sure we know what the error actually is
         traceback.print_exception(type(error), error, error.__traceback__)
-        
+
         _msg = f"Something went wrong, ask in <#{config.REG_HELP_CHANNEL_ID}>"
         await interaction.response.send_message(_msg, ephemeral=True, delete_after=20)
 
