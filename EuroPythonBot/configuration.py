@@ -1,4 +1,5 @@
 import sys
+from pathlib import Path
 
 import toml
 
@@ -16,7 +17,8 @@ class Config(metaclass=Singleton):
     def __init__(self):
         # Configuration file
         config = None
-        with open("config.toml") as f:
+        config_path = Path("__file__").resolve().parent.joinpath("EuroPythonBot", "config.toml")
+        with open(config_path) as f:
             config = toml.loads(f.read())
 
         if not config:
@@ -35,7 +37,7 @@ class Config(metaclass=Singleton):
 
         except KeyError:
             print(
-                "Error encountered while reading 'config.toml'"
+                f"Error encountered while reading {config_path}"
                 "Ensure that it contains 'GUILD', 'REG_CHANNEL', 'REG_HELP_CHANNEL', "
                 "'ONLINE_ROLE', 'INPERSON_ROLE' fields."
             )
