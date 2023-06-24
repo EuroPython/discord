@@ -28,8 +28,8 @@ class Config(metaclass=Singleton):
             self.GUILD = config["server"]["guild"]
 
             # Registration
-            self.REG_CHANNEL = config["registration"]["channel_id"]
-            self.REG_HELP_CHANNEL = config["registration"]["help_channel_id"]
+            self.REG_CHANNEL_ID = config["registration"]["reg_channel_id"]
+            self.REG_HELP_CHANNEL_ID = config["registration"]["reg_help_channel_id"]
             self.ONLINE_ROLE = config["registration"]["online_role"]
             self.INPERSON_ROLE = config["registration"]["inperson_role"]
 

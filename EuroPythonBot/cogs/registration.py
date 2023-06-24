@@ -71,14 +71,14 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
             await interaction.response.send_message(
                 (
                     "There was a problem with the provided information. "
-                    f"Try again, or ask for help in <#{config.REG_HELP_CHANNEL}>"
+                    f"Try again, or ask for help in <#{config.REG_HELP_CHANNEL_ID}>"
                 ),
                 ephemeral=True,
                 delete_after=20,
             )
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
-        _msg = f"Something went wrong, ask in <#{config.REG_HELP_CHANNEL}>"
+        _msg = f"Something went wrong, ask in <#{config.REG_HELP_CHANNEL_ID}>"
         await interaction.response.send_message(_msg, ephemeral=True, delete_after=20)
 
         # Make sure we know what the error actually is
@@ -110,7 +110,7 @@ class Registration(commands.Cog):
         if self.guild is None:
             self.guild = self.bot.get_guild(config.GUILD)
 
-        channel_reg = self.bot.get_channel(config.REG_CHANNEL)
+        channel_reg = self.bot.get_channel(config.REG_CHANNEL_ID)
         await channel_reg.purge()
 
         _title = f"Click the 'Register' button in the message {EMOJI_TICKET}"
