@@ -20,7 +20,7 @@ class RegistrationButton(discord.ui.Button["Registration"]):
         self.label = label
         self.style = style
 
-    async def callback(self, interaction: discord.Interaction):
+    async def callback(self, interaction: discord.Interaction) -> None:
         assert self.view is not None
 
         # Launch the modal form
@@ -42,7 +42,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
             required=True,
         )
 
-    async def on_submit(self, interaction: discord.Interaction):
+    async def on_submit(self, interaction: discord.Interaction) -> None:
         # TODO
         # This class (Roles) and method (registration) should be provided
         # by an external module.
