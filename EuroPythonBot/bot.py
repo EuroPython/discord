@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 
 from cogs.ping import Ping
+from cogs.registration import Registration
 from dotenv import load_dotenv
 
 import discord
@@ -15,9 +16,7 @@ DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 class Bot(commands.Bot):
     def __init__(self):
         intents = discord.Intents.default()
-        super().__init__(
-            command_prefix=commands.when_mentioned_or("$"), intents=intents
-        )
+        super().__init__(command_prefix=commands.when_mentioned_or("$"), intents=intents)
         self.guild = None
         self.channels = dict()
 
@@ -28,6 +27,7 @@ class Bot(commands.Bot):
 async def main():
     async with bot:
         await bot.add_cog(Ping(bot))
+        await bot.add_cog(Registration(bot))
         await bot.start(DISCORD_BOT_TOKEN)
 
 
