@@ -43,8 +43,9 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         label="Order number",
         required=True,
         min_length=4,
+        max_length=6,
         placeholder="The number you find in your ticket",
-        default="XXXX",
+        default="XXXXX",
     )
 
     async def on_submit(self, interaction: discord.Interaction) -> None:
