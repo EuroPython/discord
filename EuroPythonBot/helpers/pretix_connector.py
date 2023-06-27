@@ -1,14 +1,13 @@
+import asyncio
+import os
+from pathlib import Path
 from typing import Dict
 
-import discord
-import os
 import aiohttp
 import requests
-import asyncio
-import json
-from pathlib import Path
 from dotenv import load_dotenv
 
+import discord
 
 load_dotenv(Path("__file__").resolve().parent.joinpath(".secrets"))
 PRETIX_TOKEN = os.getenv("PRETIX_TOKEN")
@@ -20,6 +19,7 @@ HEADERS = {"Authorization": f"Token {PRETIX_TOKEN}"}
 def sanitize_string(input_string: str) -> str:
     """Process the name to make it more uniform."""
     return input_string.replace(" ", "").lower()
+
 
 def get_id_to_name_map() -> Dict[int, str]:
     URL = f"{PRETIX_BASE_URL}/items"
@@ -37,9 +37,11 @@ def get_id_to_name_map() -> Dict[int, str]:
             id_to_name[variation_id] = variation_name
     return id_to_name
 
-ID_TO_NAME = get_id_to_name_map()
-def get_pretix_checkinlists_data():
 
+ID_TO_NAME = get_id_to_name_map()
+
+
+def get_pretix_checkinlists_data():
     URL = f"{PRETIX_BASE_URL}/checkinlists/{CHECKINLIST_ID}/positions"
     response = requests.get(URL, headers=HEADERS)
     response.raise_for_status()
@@ -54,7 +56,9 @@ def get_pretix_checkinlists_data():
         orders[f"{order}-{attendee_name}"] = "-".join([ID_TO_NAME[item], ID_TO_NAME[variation]])
     return orders
 
+
 CHECKINNAME = get_pretix_checkinlists_data()
+
 
 async def get_ticket_type(order: str, full_name: str) -> str:
     key = f"{order}-{sanitize_string(input_string=full_name)}"
