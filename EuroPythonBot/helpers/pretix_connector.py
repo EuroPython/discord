@@ -1,4 +1,3 @@
-import asyncio
 import os
 from pathlib import Path
 from typing import Dict
@@ -103,7 +102,3 @@ async def assign_role(interaction: discord.Interaction, name: str, order: str) -
         ephemeral=True,
         delete_after=20,
     )
-
-
-if __name__ == "__main__":
-    print(asyncio.run(get_role(name="TODOG Talks No EMu", order="30QNE")))
