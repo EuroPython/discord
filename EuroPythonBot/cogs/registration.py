@@ -1,6 +1,7 @@
 import traceback
 
 from configuration import Config
+from helpers.pretix_connector import assign_role
 
 import discord
 from discord.ext import commands
@@ -47,11 +48,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
     )
 
     async def on_submit(self, interaction: discord.Interaction) -> None:
-        await interaction.response.send_message(
-            f"Thanks {self.name.value}, you are now registered.!",
-            ephemeral=True,
-            delete_after=20,
-        )
+        await assign_role(interaction, self.name.value, self.order.value)
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
         # Make sure we know what the error actually is
