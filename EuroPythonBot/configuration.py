@@ -32,13 +32,14 @@ class Config(metaclass=Singleton):
             # Registration
             self.REG_CHANNEL_ID = config["registration"]["REG_CHANNEL_ID"]
             self.REG_HELP_CHANNEL_ID = config["registration"]["REG_HELP_CHANNEL_ID"]
-            self.ONLINE_ROLE = config["registration"]["ONLINE_ROLE"]
-            self.INPERSON_ROLE = config["registration"]["INPERSON_ROLE"]
+            self.REG_LOG_CHANNEL_ID = config["registration"]["REG_LOG_CHANNEL_ID"]
+            self.ONLINE_ATTENDEE = config["roles"]["ONLINE_ATTENDEE"]
+            self.ONSITE_ATTENDEE = config["roles"]["ONSITE_ATTENDEE"]
 
         except KeyError:
             print(
-                f"Error encountered while reading {config_path}"
+                f"Error encountered while reading {config_path} "
                 "Ensure that it contains 'GUILD', 'REG_CHANNEL', 'REG_HELP_CHANNEL', "
-                "'ONLINE_ROLE', 'INPERSON_ROLE' fields."
+                "'ONLINE_ATTENDEE', 'ONSITE_ATTENDEE' fields."
             )
             sys.exit(-1)

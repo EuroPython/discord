@@ -1,7 +1,7 @@
 import traceback
 
 from configuration import Config
-from helpers.pretix_connector import assign_role
+from helpers.pretix_connector import get_role
 
 import discord
 from discord.ext import commands
@@ -11,6 +11,7 @@ config = Config()
 EMOJI_TICKET = "\N{ADMISSION TICKETS}"
 EMOJI_POINT = "\N{WHITE LEFT POINTING BACKHAND INDEX}"
 ZERO_WIDTH_SPACE = "\N{ZERO WIDTH SPACE}"
+REGISTERED_LIST = {}
 
 
 class RegistrationButton(discord.ui.Button["Registration"]):
@@ -49,7 +50,19 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
     )
 
     async def on_submit(self, interaction: discord.Interaction) -> None:
-        await assign_role(interaction, self.name.value, self.order.value)
+        """Assign the role to the user and send a confirmation message."""
+        role = await get_role(
+            name=self.name.value,
+            order=self.order.value,
+        )
+        print(role)
+        role = discord.utils.get(interaction.guild.roles, name=role)
+        await interaction.user.add_roles(role)
+        await interaction.response.send_message(
+            f"Thank you {self.name.value}, you are now registered.! ({role})",
+            ephemeral=True,
+            delete_after=20,
+        )
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
         # Make sure we know what the error actually is
@@ -81,6 +94,7 @@ class Registration(commands.Cog):
             self.guild = self.bot.get_guild(config.GUILD)
 
         reg_channel = self.bot.get_channel(config.REG_CHANNEL_ID)
+
         await reg_channel.purge()
 
         _title = f"Click the 'Register' button in the message {EMOJI_TICKET}"

@@ -6,8 +6,6 @@ import aiohttp
 import requests
 from dotenv import load_dotenv
 
-import discord
-
 load_dotenv(Path("__file__").resolve().parent.joinpath(".secrets"))
 PRETIX_TOKEN = os.getenv("PRETIX_TOKEN")
 PRETIX_BASE_URL = "https://pretix.eu/api/v1/organizers/europython/events/ep2023-staging2"
@@ -56,14 +54,23 @@ def get_pretix_checkinlists_data():
     return orders
 
 
-CHECKINNAME = get_pretix_checkinlists_data()
+CHECKINLISTS = get_pretix_checkinlists_data()
+REGISTERED_SET = set()
+
+
+def validate_key(key: str) -> bool:
+    if key in REGISTERED_SET:
+        raise Exception("Key already registered")
+    return True
 
 
 async def get_ticket_type(order: str, full_name: str) -> str:
     key = f"{order}-{sanitize_string(input_string=full_name)}"
+    validate_key(key)
     ticket_type = None
     try:
-        ticket_type = CHECKINNAME[key]
+        ticket_type = CHECKINLISTS[key]
+        REGISTERED_SET.add(key)
     except KeyError:
         async with aiohttp.ClientSession() as session:
             async with session.get(
@@ -78,9 +85,12 @@ async def get_ticket_type(order: str, full_name: str) -> str:
                     data = await request.json()
                     if len(data.get("results")) > 1:
                         result = data.get("results")[0]
+
                         item = result.get("item")
                         variation = result.get("variation")
+
                         ticket_type = f"{ID_TO_NAME.get(item)}-{ID_TO_NAME.get(variation)}"
+                        REGISTERED_SET.add(key)
                     else:
                         raise Exception("No ticket found")
                 else:
@@ -88,17 +98,14 @@ async def get_ticket_type(order: str, full_name: str) -> str:
     return ticket_type
 
 
-async def get_role(name: str, order: str) -> str:
+ticket_type_to_role = {
+    "Business-Conference": "Attendees",
+    "Presenter-Speaker": "Speakers",
+    "Personal–Conference": "Attendees",
+}
+
+
+async def get_role(name: str, order: str) -> int:
     """Get the role for the user."""
     ticket_type = await get_ticket_type(full_name=name, order=order)
-    return f"Role for {ticket_type} ticket"
-
-
-async def assign_role(interaction: discord.Interaction, name: str, order: str) -> None:
-    """Assign the role to the user and send a confirmation message."""
-    role = await get_role(name=name, order=order)
-    await interaction.response.send_message(
-        f"Thank you {name}, you are now registered.! ({role})",
-        ephemeral=True,
-        delete_after=20,
-    )
+    return ticket_type_to_role.get(ticket_type)
