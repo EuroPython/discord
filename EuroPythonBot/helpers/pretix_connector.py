@@ -101,7 +101,7 @@ async def get_ticket_type(order: str, full_name: str) -> str:
 ticket_type_to_role = {
     "Business-Conference": "Attendees",
     "Presenter-Speaker": "Speakers",
-    "Personal–Conference": "Attendees",
+    "Personal-Conference": "Attendees",
 }
 
 
