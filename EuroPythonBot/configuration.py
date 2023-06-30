@@ -4,14 +4,6 @@ from pathlib import Path
 import toml
 
 
-def create_reverse_dict(mapping_dict):
-    reverse_dict = {}
-    for key, values in mapping_dict.items():
-        for value in values:
-            reverse_dict[value] = key
-    return reverse_dict
-
-
 class Singleton(type):
     _instances = {}
 
@@ -47,13 +39,13 @@ class Config(metaclass=Singleton):
             self.CHECKINLIST_ID = config["pretix"]["CHECKINLIST_ID"]
 
             # Mapping
-            self.TICKET_TO_ROLE = create_reverse_dict(config["role_to_ticket"])
+            self.TICKET_TO_ROLE = config["ticket_to_role"]
 
         except KeyError:
             print(
                 f"Error encountered while reading {config_path} "
                 "Ensure that it contains 'GUILD', 'REG_CHANNEL', 'REG_HELP_CHANNEL', "
-                "'PRETIX_BASE_URL', 'CHECKINLIST_ID', "
+                "'PRETIX_BASE_URL', 'CHECKINLIST_ID', 'TICKET_TO_ROLE'"
                 " fields."
             )
             sys.exit(-1)

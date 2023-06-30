@@ -10,10 +10,14 @@ REG_LOG_CHANNEL_ID=
 PRETIX_BASE_URL =
 CHECKINLIST_ID =
 
-[role_to_ticket]
-Attendees = [
-    "Ticket-Type",
+[ticket_to_role]
+Business-Conference = [
+    "Attendees",
 ]
-Speakers = [
-    "Ticket-Type",
+Personal-Conference = [
+    "Attendees",
+    ]
+Presenter-Speaker = [
+    "Speakers",
+    "Attendees",
 ]
