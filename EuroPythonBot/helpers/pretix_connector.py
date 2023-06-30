@@ -4,12 +4,13 @@ from typing import Dict
 
 import aiohttp
 import requests
+from configuration import Config
 from dotenv import load_dotenv
+
+config = Config()
 
 load_dotenv(Path("__file__").resolve().parent.joinpath(".secrets"))
 PRETIX_TOKEN = os.getenv("PRETIX_TOKEN")
-PRETIX_BASE_URL = "https://pretix.eu/api/v1/organizers/europython/events/ep2023-staging2"
-CHECKINLIST_ID = 295151
 HEADERS = {"Authorization": f"Token {PRETIX_TOKEN}"}
 
 
@@ -19,7 +20,7 @@ def sanitize_string(input_string: str) -> str:
 
 
 def get_id_to_name_map() -> Dict[int, str]:
-    URL = f"{PRETIX_BASE_URL}/items"
+    URL = f"{config.PRETIX_BASE_URL}/items"
     response = requests.get(URL, headers=HEADERS)
     response.raise_for_status()
 
@@ -39,7 +40,7 @@ ID_TO_NAME = get_id_to_name_map()
 
 
 def get_pretix_checkinlists_data():
-    URL = f"{PRETIX_BASE_URL}/checkinlists/{CHECKINLIST_ID}/positions"
+    URL = f"{config.PRETIX_BASE_URL}/checkinlists/{config.CHECKINLIST_ID}/positions"
     response = requests.get(URL, headers=HEADERS)
     response.raise_for_status()
 
@@ -74,7 +75,7 @@ async def get_ticket_type(order: str, full_name: str) -> str:
     except KeyError:
         async with aiohttp.ClientSession() as session:
             async with session.get(
-                f"{PRETIX_BASE_URL}/checkinlists/{CHECKINLIST_ID}/positions",
+                f"{config.PRETIX_BASE_URL}/checkinlists/{config.CHECKINLIST_ID}/positions",
                 headers=HEADERS,
                 params={
                     "order": order,
@@ -98,14 +99,7 @@ async def get_ticket_type(order: str, full_name: str) -> str:
     return ticket_type
 
 
-ticket_type_to_role = {
-    "Business-Conference": "Attendees",
-    "Presenter-Speaker": "Speakers",
-    "Personal-Conference": "Attendees",
-}
-
-
 async def get_role(name: str, order: str) -> int:
     """Get the role for the user."""
     ticket_type = await get_ticket_type(full_name=name, order=order)
-    return ticket_type_to_role.get(ticket_type)
+    return config.TICKET_TO_ROLE.get(ticket_type)
