@@ -99,7 +99,7 @@ async def get_ticket_type(order: str, full_name: str) -> str:
     return ticket_type
 
 
-async def get_role(name: str, order: str) -> int:
+async def get_roles(name: str, order: str) -> int:
     """Get the role for the user."""
     ticket_type = await get_ticket_type(full_name=name, order=order)
     return config.TICKET_TO_ROLE.get(ticket_type)

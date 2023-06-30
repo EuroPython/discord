@@ -1,7 +1,7 @@
 import traceback
 
 from configuration import Config
-from helpers.pretix_connector import get_role
+from helpers.pretix_connector import get_roles
 
 import discord
 from discord.ext import commands
@@ -51,15 +51,16 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
 
     async def on_submit(self, interaction: discord.Interaction) -> None:
         """Assign the role to the user and send a confirmation message."""
-        role = await get_role(
+        roles = await get_roles(
             name=self.name.value,
             order=self.order.value,
         )
-        print(role)
-        role = discord.utils.get(interaction.guild.roles, name=role)
-        await interaction.user.add_roles(role)
+        print(roles)
+        for role in roles:
+            role = discord.utils.get(interaction.guild.roles, name=role)
+            await interaction.user.add_roles(role)
         await interaction.response.send_message(
-            f"Thank you {self.name.value}, you are now registered.! ({role})",
+            f"Thank you {self.name.value}, you are now registered.! ({roles})",
             ephemeral=True,
             delete_after=20,
         )
