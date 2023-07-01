@@ -49,10 +49,13 @@ jobs:
       - name: Configure 1Password Service Account
         uses: 1password/load-secrets-action/configure@v1
         with:
-          service-account-token: ${{ secrets.ARTEM_OP_SERVICE_ACCOUNT }}
+          service-account-token: ${{ secrets.DEV_DISCORD_EP2023_1PASSWORD_SERVICE_ACCOUNT_TOKEN }}
+        env:
+          SECRET: op://Dev-Discord_EP2023/Test_Credential/credential
 
-      - name: Pull config.toml from 1Password
-        run: op get document test_config.toml > config.toml
+      - name: Print masked secret
+        run: echo "Secret: $SECRET"
+
 
       - name: Install pipenv
         run: curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
@@ -60,3 +63,4 @@ jobs:
 
       - name: Run pytest
         run: pipenv run pytest .
+
