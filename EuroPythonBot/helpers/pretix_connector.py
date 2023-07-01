@@ -4,8 +4,9 @@ from typing import Dict
 
 import aiohttp
 import requests
-from configuration import Config
 from dotenv import load_dotenv
+
+from EuroPythonBot.configuration import Config
 
 config = Config()
 
@@ -47,7 +48,7 @@ def get_pretix_checkinlists_data():
     orders = {}
     for result in response.json().get("results"):
         order = result.get("order")
-        attendee_name = sanitize_string(result.get("attendee_name").replace(" ", ""))
+        attendee_name = sanitize_string(result.get("attendee_name"))
         item = result.get("item")
         variation = result.get("variation")
 
@@ -102,4 +103,5 @@ async def get_ticket_type(order: str, full_name: str) -> str:
 async def get_roles(name: str, order: str) -> int:
     """Get the role for the user."""
     ticket_type = await get_ticket_type(full_name=name, order=order)
+
     return config.TICKET_TO_ROLE.get(ticket_type)

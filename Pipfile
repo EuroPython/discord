@@ -13,6 +13,8 @@ requests = "*"
 black = "*"
 flake8 = "*"
 isort = "*"
+pytest-asyncio = "*"
+pytest = "*"
 
 [requires]
 python_full_version = "3.10.12"
