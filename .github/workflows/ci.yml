@@ -52,7 +52,7 @@ jobs:
           export-env: true
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.DEV_DISCORD_EP2023_1PASSWORD_SERVICE_ACCOUNT_TOKEN }}
-          SECRET: op://Dev-Discord_EP2023/Test_Credential/credential
+          SECRET: op://Dev-Discord-EP2023/Test_Credential/credential
 
       - name: Print masked secret
         run: echo $SECRET
