@@ -34,16 +34,25 @@ jobs:
         run: pipenv run isort --check .
 
   test:
-    name: 🛠️Test Python code
+    name: 🛠️ Test Python code
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10.12'
+
+      - name: Configure 1Password Service Account
+        uses: 1password/load-secrets-action/configure@v1
+        with:
+          service-account-token: ${{ secrets.ARTEM_OP_SERVICE_ACCOUNT }}
+
+      - name: Pull config.toml from 1Password
+        run: op get document test_config.toml > config.toml
 
       - name: Install pipenv
         run: curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
