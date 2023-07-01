@@ -50,12 +50,12 @@ jobs:
         uses: 1password/load-secrets-action/configure@v1
         with:
           service-account-token: ${{ secrets.DEV_DISCORD_EP2023_1PASSWORD_SERVICE_ACCOUNT_TOKEN }}
+        export-env: true
         env:
           SECRET: op://Dev-Discord_EP2023/Test_Credential/credential
 
       - name: Print masked secret
-        run: echo "Secret: $SECRET"
-
+        run: echo $SECRET
 
       - name: Install pipenv
         run: curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
