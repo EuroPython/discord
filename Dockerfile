@@ -1,4 +1,4 @@
-FROM python:3.10.12-slim
+FROM python:3.11.4-slim
 
 RUN groupadd --gid 1000 bot && \
     useradd --uid 1000 --gid bot bot --create-home && \

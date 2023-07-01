@@ -1,11 +1,11 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "b6d8047d71bfa85a6e2aad7c943c153de6e50deaf1345295c9e80a25db6609fc"
+            "sha256": "6a6c4ab171339253a1c0ba8e1dc15c6fc5d7f0e81de6d5e55056995be3d518dd"
         },
         "pipfile-spec": 6,
         "requires": {
-            "python_full_version": "3.10.12"
+            "python_full_version": "3.11.4"
         },
         "sources": [
             {
@@ -216,11 +216,11 @@
         },
         "discord.py": {
             "hashes": [
-                "sha256:3e9498967822ad4499f8f72deb9173f942d9827d92b6e4e4e7732d24f78f300c",
-                "sha256:c71066a30f037d069218e59092505c3e8945fd175e396a80748056d989756806"
+                "sha256:149652f24da299706270bf8c03c2fcf80cf1caf3a480744c61d5b001688b380d",
+                "sha256:8eb4fe66b5d503da6de3a8425e23012711dc2fbcd7a782107a92beac15ee3459"
             ],
             "index": "pypi",
-            "version": "==2.3.0"
+            "version": "==2.3.1"
         },
         "frozenlist": {
             "hashes": [
@@ -598,14 +598,6 @@
             ],
             "markers": "python_version >= '3.6'",
             "version": "==3.0.1"
-        },
-        "tomli": {
-            "hashes": [
-                "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc",
-                "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"
-            ],
-            "markers": "python_version < '3.11'",
-            "version": "==2.0.1"
         }
     }
 }
