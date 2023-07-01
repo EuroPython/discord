@@ -47,11 +47,11 @@ jobs:
           python-version: '3.10.12'
 
       - name: Configure 1Password Service Account
-        uses: 1password/load-secrets-action/configure@v1
+        uses: 1password/load-secrets-action@v1
         with:
-          service-account-token: ${{ secrets.DEV_DISCORD_EP2023_1PASSWORD_SERVICE_ACCOUNT_TOKEN }}
-        export-env: true
+          export-env: true
         env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.DEV_DISCORD_EP2023_1PASSWORD_SERVICE_ACCOUNT_TOKEN }}
           SECRET: op://Dev-Discord_EP2023/Test_Credential/credential
 
       - name: Print masked secret
