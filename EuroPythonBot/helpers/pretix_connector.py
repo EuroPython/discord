@@ -5,9 +5,8 @@ from typing import Dict
 
 import aiohttp
 import requests
+from configuration import Config
 from dotenv import load_dotenv
-
-from EuroPythonBot.configuration import Config
 
 config = Config()
 
