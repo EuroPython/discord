@@ -1,0 +1,17 @@
+[server]
+GUILD=''
+
+[registration]
+REG_CHANNEL_ID=''
+REG_HELP_CHANNEL_ID=''
+REG_LOG_CHANNEL_ID=''
+
+[pretix]
+PRETIX_BASE_URL = ''
+CHECKINLIST_ID = ''
+
+[ticket_to_roles]
+#TICKET_TO_ROLE = { "Business-Conference" = [1124095928115142798, ], "Personal-Conference" = [ 1124095928115142798 ], "Presenter-Speaker" = [ 1124095928115142798, 1124096213000671325] }
+Business-Conference = ''
+Personal-Conference = ''
+Presenter-Speaker = ''
