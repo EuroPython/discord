@@ -38,10 +38,9 @@ def get_id_to_name_map() -> Dict[int, str]:
     return id_to_name
 
 
-ID_TO_NAME = get_id_to_name_map()
-
-
 def get_pretix_checkinlists_data():
+    ID_TO_NAME = get_id_to_name_map()
+
     URL = f"{config.PRETIX_BASE_URL}/checkinlists/{config.CHECKINLIST_ID}/positions"
     response = requests.get(URL, headers=HEADERS)
     response.raise_for_status()
@@ -57,7 +56,6 @@ def get_pretix_checkinlists_data():
     return orders
 
 
-CHECKINLISTS = get_pretix_checkinlists_data()
 REGISTERED_SET = set()
 
 
@@ -68,6 +66,7 @@ def validate_key(key: str) -> bool:
 
 
 async def get_ticket_type(order: str, full_name: str) -> str:
+    CHECKINLISTS = get_pretix_checkinlists_data()
     key = f"{order}-{sanitize_string(input_string=full_name)}"
     validate_key(key)
     ticket_type = None
@@ -85,6 +84,8 @@ async def get_ticket_type(order: str, full_name: str) -> str:
                 },
             ) as request:
                 if request.status == HTTPStatus.OK:
+                    ID_TO_NAME = get_id_to_name_map()
+
                     data = await request.json()
                     if len(data.get("results")) > 1:
                         result = data.get("results")[0]
