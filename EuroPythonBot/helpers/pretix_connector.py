@@ -5,9 +5,8 @@ from typing import Dict
 
 import aiohttp
 import requests
-from dotenv import load_dotenv
-
 from configuration import Config
+from dotenv import load_dotenv
 
 config = Config()
 

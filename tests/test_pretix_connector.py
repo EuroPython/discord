@@ -4,12 +4,8 @@ from pathlib import Path
 from unittest import mock
 
 import pytest
-
 from configuration import Config
-from helpers.pretix_connector import (
-    get_pretix_checkinlists_data,
-    get_roles,
-)
+from helpers.pretix_connector import get_pretix_checkinlists_data, get_roles
 
 config = Config()
 
