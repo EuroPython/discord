@@ -1,0 +1,204 @@
+{
+    "results": [
+        {
+            "id": 339041,
+            "name": "Business",
+            "variation": {
+                "id": 163246,
+                "name": "Conference"
+            }
+        },
+        {
+            "id": 339041,
+            "name": "Business",
+            "variation": {
+                "id": 163247,
+                "name": "Tutorials"
+            }
+        },
+        {
+            "id": 339041,
+            "name": "Business",
+            "variation": {
+                "id": 163248,
+                "name": "Combined (Conference + Tutorials)"
+            }
+        },
+        {
+            "id": 339041,
+            "name": "Business",
+            "variation": {
+                "id": 163249,
+                "name": "Late Conference"
+            }
+        },
+        {
+            "id": 339041,
+            "name": "Business",
+            "variation": {
+                "id": 163250,
+                "name": "Late Combined"
+            }
+        },
+        {
+            "id": 339042,
+            "name": "Personal",
+            "variation": {
+                "id": 163251,
+                "name": "Conference"
+            }
+        },
+        {
+            "id": 339042,
+            "name": "Personal",
+            "variation": {
+                "id": 163252,
+                "name": "Tutorials"
+            }
+        },
+        {
+            "id": 339042,
+            "name": "Personal",
+            "variation": {
+                "id": 163253,
+                "name": "Combined (Conference + Tutorials)"
+            }
+        },
+        {
+            "id": 339042,
+            "name": "Personal",
+            "variation": {
+                "id": 163254,
+                "name": "Late Conference"
+            }
+        },
+        {
+            "id": 339042,
+            "name": "Personal",
+            "variation": {
+                "id": 163255,
+                "name": "Late Combined"
+            }
+        },
+        {
+            "id": 339043,
+            "name": "Education",
+            "variation": {
+                "id": 163256,
+                "name": "Conference"
+            }
+        },
+        {
+            "id": 339043,
+            "name": "Education",
+            "variation": {
+                "id": 163257,
+                "name": "Tutorials"
+            }
+        },
+        {
+            "id": 339043,
+            "name": "Education",
+            "variation": {
+                "id": 163258,
+                "name": "Combined (Conference + Tutorials)"
+            }
+        },
+        {
+            "id": 339044,
+            "name": "Community Contributors",
+            "variation": {
+                "id": 163259,
+                "name": "Volunteer"
+            }
+        },
+        {
+            "id": 339044,
+            "name": "Community Contributors",
+            "variation": {
+                "id": 163260,
+                "name": "EPS Fellow"
+            }
+        },
+        {
+            "id": 339044,
+            "name": "Community Contributors",
+            "variation": {
+                "id": 163261,
+                "name": "GVR - Python Core Dev"
+            }
+        },
+        {
+            "id": 339044,
+            "name": "Community Contributors",
+            "variation": {
+                "id": 163262,
+                "name": "Python Community Organiser"
+            }
+        },
+        {
+            "id": 339045,
+            "name": "Presenter",
+            "variation": {
+                "id": 163263,
+                "name": "Speaker"
+            }
+        },
+        {
+            "id": 339045,
+            "name": "Presenter",
+            "variation": {
+                "id": 163264,
+                "name": "Tutorial & Workshop Presenter"
+            }
+        },
+        {
+            "id": 339045,
+            "name": "Presenter",
+            "variation": {
+                "id": 163265,
+                "name": "Keynote Presenter"
+            }
+        },
+        {
+            "id": 339056,
+            "name": "Sponsor Conference Ticket",
+            "variation": {
+                "id": 163266,
+                "name": "Sponsor Complimentary Conference Pass"
+            }
+        },
+        {
+            "id": 339056,
+            "name": "Sponsor Conference Ticket",
+            "variation": {
+                "id": 163267,
+                "name": "Sponsor Conference Pass with Discount"
+            }
+        },
+        {
+            "id": 355520,
+            "name": "Remote Ticket",
+            "variation": {
+                "id": 181957,
+                "name": "Business Remote"
+            }
+        },
+        {
+            "id": 355520,
+            "name": "Remote Ticket",
+            "variation": {
+                "id": 181958,
+                "name": "Personal Remote"
+            }
+        },
+        {
+            "id": 355520,
+            "name": "Remote Ticket",
+            "variation": {
+                "id": 181959,
+                "name": "Livestream Only"
+            }
+        }
+    ]
+}

@@ -26,6 +26,11 @@ def mocked_requests_get(*args, **kwargs):
             mock_response = json.load(json_file)
         return MockResponse(json_data=mock_response, status_code=HTTPStatus.OK)
 
+    if args[0] == f"{config.PRETIX_BASE_URL}/items":
+        with open(Path("tests", "mock_pretix_items.json")) as json_file:
+            mock_response = json.load(json_file)
+        return MockResponse(json_data=mock_response, status_code=HTTPStatus.OK)
+
     return MockResponse(None, HTTPStatus.NOT_FOUND)
 
 
