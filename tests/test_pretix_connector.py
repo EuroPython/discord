@@ -26,12 +26,12 @@ def mocked_requests_get(*args, **kwargs):
         def raise_for_status(self):
             return self.status_code
 
-    if args[0] == f"{config.PRETIX_BASE_URL}/checkinlists/{config.CHECKINLIST_ID}/positions":
+    if args[0].endswith("positions"):
         with open(Path("tests", "mock_pretix_checkinglists_list_positions.json")) as json_file:
             mock_response = json.load(json_file)
         return MockResponse(json_data=mock_response, status_code=HTTPStatus.OK)
 
-    if args[0] == f"{config.PRETIX_BASE_URL}/items":
+    if args[0].endswith("items"):
         with open(Path("tests", "mock_pretix_items.json")) as json_file:
             mock_response = json.load(json_file)
         return MockResponse(json_data=mock_response, status_code=HTTPStatus.OK)
