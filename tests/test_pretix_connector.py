@@ -3,8 +3,13 @@ from http import HTTPStatus
 from pathlib import Path
 from unittest import mock
 
+import pytest
+
 from EuroPythonBot.configuration import Config
-from EuroPythonBot.helpers.pretix_connector import get_pretix_checkinlists_data
+from EuroPythonBot.helpers.pretix_connector import (
+    get_pretix_checkinlists_data,
+    get_roles,
+)
 
 config = Config()
 
@@ -51,3 +56,92 @@ def test_get_pretix_checkinlists_data(mocked_requests_get):
     }
 
     assert get_pretix_checkinlists_data() == expected_response
+
+
+test_data = [
+    (
+        "TODOG GODOT",
+        "RCZN9",
+        [
+            1124095928115142798,
+            1124096213000671325,
+        ],
+    ),
+    (
+        "order 6 dog",
+        "M09CT",
+        [
+            1124095928115142798,
+        ],
+    ),
+    (
+        "TBD TBD",
+        "90LKW",
+        [
+            1124095928115142798,
+        ],
+    ),
+    (
+        "TODOG Talks No EMu",
+        "30QNE",
+        [
+            1124095928115142798,
+            1124096213000671325,
+        ],
+    ),
+    (
+        "Raquel Individual",
+        "C0MV7",
+        [
+            1124095928115142798,
+        ],
+    ),
+    (
+        "Raquel Individual",
+        "G0CFM",
+        [
+            1124095928115142798,
+        ],
+    ),
+    (
+        "order 2 dog",
+        "M09CT",
+        [
+            1124095928115142798,
+        ],
+    ),
+    (
+        "Dog TBD",
+        "90LKW",
+        [
+            1124095928115142798,
+        ],
+    ),
+    (
+        "order 3 dog",
+        "M09CT",
+        [
+            1124095928115142798,
+        ],
+    ),
+    (
+        "order 4 dog",
+        "M09CT",
+        [
+            1124095928115142798,
+        ],
+    ),
+    (
+        "order 5 dog",
+        "M09CT",
+        [
+            1124095928115142798,
+        ],
+    ),
+]
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("name,order,role_id", test_data)
+async def test_get_roles(name, order, role_id):
+    assert await get_roles(name=name, order=order) == role_id
