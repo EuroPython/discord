@@ -1,0 +1,354 @@
+{
+    "results": [
+        {
+            "id": 339041,
+            "name": {
+                "en": "Business"
+            },
+            "variations": [
+                {
+                    "id": 163246,
+                    "value": {
+                        "en": "Conference"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 339041,
+            "name": {
+                "en": "Business"
+            },
+            "variations": [
+                {
+                    "id": 163247,
+                    "value": {
+                        "en": "Tutorials"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 339041,
+            "name": {
+                "en": "Business"
+            },
+            "variations": [
+                {
+                    "id": 163248,
+                    "value": {
+                        "en": "Combined (Conference + Tutorials)"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 339041,
+            "name": {
+                "en": "Business"
+            },
+            "variations": [
+                {
+                    "id": 163249,
+                    "value": {
+                        "en": "Late Conference"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 339041,
+            "name": {
+                "en": "Business"
+            },
+            "variations": [
+                {
+                    "id": 163250,
+                    "value": {
+                        "en": "Late Combined"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 339042,
+            "name": {
+                "en": "Personal"
+            },
+            "variations": [
+                {
+                    "id": 163251,
+                    "value": {
+                        "en": "Conference"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 339042,
+            "name": {
+                "en": "Personal"
+            },
+            "variations": [
+                {
+                    "id": 163252,
+                    "value": {
+                        "en": "Tutorials"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 339042,
+            "name": {
+                "en": "Personal"
+            },
+            "variations": [
+                {
+                    "id": 163253,
+                    "value": {
+                        "en": "Combined (Conference + Tutorials)"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 339042,
+            "name": {
+                "en": "Personal"
+            },
+            "variations": [
+                {
+                    "id": 163254,
+                    "value": {
+                        "en": "Late Conference"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 339042,
+            "name": {
+                "en": "Personal"
+            },
+            "variations": [
+                {
+                    "id": 163255,
+                    "value": {
+                        "en": "Late Combined"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 339043,
+            "name": {
+                "en": "Education"
+            },
+            "variations": [
+                {
+                    "id": 163256,
+                    "value": {
+                        "en": "Conference"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 339043,
+            "name": {
+                "en": "Education"
+            },
+            "variations": [
+                {
+                    "id": 163257,
+                    "value": {
+                        "en": "Tutorials"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 339043,
+            "name": {
+                "en": "Education"
+            },
+            "variations": [
+                {
+                    "id": 163258,
+                    "value": {
+                        "en": "Combined (Conference + Tutorials)"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 339044,
+            "name": {
+                "en": "Community Contributors"
+            },
+            "variations": [
+                {
+                    "id": 163259,
+                    "value": {
+                        "en": "Volunteer"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 339044,
+            "name": {
+                "en": "Community Contributors"
+            },
+            "variations": [
+                {
+                    "id": 163260,
+                    "value": {
+                        "en": "EPS Fellow"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 339044,
+            "name": {
+                "en": "Community Contributors"
+            },
+            "variations": [
+                {
+                    "id": 163261,
+                    "value": {
+                        "en": "GVR - Python Core Dev"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 339044,
+            "name": {
+                "en": "Community Contributors"
+            },
+            "variations": [
+                {
+                    "id": 163262,
+                    "value": {
+                        "en": "Python Community Organiser"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 339045,
+            "name": {
+                "en": "Presenter"
+            },
+            "variations": [
+                {
+                    "id": 163263,
+                    "value": {
+                        "en": "Speaker"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 339045,
+            "name": {
+                "en": "Presenter"
+            },
+            "variations": [
+                {
+                    "id": 163264,
+                    "value": {
+                        "en": "Tutorial & Workshop Presenter"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 339045,
+            "name": {
+                "en": "Presenter"
+            },
+            "variations": [
+                {
+                    "id": 163265,
+                    "value": {
+                        "en": "Keynote Presenter"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 339056,
+            "name": {
+                "en": "Sponsor Conference Ticket"
+            },
+            "variations": [
+                {
+                    "id": 163266,
+                    "value": {
+                        "en": "Sponsor Complimentary Conference Pass"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 339056,
+            "name": {
+                "en": "Sponsor Conference Ticket"
+            },
+            "variations": [
+                {
+                    "id": 163267,
+                    "value": {
+                        "en": "Sponsor Conference Pass with Discount"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 355520,
+            "name": {
+                "en": "Remote Ticket"
+            },
+            "variations": [
+                {
+                    "id": 181957,
+                    "value": {
+                        "en": "Business Remote"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 355520,
+            "name": {
+                "en": "Remote Ticket"
+            },
+            "variations": [
+                {
+                    "id": 181958,
+                    "value": {
+                        "en": "Personal Remote"
+                    }
+                }
+            ]
+        },
+        {
+            "id": 355520,
+            "name": {
+                "en": "Remote Ticket"
+            },
+            "variations": [
+                {
+                    "id": 181959,
+                    "value": {
+                        "en": "Livestream Only"
+                    }
+                }
+            ]
+        }
+    ]
+}

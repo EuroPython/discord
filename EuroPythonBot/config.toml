@@ -1,0 +1,16 @@
+[server]
+GUILD=""
+
+[registration]
+REG_CHANNEL_ID=""
+REG_HELP_CHANNEL_ID=""
+REG_LOG_CHANNEL_ID=""
+
+[pretix]
+PRETIX_BASE_URL = "https://fake_url.eu"
+CHECKINLIST_ID = ""
+
+[ticket_to_roles]
+Business-Conference = [ 123, ]
+Personal-Conference = [ 456, ]
+Presenter-Speaker = [ 123, 789, ]

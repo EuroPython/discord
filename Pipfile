@@ -7,11 +7,14 @@ name = "pypi"
 "discord.py" = "*"
 python-dotenv = "*"
 toml = "*"
+requests = "*"
 
 [dev-packages]
 black = "*"
 flake8 = "*"
 isort = "*"
+pytest-asyncio = "*"
+pytest = "*"
 
 [requires]
 python_full_version = "3.11.4"
