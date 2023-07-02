@@ -1,4 +1,5 @@
 import os
+from http import HTTPStatus
 from pathlib import Path
 from typing import Dict
 
@@ -83,7 +84,7 @@ async def get_ticket_type(order: str, full_name: str) -> str:
                     "attendee_name": full_name,
                 },
             ) as request:
-                if request.status == 200:
+                if request.status == HTTPStatus.OK:
                     data = await request.json()
                     if len(data.get("results")) > 1:
                         result = data.get("results")[0]

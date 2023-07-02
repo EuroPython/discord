@@ -39,7 +39,7 @@ class Config(metaclass=Singleton):
             self.CHECKINLIST_ID = config["pretix"]["CHECKINLIST_ID"]
 
             # Mapping
-            self.TICKET_TO_ROLE = config["ticket_to_role"]
+            self.TICKET_TO_ROLE = config["ticket_to_roles"]
 
         except KeyError:
             print(
