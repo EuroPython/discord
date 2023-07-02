@@ -46,17 +46,6 @@ jobs:
         with:
           python-version: '3.11.4'
 
-      - name: Configure 1Password Service Account
-        uses: 1password/load-secrets-action@v1
-        with:
-          export-env: true
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.DEV_DISCORD_EP2023_1PASSWORD_SERVICE_ACCOUNT_TOKEN }}
-          SECRET: op://Dev-Discord-EP2023/Test_Credential/credential
-
-      - name: Print masked secret
-        run: echo $SECRET
-
       - name: Install pipenv
         run: curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
       - run: pipenv install --dev

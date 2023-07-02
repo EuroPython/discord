@@ -62,86 +62,64 @@ test_data = [
     (
         "TODOG GODOT",
         "RCZN9",
-        [
-            1124095928115142798,
-            1124096213000671325,
-        ],
+        config.TICKET_TO_ROLE["Presenter-Speaker"],
     ),
     (
         "order 6 dog",
         "M09CT",
-        [
-            1124095928115142798,
-        ],
+        config.TICKET_TO_ROLE["Business-Conference"],
     ),
     (
         "TBD TBD",
         "90LKW",
-        [
-            1124095928115142798,
-        ],
+        config.TICKET_TO_ROLE["Business-Conference"],
     ),
     (
         "TODOG Talks No EMu",
         "30QNE",
-        [
-            1124095928115142798,
-            1124096213000671325,
-        ],
+        config.TICKET_TO_ROLE["Presenter-Speaker"],
     ),
     (
         "Raquel Individual",
         "C0MV7",
-        [
-            1124095928115142798,
-        ],
+        config.TICKET_TO_ROLE["Business-Conference"],
     ),
     (
         "Raquel Individual",
         "G0CFM",
-        [
-            1124095928115142798,
-        ],
+        config.TICKET_TO_ROLE["Business-Conference"],
     ),
     (
         "order 2 dog",
         "M09CT",
-        [
-            1124095928115142798,
-        ],
+        config.TICKET_TO_ROLE["Business-Conference"],
     ),
     (
         "Dog TBD",
         "90LKW",
-        [
-            1124095928115142798,
-        ],
+        config.TICKET_TO_ROLE["Personal-Conference"],
     ),
     (
         "order 3 dog",
         "M09CT",
-        [
-            1124095928115142798,
-        ],
+        config.TICKET_TO_ROLE["Business-Conference"],
     ),
     (
         "order 4 dog",
         "M09CT",
-        [
-            1124095928115142798,
-        ],
+        config.TICKET_TO_ROLE["Business-Conference"],
     ),
     (
         "order 5 dog",
         "M09CT",
-        [
-            1124095928115142798,
-        ],
+        config.TICKET_TO_ROLE["Business-Conference"],
     ),
 ]
 
 
 @pytest.mark.asyncio
-@pytest.mark.parametrize("name,order,role_id", test_data)
-async def test_get_roles(name, order, role_id):
-    assert await get_roles(name=name, order=order) == role_id
+@mock.patch("requests.get", side_effect=mocked_requests_get)
+async def test_get_roles(mocked_requests_get):
+    for name, order, role_id in test_data:
+        roles = await get_roles(name=name, order=order)
+        assert roles == role_id

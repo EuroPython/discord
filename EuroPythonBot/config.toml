@@ -11,6 +11,6 @@ PRETIX_BASE_URL = "https://fake_url.eu"
 CHECKINLIST_ID = ""
 
 [ticket_to_roles]
-Business-Conference = ""
-Personal-Conference = ""
-Presenter-Speaker = ""
+Business-Conference = [ 123, ]
+Personal-Conference = [ 456, ]
+Presenter-Speaker = [ 123, 789, ]
