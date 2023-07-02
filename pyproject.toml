@@ -5,4 +5,4 @@ profile = "black"
 line-length = 100
 
 [tool.pytest.ini_options]
-pythonpath = "."
+pythonpath = "EuroPythonBot"

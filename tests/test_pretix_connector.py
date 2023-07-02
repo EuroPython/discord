@@ -5,8 +5,8 @@ from unittest import mock
 
 import pytest
 
-from EuroPythonBot.configuration import Config
-from EuroPythonBot.helpers.pretix_connector import (
+from configuration import Config
+from helpers.pretix_connector import (
     get_pretix_checkinlists_data,
     get_roles,
 )

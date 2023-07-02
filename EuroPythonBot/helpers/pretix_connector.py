@@ -7,7 +7,7 @@ import aiohttp
 import requests
 from dotenv import load_dotenv
 
-from EuroPythonBot.configuration import Config
+from configuration import Config
 
 config = Config()
 
