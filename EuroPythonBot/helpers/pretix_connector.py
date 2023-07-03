@@ -4,7 +4,6 @@ from pathlib import Path
 from typing import Dict
 
 import aiohttp
-import requests
 from configuration import Config
 from dotenv import load_dotenv
 
@@ -20,38 +19,49 @@ def sanitize_string(input_string: str) -> str:
     return input_string.replace(" ", "").lower()
 
 
-def get_id_to_name_map() -> Dict[int, str]:
-    URL = f"{config.PRETIX_BASE_URL}/items"
-    response = requests.get(URL, headers=HEADERS)
-    response.raise_for_status()
+async def get_id_to_name_map() -> Dict[int, str]:
+    url = f"{config.PRETIX_BASE_URL}/items"
 
-    id_to_name = {}
-    for result in response.json().get("results"):
-        id = result.get("id")
-        name = result.get("name").get("en")
-        id_to_name[id] = name
-        for variation in result.get("variations"):
-            variation_id = variation.get("id")
-            variation_name = variation.get("value").get("en")
-            id_to_name[variation_id] = variation_name
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url, headers=HEADERS) as response:
+            if response.status != HTTPStatus.OK:
+                response.raise_for_status()
+
+            data = await response.json()
+
+            id_to_name = {}
+            for result in data.get("results"):
+                id = result.get("id")
+                name = result.get("name").get("en")
+                id_to_name[id] = name
+                for variation in result.get("variations"):
+                    variation_id = variation.get("id")
+                    variation_name = variation.get("value").get("en")
+                    id_to_name[variation_id] = variation_name
     return id_to_name
 
 
-def get_pretix_checkinlists_data():
-    ID_TO_NAME = get_id_to_name_map()
+async def get_pretix_checkinlists_data():
+    id_to_name = await get_id_to_name_map()
 
-    URL = f"{config.PRETIX_BASE_URL}/checkinlists/{config.CHECKINLIST_ID}/positions"
-    response = requests.get(URL, headers=HEADERS)
-    response.raise_for_status()
+    url = f"{config.PRETIX_BASE_URL}/checkinlists/{config.CHECKINLIST_ID}/positions"
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url, headers=HEADERS) as response:
+            if response.status != HTTPStatus.OK:
+                response.raise_for_status()
 
-    orders = {}
-    for result in response.json().get("results"):
-        order = result.get("order")
-        attendee_name = sanitize_string(result.get("attendee_name"))
-        item = result.get("item")
-        variation = result.get("variation")
+            data = await response.json()
 
-        orders[f"{order}-{attendee_name}"] = "-".join([ID_TO_NAME[item], ID_TO_NAME[variation]])
+            orders = {}
+            for result in data.get("results"):
+                order = result.get("order")
+                attendee_name = sanitize_string(result.get("attendee_name"))
+                item = result.get("item")
+                variation = result.get("variation")
+
+                orders[f"{order}-{attendee_name}"] = "-".join(
+                    [id_to_name.get(item, ""), id_to_name.get(variation, "")]
+                )
     return orders
 
 
@@ -65,12 +75,12 @@ def validate_key(key: str) -> bool:
 
 
 async def get_ticket_type(order: str, full_name: str) -> str:
-    CHECKINLISTS = get_pretix_checkinlists_data()
+    checkinlist = await get_pretix_checkinlists_data()
     key = f"{order}-{sanitize_string(input_string=full_name)}"
     validate_key(key)
     ticket_type = None
     try:
-        ticket_type = CHECKINLISTS[key]
+        ticket_type = checkinlist[key]
         REGISTERED_SET.add(key)
     except KeyError:
         async with aiohttp.ClientSession() as session:
@@ -83,7 +93,7 @@ async def get_ticket_type(order: str, full_name: str) -> str:
                 },
             ) as request:
                 if request.status == HTTPStatus.OK:
-                    ID_TO_NAME = get_id_to_name_map()
+                    ID_TO_NAME = await get_id_to_name_map()
 
                     data = await request.json()
                     if len(data.get("results")) > 1:
