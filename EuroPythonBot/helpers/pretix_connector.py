@@ -1,6 +1,8 @@
+import asyncio
 import os
 from http import HTTPStatus
 from pathlib import Path
+from time import time
 from typing import Dict
 
 import aiohttp
@@ -42,27 +44,49 @@ async def get_id_to_name_map() -> Dict[int, str]:
     return id_to_name
 
 
-async def get_pretix_checkinlists_data():
+async def fetch(url, session):
+    async with session.get(url, headers=HEADERS) as response:
+        return await response.json()
+
+
+async def fetch_all(url):
+    async with aiohttp.ClientSession() as session:
+        results = []
+        while url:
+            data = await fetch(url, session)
+            results += data["results"]
+            url = data["next"]
+        return results
+
+
+def flatten_concatenation(matrix):
+    flat_list = []
+    for row in matrix:
+        flat_list += row
+    return flat_list
+
+
+async def get_pretix_orders_data():
     id_to_name = await get_id_to_name_map()
 
-    url = f"{config.PRETIX_BASE_URL}/checkinlists/{config.CHECKINLIST_ID}/positions"
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url, headers=HEADERS) as response:
-            if response.status != HTTPStatus.OK:
-                response.raise_for_status()
+    url = f"{config.PRETIX_BASE_URL}/orders"
 
-            data = await response.json()
+    time_start = time()
+    results = await fetch_all(url)
+    # flatten_results = flatten_concatenation(results)
+    print(f"INFO: Fetched {len(results)} in {time() - time_start}s")
 
-            orders = {}
-            for result in data.get("results"):
-                order = result.get("order")
-                attendee_name = sanitize_string(result.get("attendee_name"))
-                item = result.get("item")
-                variation = result.get("variation")
+    orders = {}
+    for position in flatten_concatenation(
+        [result.get("positions") for result in results if result.get("status") == "p"]
+    ):
+        item = position.get("item")
+        if id_to_name.get(item) in ["T-shirt (free)", "Childcare (Free)", "Livestream Only"]:
+            continue
+        order = position.get("order")
+        attendee_name = sanitize_string(position.get("attendee_name"))
 
-                orders[f"{order}-{attendee_name}"] = "-".join(
-                    [id_to_name.get(item, ""), id_to_name.get(variation, "")]
-                )
+        orders[f"{order}-{attendee_name}"] = id_to_name.get(item)
     return orders
 
 
@@ -75,35 +99,38 @@ def validate_key(key: str) -> bool:
     return True
 
 
+orders = asyncio.run(get_pretix_orders_data())
+
+
 async def get_ticket_type(order: str, full_name: str) -> str:
-    checkinlist = await get_pretix_checkinlists_data()
     key = f"{order}-{sanitize_string(input_string=full_name)}"
     validate_key(key)
     ticket_type = None
     try:
-        ticket_type = checkinlist[key]
+        ticket_type = orders[key]
         REGISTERED_SET.add(key)
     except KeyError:
         async with aiohttp.ClientSession() as session:
             async with session.get(
-                f"{config.PRETIX_BASE_URL}/checkinlists/{config.CHECKINLIST_ID}/positions",
+                f"{config.PRETIX_BASE_URL}/orders",
                 headers=HEADERS,
                 params={
-                    "order": order,
-                    "attendee_name": full_name,
+                    "code": order,
+                    "search": full_name,
                 },
             ) as request:
                 if request.status == HTTPStatus.OK:
-                    ID_TO_NAME = await get_id_to_name_map()
+                    id_to_name = await get_id_to_name_map()
 
                     data = await request.json()
                     if len(data.get("results")) > 1:
                         result = data.get("results")[0]
-
+                        if result.get("status") != "p":
+                            raise Exception("Order not paid")
                         item = result.get("item")
                         variation = result.get("variation")
 
-                        ticket_type = f"{ID_TO_NAME.get(item)}-{ID_TO_NAME.get(variation)}"
+                        ticket_type = f"{id_to_name.get(item)}-{id_to_name.get(variation)}"
                         REGISTERED_SET.add(key)
                     else:
                         raise NotFoundError(f"No ticket found - inputs: {order=}, {full_name=}")
