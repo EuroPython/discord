@@ -6,7 +6,6 @@ from typing import Dict
 import aiohttp
 from configuration import Config
 from dotenv import load_dotenv
-
 from error import AlreadyRegisteredError, NotFoundError
 
 config = Config()
