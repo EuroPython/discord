@@ -61,6 +61,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         for role in roles:
             role = discord.utils.get(interaction.guild.roles, id=role)
             await interaction.user.add_roles(role)
+        await log_to_channel(interaction.client.get_channel(config.REG_LOG_CHANNEL_ID), interaction)
         await interaction.response.send_message(
             f"Thank you {self.name.value}, you are now registered. ({roles})",
             ephemeral=True,
