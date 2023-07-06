@@ -1,8 +1,8 @@
 import traceback
 
 from configuration import Config
-from helpers.pretix_connector import get_roles
 from helpers.logging import log_to_channel
+from helpers.pretix_connector import get_roles
 
 import discord
 from discord.ext import commands
