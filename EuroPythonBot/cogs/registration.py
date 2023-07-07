@@ -1,9 +1,9 @@
 import traceback
 
 from configuration import Config
-from helpers.logging import log_to_channel, display_roles
-from helpers.pretix_connector import get_roles
 from error import AlreadyRegisteredError, NotFoundError
+from helpers.logging import display_roles, log_to_channel
+from helpers.pretix_connector import get_roles
 
 import discord
 from discord.ext import commands

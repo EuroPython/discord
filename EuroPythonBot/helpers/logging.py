@@ -2,6 +2,7 @@ def display_roles(user):
     """Return a list of roles of the intereaction user"""
     return [role.name for role in user.roles[1:]]
 
+
 async def log_to_channel(channel, interaction, error=None):
     user = interaction.user
     if user_name := user.nick is None:
