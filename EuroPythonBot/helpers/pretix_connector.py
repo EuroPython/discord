@@ -19,14 +19,11 @@ def sanitize_string(input_string: str) -> str:
 
 class PretixOrder(metaclass=Singleton):
     def __init__(self):
-        config = Config()
+        self.config = Config()
         load_dotenv(Path("__file__").resolve().parent.joinpath(".secrets"))
 
         PRETIX_TOKEN = os.getenv("PRETIX_TOKEN")
         self.HEADERS = {"Authorization": f"Token {PRETIX_TOKEN}"}
-        self.ORDER_URL = f"{config.PRETIX_BASE_URL}/orders"
-        self.ITEM_URL = f"{config.PRETIX_BASE_URL}/items"
-        self.TICKET_TO_ROLE = config.TICKET_TO_ROLE
 
         self.id_to_name = None
         self.orders = {}
@@ -41,7 +38,7 @@ class PretixOrder(metaclass=Singleton):
 
         print(f"{datetime.now()} INFO: Fetching orders from pretix")
         time_start = time()
-        results = await self._fetch_all(self.ORDER_URL)
+        results = await self._fetch_all(f"{self.config.PRETIX_BASE_URL}/orders")
         print(
             f"{datetime.now()} INFO: Fetched {len(results)} orders in {time() - time_start} seconds"
         )
@@ -74,7 +71,7 @@ class PretixOrder(metaclass=Singleton):
         self.last_fetch = datetime.now()
 
     async def _get_id_to_name_map(self) -> Dict[int, str]:
-        url = self.ITEM_URL
+        url = f"{self.config.PRETIX_BASE_URL}/items"
 
         async with aiohttp.ClientSession() as session:
             async with session.get(url, headers=self.HEADERS) as response:
@@ -119,7 +116,7 @@ class PretixOrder(metaclass=Singleton):
         except KeyError:
             async with aiohttp.ClientSession() as session:
                 async with session.get(
-                    self.ORDER_URL,
+                    f"{self.config.PRETIX_BASE_URL}/orders",
                     headers=self.HEADERS,
                     params={
                         "code": order,
@@ -147,7 +144,7 @@ class PretixOrder(metaclass=Singleton):
 
     async def get_roles(self, name: str, order: str) -> List[int]:
         ticket_type = await self.get_ticket_type(full_name=name, order=order)
-        return self.TICKET_TO_ROLE.get(ticket_type)
+        return self.config.TICKET_TO_ROLE.get(ticket_type)
 
 
 REGISTERED_SET = set()
