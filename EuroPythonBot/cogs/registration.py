@@ -1,8 +1,9 @@
 import traceback
 
 from configuration import Config
-from helpers.logging import log_to_channel
+from helpers.logging import log_to_channel, display_roles
 from helpers.pretix_connector import get_roles
+from error import AlreadyRegisteredError, NotFoundError
 
 import discord
 from discord.ext import commands
@@ -62,7 +63,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
             await interaction.user.add_roles(role)
         await log_to_channel(interaction.client.get_channel(config.REG_LOG_CHANNEL_ID), interaction)
         await interaction.response.send_message(
-            f"Thank you {self.name.value}, you are now registered. ({roles})",
+            f"Thank you {self.name.value}, you are now registered as {display_roles(interaction.user)}",
             ephemeral=True,
             delete_after=20,
         )
@@ -75,9 +76,14 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         await log_to_channel(
             interaction.client.get_channel(config.REG_LOG_CHANNEL_ID), interaction, error
         )
-
-        _msg = f"Something went wrong, ask in <#{config.REG_HELP_CHANNEL_ID}>"
-        await interaction.response.send_message(_msg, ephemeral=True, delete_after=20)
+        if isinstance(error, AlreadyRegisteredError):
+            _msg = "You have already registered! If you think it is not true"
+        elif isinstance(error, NotFoundError):
+            _msg = "We cannot find your ticket, double check your input and try again, or"
+        else:
+            _msg = "Something went wrong,"
+        _msg += f" ask for help in <#{config.REG_HELP_CHANNEL_ID}>"
+        await interaction.response.send_message(_msg, ephemeral=True, delete_after=180)
 
 
 class RegistrationView(discord.ui.View):
