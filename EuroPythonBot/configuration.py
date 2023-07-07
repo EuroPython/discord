@@ -27,12 +27,12 @@ class Config(metaclass=Singleton):
 
         try:
             # Server
-            self.GUILD = config["server"]["GUILD"]
+            self.GUILD = int(config["server"]["GUILD"])
 
             # Registration
-            self.REG_CHANNEL_ID = config["registration"]["REG_CHANNEL_ID"]
-            self.REG_HELP_CHANNEL_ID = config["registration"]["REG_HELP_CHANNEL_ID"]
-            self.REG_LOG_CHANNEL_ID = config["registration"]["REG_LOG_CHANNEL_ID"]
+            self.REG_CHANNEL_ID = int(config["registration"]["REG_CHANNEL_ID"])
+            self.REG_HELP_CHANNEL_ID = int(config["registration"]["REG_HELP_CHANNEL_ID"])
+            self.REG_LOG_CHANNEL_ID = int(config["registration"]["REG_LOG_CHANNEL_ID"])
 
             # Pretix
             self.PRETIX_BASE_URL = config["pretix"]["PRETIX_BASE_URL"]

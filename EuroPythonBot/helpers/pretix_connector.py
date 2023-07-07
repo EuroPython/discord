@@ -6,6 +6,7 @@ from typing import Dict
 import aiohttp
 from configuration import Config
 from dotenv import load_dotenv
+from error import AlreadyRegisteredError, NotFoundError
 
 config = Config()
 
@@ -70,7 +71,7 @@ REGISTERED_SET = set()
 
 def validate_key(key: str) -> bool:
     if key in REGISTERED_SET:
-        raise Exception("Key already registered")
+        raise AlreadyRegisteredError(f"Ticket already registered - id: {key}")
     return True
 
 
@@ -105,7 +106,7 @@ async def get_ticket_type(order: str, full_name: str) -> str:
                         ticket_type = f"{ID_TO_NAME.get(item)}-{ID_TO_NAME.get(variation)}"
                         REGISTERED_SET.add(key)
                     else:
-                        raise Exception("No ticket found")
+                        raise NotFoundError(f"No ticket found - inputs: {order=}, {full_name=}")
                 else:
                     print(f"Error occurred: Status {request.status}")
     return ticket_type

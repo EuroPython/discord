@@ -2,3 +2,6 @@
 .idea
 .vscode
 README.md
+EuroPythonBot/config.toml
+__pycache__
+.DS_Store
