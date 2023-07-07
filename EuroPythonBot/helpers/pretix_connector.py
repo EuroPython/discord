@@ -71,7 +71,7 @@ REGISTERED_SET = set()
 
 def validate_key(key: str) -> bool:
     if key in REGISTERED_SET:
-        raise AlreadyRegisteredError("Ticket already registered")
+        raise AlreadyRegisteredError(f"Ticket already registered - id: {key}")
     return True
 
 
