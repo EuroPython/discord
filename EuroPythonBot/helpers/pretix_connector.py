@@ -106,7 +106,7 @@ async def get_ticket_type(order: str, full_name: str) -> str:
                         ticket_type = f"{ID_TO_NAME.get(item)}-{ID_TO_NAME.get(variation)}"
                         REGISTERED_SET.add(key)
                     else:
-                        raise NotFoundError("No ticket found")
+                        raise NotFoundError(f"No ticket found - inputs: {order=}, {full_name=}")
                 else:
                     print(f"Error occurred: Status {request.status}")
     return ticket_type
