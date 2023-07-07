@@ -9,6 +9,7 @@ import discord
 from discord.ext import commands
 
 config = Config()
+order_ins = PretixOrder()
 
 EMOJI_TICKET = "\N{ADMISSION TICKETS}"
 EMOJI_POINT = "\N{WHITE LEFT POINTING BACKHAND INDEX}"
@@ -53,8 +54,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
 
     async def on_submit(self, interaction: discord.Interaction) -> None:
         """Assign the role to the user and send a confirmation message."""
-        order_ins = PretixOrder()
-        await order_ins.fetch_data()
+
         roles = await order_ins.get_roles(
             name=self.name.value,
             order=self.order.value,
@@ -112,6 +112,7 @@ class Registration(commands.Cog):
         reg_channel = self.bot.get_channel(config.REG_CHANNEL_ID)
 
         await reg_channel.purge()
+        await order_ins.fetch_data()
 
         _title = f"Click the 'Register' button in the message {EMOJI_TICKET}"
         _desc = "A window will appear where you can provide your `Name` and `Order number`."
