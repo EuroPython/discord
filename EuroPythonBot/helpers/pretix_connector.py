@@ -1,5 +1,5 @@
-import asyncio
 import os
+from datetime import datetime
 from http import HTTPStatus
 from pathlib import Path
 from time import time
@@ -67,14 +67,16 @@ def flatten_concatenation(matrix):
 
 
 async def get_pretix_orders_data():
+    print(f"{datetime.now()} INFO: Fetching IDs names from pretix")
     id_to_name = await get_id_to_name_map()
+    print(f"{datetime.now()} INFO: Done fetching IDs names from pretix")
 
     url = f"{config.PRETIX_BASE_URL}/orders"
 
+    print(f"{datetime.now()} INFO: Fetching orders from pretix")
     time_start = time()
     results = await fetch_all(url)
-    # flatten_results = flatten_concatenation(results)
-    print(f"INFO: Fetched {len(results)} in {time() - time_start}s")
+    print(f"{datetime.now()} INFO: Fetched {len(results)} orders in {time() - time_start} seconds")
 
     orders = {}
     for position in flatten_concatenation(
@@ -84,7 +86,9 @@ async def get_pretix_orders_data():
         if id_to_name.get(item) in ["T-shirt (free)", "Childcare (Free)", "Livestream Only"]:
             continue
         order = position.get("order")
+        print(f"{item=} {id_to_name.get(item)=} {order=}")
         attendee_name = sanitize_string(position.get("attendee_name"))
+        print(f"{attendee_name=}")
 
         orders[f"{order}-{attendee_name}"] = id_to_name.get(item)
     return orders
@@ -99,10 +103,8 @@ def validate_key(key: str) -> bool:
     return True
 
 
-orders = asyncio.run(get_pretix_orders_data())
-
-
 async def get_ticket_type(order: str, full_name: str) -> str:
+    orders = await get_pretix_orders_data()
     key = f"{order}-{sanitize_string(input_string=full_name)}"
     validate_key(key)
     ticket_type = None
