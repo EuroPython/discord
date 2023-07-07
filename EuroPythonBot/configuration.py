@@ -1,3 +1,4 @@
+import json
 import sys
 from pathlib import Path
 
@@ -17,7 +18,8 @@ class Config(metaclass=Singleton):
     def __init__(self):
         # Configuration file
         config = None
-        config_path = Path("__file__").resolve().parent.joinpath("EuroPythonBot", "config.toml")
+        base_path = Path("__file__").resolve().parent.joinpath("EuroPythonBot")
+        config_path = base_path.joinpath("config.toml")
         with open(config_path) as f:
             config = toml.loads(f.read())
 
@@ -36,10 +38,12 @@ class Config(metaclass=Singleton):
 
             # Pretix
             self.PRETIX_BASE_URL = config["pretix"]["PRETIX_BASE_URL"]
-            self.CHECKINLIST_ID = config["pretix"]["CHECKINLIST_ID"]
 
             # Mapping
-            self.TICKET_TO_ROLE = config["ticket_to_roles"]
+            with open(base_path.joinpath("ticket_to_roles_staging.json")) as ticket_to_roles_file:
+                ticket_to_roles = json.load(ticket_to_roles_file)
+
+            self.TICKET_TO_ROLE = ticket_to_roles
 
         except KeyError:
             print(
