@@ -4,9 +4,10 @@ from pathlib import Path
 import pytest
 from aiohttp import web
 from configuration import Config
-from helpers.pretix_connector import get_pretix_orders_data, get_roles
+from helpers.pretix_connector import PretixOrder
 
 config = Config()
+order_ins = PretixOrder()
 
 
 async def items(request):
@@ -49,11 +50,11 @@ async def test_get_pretix_orders_data(aiohttp_client, event_loop):
     base_url_backup = config.PRETIX_BASE_URL
     config.PRETIX_BASE_URL = str(client.make_url(""))
 
-    data = await get_pretix_orders_data()
+    await order_ins.fetch_data()
 
     config.PRETIX_BASE_URL = base_url_backup
 
-    assert expected_response == data
+    assert expected_response == order_ins.orders
 
 
 @pytest.mark.asyncio
@@ -125,8 +126,10 @@ async def test_get_roles(aiohttp_client, event_loop):
     base_url_backup = config.PRETIX_BASE_URL
     config.PRETIX_BASE_URL = str(client.make_url(""))
 
+    await order_ins.fetch_data()
+
     for name, order, role_ids in test_data:
-        roles = await get_roles(name=name, order=order)
+        roles = await order_ins.get_roles(name=name, order=order)
         assert roles == role_ids
 
     config.PRETIX_BASE_URL = base_url_backup

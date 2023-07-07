@@ -127,7 +127,6 @@ class PretixOrder(metaclass=Singleton):
                     },
                 ) as request:
                     if request.status == HTTPStatus.OK:
-
                         data = await request.json()
                         if len(data.get("results")) > 1:
                             result = data.get("results")[0]
