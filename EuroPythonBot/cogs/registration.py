@@ -3,7 +3,7 @@ import traceback
 from configuration import Config
 from error import AlreadyRegisteredError, NotFoundError
 from helpers.logging import display_roles, log_to_channel
-from helpers.pretix_connector import get_roles
+from helpers.pretix_connector import PretixOrder
 
 import discord
 from discord.ext import commands
@@ -53,7 +53,9 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
 
     async def on_submit(self, interaction: discord.Interaction) -> None:
         """Assign the role to the user and send a confirmation message."""
-        roles = await get_roles(
+        order_ins = PretixOrder()
+        await order_ins.fetch_data()
+        roles = await order_ins.get_roles(
             name=self.name.value,
             order=self.order.value,
         )
