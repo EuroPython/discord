@@ -1,31 +1,48 @@
 ---
 - name: Deploy Discord Bot to the server
   hosts: bot_server
+  vars:
+    repository_url: git@github.com:EuroPython/discord.git
+
   tasks:
-    - name: Update apt cache
+    - name: Install Docker dependencies
       apt:
+        name: "{{ packages }}"
+        state: present
         update_cache: yes
-        cache_valid_time: 3600
+      vars:
+        packages:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
 
-    - name: Upgrade all packages
-      apt:
-        upgrade: dist
+    - name: Install Docker
+      block:
+        - name: Add Docker GPG key
+          apt_key:
+            url: https://download.docker.com/linux/ubuntu/gpg
+            state: present
 
-    - name: Clone the repository
+        - name: Add Docker repository
+          apt_repository:
+            repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable
+            state: present
+
+        - name: Install Docker
+          apt:
+            name: docker-ce
+            state: present
+
+    - name: Clone repository to specific version (to a temporary location)
       git:
-        repo: git@github.com:EuroPython/discord.git
-        dest: /app/EuroPython/discord
-        version: add-cd
+        repo: "{{ repository_url }}"
+        dest: /tmp/repo
+        version: "{{ app_version }}"
         force: yes
         accept_hostkey: yes
         key_file: /root/.ssh/deploy_key
 
-    - name: Install Pipenv
-      pip:
-        name: pipenv
-        state: latest
-
-    - name: Create Pipenv environment
-      shell:
-        chdir: /app/EuroPython/discord
-        cmd: pipenv install --dev --python /usr/bin/python3
+    - name: Build bot container image
+      shell: "cd /tmp/repo && docker compose build"
