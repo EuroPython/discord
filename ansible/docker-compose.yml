@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  discord-bot:
+    build: .
+    volumes:
+      - /root/discord/.secrets:/home/bot/.secrets
+    restart: unless-stopped
