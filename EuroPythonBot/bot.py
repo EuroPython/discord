@@ -1,5 +1,6 @@
 import asyncio
 import os
+from datetime import datetime
 from pathlib import Path
 
 from cogs.ping import Ping
@@ -21,7 +22,7 @@ class Bot(commands.Bot):
         self.channels = dict()
 
     async def on_ready(self):
-        print(f"Loggedin as {self.user} (ID: {self.user.id})")
+        print(f"{datetime.now()} INFO: Loggedin as {self.user} (ID: {self.user.id})")
 
 
 async def main():

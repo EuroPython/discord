@@ -60,9 +60,7 @@ class PretixOrder(metaclass=Singleton):
             ]:
                 continue
             order = position.get("order")
-            print(f"{item=} {self.id_to_name.get(item)=} {order=}")
             attendee_name = sanitize_string(position.get("attendee_name"))
-            print(f"{attendee_name=}")
 
             orders[f"{order}-{attendee_name}"] = self.id_to_name.get(item)
 
@@ -99,8 +97,8 @@ class PretixOrder(metaclass=Singleton):
             results = []
             while url:
                 data = await self._fetch(url, session)
-                results += data["results"]
-                url = data["next"]
+                results += data.get("results")
+                url = data.get("next")
             return results
 
     async def get_ticket_type(self, order: str, full_name: str) -> str:
