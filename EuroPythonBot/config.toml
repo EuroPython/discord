@@ -8,9 +8,4 @@ REG_LOG_CHANNEL_ID=12345678
 
 [pretix]
 PRETIX_BASE_URL = "https://fake_url.eu"
-CHECKINLIST_ID = ""
-
-[ticket_to_roles]
-Business-Conference = [ 123, ]
-Personal-Conference = [ 456, ]
-Presenter-Speaker = [ 123, 789, ]
+TICKET_TO_ROLES_JSON = "ticket_to_roles_staging.json"
