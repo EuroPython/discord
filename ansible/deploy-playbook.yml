@@ -63,4 +63,4 @@
         key_file: /root/.ssh/deploy_key
 
     - name: Start EuroPythonBot
-      shell: "cd /root/discord && docker compose up"
+      shell: "cd /root/discord && docker compose build"
