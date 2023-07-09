@@ -2,6 +2,6 @@
 .idea
 .vscode
 README.md
-EuroPythonBot/config.toml
+EuroPythonBot/config.local.toml
 __pycache__
 .DS_Store
