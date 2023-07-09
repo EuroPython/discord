@@ -3,8 +3,9 @@ services:
     image: europythonbot
     build: .
     volumes:
-    # Secrets should be updated at this path and container restarted
-    # to reload the secrets
-      - /root/discord/.secrets:/home/bot/.secrets:ro
+      - type: bind
+        source: ./.secrets
+        target: /home/bot/.secrets
+        read_only: true
 
     restart: unless-stopped
