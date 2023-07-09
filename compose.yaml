@@ -1,0 +1,11 @@
+services:
+  EuroPythonBot:
+    image: europythonbot
+    build: .
+    volumes:
+      - type: bind
+        source: /etc/EuroPython/discord/.secrets
+        target: /home/bot/.secrets
+        read_only: true
+
+    restart: unless-stopped
