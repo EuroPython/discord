@@ -1,7 +1,6 @@
-version: '3'
-
 services:
-  discord-bot:
+  EuroPythonBot:
+    image: europythonbot
     build: .
     volumes:
     # Secrets should be updated at this path and container restarted

@@ -54,7 +54,7 @@
     - name: Clone repository to specific version (to a temporary location)
       git:
         repo: "{{ repository_url }}"
-        dest: /tmp/repo
+        dest: /root/discord
         depth: 1
         force: yes
         accept_hostkey: yes
@@ -62,5 +62,5 @@
         version: add-cd-2
         key_file: /root/.ssh/deploy_key
 
-    - name: Build bot container image
-      shell: "cd /tmp/repo && docker compose build"
+    - name: Start EuroPythonBot
+      shell: "cd /root/discord && docker compose up"
