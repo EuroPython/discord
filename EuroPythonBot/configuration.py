@@ -38,9 +38,12 @@ class Config(metaclass=Singleton):
 
             # Pretix
             self.PRETIX_BASE_URL = config["pretix"]["PRETIX_BASE_URL"]
+            self.TICKET_TO_ROLES_JSON = config["pretix"]["TICKET_TO_ROLES_JSON"]
 
             # Mapping
-            with open(base_path.joinpath("ticket_to_roles_staging.json")) as ticket_to_roles_file:
+            with open(
+                base_path.joinpath(base_path.joinpath(self.TICKET_TO_ROLES_JSON))
+            ) as ticket_to_roles_file:
                 ticket_to_roles = json.load(ticket_to_roles_file)
 
             self.TICKET_TO_ROLE = ticket_to_roles

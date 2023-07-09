@@ -1,4 +1,5 @@
 import traceback
+from datetime import datetime
 
 from configuration import Config
 from error import AlreadyRegisteredError, NotFoundError
@@ -59,7 +60,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
             name=self.name.value,
             order=self.order.value,
         )
-        print(f"INFO: Assigning {self.name.value} {roles=}")
+        print(f"{datetime.now()} INFO: Assigning {self.name.value} {roles=}")
         for role in roles:
             role = discord.utils.get(interaction.guild.roles, id=role)
             await interaction.user.add_roles(role)
@@ -102,7 +103,7 @@ class Registration(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.guild = None
-        print("Cog 'Registration' ready")
+        print(f"{datetime.now()} INFO: Cog 'Registration' ready")
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -113,6 +114,7 @@ class Registration(commands.Cog):
 
         await reg_channel.purge()
         await order_ins.fetch_data()
+        order_ins.load_registered()
 
         _title = f"Click the 'Register' button in the message {EMOJI_TICKET}"
         _desc = "A window will appear where you can provide your `Name` and `Order number`."
