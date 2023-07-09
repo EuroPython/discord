@@ -4,7 +4,7 @@ services:
     build: .
     volumes:
       - type: bind
-        source: ./.secrets
+        source: /etc/EuroPython/discord/.secrets
         target: /home/bot/.secrets
         read_only: true
 
