@@ -7,6 +7,5 @@ services:
     # Secrets should be updated at this path and container restarted
     # to reload the secrets
       - /root/discord/.secrets:/home/bot/.secrets:ro
-      - /root/discord/EuroPythonBot/config.toml:/home/bot/EuroPythonBot/config.toml:ro
 
     restart: unless-stopped
