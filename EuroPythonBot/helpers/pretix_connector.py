@@ -7,7 +7,6 @@ from typing import Dict, List
 
 import aiohttp
 from configuration import Config, Singleton
-from dotenv import load_dotenv
 from error import AlreadyRegisteredError, NotFoundError
 
 
@@ -19,8 +18,6 @@ def sanitize_string(input_string: str) -> str:
 class PretixOrder(metaclass=Singleton):
     def __init__(self):
         self.config = Config()
-        load_dotenv(Path(__file__).resolve().parent / ".secrets")
-
         PRETIX_TOKEN = os.getenv("PRETIX_TOKEN")
         self.HEADERS = {"Authorization": f"Token {PRETIX_TOKEN}"}
 
