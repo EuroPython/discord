@@ -3,6 +3,5 @@
 .vscode
 README.md
 EuroPythonBot/config.local.toml
-**/.secrets
 __pycache__
 .DS_Store
