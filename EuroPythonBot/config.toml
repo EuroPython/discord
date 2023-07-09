@@ -1,16 +1,11 @@
 [server]
-GUILD=12345678
+GUILD=1108439633789984930
 
 [registration]
-REG_CHANNEL_ID=12345678
-REG_HELP_CHANNEL_ID=12345678
-REG_LOG_CHANNEL_ID=12345678
+REG_CHANNEL_ID=1121867356629631026
+REG_HELP_CHANNEL_ID=1121867378347757609
+REG_LOG_CHANNEL_ID=1124090225367466124
 
 [pretix]
-PRETIX_BASE_URL = "https://fake_url.eu"
-CHECKINLIST_ID = ""
-
-[ticket_to_roles]
-Business-Conference = [ 123, ]
-Personal-Conference = [ 456, ]
-Presenter-Speaker = [ 123, 789, ]
+PRETIX_BASE_URL = "https://pretix.eu/api/v1/organizers/europython/events/ep2023-staging2"
+TICKET_TO_ROLES_JSON = "ticket_to_roles_staging.json"
