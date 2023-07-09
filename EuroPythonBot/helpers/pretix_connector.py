@@ -19,7 +19,7 @@ def sanitize_string(input_string: str) -> str:
 class PretixOrder(metaclass=Singleton):
     def __init__(self):
         self.config = Config()
-        load_dotenv(Path("__file__").resolve().parent.joinpath(".secrets"))
+        load_dotenv(Path(__file__).resolve().parent / ".secrets")
 
         PRETIX_TOKEN = os.getenv("PRETIX_TOKEN")
         self.HEADERS = {"Authorization": f"Token {PRETIX_TOKEN}"}
