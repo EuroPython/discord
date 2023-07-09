@@ -11,7 +11,7 @@ from helpers.pretix_connector import PretixOrder
 import discord
 from discord.ext import commands
 
-load_dotenv(Path("__file__").absolute().parent.joinpath(".secrets"))
+load_dotenv(Path(__file__).resolve().parent / ".secrets")
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 
 

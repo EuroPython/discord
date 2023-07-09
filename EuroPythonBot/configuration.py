@@ -18,8 +18,8 @@ class Config(metaclass=Singleton):
     def __init__(self):
         # Configuration file
         config = None
-        base_path = Path("__file__").resolve().parent.joinpath("EuroPythonBot")
-        config_path = base_path.joinpath("config.toml")
+        base_path = Path(__file__).resolve().parent
+        config_path = base_path / "config.toml"
         with open(config_path) as f:
             config = toml.loads(f.read())
 

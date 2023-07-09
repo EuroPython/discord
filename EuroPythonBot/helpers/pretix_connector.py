@@ -1,13 +1,11 @@
 import os
 from datetime import datetime
 from http import HTTPStatus
-from pathlib import Path
 from time import time
 from typing import Dict, List
 
 import aiohttp
 from configuration import Config, Singleton
-from dotenv import load_dotenv
 from error import AlreadyRegisteredError, NotFoundError
 
 
@@ -19,8 +17,6 @@ def sanitize_string(input_string: str) -> str:
 class PretixOrder(metaclass=Singleton):
     def __init__(self):
         self.config = Config()
-        load_dotenv(Path("__file__").resolve().parent.joinpath(".secrets"))
-
         PRETIX_TOKEN = os.getenv("PRETIX_TOKEN")
         self.HEADERS = {"Authorization": f"Token {PRETIX_TOKEN}"}
 
