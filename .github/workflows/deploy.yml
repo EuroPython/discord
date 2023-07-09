@@ -3,7 +3,7 @@ name: Deploy to server
 on:
   pull_request:
     branches:
-      - main
+      - add-cd-2
   workflow_dispatch:
 
 jobs:
