@@ -1,7 +1,6 @@
 import os
 from datetime import datetime
 from http import HTTPStatus
-from pathlib import Path
 from time import time
 from typing import Dict, List
 
