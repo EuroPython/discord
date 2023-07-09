@@ -51,7 +51,7 @@
             name: docker-ce
             state: present
 
-    - name: Clone repository to specific version (to a temporary location)
+    - name: Clone repository
       git:
         repo: "{{ repository_url }}"
         dest: /root/discord
@@ -63,4 +63,4 @@
         key_file: /root/.ssh/deploy_key
 
     - name: Start EuroPythonBot
-      shell: "cd /root/discord && docker compose build"
+      shell: "cd /root/discord && docker compose up -d"
