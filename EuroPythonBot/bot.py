@@ -5,6 +5,7 @@ from pathlib import Path
 from cogs.ping import Ping
 from cogs.registration import Registration
 from dotenv import load_dotenv
+from helpers.pretix_connector import PretixOrder
 
 import discord
 from discord.ext import commands
@@ -33,7 +34,10 @@ async def main():
 
 if __name__ == "__main__":
     bot = Bot()
+    orders = PretixOrder()
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
         print("Keyboard Interrupt. Exiting...")
+    finally:
+        orders.save_registered()
