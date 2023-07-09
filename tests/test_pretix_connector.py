@@ -134,8 +134,9 @@ async def test_get_roles(aiohttp_client, event_loop):
 
     config.PRETIX_BASE_URL = base_url_backup
 
+
 def test_save_load_register(tmp_path):
-    test_data = set(['12345', '67890'])
+    test_data = set(["12345", "67890"])
     order_ins.registered_file = tmp_path / "test.txt"
     order_ins.REGISTERED_SET = test_data
     order_ins.save_registered()
