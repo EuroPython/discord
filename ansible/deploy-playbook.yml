@@ -58,6 +58,8 @@
         depth: 1
         force: yes
         accept_hostkey: yes
+        single_branch: yes
+        version: add-cd-2
         key_file: /root/.ssh/deploy_key
 
     - name: Build bot container image
