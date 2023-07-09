@@ -113,6 +113,7 @@ class Registration(commands.Cog):
 
         await reg_channel.purge()
         await order_ins.fetch_data()
+        order_ins.load_registered()
 
         _title = f"Click the 'Register' button in the message {EMOJI_TICKET}"
         _desc = "A window will appear where you can provide your `Name` and `Order number`."

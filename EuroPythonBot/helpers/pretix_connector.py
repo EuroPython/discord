@@ -28,6 +28,26 @@ class PretixOrder(metaclass=Singleton):
         self.orders = {}
         self.last_fetch = None
 
+        self.registered_file = getattr(self.config, "REGISTERED_LOG_FILE", "./registered_log.txt")
+        self.REGISTERED_SET = set()
+
+    def load_registered(self):
+        try:
+            f = open(self.registered_file, "r")
+            registered = [reg.strip() for reg in f.readlines()]
+            self.REGISTERED_SET = set(registered)
+            f.close()
+        except Exception as err:
+            print(f"Cannot load registered data due to {err}, starting from scratch.")
+
+    def save_registered(self):
+        if self.REGISTERED_SET:
+            print("Saving registered tickets...")
+            f = open(self.registered_file, "w")
+            for item in self.REGISTERED_SET:
+                f.write(f"{item}\n")
+            f.close()
+
     async def fetch_data(self) -> None:
         """Fetch data from Pretix, store id_to_name mapping and formated orders internally"""
 
@@ -107,11 +127,11 @@ class PretixOrder(metaclass=Singleton):
         """With user input `order` and `full_name`, check for their ticket type"""
 
         key = f"{order}-{sanitize_string(input_string=full_name)}"
-        validate_key(key)
+        self.validate_key(key)
         ticket_type = None
         try:
             ticket_type = self.orders[key]
-            REGISTERED_SET.add(key)
+            self.REGISTERED_SET.add(key)
         except KeyError:
             async with aiohttp.ClientSession() as session:
                 async with session.get(
@@ -134,7 +154,7 @@ class PretixOrder(metaclass=Singleton):
                             ticket_type = (
                                 f"{self.id_to_name.get(item)}-{self.id_to_name.get(variation)}"
                             )
-                            REGISTERED_SET.add(key)
+                            self.REGISTERED_SET.add(key)
                         else:
                             raise NotFoundError(f"No ticket found - inputs: {order=}, {full_name=}")
                     else:
@@ -145,11 +165,7 @@ class PretixOrder(metaclass=Singleton):
         ticket_type = await self.get_ticket_type(full_name=name, order=order)
         return self.config.TICKET_TO_ROLE.get(ticket_type)
 
-
-REGISTERED_SET = set()
-
-
-def validate_key(key: str) -> bool:
-    if key in REGISTERED_SET:
-        raise AlreadyRegisteredError(f"Ticket already registered - id: {key}")
-    return True
+    def validate_key(self, key: str) -> bool:
+        if key in self.REGISTERED_SET:
+            raise AlreadyRegisteredError(f"Ticket already registered - id: {key}")
+        return True
