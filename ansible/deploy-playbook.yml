@@ -5,6 +5,22 @@
     repository_url: git@github.com:EuroPython/discord.git
 
   tasks:
+
+    - name: Enable persistent logging for journald
+      ini_file:
+        path: /etc/systemd/journald.conf
+        section: Journal
+        option: Storage
+        value: persistent
+        no_extra_spaces: true
+        backup: true
+
+
+    - name: reload systemd-journald
+      systemd:
+        name: systemd-journald
+        state: restarted 
+
     - name: Install Docker dependencies
       apt:
         name: "{{ packages }}"
