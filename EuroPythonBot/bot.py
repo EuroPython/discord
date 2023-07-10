@@ -17,13 +17,24 @@ DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 
 class Bot(commands.Bot):
     def __init__(self):
-        intents = discord.Intents.default()
+        intents = _get_intents()
         super().__init__(command_prefix=commands.when_mentioned_or("$"), intents=intents)
         self.guild = None
         self.channels = dict()
 
     async def on_ready(self):
         print(f"{datetime.now()} INFO: Loggedin as {self.user} (ID: {self.user.id})")
+
+
+def _get_intents() -> discord.Intents:
+    """Get the desired intents for the bot."""
+    intents = discord.Intents.all()
+    intents.presences = False
+    intents.dm_typing = False
+    intents.dm_reactions = False
+    intents.invites = False
+    intents.integrations = False
+    return intents
 
 
 async def main():
