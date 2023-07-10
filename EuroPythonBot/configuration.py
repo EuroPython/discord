@@ -1,8 +1,11 @@
 import json
+import logging
 import sys
 from pathlib import Path
 
 import toml
+
+_logger = logging.getLogger(f"bot.{__name__}")
 
 
 class Singleton(type):
@@ -27,7 +30,7 @@ class Config(metaclass=Singleton):
             config = toml.loads(f.read())
 
         if not config:
-            print("Error: Failed to load the 'config.toml'")
+            _logger.critical("Error: Failed to load the config file at '%s'", config_path)
             sys.exit(-1)
 
         try:
@@ -43,6 +46,9 @@ class Config(metaclass=Singleton):
             self.PRETIX_BASE_URL = config["pretix"]["PRETIX_BASE_URL"]
             self.TICKET_TO_ROLES_JSON = config["pretix"]["TICKET_TO_ROLES_JSON"]
 
+            # Logging
+            self.LOG_LEVEL = config.get("logging", {}).get("LOG_LEVEL", "INFO")
+
             # Mapping
             with open(
                 base_path.joinpath(base_path.joinpath(self.TICKET_TO_ROLES_JSON))
@@ -52,11 +58,11 @@ class Config(metaclass=Singleton):
             self.TICKET_TO_ROLE = ticket_to_roles
 
         except KeyError:
-            print(
-                f"Error encountered while reading {config_path} "
-                "Ensure that it contains 'GUILD', 'REG_CHANNEL', 'REG_HELP_CHANNEL', "
-                "'PRETIX_BASE_URL', 'CHECKINLIST_ID', 'TICKET_TO_ROLE'"
-                " fields."
+            _logger.critical(
+                "Error encountered while reading '%s'. Ensure that it contains the necessary"
+                " configuration fields. If you are using a local override of the main configuration"
+                " file, please compare the fields in it against the main `config.toml` file.",
+                config_path,
             )
             sys.exit(-1)
 

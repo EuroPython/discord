@@ -1,3 +1,4 @@
+import logging
 import os
 from datetime import datetime
 from http import HTTPStatus
@@ -9,6 +10,8 @@ import aiohttp
 from configuration import Config, Singleton
 from dotenv import load_dotenv
 from error import AlreadyRegisteredError, NotFoundError
+
+_logger = logging.getLogger(f"bot.{__name__}")
 
 
 def sanitize_string(input_string: str) -> str:
@@ -36,12 +39,12 @@ class PretixOrder(metaclass=Singleton):
             registered = [reg.strip() for reg in f.readlines()]
             self.REGISTERED_SET = set(registered)
             f.close()
-        except Exception as err:
-            print(f"Cannot load registered data due to {err}, starting from scratch.")
+        except Exception:
+            _logger.exception("Cannot load registered data, starting from scratch. Error:")
 
     def save_registered(self):
         if self.REGISTERED_SET:
-            print("Saving registered tickets...")
+            _logger.info("Saving registered tickets...")
             f = open(self.registered_file, "w")
             for item in self.REGISTERED_SET:
                 f.write(f"{item}\n")
@@ -50,16 +53,14 @@ class PretixOrder(metaclass=Singleton):
     async def fetch_data(self) -> None:
         """Fetch data from Pretix, store id_to_name mapping and formated orders internally"""
 
-        print(f"{datetime.now()} INFO: Fetching IDs names from pretix")
+        _logger.info("Fetching IDs names from pretix")
         self.id_to_name = await self._get_id_to_name_map()
-        print(f"{datetime.now()} INFO: Done fetching IDs names from pretix")
+        _logger.info("Done fetching IDs names from pretix")
 
-        print(f"{datetime.now()} INFO: Fetching orders from pretix")
+        _logger.info("Fetching orders from pretix")
         time_start = time()
         results = await self._fetch_all(f"{self.config.PRETIX_BASE_URL}/orders")
-        print(
-            f"{datetime.now()} INFO: Fetched {len(results)} orders in {time() - time_start} seconds"
-        )
+        _logger.info("Fetched %r orders in%r seconds", len(results), time() - time_start)
 
         def flatten_concatenation(matrix):
             flat_list = []
@@ -155,7 +156,7 @@ class PretixOrder(metaclass=Singleton):
                         else:
                             raise NotFoundError(f"No ticket found - inputs: {order=}, {full_name=}")
                     else:
-                        print(f"Error occurred: Status {request.status}")
+                        _logger.error("Error occurred: Status %r", request.status)
         return ticket_type
 
     async def get_roles(self, name: str, order: str) -> List[int]:

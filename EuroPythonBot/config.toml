@@ -9,3 +9,6 @@ REG_LOG_CHANNEL_ID=1124090225367466124
 [pretix]
 PRETIX_BASE_URL = "https://pretix.eu/api/v1/organizers/europython/events/ep2023-staging2"
 TICKET_TO_ROLES_JSON = "ticket_to_roles_staging.json"
+
+[logging]
+LOG_LEVEL = "INFO"
