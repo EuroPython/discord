@@ -21,7 +21,7 @@ _logger = logging.getLogger("bot")
 
 class Bot(commands.Bot):
     def __init__(self):
-        intents = discord.Intents.default()
+        intents = _get_intents()
         super().__init__(command_prefix=commands.when_mentioned_or("$"), intents=intents)
         self.guild = None
         self.channels = dict()
@@ -44,6 +44,17 @@ def _setup_logging() -> None:
     root_logger = logging.getLogger()
     root_logger.addHandler(stream_handler)
     root_logger.setLevel(config.LOG_LEVEL)
+
+
+def _get_intents() -> discord.Intents:
+    """Get the desired intents for the bot."""
+    intents = discord.Intents.all()
+    intents.presences = False
+    intents.dm_typing = False
+    intents.dm_reactions = False
+    intents.invites = False
+    intents.integrations = False
+    return intents
 
 
 async def main():
