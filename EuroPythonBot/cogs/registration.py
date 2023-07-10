@@ -1,9 +1,8 @@
-import traceback
-from datetime import datetime
+import logging
 
 from configuration import Config
 from error import AlreadyRegisteredError, NotFoundError
-from helpers.logging import display_roles, log_to_channel
+from helpers.channel_logging import display_roles, log_to_channel
 from helpers.pretix_connector import PretixOrder
 
 import discord
@@ -16,6 +15,8 @@ EMOJI_TICKET = "\N{ADMISSION TICKETS}"
 EMOJI_POINT = "\N{WHITE LEFT POINTING BACKHAND INDEX}"
 ZERO_WIDTH_SPACE = "\N{ZERO WIDTH SPACE}"
 REGISTERED_LIST = {}
+
+_logger = logging.getLogger(f"bot.{__name__}")
 
 
 class RegistrationButton(discord.ui.Button["Registration"]):
@@ -60,7 +61,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
             name=self.name.value,
             order=self.order.value,
         )
-        print(f"{datetime.now()} INFO: Assigning {self.name.value} {roles=}")
+        _logger.info("Assigning %r roles=%r", self.name.value, roles)
         for role in roles:
             role = discord.utils.get(interaction.guild.roles, id=role)
             await interaction.user.add_roles(role)
@@ -73,7 +74,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
         # Make sure we know what the error actually is
-        traceback.print_exception(type(error), error, error.__traceback__)
+        _logger.error("An error occurred!", exc_info=error)
 
         # log error message in discord channel
         await log_to_channel(
@@ -103,7 +104,7 @@ class Registration(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.guild = None
-        print(f"{datetime.now()} INFO: Cog 'Registration' ready")
+        _logger.info("Cog 'Registration' has been initialized")
 
     @commands.Cog.listener()
     async def on_ready(self):
