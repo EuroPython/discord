@@ -62,5 +62,8 @@
         version: main
         key_file: /root/.ssh/deploy_key
 
+    - name: Ensure registered txt file is present
+      shell: "touch /etc/EuroPython/discord/registered_log.txt"
+
     - name: Start EuroPythonBot
       shell: "cd /root/discord && docker compose up --detach --build"
