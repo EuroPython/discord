@@ -68,7 +68,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
             interaction.client.get_channel(config.REG_LOG_CHANNEL_ID),
             interaction,
             self.name.value,
-            self.name.order,
+            self.order.value,
             roles,
         )
         await interaction.response.send_message(
