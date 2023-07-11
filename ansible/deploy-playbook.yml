@@ -71,7 +71,7 @@
 
     - name: Create registration_log.txt in bot's home directory
       file:
-        path: /home/bot/registration_log.txt
+        path: /home/bot/registered_log.txt
         state: touch
         owner: bot
         group: bot
