@@ -2,7 +2,7 @@ import logging
 
 from configuration import Config
 from error import AlreadyRegisteredError, NotFoundError
-from helpers.channel_logging import display_roles, log_to_channel
+from helpers.channel_logging import log_to_channel
 from helpers.pretix_connector import PretixOrder
 
 import discord
