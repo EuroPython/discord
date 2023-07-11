@@ -6,6 +6,7 @@ from pathlib import Path
 from time import time
 from typing import Dict, List
 
+import aiofiles
 import aiohttp
 from configuration import Config, Singleton
 from dotenv import load_dotenv
@@ -122,8 +123,8 @@ class PretixOrder(metaclass=Singleton):
         try:
             ticket_type = self.orders[key]
             self.REGISTERED_SET.add(key)
-            with open(self.registered_file, "a") as f:
-                f.write(f"{key}\n")
+            async with aiofiles.open(self.registered_file, mode="a") as f:
+                await f.write(f"{key}\n")
         except KeyError:
             async with aiohttp.ClientSession() as session:
                 async with session.get(
@@ -147,8 +148,8 @@ class PretixOrder(metaclass=Singleton):
                                 f"{self.id_to_name.get(item)}-{self.id_to_name.get(variation)}"
                             )
                             self.REGISTERED_SET.add(key)
-                            with open(self.registered_file, "a") as f:
-                                f.write(f"{key}\n")
+                            async with aiofiles.open(self.registered_file, mode="a") as f:
+                                await f.write(f"{key}\n")
                         else:
                             raise NotFoundError(f"No ticket found - inputs: {order=}, {full_name=}")
                     else:
