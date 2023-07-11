@@ -1,3 +1,4 @@
+import asyncio
 import logging
 
 from configuration import Config
@@ -54,6 +55,13 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         default="XXXXX",
     )
 
+    async def add_roles(self, interaction, roles):
+        for role in roles:
+            role = discord.utils.get(interaction.guild.roles, id=role)
+            await interaction.user.add_roles(role)
+        while not set(roles).issubset(set([role.id for role in interaction.user.roles])):
+            asyncio.sleep(0.1)
+
     async def on_submit(self, interaction: discord.Interaction) -> None:
         """Assign the role to the user and send a confirmation message."""
 
@@ -62,9 +70,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
             order=self.order.value,
         )
         _logger.info("Assigning %r roles=%r", self.name.value, roles)
-        for role in roles:
-            role = discord.utils.get(interaction.guild.roles, id=role)
-            await interaction.user.add_roles(role)
+        await self.add_roles(interaction, roles)
         await log_to_channel(interaction.client.get_channel(config.REG_LOG_CHANNEL_ID), interaction)
         await interaction.response.send_message(
             f"Thank you {self.name.value}, you are now registered as {display_roles(interaction.user)}",  # noqa: E501
