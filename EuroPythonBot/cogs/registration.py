@@ -59,7 +59,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
             role = discord.utils.get(interaction.guild.roles, id=role)
             await interaction.user.add_roles(role)
         while not set(roles).issubset(set([role.id for role in interaction.user.roles])):
-            asyncio.sleep(0.1)
+            await asyncio.sleep(0.1)
 
     async def on_submit(self, interaction: discord.Interaction) -> None:
         """Assign the role to the user and send a confirmation message."""
