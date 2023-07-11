@@ -11,7 +11,6 @@ from discord.ext import commands
 config = Config()
 order_ins = PretixOrder()
 
-EMOJI_TICKET = "\N{ADMISSION TICKETS}"
 EMOJI_POINT = "\N{WHITE LEFT POINTING BACKHAND INDEX}"
 ZERO_WIDTH_SPACE = "\N{ZERO WIDTH SPACE}"
 REGISTERED_LIST = {}
@@ -117,8 +116,30 @@ class Registration(commands.Cog):
         await order_ins.fetch_data()
         order_ins.load_registered()
 
-        _title = f"Click the 'Register' button in the message {EMOJI_TICKET}"
-        _desc = "A window will appear where you can provide your `Name` and `Order number`."
+        _title = "Welcome to EuroPython 2023 on Discord! 🎉🐍"
+        _desc = (
+            "We're thrilled that you're joining us. "
+            "Before you dive into the various conversations happening around here, we need to"
+            " confirm your registration details.\n\n"
+            f'1️⃣ To start, locate the green "Register here {EMOJI_POINT}" button and give '
+            "it a click. A new window will appear for you.\n\n"
+            '2️⃣ In this new window, you\'ll find two fields - "Order" and "Full Name." '
+            "The Order is a combination of capital letters and numbers that you can locate "
+            "either on your ticket or badge. Your Full Name should match the one printed on "
+            "your ticket or badge.\n\n"
+            '3️⃣ After filling in these details, please click "Submit". We\'ll validate your '
+            "ticket and assign you the appropriate role on the Discord server based on your "
+            "ticket type. Once this is done, you'll gain access to a collection of channels "
+            "that correspond to your ticket type. This is where the magic happens and where "
+            "you'll be able to connect, learn, and share with fellow Python enthusiasts.\n"
+            "If you encounter any issues during the registration process, or if you're not"
+            " sure about something, don't worry! There's always help available. Reach out to "
+            "us in the registration-help channel or seek assistance from any of the volunteers "
+            "in yellow t-shirts during the conference. They're here to make your experience "
+            "smooth and enjoyable!\n"
+            "We're looking forward to seeing you on the server and making the most of "
+            "EuroPython 2023 together 🐍💻🎉"
+        )
 
         view = RegistrationView()
         embed = discord.Embed(
