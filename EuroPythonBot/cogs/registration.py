@@ -66,7 +66,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
             await interaction.user.add_roles(role)
         await log_to_channel(interaction.client.get_channel(config.REG_LOG_CHANNEL_ID), interaction, roles)
         await interaction.response.send_message(
-            f"Thank you {self.name.value}, you are now registered as {display_roles(interaction.user)}",  # noqa: E501
+            f"Thank you {self.name.value}, you are now registered.",  # noqa: E501
             ephemeral=True,
             delete_after=20,
         )
