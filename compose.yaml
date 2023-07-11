@@ -7,5 +7,12 @@ services:
         source: /etc/EuroPython/discord/.secrets
         target: /home/bot/.secrets
         read_only: true
-
+      - type: bind
+        source: /home/bot/registered_log.txt
+        target: /home/bot/registered_log.txt
+        read_only: false
+    # read all container only logs with
+    # journalctl -u docker IMAGE_NAME=europythonbot -f
+    logging:
+      driver: journald
     restart: unless-stopped
