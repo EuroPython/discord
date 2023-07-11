@@ -34,23 +34,23 @@ class RegistrationButton(discord.ui.Button["Registration"]):
 
 
 class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
+    order = discord.ui.TextInput(
+        label="Order",
+        required=True,
+        min_length=4,
+        max_length=6,
+        placeholder="6-character combination of capital letters and numbers",
+        default="XXXXX",
+    )
+
     name = discord.ui.TextInput(
-        label="Name",
+        label="Full Name",
         required=True,
         min_length=3,
         max_length=50,
         style=discord.TextStyle.short,
-        placeholder="Your name as written in your ticket",
-        default="My Name",
-    )
-
-    order = discord.ui.TextInput(
-        label="Order number",
-        required=True,
-        min_length=4,
-        max_length=6,
-        placeholder="The number you find in your ticket",
-        default="XXXXX",
+        placeholder="Your Full Name as printed on your ticket/badge",
+        default="My Full Name",
     )
 
     async def on_submit(self, interaction: discord.Interaction) -> None:
