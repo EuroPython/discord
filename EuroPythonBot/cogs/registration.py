@@ -83,7 +83,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
 
         # log error message in discord channel
         await log_to_channel(
-            interaction.client.get_channel(channel=config.REG_LOG_CHANNEL_ID),
+            channel=interaction.client.get_channel(config.REG_LOG_CHANNEL_ID),
             interaction=interaction,
             error=error,
         )
