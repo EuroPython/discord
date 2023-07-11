@@ -68,7 +68,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         )
         _logger.info("Assigning %r roles=%r", self.name.value, roles)
         await self.add_roles(interaction, roles)
-        await asyncio.sleep(0.5)
+        await asyncio.sleep(5)
         await log_to_channel(interaction.client.get_channel(config.REG_LOG_CHANNEL_ID), interaction)
         await interaction.response.send_message(
             f"Thank you {self.name.value}, you are now registered as {display_roles(interaction.user)}",  # noqa: E501
