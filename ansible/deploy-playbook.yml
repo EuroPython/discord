@@ -19,7 +19,7 @@
     - name: reload systemd-journald
       systemd:
         name: systemd-journald
-        state: restarted 
+        state: restarted
 
     - name: Install Docker dependencies
       apt:
@@ -62,8 +62,19 @@
         version: main
         key_file: /root/.ssh/deploy_key
 
-    - name: Ensure registered txt file is present
-      shell: "touch /etc/EuroPython/discord/registered_log.txt"
+    - name: Create 'bot' user
+      user:
+        name: bot
+        uid: 1000
+        group: 1000
+        home: /home/bot
+
+    - name: Create registration_log.txt in bot's home directory
+      file:
+        path: /home/bot/registered_log.txt
+        state: touch
+        owner: bot
+        group: bot
 
     - name: Start EuroPythonBot
-      shell: "cd /root/discord && docker compose up --detach --build"
+      shell: "cd /root/discord && docker compose down && docker compose up --detach --build"

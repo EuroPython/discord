@@ -2,7 +2,7 @@ import logging
 
 from configuration import Config
 from error import AlreadyRegisteredError, NotFoundError
-from helpers.channel_logging import display_roles, log_to_channel
+from helpers.channel_logging import log_to_channel
 from helpers.pretix_connector import PretixOrder
 
 import discord
@@ -64,9 +64,15 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         for role in roles:
             role = discord.utils.get(interaction.guild.roles, id=role)
             await interaction.user.add_roles(role)
-        await log_to_channel(interaction.client.get_channel(config.REG_LOG_CHANNEL_ID), interaction)
+        await log_to_channel(
+            channel=interaction.client.get_channel(config.REG_LOG_CHANNEL_ID),
+            interaction=interaction,
+            name=self.name.value,
+            order=self.order.value,
+            roles=roles,
+        )
         await interaction.response.send_message(
-            f"Thank you {self.name.value}, you are now registered as {display_roles(interaction.user)}",  # noqa: E501
+            f"Thank you {self.name.value}, you are now registered.",  # noqa: E501
             ephemeral=True,
             delete_after=20,
         )
@@ -77,7 +83,9 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
 
         # log error message in discord channel
         await log_to_channel(
-            interaction.client.get_channel(config.REG_LOG_CHANNEL_ID), interaction, error
+            channel=interaction.client.get_channel(config.REG_LOG_CHANNEL_ID),
+            interaction=interaction,
+            error=error,
         )
         if isinstance(error, AlreadyRegisteredError):
             _msg = "You have already registered! If you think it is not true"
