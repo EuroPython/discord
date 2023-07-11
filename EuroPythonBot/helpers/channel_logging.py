@@ -1,8 +1,5 @@
-import asyncio
-
 def display_roles(user):
     """Return a list of roles of the intereaction user"""
-    asyncio.sleep(0.5)
     return [role.name for role in user.roles[1:]]
 
 
