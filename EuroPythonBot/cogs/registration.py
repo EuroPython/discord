@@ -11,7 +11,6 @@ from discord.ext import commands
 config = Config()
 order_ins = PretixOrder()
 
-EMOJI_TICKET = "\N{ADMISSION TICKETS}"
 EMOJI_POINT = "\N{WHITE LEFT POINTING BACKHAND INDEX}"
 ZERO_WIDTH_SPACE = "\N{ZERO WIDTH SPACE}"
 REGISTERED_LIST = {}
@@ -35,23 +34,23 @@ class RegistrationButton(discord.ui.Button["Registration"]):
 
 
 class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
+    order = discord.ui.TextInput(
+        label="Order",
+        required=True,
+        min_length=4,
+        max_length=6,
+        placeholder="6-character combination of capital letters and numbers",
+        default="XXXXX",
+    )
+
     name = discord.ui.TextInput(
-        label="Name",
+        label="Full Name",
         required=True,
         min_length=3,
         max_length=50,
         style=discord.TextStyle.short,
-        placeholder="Your name as written in your ticket",
-        default="My Name",
-    )
-
-    order = discord.ui.TextInput(
-        label="Order number",
-        required=True,
-        min_length=4,
-        max_length=6,
-        placeholder="The number you find in your ticket",
-        default="XXXXX",
+        placeholder="Your Full Name as printed on your ticket/badge",
+        default="My Full Name",
     )
 
     async def on_submit(self, interaction: discord.Interaction) -> None:
@@ -117,8 +116,19 @@ class Registration(commands.Cog):
         await order_ins.fetch_data()
         order_ins.load_registered()
 
-        _title = f"Click the 'Register' button in the message {EMOJI_TICKET}"
-        _desc = "A window will appear where you can provide your `Name` and `Order number`."
+        _title = "Welcome to EuroPython 2023 on Discord! 🎉🐍"
+        _desc = (
+            "Follow these steps to complete your registration:\n\n"
+            f'1️⃣ Click on the green "Register Here {EMOJI_POINT}" button.\n\n'
+            '2️⃣ Fill in the "Order" (found by clicking the order URL in your confirmation '
+            'email from support@pretix.eu with the Subject: Your order: XXXX) and "Full Name" '
+            "(as printed on your ticket/badge).\n\n"
+            '3️⃣ Click "Submit". We\'ll verify your ticket and give you your role based on '
+            "your ticket type.\n\n"
+            "Experiencing trouble? Ask for help in the registration-help channel or from a "
+            "volunteer in yellow t-shirt at the conference.\n\n"
+            "See you on the server! 🐍💻🎉"
+        )
 
         view = RegistrationView()
         embed = discord.Embed(
