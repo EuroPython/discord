@@ -119,7 +119,7 @@ class Registration(commands.Cog):
         _title = "Welcome to EuroPython 2023 on Discord! 🎉🐍"
         _desc = (
             "Follow these steps to complete your registration:\n\n"
-            '1️⃣ Click on the green "Register Here {EMOJI_POINT}" button.\n\n'
+            f'1️⃣ Click on the green "Register Here {EMOJI_POINT}" button.\n\n'
             '2️⃣ Fill in the "Order" (found by clicking the order URL in your confirmation '
             'email from support@pretix.eu with the Subject: Your order: XXXX) and "Full Name" '
             "(as printed on your ticket/badge).\n\n"
