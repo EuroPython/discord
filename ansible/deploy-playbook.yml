@@ -66,4 +66,4 @@
       shell: "touch /etc/EuroPython/discord/registered_log.txt"
 
     - name: Start EuroPythonBot
-      shell: "cd /root/discord && docker compose up --detach --build"
+      shell: "cd /root/discord && docker compose down && docker compose up --detach --build"

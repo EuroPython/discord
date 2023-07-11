@@ -42,14 +42,6 @@ class PretixOrder(metaclass=Singleton):
         except Exception:
             _logger.exception("Cannot load registered data, starting from scratch. Error:")
 
-    def save_registered(self):
-        if self.REGISTERED_SET:
-            _logger.info("Saving registered tickets...")
-            f = open(self.registered_file, "w")
-            for item in self.REGISTERED_SET:
-                f.write(f"{item}\n")
-            f.close()
-
     async def fetch_data(self) -> None:
         """Fetch data from Pretix, store id_to_name mapping and formated orders internally"""
 
@@ -130,6 +122,8 @@ class PretixOrder(metaclass=Singleton):
         try:
             ticket_type = self.orders[key]
             self.REGISTERED_SET.add(key)
+            with open(self.registered_file, "a") as f:
+                f.write(f"{key}\n")
         except KeyError:
             async with aiohttp.ClientSession() as session:
                 async with session.get(
@@ -153,6 +147,8 @@ class PretixOrder(metaclass=Singleton):
                                 f"{self.id_to_name.get(item)}-{self.id_to_name.get(variation)}"
                             )
                             self.REGISTERED_SET.add(key)
+                            with open(self.registered_file, "a") as f:
+                                f.write(f"{key}\n")
                         else:
                             raise NotFoundError(f"No ticket found - inputs: {order=}, {full_name=}")
                     else:
