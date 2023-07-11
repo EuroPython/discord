@@ -65,11 +65,11 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
             role = discord.utils.get(interaction.guild.roles, id=role)
             await interaction.user.add_roles(role)
         await log_to_channel(
-            interaction.client.get_channel(config.REG_LOG_CHANNEL_ID),
-            interaction,
-            self.name.value,
-            self.order.value,
-            roles,
+            channel=interaction.client.get_channel(config.REG_LOG_CHANNEL_ID),
+            interaction=interaction,
+            name=self.name.value,
+            order=self.order.value,
+            roles=roles,
         )
         await interaction.response.send_message(
             f"Thank you {self.name.value}, you are now registered.",  # noqa: E501
@@ -83,7 +83,9 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
 
         # log error message in discord channel
         await log_to_channel(
-            interaction.client.get_channel(config.REG_LOG_CHANNEL_ID), interaction, error
+            interaction.client.get_channel(channel=config.REG_LOG_CHANNEL_ID),
+            interaction=interaction,
+            error=error,
         )
         if isinstance(error, AlreadyRegisteredError):
             _msg = "You have already registered! If you think it is not true"
