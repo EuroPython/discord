@@ -64,6 +64,8 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         for role in roles:
             role = discord.utils.get(interaction.guild.roles, id=role)
             await interaction.user.add_roles(role)
+        nickname = self.name.value[:32]  # Limit to the max length
+        await interaction.user.edit(nick=nickname)
         await log_to_channel(
             channel=interaction.client.get_channel(config.REG_LOG_CHANNEL_ID),
             interaction=interaction,
@@ -72,7 +74,10 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
             roles=roles,
         )
         await interaction.response.send_message(
-            f"Thank you {self.name.value}, you are now registered.",  # noqa: E501
+            f"Thank you {self.name.value}, you are now registered!\n\nAlso, your nickname was"
+            f"changed to the name you used to register your ticket. This is also the name that"
+            f" would be on your conference badge, which means that your nickname can be your"
+            f"'virtual conference badge'.",
             ephemeral=True,
             delete_after=20,
         )
