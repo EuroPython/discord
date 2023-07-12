@@ -39,7 +39,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         required=True,
         min_length=4,
         max_length=6,
-        placeholder="6-character combination of capital letters and numbers",
+        placeholder="5-character combination of capital letters and numbers",
         default="XXXXX",
     )
 
