@@ -1,0 +1,21 @@
+---
+- name: Clone and delete repository
+  hosts: bot_server
+  vars:
+    repository_url: git@github.com:EuroPython/discord.git
+  tasks:
+    - name: Clone repository
+      git:
+        repo: "{{ repository_url }}"
+        dest: /tmp/discord
+        depth: 1
+        force: yes
+        accept_hostkey: yes
+        single_branch: yes
+        version: main
+        key_file: /root/.ssh/deploy_key
+
+    - name: Remove repository
+      file:
+        path: /tmp/discord
+        state: absent
