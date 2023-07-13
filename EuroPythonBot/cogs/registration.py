@@ -40,7 +40,6 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         min_length=4,
         max_length=6,
         placeholder="5-character combination of capital letters and numbers",
-        default="XXXXX",
     )
 
     name = discord.ui.TextInput(
@@ -50,7 +49,6 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         max_length=50,
         style=discord.TextStyle.short,
         placeholder="Your Full Name as printed on your ticket/badge",
-        default="My Full Name",
     )
 
     async def on_submit(self, interaction: discord.Interaction) -> None:
