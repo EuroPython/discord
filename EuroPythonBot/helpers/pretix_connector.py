@@ -137,23 +137,24 @@ class PretixOrder(metaclass=Singleton):
                 ) as request:
                     if request.status == HTTPStatus.OK:
                         data = await request.json()
-                        if len(data.get("results")) > 1:
+                        # when using search params, pretix returns a list of results of size 1
+                        # with a list of positions of size 1
+                        if len(data.get("results")) > 0:
                             result = data.get("results")[0]
                             if result.get("status") != "p":
                                 raise Exception("Order not paid")
-                            item = result.get("item")
-                            variation = result.get("variation")
-
-                            ticket_type = (
-                                f"{self.id_to_name.get(item)}-{self.id_to_name.get(variation)}"
+                            ticket_type = self.id_to_name.get(
+                                result.get("positions")[0].get("item")
                             )
-                            self.REGISTERED_SET.add(key)
-                            async with aiofiles.open(self.registered_file, mode="a") as f:
-                                await f.write(f"{key}\n")
                         else:
                             raise NotFoundError(f"No ticket found - inputs: {order=}, {full_name=}")
                     else:
                         _logger.error("Error occurred: Status %r", request.status)
+
+        self.REGISTERED_SET.add(key)
+        async with aiofiles.open(self.registered_file, mode="a") as f:
+            await f.write(f"{key}\n")
+
         return ticket_type
 
     async def get_roles(self, name: str, order: str) -> List[int]:
