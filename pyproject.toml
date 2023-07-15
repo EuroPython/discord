@@ -1,8 +1,10 @@
 [tool.isort]
 profile = "black"
+src_paths = ["EuroPythonBot"]
 
 [tool.black]
 line-length = 100
 
 [tool.pytest.ini_options]
 pythonpath = "EuroPythonBot"
+asyncio_mode = "auto"

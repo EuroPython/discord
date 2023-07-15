@@ -1,12 +1,12 @@
 import logging
 
+import discord
+from discord.ext import commands
+
 from configuration import Config
 from error import AlreadyRegisteredError, NotFoundError
 from helpers.channel_logging import log_to_channel
 from helpers.pretix_connector import PretixOrder
-
-import discord
-from discord.ext import commands
 
 config = Config()
 order_ins = PretixOrder()
