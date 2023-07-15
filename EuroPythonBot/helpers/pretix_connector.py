@@ -146,14 +146,13 @@ class PretixOrder(metaclass=Singleton):
                             ticket_type = self.id_to_name.get(
                                 result.get("positions")[0].get("item")
                             )
+                            self.REGISTERED_SET.add(key)
+                            async with aiofiles.open(self.registered_file, mode="a") as f:
+                                await f.write(f"{key}\n")
                         else:
                             raise NotFoundError(f"No ticket found - inputs: {order=}, {full_name=}")
                     else:
                         _logger.error("Error occurred: Status %r", request.status)
-
-        self.REGISTERED_SET.add(key)
-        async with aiofiles.open(self.registered_file, mode="a") as f:
-            await f.write(f"{key}\n")
 
         return ticket_type
 
