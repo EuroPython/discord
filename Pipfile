@@ -5,18 +5,24 @@ name = "pypi"
 
 [packages]
 "discord.py" = "*"
+aiofiles = "*"
+aiohttp = "*"
+arrow = "*"
+attrs = "*"
+cattrs = "*"
+certifi = "*"
 python-dotenv = "*"
 toml = "*"
-aiofiles = "*"
+yarl = "*"
 
 [dev-packages]
+ansible = "*"
 black = "*"
 flake8 = "*"
 isort = "*"
-ansible = "*"
-pytest-asyncio = "*"
 pytest = "*"
 pytest-aiohttp = "*"
+pytest-asyncio = "*"
 
 [requires]
 python_full_version = "3.11.4"

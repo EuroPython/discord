@@ -12,3 +12,73 @@ TICKET_TO_ROLES_JSON = "ticket_to_roles_prod.json"
 
 [logging]
 LOG_LEVEL = "INFO"
+
+[programme_notifications]
+timezone = "Europe/Prague"
+timewarp = false
+conference_days_first = "2023-07-19"
+conference_days_last = "2023-07-21"
+pretalx_schedule_url = "https://pretalx.com/api/events/europython-2023/schedules/latest/"
+europython_session_base_url = "https://ep2023.europython.eu/session/{slug}"
+europython_api_session_url = "https://ep2023.europython.eu/api/session/{code}"
+
+[[programme_notifications.notification_channels]]
+webhook_id = "PYTHON_DISCORD"
+include_channel_in_embeds = false
+
+[[programme_notifications.notification_channels]]
+webhook_id = "PROGRAMME_NOTIFICATIONS"
+include_channel_in_embeds = true
+
+[programme_notifications.rooms.2189]
+# Forum Hall
+webhook_id = "ROOM_2189"
+discord_channel_id = "1120780288755253338"
+
+[programme_notifications.rooms.2189.livestreams]
+# Forum Hall Livestream ULRs
+# Example livestream configuration
+#"2023-07-19" = "https://forum.hall/day-1"
+#"2023-07-20" = "https://forum.hall/day-2"
+#"2023-07-21" = "https://forum.hall/day-3"
+
+
+[programme_notifications.rooms.2190]
+# South Hall 2A
+webhook_id = "ROOM_2190"
+discord_channel_id = "1120780345575477421"
+
+[programme_notifications.rooms.2190.livestreams]
+# South Hall 2A Livestream URLs
+
+[programme_notifications.rooms.2191]
+# South Hall 2B
+webhook_id = "ROOM_2191"
+discord_channel_id = "1120780371622121612"
+
+[programme_notifications.rooms.2191.livestreams]
+# South Hall 2B Livestream URLs
+
+[programme_notifications.rooms.2194]
+# North Hall
+webhook_id = "ROOM_2194"
+discord_channel_id = "1120780401791750315"
+
+[programme_notifications.rooms.2194.livestreams]
+# North Hall Livestream URLs
+
+[programme_notifications.rooms.2192]
+# Terrace 2A
+webhook_id = "ROOM_2192"
+discord_channel_id = "1120780461195657387"
+
+[programme_notifications.rooms.2192.livestreams]
+# Terrace 2A Livestream URLs
+
+[programme_notifications.rooms.2193]
+# Terrace 2B
+webhook_id = "ROOM_2193"
+discord_channel_id = "1120780490576777287"
+
+[programme_notifications.rooms.2193.livestreams]
+# Terrace 2B Livestream URLs

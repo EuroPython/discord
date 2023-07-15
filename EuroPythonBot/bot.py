@@ -4,14 +4,14 @@ import os
 import sys
 from pathlib import Path
 
+import discord
+from discord.ext import commands
+from dotenv import load_dotenv
+
 import configuration
 from cogs.ping import Ping
 from cogs.registration import Registration
-from dotenv import load_dotenv
 from helpers.pretix_connector import PretixOrder
-
-import discord
-from discord.ext import commands
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".secrets")
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
@@ -28,6 +28,19 @@ class Bot(commands.Bot):
 
     async def on_ready(self):
         _logger.info("Logged in as user %r (ID=%r)", self.user.name, self.user.id)
+
+    async def load_extension(self, name: str, *, package: str | None = None) -> None:
+        """Load the extension by name.
+
+        :param name: The name of the extension to load
+        :param package: An optional package name for relative imports
+        """
+        try:
+            await super().load_extension(name, package=package)
+        except commands.ExtensionError:
+            _logger.exception("Failed to load extension %r (package=%r):", name, package)
+        else:
+            _logger.info("Successfully loaded extension %r (package=%r)", name, package)
 
 
 def _setup_logging() -> None:
@@ -62,6 +75,7 @@ async def main():
     async with bot:
         await bot.add_cog(Ping(bot))
         await bot.add_cog(Registration(bot))
+        await bot.load_extension("extensions.programme_notifications")
         await bot.start(DISCORD_BOT_TOKEN)
 
 

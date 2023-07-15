@@ -8,8 +8,9 @@ from typing import Dict, List
 
 import aiofiles
 import aiohttp
-from configuration import Config, Singleton
 from dotenv import load_dotenv
+
+from configuration import Config, Singleton
 from error import AlreadyRegisteredError, NotFoundError
 
 _logger = logging.getLogger(f"bot.{__name__}")

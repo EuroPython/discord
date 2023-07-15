@@ -3,6 +3,7 @@ from pathlib import Path
 
 import pytest
 from aiohttp import web
+
 from configuration import Config
 from helpers.pretix_connector import PretixOrder
 

@@ -25,12 +25,12 @@ class Config(metaclass=Singleton):
         # Configuration file
         config = None
         base_path = Path(__file__).resolve().parent
-        config_path = self._get_config_path(base_path)
-        with open(config_path) as f:
+        self.CONFIG_PATH = self._get_config_path(base_path)
+        with open(self.CONFIG_PATH) as f:
             config = toml.loads(f.read())
 
         if not config:
-            _logger.critical("Error: Failed to load the config file at '%s'", config_path)
+            _logger.critical("Error: Failed to load the config file at '%s'", self.CONFIG_PATH)
             sys.exit(-1)
 
         try:
@@ -62,7 +62,7 @@ class Config(metaclass=Singleton):
                 "Error encountered while reading '%s'. Ensure that it contains the necessary"
                 " configuration fields. If you are using a local override of the main configuration"
                 " file, please compare the fields in it against the main `config.toml` file.",
-                config_path,
+                self.CONFIG_PATH,
             )
             sys.exit(-1)
 
