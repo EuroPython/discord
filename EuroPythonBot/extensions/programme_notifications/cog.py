@@ -55,7 +55,7 @@ class ProgrammeNotifications(commands.Cog):
     @notifications.command(name="stats")
     @commands.has_guild_permissions(manage_messages=True)
     async def stats(self, context: commands.Context) -> None:
-        """Refresh the schedule information.
+        """Get notification statistics.
 
         :param context: The command context
         """
