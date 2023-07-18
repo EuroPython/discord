@@ -48,10 +48,9 @@ discord_channel_id = "1120780288755253338"
 
 [programme_notifications.rooms.2189.livestreams]
 # Forum Hall Livestream ULRs
-# Example livestream configuration
-#"2023-07-19" = "https://forum.hall/day-1"
-#"2023-07-20" = "https://forum.hall/day-2"
-#"2023-07-21" = "https://forum.hall/day-3"
+"2023-07-19" = "https://europython.eu/live/forum"
+"2023-07-20" = "https://europython.eu/live/forum"
+"2023-07-21" = "https://europython.eu/live/forum"
 
 
 [programme_notifications.rooms.2190]
@@ -61,6 +60,9 @@ discord_channel_id = "1120780345575477421"
 
 [programme_notifications.rooms.2190.livestreams]
 # South Hall 2A Livestream URLs
+"2023-07-19" = "https://europython.eu/live/south-hall-2a"
+"2023-07-20" = "https://europython.eu/live/south-hall-2a"
+"2023-07-21" = "https://europython.eu/live/south-hall-2a"
 
 [programme_notifications.rooms.2191]
 # South Hall 2B
@@ -69,6 +71,9 @@ discord_channel_id = "1120780371622121612"
 
 [programme_notifications.rooms.2191.livestreams]
 # South Hall 2B Livestream URLs
+"2023-07-19" = "https://europython.eu/live/south-hall-2b"
+"2023-07-20" = "https://europython.eu/live/south-hall-2b"
+"2023-07-21" = "https://europython.eu/live/south-hall-2b"
 
 [programme_notifications.rooms.2194]
 # North Hall
@@ -77,6 +82,9 @@ discord_channel_id = "1120780401791750315"
 
 [programme_notifications.rooms.2194.livestreams]
 # North Hall Livestream URLs
+"2023-07-19" = "https://europython.eu/live/north-hall"
+"2023-07-20" = "https://europython.eu/live/north-hall"
+"2023-07-21" = "https://europython.eu/live/north-hall"
 
 [programme_notifications.rooms.2192]
 # Terrace 2A
@@ -85,6 +93,9 @@ discord_channel_id = "1120780461195657387"
 
 [programme_notifications.rooms.2192.livestreams]
 # Terrace 2A Livestream URLs
+"2023-07-19" = "https://europython.eu/live/terrace-2a"
+"2023-07-20" = "https://europython.eu/live/terrace-2a"
+"2023-07-21" = "https://europython.eu/live/terrace-2a"
 
 [programme_notifications.rooms.2193]
 # Terrace 2B
@@ -93,3 +104,6 @@ discord_channel_id = "1120780490576777287"
 
 [programme_notifications.rooms.2193.livestreams]
 # Terrace 2B Livestream URLs
+"2023-07-19" = "https://europython.eu/live/terrace-2b"
+"2023-07-20" = "https://europython.eu/live/terrace-2b"
+"2023-07-21" = "https://europython.eu/live/terrace-2b"
