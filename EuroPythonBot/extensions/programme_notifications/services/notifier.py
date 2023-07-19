@@ -49,11 +49,18 @@ class Notifier:
           fetched schedule has the same hash as the previously fetched
           schedule.
         """
-        new_schedule = await self._api_client.fetch_schedule()
-        if new_schedule.schedule_hash == self._previous_schedule_hash and not force:
-            _logger.info("Scheduled hasn't changed; not rescheduling notifications.")
+        try:
+            response = await self._api_client.fetch_schedule()
+        except Exception:
+            _logger.exception("Fetching the schedule failed!")
             return
 
+        if not self._should_update(response) and not force:
+            _logger.info("No changed schedule available; not rescheduling notifications.")
+            return
+
+        new_schedule = response.schedule
+        _logger.info("Schedule has changed, updating notifications!")
         self._scheduler.cancel_all()
         sessions = list(services.filter_conference_days(new_schedule.sessions, self._config))
         self._session_information.refresh_from_sessions(sessions)
@@ -62,6 +69,35 @@ class Notifier:
             self._schedule_timeslot_notifications(timeslot, [session.code for session in sessions])
         self._previous_schedule_hash = new_schedule.schedule_hash
         _logger.info("Scheduled notifications!")
+
+    def _should_update(self, api_response: api.ScheduleResponse) -> bool:
+        """Check if this response should result in new notifications.
+
+        :param api_response: The API response
+        :return: `True` if notifications need to be updated, `False`
+          otherwise
+        """
+        if self._previous_schedule_hash is None:
+            # The absence of a hash indicates that there was no schedule
+            # yet, which means we should always update.
+            _logger.info("No schedule cache yet, we should update the notifications.")
+            return True
+
+        if api_response.from_cache:
+            # We already have a previous schedule hash, indicating that
+            # notifications are in place, so there's no need to fall
+            # back to a statically cached version of the schedule that
+            # may already be outdated.
+            _logger.info(
+                "This is a cached schedule response, but we already have notifications in place, so"
+                " there's no need to fallback to the cached schedule for notifications."
+            )
+            return False
+
+        # Only update if the hash of the newly fetched schedule is
+        # different from the hash of the schedule that was used to
+        # schedule the notifications.
+        return self._previous_schedule_hash != api_response.schedule.schedule_hash
 
     def __len__(self) -> int:
         """Return the number of scheduled notifications."""

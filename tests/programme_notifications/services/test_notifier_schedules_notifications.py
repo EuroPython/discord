@@ -1,5 +1,6 @@
 from unittest import mock
 
+import arrow
 import yarl
 from tests.programme_notifications import factories
 from tests.programme_notifications.services import helpers
@@ -22,7 +23,7 @@ async def test_does_not_schedule_tasks_for_schedule_without_session(
     )
     # GIVEN a fake api client that returns the schedule
     client = mock.create_autospec(api.IApiClient)
-    client.fetch_schedule.return_value = schedule
+    client.fetch_schedule.return_value = api.ScheduleResponse(schedule=schedule, from_cache=False)
     # AND an instance of the config
     config = configuration_factory({})
     # AND an instance of the session information service
@@ -78,7 +79,7 @@ async def test_scheduling_notifications_delivers_to_webhooks(
     )
     # AND an api client that returns the schedule and session details
     client = mock.create_autospec(api.IApiClient)
-    client.fetch_schedule.return_value = schedule
+    client.fetch_schedule.return_value = api.ScheduleResponse(schedule=schedule, from_cache=False)
     session_details = {
         "ABCDEF": (yarl.URL("https://europythoon/hungry-snakes"), "intermediate"),
     }
@@ -113,8 +114,10 @@ async def test_scheduling_notifications_delivers_to_webhooks(
         api_client=client,
         config=config,
     )
-    # AND a clock with a know `now` and fake sleeper
-    clock_obj = clock.Clock(sleeper=mock.AsyncMock())
+    # AND a clock with a fixed `now` and fake sleeper
+    clock_obj = clock.Clock(
+        sleeper=mock.AsyncMock(), now=lambda: arrow.get("2023-07-19T09:00:00+02:00")
+    )
     # AND a scheduler that uses that clock
     scheduler = helpers.AwaitableScheduler(clock=clock_obj)
     # AND a notifier that uses that client
@@ -255,7 +258,7 @@ async def test_does_not_schedule_tasks_if_schedule_has_not_changed(
     )
     # AND an api client that returns the schedule and session details
     client = mock.create_autospec(api.IApiClient)
-    client.fetch_schedule.return_value = schedule
+    client.fetch_schedule.return_value = api.ScheduleResponse(schedule=schedule, from_cache=False)
     client.fetch_session_details.return_value = (
         yarl.URL("https://europythoon/my-slug"),
         "intermediate",
@@ -308,7 +311,7 @@ async def test_force_bypasses_hash_check(
     )
     # AND an api client that returns the schedule and session details
     client = mock.create_autospec(api.IApiClient)
-    client.fetch_schedule.return_value = schedule
+    client.fetch_schedule.return_value = api.ScheduleResponse(schedule=schedule, from_cache=False)
     client.fetch_session_details.return_value = (
         yarl.URL("https://europythoon/my-slug"),
         "intermediate",
@@ -396,7 +399,7 @@ async def test_excludes_non_conference_days_sessions(
     )
     # AND an api client that returns the schedule and session details
     client = mock.create_autospec(api.IApiClient)
-    client.fetch_schedule.return_value = schedule
+    client.fetch_schedule.return_value = api.ScheduleResponse(schedule=schedule, from_cache=False)
     # AND config that states the sessions are outside of conference days
     config = configuration_factory(
         {

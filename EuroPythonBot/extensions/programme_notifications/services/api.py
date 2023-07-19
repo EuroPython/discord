@@ -9,6 +9,7 @@ import functools
 import hashlib
 import json
 import logging
+import pathlib
 from collections.abc import Iterable
 from typing import Any, Protocol, TypeVar
 
@@ -17,10 +18,14 @@ import arrow
 import attrs
 import cattrs
 import yarl
+from attrs import validators
 
 from extensions.programme_notifications import configuration, exceptions
 from extensions.programme_notifications.domain import discord, europython
 
+_DEFAULT_SCHEDULE_CACHE_PATH: pathlib.Path = (
+    pathlib.Path(__file__).resolve().parent / "_cached" / "schedule.json"
+)
 _logger = logging.getLogger(f"bot.{__name__}")
 _T = TypeVar("_T")
 
@@ -28,7 +33,7 @@ _T = TypeVar("_T")
 class IApiClient(Protocol):
     """Protocol for an API client."""
 
-    async def fetch_schedule(self) -> europython.Schedule:
+    async def fetch_schedule(self) -> "ScheduleResponse":
         """Fetch the latest schedule."""
 
     async def fetch_session_details(self, session_id: str) -> tuple[yarl.URL, str]:
@@ -44,23 +49,55 @@ class ApiClient:
 
     session: aiohttp.ClientSession = attrs.field(kw_only=True)
     config: configuration.NotifierConfiguration = attrs.field(kw_only=True)
+    _schedule_cache_path: pathlib.Path = attrs.field(
+        kw_only=True,
+        default=_DEFAULT_SCHEDULE_CACHE_PATH,
+        validator=validators.instance_of(pathlib.Path),
+    )
 
-    async def fetch_schedule(self) -> europython.Schedule:
+    @_schedule_cache_path.validator
+    def _cache_path_exists_validator(self, attribute: str, value: pathlib.Path):
+        """Validate that the schedule cache path exists."""
+        del attribute  # unused
+        if not value.exists():
+            raise ValueError("The path '%s' does not exist!")
+
+    async def fetch_schedule(self) -> "ScheduleResponse":
         """Fetch the schedule from the Pretalx API.
 
         :return: A `europython.Schedule` instance,
         """
         url = self.config.pretalx_schedule_url
-        async with self.session.get(url=url, raise_for_status=True) as response:
-            response_content = await response.read()
+        try:
+            response_content = await self._fetch_schedule(url)
+        except Exception:
+            _logger.exception("Fetching the schedule failed, returned cached version.")
+            response_content = self._cached_schedule_response_content
+            from_cache = True
+        else:
+            _logger.info("Fetched schedule from Pretalx, not using cache.")
+            from_cache = False
 
         raw_schedule = json.loads(response_content)
-        return europython.Schedule(
+        schedule = europython.Schedule(
             sessions=self._convert(raw_schedule["slots"], europython.Session),
             breaks=self._convert(raw_schedule["breaks"], europython.Break),
             version=raw_schedule["version"],
             schedule_hash=hashlib.sha1(response_content).hexdigest(),
         )
+        return ScheduleResponse(schedule=schedule, from_cache=from_cache)
+
+    async def _fetch_schedule(self, url: str) -> bytes:
+        """Fetch the schedule from Pretalx."""
+        _logger.info("Making call to Pretalx API.")
+        async with self.session.get(url=url, raise_for_status=True) as response:
+            response_content = await response.read()
+        return response_content
+
+    @functools.cached_property
+    def _cached_schedule_response_content(self) -> bytes:
+        """Get and cache the cached schedule response content."""
+        return self._schedule_cache_path.read_bytes()
 
     def _convert(self, raw_instances: Iterable[dict[str, Any]], target_cls: type[_T]) -> list[_T]:
         """Convert the iterable of instance values to a class instance.
@@ -129,3 +166,11 @@ class ApiClient:
                 webhook=webhook, status=exc.status, message=exc.message
             ) from None
         _logger.info("Delivered webhook message to webhook %r", webhook)
+
+
+@attrs.define(frozen=True)
+class ScheduleResponse:
+    """A response returned by `fetch_sessions`."""
+
+    schedule: europython.Schedule
+    from_cache: bool

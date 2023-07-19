@@ -19,31 +19,42 @@ _DATA_DIR = pathlib.Path(__file__).parent / "_data"
 @pytest.fixture
 def bytes_from_data_file(request: pytest.FixtureRequest) -> bytes:
     """Return bytes from a test _data file for a parameterized test."""
-    return _get_datafile(getattr(request, "param"))
+    return _get_data_file(getattr(request, "param"))
 
 
 @pytest.fixture
 def get_bytes_from_data_file() -> Callable[[str], bytes]:
     """Allow tests to retrieve bytes from test _data files."""
-    return _get_datafile
+    return _get_data_file
 
 
-def _get_datafile(filename: str) -> bytes:
+@pytest.fixture
+def get_data_file_path() -> Callable[[str], pathlib.Path]:
+    """Get the path to a datafile."""
+    return _get_data_file_path
+
+
+def _get_data_file(filename: str) -> bytes:
     """Get a _data file from the test _data directory."""
-    return (_DATA_DIR / filename).read_bytes()
+    return _get_data_file_path(filename).read_bytes()
+
+
+def _get_data_file_path(filename: str) -> pathlib.Path:
+    """Get the path to a datafile."""
+    return _DATA_DIR / filename
 
 
 @pytest.fixture
 def pretalx_response_stub() -> bytes:
     """Get a pretalx response stub with an actual cached response."""
-    return _get_datafile("pretalx_schedule_response_20230701.testdata.json")
+    return _get_data_file("pretalx_schedule_response_20230701.testdata.json")
 
 
 @pytest.fixture
 def europython_response_stub(request: pytest.FixtureRequest) -> bytes:
     """Get a pretalx response stub with an actual cached response."""
     identifier = getattr(request, "param", "session_response_20230702")
-    return _get_datafile(f"europython_{identifier}.testdata.json")
+    return _get_data_file(f"europython_{identifier}.testdata.json")
 
 
 @pytest.fixture

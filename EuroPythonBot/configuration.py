@@ -24,8 +24,8 @@ class Config(metaclass=Singleton):
     def __init__(self):
         # Configuration file
         config = None
-        base_path = Path(__file__).resolve().parent
-        self.CONFIG_PATH = self._get_config_path(base_path)
+        self.BASE_PATH = Path(__file__).resolve().parent
+        self.CONFIG_PATH = self._get_config_path(self.BASE_PATH)
         with open(self.CONFIG_PATH) as f:
             config = toml.loads(f.read())
 
@@ -50,9 +50,7 @@ class Config(metaclass=Singleton):
             self.LOG_LEVEL = config.get("logging", {}).get("LOG_LEVEL", "INFO")
 
             # Mapping
-            with open(
-                base_path.joinpath(base_path.joinpath(self.TICKET_TO_ROLES_JSON))
-            ) as ticket_to_roles_file:
+            with self.BASE_PATH.joinpath(self.TICKET_TO_ROLES_JSON).open() as ticket_to_roles_file:
                 ticket_to_roles = json.load(ticket_to_roles_file)
 
             self.TICKET_TO_ROLE = ticket_to_roles

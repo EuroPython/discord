@@ -31,7 +31,10 @@ class SessionInformation:
         """
         session = self._session_repository.get(code)
         if session.url is None or session.experience is None:
-            session.url, session.experience = await self._api_client.fetch_session_details(code)
+            try:
+                session.url, session.experience = await self._api_client.fetch_session_details(code)
+            except Exception:
+                _logger.exception("Fetching addition session details failed!")
 
         session.livestream_url = self._get_livestream_url(session)
         session.discord_channel_id = self._get_discord_channel_id(session)

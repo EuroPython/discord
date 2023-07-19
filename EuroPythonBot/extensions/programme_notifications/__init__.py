@@ -26,8 +26,8 @@ async def setup(bot: commands.Bot) -> None:
     if config.timewarp:
         _logger.info("Time warping is enabled! Time traveling to the conference days.")
         now = arrow.now(tz=config.timezone)
-        # Diff with notifications of first round on first conference day
-        diff = arrow.get("2023-07-19T10:39:45+02:00") - now
+        # Diff with some point in time during the conference
+        diff = arrow.get("2023-07-19T15:59:45+02:00") - now
 
         def _get_now() -> arrow.Arrow:
             return arrow.now(tz=config.timezone) + diff
@@ -68,8 +68,10 @@ def _create_aiohttp_session() -> aiohttp.ClientSession:
     """Create a ClientSession and return it."""
     ssl_context = ssl.create_default_context(cafile=certifi.where())
     connector = aiohttp.TCPConnector(ssl=ssl_context)
+    timeout = aiohttp.ClientTimeout(total=20)
     return aiohttp.ClientSession(
         connector=connector,
-        headers={"User-Agent": "EuroPython Programme Notifier/2023.1"},
+        headers={"User-Agent": "EP2023 Programme Notifier/2023.2"},
         raise_for_status=True,
+        timeout=timeout,
     )
