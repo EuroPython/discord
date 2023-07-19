@@ -61,7 +61,7 @@ class ProgrammeNotifications(commands.Cog):
         """
         await context.send(f"There are currently {len(self._notifier)} scheduled notifications.")
 
-    @tasks.loop(minutes=15.0)
+    @tasks.loop(minutes=30.0)
     async def _update_schedule(self) -> None:
         """Update the schedule from Pretalx."""
         _logger.info("Starting the periodic schedule update...")

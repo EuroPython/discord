@@ -32,8 +32,8 @@ class EternalClock(FakeClock):
 
 async def test_runs_coroutines_at_provided_datetime() -> None:
     """The scheduler schedules coroutines at a specified datetime."""
-    # GIVEN an instance of a clock
-    clock = FakeClock()
+    # GIVEN an instance of a clock with a fixed now
+    clock = FakeClock(now=lambda: arrow.Arrow(2023, 7, 19, 11, 15, 4))
     # AND a scheduler that uses the clock
     scheduler = helpers.AwaitableScheduler(clock=clock)
     # AND several coroutines with await counters to schedule

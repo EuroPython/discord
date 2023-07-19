@@ -53,8 +53,12 @@ class Scheduler:
 
     def cancel_all(self) -> None:
         """Cancel all scheduled tasks."""
+        _logger.info("Cancelling all tasks...")
+        i = 0
         for task in self._tasks:
             task.cancel()
+            i += 1
+        _logger.info("Cancelled %r tasks.", i)
 
     def _schedule_task_at(self, coro: Coroutine[None, None, None], at: arrow.Arrow) -> asyncio.Task:
         """Schedule a task at the specified datetime.
