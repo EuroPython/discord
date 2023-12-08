@@ -26,7 +26,7 @@
         depth: 1
         force: yes
         single_branch: yes
-        version: main
+        version: deploy-aws
 
     - name: Create registration_log.txt in bot's home directory
       file:
