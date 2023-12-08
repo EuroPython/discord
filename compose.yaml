@@ -4,12 +4,12 @@ services:
     build: .
     volumes:
       - type: bind
-        source: /etc/EuroPython/discord/.secrets
-        target: /home/bot/.secrets
+        source: /home/ec2-user/discord/.secrets
+        target: /home/bot/discord/.secrets
         read_only: true
       - type: bind
-        source: /home/bot/registered_log.txt
-        target: /home/bot/registered_log.txt
+        source: /home/ec2-user/discord/registered_log.txt
+        target: /home/bot/discord/registered_log.txt
         read_only: false
     # read all container only logs with
     # journalctl -u docker IMAGE_NAME=europythonbot -f

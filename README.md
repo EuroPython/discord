@@ -13,6 +13,6 @@ pipenv run python EuroPythonBot/bot.py
 ```
 or with docker:
 ```shell
-docker build -t discord_bot .
-docker run -it -e DISCORD_BOT_TOKEN=$DISCORD_BOT_TOKEN -e PRETIX_TOKEN=$PRETIX_TOKEN discord_bot
+docker build --tag discord_bot .
+docker run -it --env DISCORD_BOT_TOKEN=$DISCORD_BOT_TOKEN --env PRETIX_TOKEN=$PRETIX_TOKEN --volume "$(pwd)"/registered_log.txt:/home/bot/registered_log.txt discord_bot
 ```

@@ -1,80 +1,47 @@
 ---
 - name: Deploy Discord Bot to the server
   hosts: bot_server
-  vars:
-    repository_url: git@github.com:EuroPython/discord.git
 
   tasks:
-
-    - name: Enable persistent logging for journald
-      ini_file:
-        path: /etc/systemd/journald.conf
-        section: Journal
-        option: Storage
-        value: persistent
-        no_extra_spaces: true
-        backup: true
-
-
-    - name: reload systemd-journald
-      systemd:
-        name: systemd-journald
-        state: restarted
-
-    - name: Install Docker dependencies
-      apt:
+    - name: Install Docker & git
+      become: true
+      yum:
         name: "{{ packages }}"
         state: present
-        update_cache: yes
       vars:
-        packages:
-          - apt-transport-https
-          - ca-certificates
-          - curl
-          - gnupg
-          - lsb-release
+         packages:
+            - docker
+            - git
 
-    - name: Install Docker
-      block:
-        - name: Add Docker GPG key
-          apt_key:
-            url: https://download.docker.com/linux/ubuntu/gpg
-            state: present
-
-        - name: Add Docker repository
-          apt_repository:
-            repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable
-            state: present
-
-        - name: Install Docker
-          apt:
-            name: docker-ce
-            state: present
+    - name: Add 'ec2-user' to docker group
+      become: true
+      user:
+        name: ec2-user
+        groups: docker
 
     - name: Clone repository
       git:
-        repo: "{{ repository_url }}"
-        dest: /root/discord
+        repo: https://github.com/EuroPython/discord.git
+        dest: /home/ec2-user/discord
         depth: 1
         force: yes
-        accept_hostkey: yes
         single_branch: yes
         version: main
-        key_file: /root/.ssh/deploy_key
-
-    - name: Create 'bot' user
-      user:
-        name: bot
-        uid: 1000
-        group: 1000
-        home: /home/bot
 
     - name: Create registration_log.txt in bot's home directory
       file:
-        path: /home/bot/registered_log.txt
+        path: /home/ec2-user/discord/registered_log.txt
         state: touch
-        owner: bot
-        group: bot
+        owner: ec2-user
+        group: ec2-user
+
+    - name: Generate '.secrets' file
+      template:
+        src: ".secrets.j2"
+        dest: "/home/ec2-user/discord/.secrets"
+        owner: ec2-user
+        group: ec2-user
+        mode: 0600
 
     - name: Start EuroPythonBot
-      shell: "cd /root/discord && docker compose down && docker compose up --detach --build"
+      shell: "cd /home/ec2-user/discord && docker-compose up --detach --build"
