@@ -9,10 +9,13 @@ PRETIX_TOKEN=<PretixStagingToken_from_1Password>
 ````
 After you have added the `.secrets` file, you can run the bot with the following command:
 ```shell
-pipenv run python EuroPythonBot/bot.py
+pipenv run EuroPythonBot/bot.py
 ```
 or with docker:
 ```shell
 docker build --tag discord_bot .
-docker run -it --env DISCORD_BOT_TOKEN=$DISCORD_BOT_TOKEN --env PRETIX_TOKEN=$PRETIX_TOKEN --volume "$(pwd)"/registered_log.txt:/home/bot/registered_log.txt discord_bot
+docker run -it --env DISCORD_BOT_TOKEN=$DISCORD_BOT_TOKEN \
+ --env PRETIX_TOKEN=$PRETIX_TOKEN \
+ --volume "$(pwd)"/registered_log.txt:/home/bot/registered_log.txt \
+ --volume "$(pwd)"/discord/.secrets:/home/bot/.secrets discord_bot
 ```
