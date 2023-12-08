@@ -15,9 +15,8 @@
 
     - name: Add 'ec2-user' to docker group
       become: true
-      user:
-        name: ec2-user
-        groups: docker
+      shell: usermod -aG docker $USER
+
 
     - name: Clone repository
       git:
