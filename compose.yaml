@@ -8,7 +8,7 @@ services:
         target: /home/bot/discord/.secrets
         read_only: true
       - type: bind
-        source: /home/ec2-user/discord/registered_log.txt
+        source: /home/ec2-user/registered_log.txt
         target: /home/bot/discord/registered_log.txt
         read_only: false
     # read all container only logs with

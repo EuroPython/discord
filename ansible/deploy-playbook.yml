@@ -6,7 +6,7 @@
     - name: Install Docker & git
       become: true
       yum:
-        name: "{{ packages }}"
+        name: {{ packages }}
         state: present
       vars:
          packages:
@@ -30,18 +30,18 @@
 
     - name: Create registration_log.txt in bot's home directory
       file:
-        path: /home/ec2-user/discord/registered_log.txt
+        path: /home/ec2-user/registered_log.txt
         state: touch
         owner: ec2-user
         group: ec2-user
 
     - name: Generate '.secrets' file
       template:
-        src: ".secrets.j2"
-        dest: "/home/ec2-user/discord/.secrets"
+        src: .secrets.j2
+        dest: /home/ec2-user/discord/.secrets
         owner: ec2-user
         group: ec2-user
         mode: 0600
 
     - name: Start EuroPythonBot
-      shell: "cd /home/ec2-user/discord && docker-compose up --detach --build"
+      shell: "cd /home/ec2-user/discord && docker-compose down && docker-compose up --detach --build"
