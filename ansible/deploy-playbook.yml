@@ -6,7 +6,7 @@
     - name: Install Docker & git
       become: true
       yum:
-        name: {{ packages }}
+        name: "{{ packages }}"
         state: present
       vars:
          packages:

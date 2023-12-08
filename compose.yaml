@@ -5,7 +5,7 @@ services:
     volumes:
       - type: bind
         source: /home/ec2-user/discord/.secrets
-        target: /home/bot/discord/.secrets
+        target: /home/bot/EuroPythonBot/.secrets
         read_only: true
       - type: bind
         source: /home/ec2-user/registered_log.txt
