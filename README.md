@@ -26,7 +26,7 @@ There are safeguard methods preventing users to register multiple times and to m
 
 Is a service to push the programme notification to Discord. Pretalx API is used to fetch the programme information, and `config.toml` holds information about livestream URLs.
 
-## Organizers extension
+### Organizers extension
 A set of commands that are available only for organizers that are allowing to get statistics about the Discord server.
 
 ## Setup
