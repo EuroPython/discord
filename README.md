@@ -22,7 +22,7 @@ The mapping between ticket types and discord roles is defined in JSON file, e.g.
 There are safeguard methods preventing users to register multiple times and to make a direct pretix API call in case the user information is not available in the in-memory store.
 
 
-### Programme notifications
+### Program notifications
 
 Is a service to push the programme notification to Discord. Pretalx API is used to fetch the programme information, and `config.toml` holds information about livestream URLs.
 
