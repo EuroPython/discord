@@ -16,4 +16,4 @@ COPY --chown=bot:bot Pipfile Pipfile.lock ./
 COPY --chown=bot:bot EuroPythonBot ./EuroPythonBot
 
 RUN python -m pipenv sync
-ENTRYPOINT ["pipenv", "run", "python", "EuroPython/bot.py"]
+ENTRYPOINT ["pipenv", "run", "python", "EuroPythonBot/bot.py"]

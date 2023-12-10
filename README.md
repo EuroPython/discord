@@ -17,5 +17,5 @@ docker build --tag discord_bot .
 docker run -it --env DISCORD_BOT_TOKEN=$DISCORD_BOT_TOKEN \
  --env PRETIX_TOKEN=$PRETIX_TOKEN \
  --volume "$(pwd)"/registered_log.txt:/home/bot/registered_log.txt \
- --volume "$(pwd)"/discord/.secrets:/home/bot/EuroPythonBot/.secrets discord_bot
+ --volume "$(pwd)"/discord/.secrets:/home/bot/.secrets discord_bot
 ```
