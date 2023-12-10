@@ -14,12 +14,11 @@ It requires a `.secrets` file in the root of the repository with `DISCORD_BOT_TO
 
 ### Registration
 
-At EuroPython we use [pretix](https://pretix.eu/about/en/) as our ticketing system.
+At EuroPython, we use [pretix](https://pretix.eu/about/en/) as our ticketing system.
 
-The bot uses the pretix API to fetch the ticket information and create in-memory key-value store to retrieve the ticket type for a given discord user.
-The mapping between ticket types and discord roles is defined in JSON file, e.g. see `ticket_to_roles_prod.json` and is used by the bot to assign roles to users.
+The bot utilizes the Pretix API to fetch ticket information and creates an in-memory key-value store to retrieve the ticket type for a given Discord user. The mapping between ticket types and Discord roles is defined in a JSON file, such as ticket_to_roles_prod.json, and is used by the bot to assign roles to users.
 
-There are safeguard methods preventing users to register multiple times and to make a direct pretix API call in case the user information is not available in the in-memory store.
+There are safeguard methods in place to prevent users from registering multiple times and to make a direct Pretix API call in case the user information is not available in the in-memory store.
 
 
 ### Program notifications
