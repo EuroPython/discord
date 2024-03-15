@@ -6,11 +6,11 @@ from discord.ext import commands
 from configuration import Config
 from error import AlreadyRegisteredError, NotFoundError
 from helpers.channel_logging import log_to_channel
-# from helpers.pretix_connector import PretixOrder
 from helpers.tito_connector import TitoOrder
+from cogs.registration import Registration
 
 config = Config()
-order_ins = TitoOrder()  # PretixOrder()
+order_ins = TitoOrder()
 
 CHANGE_NICKNAME = False
 
@@ -21,22 +21,8 @@ REGISTERED_LIST = {}
 _logger = logging.getLogger(f"bot.{__name__}")
 
 
-class RegistrationButton(discord.ui.Button["Registration"]):
-    def __init__(self, x: int, y: int, label: str, style: discord.ButtonStyle):
-        super().__init__(style=discord.ButtonStyle.secondary, label=ZERO_WIDTH_SPACE, row=y)
-        self.x = x
-        self.y = y
-        self.label = label
-        self.style = style
-
-    async def callback(self, interaction: discord.Interaction) -> None:
-        assert self.view is not None
-
-        # Launch the modal form
-        await interaction.response.send_modal(RegistrationForm())
-
-
-class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
+# TODO(dan): make pydata subclass with changes
+class RegistrationForm(discord.ui.Modal, title="PyConDE/PyData Berlin 2024 Registration"):
     order = discord.ui.TextInput(
         label="Order",
         required=True,
@@ -107,21 +93,11 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         await interaction.response.send_message(_msg, ephemeral=True, delete_after=180)
 
 
-class RegistrationView(discord.ui.View):
-    def __init__(self):
-        # We don't timeout to have a persistent View
-        super().__init__(timeout=None)
-        self.value = None
-        self.add_item(
-            RegistrationButton(0, 0, f"Register here {EMOJI_POINT}", discord.ButtonStyle.green)
-        )
-
-
-class Registration(commands.Cog):
+class RegistrationPyData(Registration, commands.Cog):
     def __init__(self, bot):
-        self.bot = bot
-        self.guild = None
-        self._title = "Welcome to EuroPython 2023 on Discord! 🎉🐍"
+        super().__init__(bot)
+        self._title = _title = "Welcome to PyConDE / PyData Berlin 2024 on Discord! 🎉🐍"
+        # TODO(dan): update text
         self._desc = (
             "Follow these steps to complete your registration:\n\n"
             f'1️⃣ Click on the green "Register Here {EMOJI_POINT}" button.\n\n'
@@ -134,26 +110,3 @@ class Registration(commands.Cog):
             "volunteer in yellow t-shirt at the conference.\n\n"
             "See you on the server! 🐍💻🎉"
         )
-
-        _logger.info("Cog 'Registration' has been initialized")
-
-    @commands.Cog.listener()
-    async def on_ready(self):
-        if self.guild is None:
-            self.guild = self.bot.get_guild(config.GUILD)
-
-        reg_channel = self.bot.get_channel(config.REG_CHANNEL_ID)
-
-        await reg_channel.purge()
-        await order_ins.fetch_data()
-        order_ins.load_registered()
-
-       
-        view = RegistrationView()
-        embed = discord.Embed(
-            title=self._title,
-            description=self._desc,
-            colour=0xFF8331,
-        )
-
-        await reg_channel.send(embed=embed, view=view)

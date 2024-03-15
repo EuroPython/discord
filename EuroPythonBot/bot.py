@@ -10,7 +10,8 @@ from dotenv import load_dotenv
 
 import configuration
 from cogs.ping import Ping
-from cogs.registration import Registration
+# from cogs.registration import Registration
+from cogs.registration_pydata import RegistrationPyData
 # from helpers.pretix_connector import PretixOrder
 from helpers.tito_connector import TitoOrder
 
@@ -75,7 +76,7 @@ async def main():
     _setup_logging()
     async with bot:
         await bot.add_cog(Ping(bot))
-        await bot.add_cog(Registration(bot))
+        await bot.add_cog(RegistrationPyData(bot))
         # await bot.load_extension("extensions.programme_notifications")
         await bot.load_extension("extensions.organisers")
         await bot.start(DISCORD_BOT_TOKEN)
