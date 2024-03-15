@@ -6,10 +6,13 @@ from discord.ext import commands
 from configuration import Config
 from error import AlreadyRegisteredError, NotFoundError
 from helpers.channel_logging import log_to_channel
-from helpers.pretix_connector import PretixOrder
+# from helpers.pretix_connector import PretixOrder
+from helpers.tito_connector import TitoOrder
 
 config = Config()
-order_ins = PretixOrder()
+order_ins = TitoOrder()  # PretixOrder()
+
+CHANGE_NICKNAME = False
 
 EMOJI_POINT = "\N{WHITE LEFT POINTING BACKHAND INDEX}"
 ZERO_WIDTH_SPACE = "\N{ZERO WIDTH SPACE}"
@@ -62,8 +65,10 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         for role in roles:
             role = discord.utils.get(interaction.guild.roles, id=role)
             await interaction.user.add_roles(role)
-        nickname = self.name.value[:32]  # Limit to the max length
-        await interaction.user.edit(nick=nickname)
+        if CHANGE_NICKNAME:
+            nickname = self.name.value[:32]  # Limit to the max length
+            # TODO(dan): change nickname not working, because no admin permission?
+            await interaction.user.edit(nick=nickname)
         await log_to_channel(
             channel=interaction.client.get_channel(config.REG_LOG_CHANNEL_ID),
             interaction=interaction,
@@ -71,14 +76,16 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
             order=self.order.value,
             roles=roles,
         )
-        await interaction.response.send_message(
-            f"Thank you {self.name.value}, you are now registered!\n\nAlso, your nickname was"
-            f"changed to the name you used to register your ticket. This is also the name that"
-            f" would be on your conference badge, which means that your nickname can be your"
-            f"'virtual conference badge'.",
-            ephemeral=True,
-            delete_after=20,
+        msg = f"Thank you {self.name.value}, you are now registered!"
+        
+        if CHANGE_NICKNAME:
+            msg += (
+                "\n\nAlso, your nickname was changed to the name you used to register your ticket. "
+                "This is also the name that would be on your conference badge, which means that your nickname can be "
+                "your 'virtual conference badge'."
         )
+        
+        await interaction.response.send_message(msg, ephemeral=True, delete_after=20)
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
         # Make sure we know what the error actually is
