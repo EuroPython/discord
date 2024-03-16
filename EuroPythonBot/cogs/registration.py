@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 
 import discord
@@ -12,7 +14,7 @@ from helpers.tito_connector import TitoOrder
 config = Config()
 order_ins = TitoOrder()  # PretixOrder()
 
-CHANGE_NICKNAME = False
+CHANGE_NICKNAME = True
 
 EMOJI_POINT = "\N{WHITE LEFT POINTING BACKHAND INDEX}"
 ZERO_WIDTH_SPACE = "\N{ZERO WIDTH SPACE}"
@@ -22,18 +24,26 @@ _logger = logging.getLogger(f"bot.{__name__}")
 
 
 class RegistrationButton(discord.ui.Button["Registration"]):
-    def __init__(self, x: int, y: int, label: str, style: discord.ButtonStyle):
+    def __init__(
+            self, 
+            registration_form: RegistrationForm,
+            x: int = 0, 
+            y: int = 0, 
+            label: str = f"Register here {EMOJI_POINT}",
+            style: discord.ButtonStyle = discord.ButtonStyle.green,
+        ):
         super().__init__(style=discord.ButtonStyle.secondary, label=ZERO_WIDTH_SPACE, row=y)
         self.x = x
         self.y = y
         self.label = label
         self.style = style
+        self.registration_form = registration_form
 
     async def callback(self, interaction: discord.Interaction) -> None:
         assert self.view is not None
 
         # Launch the modal form
-        await interaction.response.send_modal(RegistrationForm())
+        await interaction.response.send_modal(self.registration_form())
 
 
 class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
@@ -51,7 +61,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         min_length=3,
         max_length=50,
         style=discord.TextStyle.short,
-        placeholder="Your Full Name as printed on your ticket/badge",
+        placeholder="Your full name as printed on your ticket/badge",
     )
 
     async def on_submit(self, interaction: discord.Interaction) -> None:
@@ -65,10 +75,21 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         for role in roles:
             role = discord.utils.get(interaction.guild.roles, id=role)
             await interaction.user.add_roles(role)
+        changed_nickname = True
         if CHANGE_NICKNAME:
-            nickname = self.name.value[:32]  # Limit to the max length
-            # TODO(dan): change nickname not working, because no admin permission?
-            await interaction.user.edit(nick=nickname)
+            try:
+                # TODO(dan): change nickname not working, because no admin permission?
+                nickname = self.name.value[:32]  # Limit to the max length  
+                await interaction.user.edit(nick=nickname)
+            except discord.errors.Forbidden as ex:
+                msg = f"Changing nickname for {self.name} did not work: {ex}"
+                _logger.error(msg)
+                await log_to_channel(
+                    channel=interaction.client.get_channel(config.REG_LOG_CHANNEL_ID),
+                    interaction=interaction,
+                    error=ex,
+                )
+                changed_nickname = False
         await log_to_channel(
             channel=interaction.client.get_channel(config.REG_LOG_CHANNEL_ID),
             interaction=interaction,
@@ -78,7 +99,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         )
         msg = f"Thank you {self.name.value}, you are now registered!"
         
-        if CHANGE_NICKNAME:
+        if CHANGE_NICKNAME and changed_nickname:
             msg += (
                 "\n\nAlso, your nickname was changed to the name you used to register your ticket. "
                 "This is also the name that would be on your conference badge, which means that your nickname can be "
@@ -108,17 +129,19 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
 
 
 class RegistrationView(discord.ui.View):
-    def __init__(self):
+    def __init__(
+        self,
+        registration_button: RegistrationButton = RegistrationButton,
+        registration_form: RegistrationForm = RegistrationForm,
+    ):
         # We don't timeout to have a persistent View
         super().__init__(timeout=None)
         self.value = None
-        self.add_item(
-            RegistrationButton(0, 0, f"Register here {EMOJI_POINT}", discord.ButtonStyle.green)
-        )
+        self.add_item(registration_button(registration_form=registration_form))
 
 
 class Registration(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot, registration_view: RegistrationView = RegistrationView):
         self.bot = bot
         self.guild = None
         self._title = "Welcome to EuroPython 2023 on Discord! 🎉🐍"
@@ -134,6 +157,7 @@ class Registration(commands.Cog):
             "volunteer in yellow t-shirt at the conference.\n\n"
             "See you on the server! 🐍💻🎉"
         )
+        self.registration_view = registration_view
 
         _logger.info("Cog 'Registration' has been initialized")
 
@@ -148,12 +172,10 @@ class Registration(commands.Cog):
         await order_ins.fetch_data()
         order_ins.load_registered()
 
-       
-        view = RegistrationView()
         embed = discord.Embed(
             title=self._title,
             description=self._desc,
             colour=0xFF8331,
         )
 
-        await reg_channel.send(embed=embed, view=view)
+        await reg_channel.send(embed=embed, view=self.registration_view())
