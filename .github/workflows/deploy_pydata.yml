@@ -1,0 +1,31 @@
+name: Deploy to server
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Deploy to some Server
+        uses: easingthemes/ssh-deploy@v4
+        with:
+            SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY_EC2_DISCORD }}
+            SOURCE: "."
+            REMOTE_HOST: "136.243.153.146"
+            REMOTE_USER: "root"
+            TARGET: "/home/discord/"
+            EXCLUDE: "/dist/, /node_modules/"
+
+            SCRIPT_BEFORE: |
+                whoami
+                ls -al
+            SCRIPT_AFTER: |
+                echo $RSYNC_STDOUT
+                cd /root/discord
+                docker compose down
+                docker compose up --detach --build
