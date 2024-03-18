@@ -10,8 +10,10 @@ from dotenv import load_dotenv
 
 import configuration
 from cogs.ping import Ping
-from cogs.registration import Registration
-from helpers.pretix_connector import PretixOrder
+# from cogs.registration import Registration
+from cogs.registration_pydata import RegistrationPyData
+# from helpers.pretix_connector import PretixOrder
+from helpers.tito_connector import TitoOrder
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".secrets")
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
@@ -45,7 +47,7 @@ class Bot(commands.Bot):
 
 def _setup_logging() -> None:
     """Set up a basic logging configuration."""
-    config = configuration.Config()
+    config = configuration.Config(testing=True)
 
     # Create a stream handler that logs to stdout (12-factor app)
     stream_handler = logging.StreamHandler(stream=sys.stdout)
@@ -74,15 +76,16 @@ async def main():
     _setup_logging()
     async with bot:
         await bot.add_cog(Ping(bot))
-        await bot.add_cog(Registration(bot))
-        await bot.load_extension("extensions.programme_notifications")
-        await bot.load_extension("extensions.organisers")
+        await bot.add_cog(RegistrationPyData(bot))
+        # await bot.load_extension("extensions.programme_notifications")
+        # await bot.load_extension("extensions.organisers")
         await bot.start(DISCORD_BOT_TOKEN)
 
 
 if __name__ == "__main__":
     bot = Bot()
-    orders = PretixOrder()
+    # orders = PretixOrder()
+    orders = TitoOrder()
     try:
         asyncio.run(main())
     except KeyboardInterrupt:

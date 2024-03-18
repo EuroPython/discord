@@ -21,7 +21,7 @@ class Config(metaclass=Singleton):
     _CONFIG_DEFAULT = "config.toml"
     _CONFIG_LOCAL = "config.local.toml"
 
-    def __init__(self):
+    def __init__(self, testing: bool = False):
         # Configuration file
         config = None
         self.BASE_PATH = Path(__file__).resolve().parent
@@ -34,26 +34,27 @@ class Config(metaclass=Singleton):
             sys.exit(-1)
 
         try:
+            # Logging
+            self.LOG_LEVEL = config.get("logging", {}).get("LOG_LEVEL", "INFO")
+            
             # Server
             self.GUILD = int(config["server"]["GUILD"])
 
-            # Registration
-            self.REG_CHANNEL_ID = int(config["registration"]["REG_CHANNEL_ID"])
-            self.REG_HELP_CHANNEL_ID = int(config["registration"]["REG_HELP_CHANNEL_ID"])
-            self.REG_LOG_CHANNEL_ID = int(config["registration"]["REG_LOG_CHANNEL_ID"])
+            if not testing:
+                # Registration
+                self.REG_CHANNEL_ID = int(config["registration"]["REG_CHANNEL_ID"])
+                self.REG_HELP_CHANNEL_ID = int(config["registration"]["REG_HELP_CHANNEL_ID"])
+                self.REG_LOG_CHANNEL_ID = int(config["registration"]["REG_LOG_CHANNEL_ID"])
 
-            # Pretix
-            self.PRETIX_BASE_URL = config["pretix"]["PRETIX_BASE_URL"]
-            self.TICKET_TO_ROLES_JSON = config["pretix"]["TICKET_TO_ROLES_JSON"]
+                # Pretix
+                self.PRETIX_BASE_URL = ""  # config["pretix"]["PRETIX_BASE_URL"]
+                self.TICKET_TO_ROLES_JSON = config["pretix"]["TICKET_TO_ROLES_JSON"]
+                
+                # Mapping
+                with self.BASE_PATH.joinpath(self.TICKET_TO_ROLES_JSON).open() as ticket_to_roles_file:
+                    ticket_to_roles = json.load(ticket_to_roles_file)
 
-            # Logging
-            self.LOG_LEVEL = config.get("logging", {}).get("LOG_LEVEL", "INFO")
-
-            # Mapping
-            with self.BASE_PATH.joinpath(self.TICKET_TO_ROLES_JSON).open() as ticket_to_roles_file:
-                ticket_to_roles = json.load(ticket_to_roles_file)
-
-            self.TICKET_TO_ROLE = ticket_to_roles
+                self.TICKET_TO_ROLE = ticket_to_roles
 
         except KeyError:
             _logger.critical(

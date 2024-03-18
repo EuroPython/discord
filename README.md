@@ -45,3 +45,20 @@ or with docker:
 docker build --tag discord_bot .
 docker run --interactive --tty --env DISCORD_BOT_TOKEN=$DISCORD_BOT_TOKEN --env PRETIX_TOKEN=$PRETIX_TOKEN discord_bot
 ```
+
+# Pydata deploy notes
+
+As we are not using ansible we need to rely to do some manual stuff on the ssh.
+
+```bash
+# create log file
+mkdir /home/bot
+touch /home/bot/registered_log.txt
+```
+
+```bash
+mkdir -p /etc/EuroPython/discord/
+touch /etc/EuroPython/discord/.secrets
+# replace ... with the token :)
+echo "DISCORD_BOT_TOKEN=..." >  /etc/EuroPython/discord/.secrets
+```
