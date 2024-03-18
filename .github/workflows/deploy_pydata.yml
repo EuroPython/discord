@@ -26,6 +26,6 @@ jobs:
                 ls -al
             SCRIPT_AFTER: |
                 echo $RSYNC_STDOUT
-                cd /root/discord
+                cd /home/discord
                 docker compose down
                 docker compose up --detach --build
