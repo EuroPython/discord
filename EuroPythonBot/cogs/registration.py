@@ -8,6 +8,7 @@ from discord.ext import commands
 from configuration import Config
 from error import AlreadyRegisteredError, NotFoundError
 from helpers.channel_logging import log_to_channel
+
 # from helpers.pretix_connector import PretixOrder
 from helpers.tito_connector import TitoOrder
 
@@ -25,13 +26,13 @@ _logger = logging.getLogger(f"bot.{__name__}")
 
 class RegistrationButton(discord.ui.Button["Registration"]):
     def __init__(
-            self, 
-            registration_form: RegistrationForm,
-            x: int = 0, 
-            y: int = 0, 
-            label: str = f"Register here {EMOJI_POINT}",
-            style: discord.ButtonStyle = discord.ButtonStyle.green,
-        ):
+        self,
+        registration_form: RegistrationForm,
+        x: int = 0,
+        y: int = 0,
+        label: str = f"Register here {EMOJI_POINT}",
+        style: discord.ButtonStyle = discord.ButtonStyle.green,
+    ):
         super().__init__(style=discord.ButtonStyle.secondary, label=ZERO_WIDTH_SPACE, row=y)
         self.x = x
         self.y = y
@@ -79,7 +80,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         if CHANGE_NICKNAME:
             try:
                 # TODO(dan): change nickname not working, because no admin permission?
-                nickname = self.name.value[:32]  # Limit to the max length  
+                nickname = self.name.value[:32]  # Limit to the max length
                 await interaction.user.edit(nick=nickname)
             except discord.errors.Forbidden as ex:
                 msg = f"Changing nickname for {self.name} did not work: {ex}"
@@ -98,14 +99,14 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
             roles=roles,
         )
         msg = f"Thank you {self.name.value}, you are now registered!"
-        
+
         if CHANGE_NICKNAME and changed_nickname:
             msg += (
                 "\n\nAlso, your nickname was changed to the name you used to register your ticket. "
-                "This is also the name that would be on your conference badge, which means that your nickname can be "
-                "your 'virtual conference badge'."
-        )
-        
+                "This is also the name that would be on your conference badge, which means that "
+                "your nickname can be your 'virtual conference badge'."
+            )
+
         await interaction.response.send_message(msg, ephemeral=True, delete_after=20)
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:

@@ -10,8 +10,10 @@ from dotenv import load_dotenv
 
 import configuration
 from cogs.ping import Ping
+
 # from cogs.registration import Registration
 from cogs.registration_pydata import RegistrationPyData
+
 # from helpers.pretix_connector import PretixOrder
 from helpers.tito_connector import TitoOrder
 

@@ -1,13 +1,18 @@
-# import logging
- 
-import discord
+"""Registration for PyData."""
 from discord.ext import commands
+
+from cogs.registration import (
+    Registration,
+    RegistrationButton,
+    RegistrationForm,
+    RegistrationView,
+)
 
 # from configuration import Config
 # from error import AlreadyRegisteredError, NotFoundError
 # from helpers.channel_logging import log_to_channel
 # from helpers.tito_connector import TitoOrder
-from cogs.registration import Registration, RegistrationButton, RegistrationForm, RegistrationView
+
 
 # config = Config()
 # order_ins = TitoOrder()
@@ -21,23 +26,31 @@ EMOJI_POINT = "\N{WHITE LEFT POINTING BACKHAND INDEX}"
 
 # TODO(dan): make pydata subclass with changes
 
+
 class RegistrationButtonPyData(RegistrationButton):
-    def __init__(self, registration_form: RegistrationForm,):
+    def __init__(
+        self,
+        registration_form: RegistrationForm,
+    ):
         super().__init__(registration_form=RegistrationFormPyData)
+
 
 class RegistrationFormPyData(RegistrationForm):
     def __init__(self):
         super().__init__(title="PyConDE/PyData Berlin 2024 Registration")
-    
-    
+
+
 class RegistrationViewPyData(RegistrationView):
     def __init__(self):
-        super().__init__(registration_button=RegistrationButtonPyData, registration_form=RegistrationFormPyData)
+        super().__init__(
+            registration_button=RegistrationButtonPyData, registration_form=RegistrationFormPyData
+        )
+
 
 class RegistrationPyData(Registration, commands.Cog):
     def __init__(self, bot):
         super().__init__(bot, registration_view=RegistrationViewPyData)
-        self._title = _title = "Welcome to PyConDE / PyData Berlin 2024 on Discord! 🎉🐍"
+        self._title = "Welcome to PyConDE / PyData Berlin 2024 on Discord! 🎉🐍"
         # TODO(dan): update text
         self._desc = (
             "Follow these steps to complete your registration:\n\n"

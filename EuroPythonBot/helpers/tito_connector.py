@@ -1,5 +1,6 @@
 import logging
-import os
+
+# import os
 from datetime import datetime
 from http import HTTPStatus
 from pathlib import Path
@@ -30,7 +31,8 @@ class TitoOrder(metaclass=Singleton):
 
         self.id_to_name = None
         self.orders = {}
-        # TODO: fetch data every 5 minutes, triggered when validating tickets and checking last_fetch
+        # TODO: fetch data every 5 minutes, triggered when validating tickets
+        # and checking last_fetch
         self.last_fetch = None
 
         self.registered_file = getattr(self.config, "REGISTERED_LOG_FILE", "./registered_log.txt")
@@ -119,7 +121,7 @@ class TitoOrder(metaclass=Singleton):
 
     async def get_ticket_type(self, order: str, full_name: str) -> str:
         """With user input `order` and `full_name`, check for their ticket type"""
-        
+
         return "Personal"
 
         key = f"{order}-{sanitize_string(input_string=full_name)}"

@@ -36,7 +36,7 @@ class Config(metaclass=Singleton):
         try:
             # Logging
             self.LOG_LEVEL = config.get("logging", {}).get("LOG_LEVEL", "INFO")
-            
+
             # Server
             self.GUILD = int(config["server"]["GUILD"])
 
@@ -49,9 +49,11 @@ class Config(metaclass=Singleton):
                 # Pretix
                 self.PRETIX_BASE_URL = ""  # config["pretix"]["PRETIX_BASE_URL"]
                 self.TICKET_TO_ROLES_JSON = config["pretix"]["TICKET_TO_ROLES_JSON"]
-                
+
                 # Mapping
-                with self.BASE_PATH.joinpath(self.TICKET_TO_ROLES_JSON).open() as ticket_to_roles_file:
+                with self.BASE_PATH.joinpath(
+                    self.TICKET_TO_ROLES_JSON
+                ).open() as ticket_to_roles_file:
                     ticket_to_roles = json.load(ticket_to_roles_file)
 
                 self.TICKET_TO_ROLE = ticket_to_roles
