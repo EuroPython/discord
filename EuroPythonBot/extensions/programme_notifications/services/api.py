@@ -142,7 +142,7 @@ class ApiClient:
         slug = code  # session_information["session"].get("slug")
         website_base_url = self.config.conference_website_session_base_url
         session_url = yarl.URL(website_base_url.format(slug=slug)) if slug else None
-                
+
         api_base_url = self.config.conference_website_api_session_url
         url = api_base_url.format(code=code)
         async with self.session.get(url=url, raise_for_status=True) as response:
@@ -150,7 +150,8 @@ class ApiClient:
             html = await response.text()
 
         # experience = session_information["session"].get("experience")
-        experience = html[html.find("Python Skill Level")+19:].split("</a>")[0].lower()
+        python_skill_level = html.find("Python Skill Level") + 19
+        experience = html[python_skill_level:].split("</a>")[0].lower()
 
         return session_url, experience
 

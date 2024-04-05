@@ -15,7 +15,7 @@ _EXPERIENCE_COLORS: Final = {
     "novice": 6542417,
 }
 _CONFERENCE_NAME = "PyCon/PyData"
-_CONFERENCE_WEBSITE: Final = "[2024.pycon.de](https://2024.pycon.de/)"
+_CONFERENCE_WEBSITE: Final = "[2024.pycon.de](https://2024.pycon.de)"
 
 
 def create_session_embed(
@@ -46,7 +46,13 @@ def create_session_embed(
         experience = session.experience.capitalize()
         fields.append(discord.Field(name="Python Level", value=experience, inline=True))
     else:
-        fields.append(discord.Field(f"{_CONFERENCE_NAME} Website", value=_CONFERENCE_WEBSITE, inline=True))
+        fields.append(
+            discord.Field(
+                f"{_CONFERENCE_NAME} Website",
+                value=_CONFERENCE_WEBSITE,
+                inline=True,
+            )
+        )
 
     return discord.Embed(
         title=_format_title(session.title),

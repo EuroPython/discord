@@ -18,6 +18,7 @@ _logger = logging.getLogger(f"bot.{__name__}")
 # timestamp during the conference used for testing (see timewarm in config)
 TIME_DURING_CONFERENCE = "2024-04-23T15:57:45+02:00"
 
+
 async def setup(bot: commands.Bot) -> None:
     """Set up the Programme Notifications extension."""
     client_session = _create_aiohttp_session()
