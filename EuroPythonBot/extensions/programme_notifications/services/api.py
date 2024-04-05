@@ -138,15 +138,21 @@ class ApiClient:
         :return: A tuple with the session slug and audience experience
           level
         """
-        api_base_url = self.config.europython_api_session_url
+        # TODO: overwrite method or use if/else?
+        slug = code  # session_information["session"].get("slug")
+        website_base_url = self.config.conference_website_session_base_url
+        session_url = yarl.URL(website_base_url.format(slug=slug)) if slug else None
+                
+        api_base_url = self.config.conference_website_api_session_url
         url = api_base_url.format(code=code)
         async with self.session.get(url=url, raise_for_status=True) as response:
-            session_information = await response.json()
+            # session_information = await response.json()
+            html = await response.text()
 
-        slug = session_information["session"].get("slug")
-        website_base_url = self.config.europython_session_base_url
-        session_url = yarl.URL(website_base_url.format(slug=slug)) if slug else None
-        return session_url, session_information["session"].get("experience")
+        # experience = session_information["session"].get("experience")
+        experience = html[html.find("Python Skill Level")+19:].split("</a>")[0].lower()
+
+        return session_url, experience
 
     async def execute_webhook(self, message: discord.WebhookMessage, *, webhook: str) -> None:
         """Execute a Discord webhook.

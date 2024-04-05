@@ -83,78 +83,78 @@ def _configuration_factory(config: dict[str, Any]) -> configuration.NotifierConf
     :return: An in-memory configuration repository
     """
     _configuration_defaults = {
-        "timezone": "Europe/Prague",
-        "conference_days_first": "2023-07-19",
-        "conference_days_last": "2023-07-21",
-        "europython_session_base_url": "https://europython/session/{slug}",
-        "europython_api_session_url": "https://europython/api/session/{code}",
-        "pretalx_schedule_url": "https://europython.api/schedule/latest",
-        "notification_channels": [
-            {"webhook_id": "EP2023_NOTIFICATIONS_CHANNEL", "include_channel_in_embeds": True},
-            {"webhook_id": "PYTHON_DISCORD", "include_channel_in_embeds": False},
-        ],
-        "webhooks": {
-            "EP2023_NOTIFICATIONS_CHANNEL-channel": "https://webhook.discord/123",
-            "PYTHON_DISCORD-channel": "https://webhook.discord/456",
-            "ROOM_1234": "https://webhook.discord/abacd",
-            "ROOM_5432": "https://webhook.discord/dcbea",
-        },
-        "rooms": {
-            "1234": {
-                "discord_channel_id": "1120780288755253338",
-                "webhook_id": "ROOM_1234",
-                "livestreams": {
-                    "2023-07-19": "https://youtube.livestream/1",
-                    "2023-07-20": "https://youtube.livestream/2",
-                    "2023-07-21": "https://youtube.livestream/3",
-                },
-            },
-            "4567": {
-                "discord_channel_id": "1120780345575477421",
-                "webhook_id": "ROOM_4567",
-                "livestreams": {
-                    "2023-07-19": "https://youtube.livestream/4",
-                    "2023-07-20": "https://youtube.livestream/5",
-                    "2023-07-21": "https://youtube.livestream/6",
-                },
-            },
-            "8901": {
-                "discord_channel_id": "1120780371622121612",
-                "webhook_id": "ROOM_8901",
-                "livestreams": {
-                    "2023-07-19": "https://youtube.livestream/7",
-                    "2023-07-20": "https://youtube.livestream/8",
-                    "2023-07-21": "https://youtube.livestream/9",
-                },
-            },
-            "2345": {
-                "discord_channel_id": "1120780401791750315",
-                "webhook_id": "ROOM_2345",
-                "livestreams": {
-                    "2023-07-19": "https://youtube.livestream/10",
-                    "2023-07-20": "https://youtube.livestream/11",
-                    "2023-07-21": "https://youtube.livestream/12",
-                },
-            },
-            "6789": {
-                "discord_channel_id": "1120780461195657387",
-                "webhook_id": "ROOM_6789",
-                "livestreams": {
-                    "2023-07-19": "https://youtube.livestream/13",
-                    "2023-07-20": "https://youtube.livestream/14",
-                    "2023-07-21": "https://youtube.livestream/15",
-                },
-            },
-            "1111": {
-                "discord_channel_id": "1120780490576777287",
-                "webhook_id": "ROOM_111",
-                "livestreams": {
-                    "2023-07-19": "https://youtube.livestream/16",
-                    "2023-07-20": "https://youtube.livestream/17",
-                    "2023-07-21": "https://youtube.livestream/18",
-                },
-            },
-        },
+        # "timezone": "Europe/Berlin",
+        # "conference_days_first": "2024-04-22",
+        # "conference_days_last": "2024-04-24",
+        # # "conference_website_session_base_url": "https://europython/session/{slug}",
+        # # "conference_website_api_session_url": "https://europython/api/session/{code}",
+        # "pretalx_schedule_url": "https://pretalx.com/api/events/pyconde-pydata-2024/schedules/latest/",
+        # "notification_channels": [
+        #     {"webhook_id": "EP2023_NOTIFICATIONS_CHANNEL", "include_channel_in_embeds": True},
+        #     {"webhook_id": "PYTHON_DISCORD", "include_channel_in_embeds": False},
+        # ],
+        # "webhooks": {
+        #     "EP2023_NOTIFICATIONS_CHANNEL-channel": "https://webhook.discord/123",
+        #     "PYTHON_DISCORD-channel": "https://webhook.discord/456",
+        #     "ROOM_1234": "https://webhook.discord/abacd",
+        #     "ROOM_5432": "https://webhook.discord/dcbea",
+        # },
+        # "rooms": {
+        #     "1234": {
+        #         "discord_channel_id": "1120780288755253338",
+        #         "webhook_id": "ROOM_1234",
+        #         "livestreams": {
+        #             "2023-07-19": "https://youtube.livestream/1",
+        #             "2023-07-20": "https://youtube.livestream/2",
+        #             "2023-07-21": "https://youtube.livestream/3",
+        #         },
+        #     },
+        #     "4567": {
+        #         "discord_channel_id": "1120780345575477421",
+        #         "webhook_id": "ROOM_4567",
+        #         "livestreams": {
+        #             "2023-07-19": "https://youtube.livestream/4",
+        #             "2023-07-20": "https://youtube.livestream/5",
+        #             "2023-07-21": "https://youtube.livestream/6",
+        #         },
+        #     },
+        #     "8901": {
+        #         "discord_channel_id": "1120780371622121612",
+        #         "webhook_id": "ROOM_8901",
+        #         "livestreams": {
+        #             "2023-07-19": "https://youtube.livestream/7",
+        #             "2023-07-20": "https://youtube.livestream/8",
+        #             "2023-07-21": "https://youtube.livestream/9",
+        #         },
+        #     },
+        #     "2345": {
+        #         "discord_channel_id": "1120780401791750315",
+        #         "webhook_id": "ROOM_2345",
+        #         "livestreams": {
+        #             "2023-07-19": "https://youtube.livestream/10",
+        #             "2023-07-20": "https://youtube.livestream/11",
+        #             "2023-07-21": "https://youtube.livestream/12",
+        #         },
+        #     },
+        #     "6789": {
+        #         "discord_channel_id": "1120780461195657387",
+        #         "webhook_id": "ROOM_6789",
+        #         "livestreams": {
+        #             "2023-07-19": "https://youtube.livestream/13",
+        #             "2023-07-20": "https://youtube.livestream/14",
+        #             "2023-07-21": "https://youtube.livestream/15",
+        #         },
+        #     },
+        #     "1111": {
+        #         "discord_channel_id": "1120780490576777287",
+        #         "webhook_id": "ROOM_111",
+        #         "livestreams": {
+        #             "2023-07-19": "https://youtube.livestream/16",
+        #             "2023-07-20": "https://youtube.livestream/17",
+        #             "2023-07-21": "https://youtube.livestream/18",
+        #         },
+        #     },
+        # },
     }
     kwargs = _configuration_defaults | config
     converter = cattrs.Converter()

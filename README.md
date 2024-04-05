@@ -62,3 +62,5 @@ touch /etc/EuroPython/discord/.secrets
 # replace ... with the token :)
 echo "DISCORD_BOT_TOKEN=..." >  /etc/EuroPython/discord/.secrets
 ```
+
+Also add the Discord webhook rooms URLs to the `.secrets` file.

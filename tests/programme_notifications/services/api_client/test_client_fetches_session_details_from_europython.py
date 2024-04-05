@@ -46,8 +46,8 @@ async def test_api_client_returns_level_and_url_for_session(
     # AND a configuration repository with a pretalx schedule url
     config = configuration_factory(
         {
-            "europython_api_session_url": "https://europython.api/api/session/{code}",
-            "europython_session_base_url": "https://europython.schedule/{slug}",
+            "conference_website_api_session_url": "https://2024.pycon.de/program/{code}",
+            "conference_website_session_base_url": "https://2024.pycon.de/program/{slug}",
         }
     )
     # AND an api client with that session and configuration repository
