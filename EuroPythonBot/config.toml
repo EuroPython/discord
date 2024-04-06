@@ -29,83 +29,96 @@ LOG_LEVEL = "INFO"
 
 [programme_notifications]
 timezone = "Europe/Berlin"
-timewarp = false
+timewarp = false  # true for testing
 conference_days_first = "2024-04-22"
 conference_days_last = "2024-04-24"
-# pretalx_schedule_url = "https://pretalx.com/api/events/europython-2023/schedules/latest/"
-# europython_session_base_url = "https://ep2023.europython.eu/session/{slug}"
-# europython_api_session_url = "https://ep2023.europython.eu/api/session/{code}"
+pretalx_schedule_url = "https://pretalx.com/api/events/pyconde-pydata-2024/schedules/latest/"
+conference_website_session_base_url = "https://2024.pycon.de/program/{slug}"
+conference_website_api_session_url = "https://2024.pycon.de/program/{code}"
 
+# we do not need this webhook. not really sure what it should be for
 # [[programme_notifications.notification_channels]]
 # webhook_id = "PYTHON_DISCORD"
 # include_channel_in_embeds = false
-# 
-# [[programme_notifications.notification_channels]]
-# webhook_id = "PROGRAMME_NOTIFICATIONS"
-# include_channel_in_embeds = true
-# 
-# [programme_notifications.rooms.2189]
-# # Forum Hall
-# webhook_id = "ROOM_2189"
-# discord_channel_id = "1120780288755253338"
-# 
-# [programme_notifications.rooms.2189.livestreams]
-# # Forum Hall Livestream ULRs
-# "2023-07-19" = "https://europython.eu/live/forum"
-# "2023-07-20" = "https://europython.eu/live/forum"
-# "2023-07-21" = "https://europython.eu/live/forum"
-# 
-# [programme_notifications.rooms.2190]
-# # South Hall 2A
-# webhook_id = "ROOM_2190"
-# discord_channel_id = "1120780345575477421"
-# 
-# [programme_notifications.rooms.2190.livestreams]
-# # South Hall 2A Livestream URLs
-# "2023-07-19" = "https://europython.eu/live/south-hall-2a"
-# "2023-07-20" = "https://europython.eu/live/south-hall-2a"
-# "2023-07-21" = "https://europython.eu/live/south-hall-2a"
-# 
-# [programme_notifications.rooms.2191]
-# # South Hall 2B
-# webhook_id = "ROOM_2191"
-# discord_channel_id = "1120780371622121612"
-# 
-# [programme_notifications.rooms.2191.livestreams]
-# # South Hall 2B Livestream URLs
-# "2023-07-19" = "https://europython.eu/live/south-hall-2b"
-# "2023-07-20" = "https://europython.eu/live/south-hall-2b"
-# "2023-07-21" = "https://europython.eu/live/south-hall-2b"
-# 
-# [programme_notifications.rooms.2194]
-# # North Hall
-# webhook_id = "ROOM_2194"
-# discord_channel_id = "1120780401791750315"
-# 
-# [programme_notifications.rooms.2194.livestreams]
-# # North Hall Livestream URLs
-# "2023-07-19" = "https://europython.eu/live/north-hall"
-# "2023-07-20" = "https://europython.eu/live/north-hall"
-# "2023-07-21" = "https://europython.eu/live/north-hall"
-# 
-# [programme_notifications.rooms.2192]
-# # Terrace 2A
-# webhook_id = "ROOM_2192"
-# discord_channel_id = "1120780461195657387"
-# 
-# [programme_notifications.rooms.2192.livestreams]
-# # Terrace 2A Livestream URLs
-# "2023-07-19" = "https://europython.eu/live/terrace-2a"
-# "2023-07-20" = "https://europython.eu/live/terrace-2a"
-# "2023-07-21" = "https://europython.eu/live/terrace-2a"
-# 
-# [programme_notifications.rooms.2193]
-# # Terrace 2B
-# webhook_id = "ROOM_2193"
-# discord_channel_id = "1120780490576777287"
-# 
-# [programme_notifications.rooms.2193.livestreams]
-# # Terrace 2B Livestream URLs
-# "2023-07-19" = "https://europython.eu/live/terrace-2b"
-# "2023-07-20" = "https://europython.eu/live/terrace-2b"
-# "2023-07-21" = "https://europython.eu/live/terrace-2b"
+
+[[programme_notifications.notification_channels]]
+webhook_id = "PROGRAMME_NOTIFICATIONS"
+include_channel_in_embeds = true
+
+# Rooms from pretalx
+# KUPPELSAAL: 2578 in pretalx
+[programme_notifications.rooms.2578]
+webhook_id = "ROOM_2578"
+discord_channel_id = "1225453671152877680"
+
+[programme_notifications.rooms.2578.livestreams]
+# TODO: update URLs
+"2024-04-22" = "https://2024.pycon.de/live"
+"2024-04-23" = "https://2024.pycon.de/live"
+"2024-04-24" = "https://2024.pycon.de/live"
+
+# B09: 2579
+[programme_notifications.rooms.2579]
+webhook_id = "ROOM_2579"
+discord_channel_id = "1225453705910816868"
+
+[programme_notifications.rooms.2579.livestreams]
+# TODO: update URLs
+"2024-04-22" = "https://2024.pycon.de/live"
+"2024-04-23" = "https://2024.pycon.de/live"
+"2024-04-24" = "https://2024.pycon.de/live"
+
+# B07-B08: 2580
+[programme_notifications.rooms.2580]
+webhook_id = "ROOM_2580"
+discord_channel_id = "1225454000800006144"
+
+[programme_notifications.rooms.2580.livestreams]
+# TODO: update URLs
+"2024-04-22" = "https://2024.pycon.de/live"
+"2024-04-23" = "https://2024.pycon.de/live"
+"2024-04-24" = "https://2024.pycon.de/live"
+
+# B05-B06: 2581
+[programme_notifications.rooms.2581]
+webhook_id = "ROOM_2581"
+discord_channel_id = "1225454340513464340"
+
+[programme_notifications.rooms.2581.livestreams]
+# TODO: update URLs
+"2024-04-22" = "https://2024.pycon.de/live"
+"2024-04-23" = "https://2024.pycon.de/live"
+"2024-04-24" = "https://2024.pycon.de/live"
+
+# A1: 2582
+[programme_notifications.rooms.2582]
+webhook_id = "ROOM_2582"
+discord_channel_id = "1225454099533791303"
+
+[programme_notifications.rooms.2582.livestreams]
+# TODO: update URLs
+"2024-04-22" = "https://2024.pycon.de/live"
+"2024-04-23" = "https://2024.pycon.de/live"
+"2024-04-24" = "https://2024.pycon.de/live"
+
+# A03-A04: 2583
+[programme_notifications.rooms.2583]
+webhook_id = "ROOM_2583"
+discord_channel_id = "1225454458935181493"
+
+[programme_notifications.rooms.2583.livestreams]
+# TODO: update URLs
+"2024-04-22" = "https://2024.pycon.de/live"
+"2024-04-23" = "https://2024.pycon.de/live"
+"2024-04-24" = "https://2024.pycon.de/live"
+
+# A05-A06: 2584
+[programme_notifications.rooms.2584]
+webhook_id = "ROOM_2584"
+discord_channel_id = "1225453715079827577"
+
+[programme_notifications.rooms.2584.livestreams]
+# TODO: update URLs
+"2024-04-22" = "https://2024.pycon.de/live"
+"2024-04-23" = "https://2024.pycon.de/live"
+"2024-04-24" = "https://2024.pycon.de/live"

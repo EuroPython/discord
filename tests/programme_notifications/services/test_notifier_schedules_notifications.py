@@ -62,7 +62,7 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                 "slot": {
                     "room_id": 1234,
                     "room": {"en": "The Main Terrarium"},
-                    "start": "2023-07-19T09:55:00+02:00",
+                    "start": "2024-04-22T09:55:00+02:00",
                 },
                 "speakers": [
                     {"code": "BBCDEE", "name": "Monty the Python", "avatar": "https://snek.com"}
@@ -92,9 +92,9 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                     "discord_channel_id": "1234567890",
                     "webhook_id": "room_1234",
                     "livestreams": {
-                        "2023-07-19": "https://one.livestream.ep",
-                        "2023-07-20": "https://two.livestream.ep",
-                        "2023-07-21": "https://three.livestream.ep",
+                        "2024-04-22": "https://one.livestream.ep",
+                        "2024-04-23": "https://two.livestream.ep",
+                        "2024-04-24": "https://three.livestream.ep",
                     },
                 }
             },
@@ -116,7 +116,7 @@ async def test_scheduling_notifications_delivers_to_webhooks(
     )
     # AND a clock with a fixed `now` and fake sleeper
     clock_obj = clock.Clock(
-        sleeper=mock.AsyncMock(), now=lambda: arrow.get("2023-07-19T09:00:00+02:00")
+        sleeper=mock.AsyncMock(), now=lambda: arrow.get("2024-04-22T09:00:00+02:00")
     )
     # AND a scheduler that uses that clock
     scheduler = helpers.AwaitableScheduler(clock=clock_obj)
@@ -147,7 +147,7 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                         "[Read more about this session](https://europythoon/hungry-snakes)"
                     ),
                     fields=[
-                        discord.Field(name="Start Time", value="<t:1689753300:f>", inline=True),
+                        discord.Field(name="Start Time", value="<t:1713772500:f>", inline=True),
                         discord.Field(name="Room", value="The Main Terrarium", inline=True),
                         discord.Field(name="Track", value="Pet Pythons", inline=True),
                         discord.Field(name="Duration", value="37 minutes", inline=True),
@@ -182,7 +182,7 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                         "[Read more about this session](https://europythoon/hungry-snakes)"
                     ),
                     fields=[
-                        discord.Field(name="Start Time", value="<t:1689753300:f>", inline=True),
+                        discord.Field(name="Start Time", value="<t:1713772500:f>", inline=True),
                         discord.Field(name="Room", value="The Main Terrarium", inline=True),
                         discord.Field(name="Track", value="Pet Pythons", inline=True),
                         discord.Field(name="Duration", value="37 minutes", inline=True),
@@ -191,7 +191,7 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                             value="[YouTube](https://one.livestream.ep)",
                             inline=True,
                         ),
-                        discord.Field(name="Level", value="Intermediate", inline=True),
+                        discord.Field(name="Python Level", value="Intermediate", inline=True),
                     ],
                     footer=discord.Footer(
                         text="This session starts at 09:55:00 (local conference time)"
@@ -217,7 +217,7 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                         "[Read more about this session](https://europythoon/hungry-snakes)"
                     ),
                     fields=[
-                        discord.Field(name="Start Time", value="<t:1689753300:f>", inline=True),
+                        discord.Field(name="Start Time", value="<t:1713772500:f>", inline=True),
                         discord.Field(name="Room", value="The Main Terrarium", inline=True),
                         discord.Field(name="Track", value="Pet Pythons", inline=True),
                         discord.Field(name="Duration", value="37 minutes", inline=True),
@@ -226,7 +226,7 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                             value="[YouTube](https://one.livestream.ep)",
                             inline=True,
                         ),
-                        discord.Field(name="Level", value="Intermediate", inline=True),
+                        discord.Field(name="Python Level", value="Intermediate", inline=True),
                     ],
                     footer=discord.Footer(
                         text="This session starts at 09:55:00 (local conference time)"
@@ -365,7 +365,7 @@ async def test_excludes_non_conference_days_sessions(
                 "slot": {
                     "room_id": 1234,
                     "room": {"en": "The Main Terrarium"},
-                    "start": "2021-07-18T23:59:59+02:00",
+                    "start": "2024-04-18T23:59:59+02:00",
                 },
                 "speakers": [
                     {"code": "BBCDEE", "name": "Monty the Python", "avatar": "https://snek.com"}
@@ -382,7 +382,7 @@ async def test_excludes_non_conference_days_sessions(
                 "slot": {
                     "room_id": 1234,
                     "room": {"en": "The Main Terrarium"},
-                    "start": "2021-07-22T00:00:00+02:00",
+                    "start": "2024-04-25T00:00:00+02:00",
                 },
                 "speakers": [
                     {"code": "BBCDEE", "name": "Monty the Python", "avatar": "https://snek.com"}
@@ -403,8 +403,8 @@ async def test_excludes_non_conference_days_sessions(
     # AND config that states the sessions are outside of conference days
     config = configuration_factory(
         {
-            "conference_days_first": "2021-07-19",
-            "conference_days_last": "2021-07-21",
+            "conference_days_first": "2024-04-22",
+            "conference_days_last": "2024-04-24",
         }
     )
     # AND a session information service

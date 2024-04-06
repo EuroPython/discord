@@ -24,9 +24,6 @@ EMOJI_POINT = "\N{WHITE LEFT POINTING BACKHAND INDEX}"
 # _logger = logging.getLogger(f"bot.{__name__}")
 
 
-# TODO(dan): make pydata subclass with changes
-
-
 class RegistrationButtonPyData(RegistrationButton):
     def __init__(
         self,

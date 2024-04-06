@@ -48,8 +48,8 @@ class NotifierConfiguration:
     timezone: str = attrs.field(validator=_INSTANCE_OF_STR)
     conference_days_first: arrow.Arrow = attrs.field(validator=_INSTANCE_OF_DT)
     conference_days_last: arrow.Arrow = attrs.field(validator=_INSTANCE_OF_DT)
-    europython_session_base_url: str = attrs.field(validator=_WEBSITE_SESSION_URL)
-    europython_api_session_url: str = attrs.field(validator=_API_SESSION_URL)
+    conference_website_session_base_url: str = attrs.field(validator=_WEBSITE_SESSION_URL)
+    conference_website_api_session_url: str = attrs.field(validator=_API_SESSION_URL)
     pretalx_schedule_url: str = attrs.field(validator=_INSTANCE_OF_STR)
     notification_channels: list[NotificationChannel]
     rooms: Mapping[str, RoomConfiguration]

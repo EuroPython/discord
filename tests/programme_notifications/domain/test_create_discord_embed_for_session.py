@@ -525,7 +525,7 @@ def test_show_experience_if_discord_channel_is_unavailable(
     # THEN the embed does not the discord channel
     assert not any(field.name == "Discord Channel" for field in embed.fields)
     # BUT it does show the experience level
-    assert embed.fields[5].name == "Level"
+    assert embed.fields[5].name == "Python Level"
     assert embed.fields[5].value == "Intermediate"
 
 
@@ -540,10 +540,10 @@ def test_show_website_url_if_discord_channel_and_experience_are_unavailable(
     embed = services.create_session_embed(session, include_discord_channel=True)
 
     # THEN the embed does not the discord channel or experience
-    assert not any(f.name == "Level" or f.name == "Discord Channel" for f in embed.fields)
+    assert not any(f.name == "Python Level" or f.name == "Discord Channel" for f in embed.fields)
     # BUT it does show a link to the europython website
-    assert embed.fields[5].name == "EuroPython Website"
-    assert embed.fields[5].value == "[europython.eu](https://europython.eu)"
+    assert embed.fields[5].name == "PyCon/PyData Website"
+    assert embed.fields[5].value == "[2024.pycon.de](https://2024.pycon.de)"
 
 
 @pytest.mark.parametrize(
@@ -553,7 +553,7 @@ def test_show_website_url_if_discord_channel_and_experience_are_unavailable(
         pytest.param("great", None, id="Experience is not recognized"),
         pytest.param("advanced", 13846600, id="Advanced experience matches schedule color"),
         pytest.param("intermediate", 16764229, id="Intermediate experience matches schedule color"),
-        pytest.param("beginner", 6542417, id="Beginner experience matches schedule color"),
+        pytest.param("novice", 6542417, id="Beginner experience matches schedule color"),
     ],
 )
 def test_embed_color_reflects_audience_experience(

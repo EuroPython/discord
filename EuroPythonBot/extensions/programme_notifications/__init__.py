@@ -15,6 +15,12 @@ from .domain import repositories
 
 _logger = logging.getLogger(f"bot.{__name__}")
 
+# timestamp during the conference used for testing (see timewarm in config)
+# general programme notifications are send 5 minutes before the session, and
+# room notifications are send 2 minutes before the session
+TIME_DURING_CONFERENCE = "2024-04-23T15:54:45+02:00"  # programme notification
+# TIME_DURING_CONFERENCE = "2024-04-23T15:57:45+02:00"  # room notification
+
 
 async def setup(bot: commands.Bot) -> None:
     """Set up the Programme Notifications extension."""
@@ -27,7 +33,7 @@ async def setup(bot: commands.Bot) -> None:
         _logger.info("Time warping is enabled! Time traveling to the conference days.")
         now = arrow.now(tz=config.timezone)
         # Diff with some point in time during the conference
-        diff = arrow.get("2023-07-19T15:59:45+02:00") - now
+        diff = arrow.get(TIME_DURING_CONFERENCE) - now
 
         def _get_now() -> arrow.Arrow:
             return arrow.now(tz=config.timezone) + diff

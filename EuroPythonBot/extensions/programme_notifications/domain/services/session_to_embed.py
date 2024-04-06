@@ -12,9 +12,10 @@ _FIELD_VALUE_EMTPY: Final = "—"
 _EXPERIENCE_COLORS: Final = {
     "advanced": 13846600,
     "intermediate": 16764229,
-    "beginner": 6542417,
+    "novice": 6542417,
 }
-_EUROPYTHON_WEBSITE: Final = "[europython.eu](https://europython.eu)"
+_CONFERENCE_NAME = "PyCon/PyData"
+_CONFERENCE_WEBSITE: Final = "[2024.pycon.de](https://2024.pycon.de)"
 
 
 def create_session_embed(
@@ -43,9 +44,15 @@ def create_session_embed(
         fields.append(discord.Field(name="Discord Channel", value=channel_value, inline=True))
     elif session.experience in _EXPERIENCE_COLORS:
         experience = session.experience.capitalize()
-        fields.append(discord.Field(name="Level", value=experience, inline=True))
+        fields.append(discord.Field(name="Python Level", value=experience, inline=True))
     else:
-        fields.append(discord.Field("EuroPython Website", value=_EUROPYTHON_WEBSITE, inline=True))
+        fields.append(
+            discord.Field(
+                f"{_CONFERENCE_NAME} Website",
+                value=_CONFERENCE_WEBSITE,
+                inline=True,
+            )
+        )
 
     return discord.Embed(
         title=_format_title(session.title),

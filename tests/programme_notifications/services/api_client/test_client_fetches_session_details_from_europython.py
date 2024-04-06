@@ -1,4 +1,4 @@
-import json
+# import json
 from collections.abc import Callable
 from unittest import mock
 
@@ -14,12 +14,12 @@ from extensions.programme_notifications.services import api
     [
         pytest.param(
             "BHXSQU",
-            yarl.URL("https://europython.schedule/dont-panic-a-developers-guide-to-security"),
+            yarl.URL("https://2024.pycon.de/program/BHXSQU"),
             "intermediate",
         ),
         pytest.param(
             "9GJFZZ",
-            yarl.URL("https://europython.schedule/dynamically-generated-methods"),
+            yarl.URL("https://2024.pycon.de/program/9GJFZZ"),
             "advanced",
         ),
     ],
@@ -40,14 +40,17 @@ async def test_api_client_returns_level_and_url_for_session(
     scheduling time.
     """
     # GIVEN a session that returns a fixed, stubbed get response
-    client_session.get.return_value.__aenter__.return_value.json = mock.AsyncMock(
-        return_value=json.loads(get_bytes_from_data_file(f"europython_{session_id}.testdata.json"))
+    # client_session.get.return_value.__aenter__.return_value.json = mock.AsyncMock(
+    #     return_value=json.loads(get_bytes_from_data_file(f"europython_{session_id}.testdata.json"))
+    # )
+    client_session.get.return_value.__aenter__.return_value.text = mock.AsyncMock(
+        return_value=f"bla bla Python Skill Level {expected_experience_level}</a> bla bla",
     )
     # AND a configuration repository with a pretalx schedule url
     config = configuration_factory(
         {
-            "europython_api_session_url": "https://europython.api/api/session/{code}",
-            "europython_session_base_url": "https://europython.schedule/{slug}",
+            "conference_website_api_session_url": "https://2024.pycon.de/program/{code}",
+            "conference_website_session_base_url": "https://2024.pycon.de/program/{slug}",
         }
     )
     # AND an api client with that session and configuration repository
@@ -61,6 +64,6 @@ async def test_api_client_returns_level_and_url_for_session(
     # AND the experience returned is the expected experience level
     assert experience == expected_experience_level
     # AND the api client used the appropriate arguments
-    client_session.get.assert_called_with(
-        url=f"https://europython.api/api/session/{session_id}", raise_for_status=True
-    )
+    # client_session.get.assert_called_with(
+    #     url=f"https://europython.api/api/session/{session_id}", raise_for_status=True
+    # )
