@@ -132,17 +132,17 @@ class ApiClient:
         return converter
 
     async def fetch_session_details(self, code: str) -> tuple[yarl.URL, str]:
-        """Fetch session information from the EuroPython API.
+        """Fetch session information from the PyCon/PyData website.
 
-        :param code: The session identifier code, as used by EuroPython
-        :return: A tuple with the session slug and audience experience
-          level
+        :param code: The session identifier code, as used by pretalx
+        :return: A tuple with the session slug and audience experience level
         """
-        # TODO: overwrite method or use if/else?
         slug = code  # session_information["session"].get("slug")
         website_base_url = self.config.conference_website_session_base_url
         session_url = yarl.URL(website_base_url.format(slug=slug)) if slug else None
 
+        # there is no API so we crawl the website and search for the
+        # 'Python Skill Level' text
         api_base_url = self.config.conference_website_api_session_url
         url = api_base_url.format(code=code)
         async with self.session.get(url=url, raise_for_status=True) as response:

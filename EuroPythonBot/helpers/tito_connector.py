@@ -31,8 +31,8 @@ class TitoOrder(metaclass=Singleton):
 
         self.id_to_name = None
         self.orders = {}
-        # TODO: fetch data every 5 minutes, triggered when validating tickets
-        # and checking last_fetch
+        # TODO: fetch data every 5 minutes, triggered when validating tickets and checking
+        # last_fetch
         self.last_fetch = None
 
         self.registered_file = getattr(self.config, "REGISTERED_LOG_FILE", "./registered_log.txt")
