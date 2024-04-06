@@ -16,7 +16,7 @@ from .domain import repositories
 _logger = logging.getLogger(f"bot.{__name__}")
 
 # timestamp during the conference used for testing (see timewarm in config)
-TIME_DURING_CONFERENCE = "2024-04-23T15:57:45+02:00"
+TIME_DURING_CONFERENCE = "2024-04-23T15:54:45+02:00"
 
 
 async def setup(bot: commands.Bot) -> None:
