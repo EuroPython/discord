@@ -16,7 +16,10 @@ from .domain import repositories
 _logger = logging.getLogger(f"bot.{__name__}")
 
 # timestamp during the conference used for testing (see timewarm in config)
-TIME_DURING_CONFERENCE = "2024-04-23T15:54:45+02:00"
+# general programme notifications are send 5 minutes before the session, and
+# room notifications are send 2 minutes before the session
+TIME_DURING_CONFERENCE = "2024-04-23T15:54:45+02:00"  # programme notification
+# TIME_DURING_CONFERENCE = "2024-04-23T15:57:45+02:00"  # room notification
 
 
 async def setup(bot: commands.Bot) -> None:
