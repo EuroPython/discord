@@ -93,11 +93,11 @@ def _configuration_factory(config: dict[str, Any]) -> configuration.NotifierConf
         ),
         "notification_channels": [
             {"webhook_id": "PROGRAMME_NOTIFICATIONS", "include_channel_in_embeds": True},
-            {"webhook_id": "PYTHON_DISCORD", "include_channel_in_embeds": False},
+            # {"webhook_id": "PYTHON_DISCORD", "include_channel_in_embeds": False},
         ],
         "webhooks": {
             "EP2023_NOTIFICATIONS_CHANNEL-channel": "https://webhook.discord/123",
-            "PYTHON_DISCORD-channel": "https://webhook.discord/456",
+            # "PYTHON_DISCORD-channel": "https://webhook.discord/456",
             "ROOM_1234": "https://webhook.discord/abacd",
             "ROOM_5432": "https://webhook.discord/dcbea",
         },
