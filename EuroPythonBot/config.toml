@@ -36,9 +36,10 @@ pretalx_schedule_url = "https://pretalx.com/api/events/pyconde-pydata-2024/sched
 conference_website_session_base_url = "https://2024.pycon.de/program/{slug}"
 conference_website_api_session_url = "https://2024.pycon.de/program/{code}"
 
-[[programme_notifications.notification_channels]]
-webhook_id = "PYTHON_DISCORD"
-include_channel_in_embeds = false
+# we do not need this webhook. not really sure what it should be for
+# [[programme_notifications.notification_channels]]
+# webhook_id = "PYTHON_DISCORD"
+# include_channel_in_embeds = false
 
 [[programme_notifications.notification_channels]]
 webhook_id = "PROGRAMME_NOTIFICATIONS"
