@@ -540,7 +540,7 @@ def test_show_website_url_if_discord_channel_and_experience_are_unavailable(
     embed = services.create_session_embed(session, include_discord_channel=True)
 
     # THEN the embed does not the discord channel or experience
-    assert not any(f.name == "Level" or f.name == "Discord Channel" for f in embed.fields)
+    assert not any(f.name == "Python Level" or f.name == "Discord Channel" for f in embed.fields)
     # BUT it does show a link to the europython website
     assert embed.fields[5].name == "PyCon/PyData Website"
     assert embed.fields[5].value == "[2024.pycon.de](https://2024.pycon.de)"
