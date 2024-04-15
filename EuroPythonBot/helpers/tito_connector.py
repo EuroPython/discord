@@ -106,22 +106,21 @@ class TitoOrder(metaclass=Singleton):
 
         if data:
             if data.get("is_attendee"):
-                roles.append(1164258218655096884)
+                roles.append(1164258218655096884)  # Attendee
             if data.get("is_speaker"):
-                roles.append(1164258330567516200)
+                roles.append(1164258330567516200)  # Speaker
             if data.get("is_sponsor"):
-                roles.append(1164258080477945886)
+                roles.append(1164258080477945886)  # Sponsor
             if data.get("is_organizer"):
-                roles.append(1229442731227484188)
+                roles.append(1229442731227484188)  # Organizer
             if data.get("is_volunteer"):
-                roles.append(1164258157833490512)
+                roles.append(1164258157833490512)  # Volunteer
             if data.get("is_remote"):
-                roles.append(1164258270605754428)
+                roles.append(1164258270605754428)  # Remote
             if data.get("is_volunteer") and data.get("is_remote"):
-                # OnlineVolunteer
-                roles.append(1227325517900943513)
-            # if data.get("is_onsite"):
-            #     roles.append("")
+                roles.append(1227325517900943513)  # OnlineVolunteer
+            if data.get("is_onsite"):
+                roles.append(1229516503951347825)  # OnSite
 
         return roles
 
