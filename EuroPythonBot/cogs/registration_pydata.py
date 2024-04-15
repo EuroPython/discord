@@ -54,8 +54,8 @@ class RegistrationPyData(Registration, commands.Cog):
             f'1️⃣ Click on the green "Register Here {EMOJI_POINT}" button.\n\n'
             '2️⃣ Fill in the "Order/Reference Number" in the format "XXXX-X" or "XXXX-XX") and '
             'your "Full Name" (first and last name as printed on your ticket/badge under ticket '
-            'holder). '
-            'You can find the information also in your confirmation email from '
+            "holder). "
+            "You can find the information also in your confirmation email from "
             'support@tito.io with the subject: "Your PyCon.DE & PyData Berlin 2024 Ticket".\n\n'
             '3️⃣ Click "Submit". We\'ll verify your ticket and give you your role(s) based on '
             "your ticket type.\n\n"

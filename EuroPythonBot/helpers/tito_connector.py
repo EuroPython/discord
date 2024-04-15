@@ -5,7 +5,6 @@ from datetime import datetime
 from http import HTTPStatus
 from pathlib import Path
 from time import time
-from typing import Dict, List
 
 import aiofiles
 import aiohttp
@@ -73,7 +72,7 @@ class TitoOrder(metaclass=Singleton):
         key = f"{order}-{sanitize_string(input_string=full_name)}"
         self.validate_key(key)
         data = None
-       
+
         async with aiohttp.ClientSession() as session:
             async with session.post(
                 f"{self.config.TITO_BASE_URL}/tickets/validate_name",
@@ -100,7 +99,7 @@ class TitoOrder(metaclass=Singleton):
 
         return data
 
-    async def get_roles(self, name: str, order: str) -> List[int]:
+    async def get_roles(self, name: str, order: str) -> list[int]:
         roles: list[int] = []
 
         data = await self.get_ticket_type(full_name=name, order=order)
