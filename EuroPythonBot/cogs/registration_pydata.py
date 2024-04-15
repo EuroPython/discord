@@ -52,12 +52,14 @@ class RegistrationPyData(Registration, commands.Cog):
         self._desc = (
             "Follow these steps to complete your registration:\n\n"
             f'1️⃣ Click on the green "Register Here {EMOJI_POINT}" button.\n\n'
-            '2️⃣ Fill in the "Order" (found by clicking the order URL in your confirmation '
-            'email from support@pretix.eu with the Subject: Your order: XXXX) and "Full Name" '
-            "(as printed on your ticket/badge).\n\n"
-            '3️⃣ Click "Submit". We\'ll verify your ticket and give you your role based on '
+            '2️⃣ Fill in the "Order/Reference Number" in the format "XXXX-X" or "XXXX-XX") and '
+            'your "Full Name" (first and last name as printed on your ticket/badge under ticket '
+            'holder). '
+            'You can find the information also in your confirmation email from '
+            'support@tito.io with the subject: "Your PyCon.DE & PyData Berlin 2024 Ticket".\n\n'
+            '3️⃣ Click "Submit". We\'ll verify your ticket and give you your role(s) based on '
             "your ticket type.\n\n"
             "Experiencing trouble? Ask for help in the registration-help channel or from a "
-            "volunteer in yellow t-shirt at the conference.\n\n"
+            "volunteer (purple shirts) at the conference.\n\n"
             "See you on the server! 🐍💻🎉"
         )

@@ -17,12 +17,12 @@ REG_CHANNEL_ID=1216372858993901708
 REG_HELP_CHANNEL_ID=1216373397681078342
 REG_LOG_CHANNEL_ID=1216373483114598491
 
-[pretix]
+# [pretix]
 # PRETIX_BASE_URL = "https://pretix.eu/api/v1/organizers/europython/events/ep2023"
-TICKET_TO_ROLES_JSON = "ticket_to_roles_prod.json"
+# TICKET_TO_ROLES_JSON = "ticket_to_roles_prod.json"
 
 [tito]
-TITO_BASE_URL="x"
+TITO_BASE_URL="https://val.pycon.de"
 
 [logging]
 LOG_LEVEL = "INFO"

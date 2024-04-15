@@ -27,7 +27,7 @@ class TitoOrder(metaclass=Singleton):
         self.config = Config()
         load_dotenv(Path(__file__).resolve().parent.parent.parent / ".secrets")
         # PRETIX_TOKEN = os.getenv("PRETIX_TOKEN")
-        # self.HEADERS = {"Authorization": f"Token {PRETIX_TOKEN}"}
+        self.HEADERS = {}  # {"Authorization": f"Token {PRETIX_TOKEN}"}
 
         self.id_to_name = None
         self.orders = {}
@@ -48,124 +48,83 @@ class TitoOrder(metaclass=Singleton):
             _logger.exception("Cannot load registered data, starting from scratch. Error:")
 
     async def fetch_data(self) -> None:
-        """Fetch data from Tito, store id_to_name mapping and formated orders internally"""
+        """Run refresh_all route from API that reloads ticket data from Tito."""
 
-        _logger.info("Fetching IDs names from Tito")
-        # self.id_to_name = await self._get_id_to_name_map()
-        _logger.info("Done fetching IDs names from Tito")
-
-        _logger.info("Fetching orders from Tito")
+        _logger.info("Refresh tickets from Tito")
         time_start = time()
-        results = []  # await self._fetch_all(f"{self.config.PRETIX_BASE_URL}/orders")
-        _logger.info("Fetched %r orders in %r seconds", len(results), time() - time_start)
+        await self._update_tito(f"{self.config.TITO_BASE_URL}/tickets/refresh_all")
+        _logger.info("Updated tickets from Tito in %r seconds", time() - time_start)
 
-        def flatten_concatenation(matrix):
-            flat_list = []
-            for row in matrix:
-                flat_list += row
-            return flat_list
-
-        orders = {}
-        for position in flatten_concatenation(
-            [result.get("positions") for result in results if result.get("status") == "p"]
-        ):
-            item = position.get("item")
-            if self.id_to_name.get(item) in [
-                "T-shirt (free)",
-                "Childcare (Free)",
-                "Livestream Only",
-            ]:
-                continue
-            order = position.get("order")
-            attendee_name = sanitize_string(position.get("attendee_name"))
-
-            orders[f"{order}-{attendee_name}"] = self.id_to_name.get(item)
-
-        self.orders = orders
         self.last_fetch = datetime.now()
 
-    async def _get_id_to_name_map(self) -> Dict[int, str]:
-        return {7: "PARTICIPANT"}
-        url = f"{self.config.PRETIX_BASE_URL}/items"
-
+    async def _update_tito(self, url) -> bool:
         async with aiohttp.ClientSession() as session:
             async with session.get(url, headers=self.HEADERS) as response:
-                if response.status != HTTPStatus.OK:
-                    response.raise_for_status()
+                if response.status == HTTPStatus.OK:
+                    return True
+        _logger.error("Error occurred while updating Tito API: Status %r", response.status)
+        return False
 
-                data = await response.json()
-
-                id_to_name = {}
-                for result in data.get("results"):
-                    id = result.get("id")
-                    name = result.get("name").get("en")
-                    id_to_name[id] = name
-                    for variation in result.get("variations"):
-                        variation_id = variation.get("id")
-                        variation_name = variation.get("value").get("en")
-                        id_to_name[variation_id] = variation_name
-        return id_to_name
-
-    async def _fetch(self, url, session):
-        async with session.get(url, headers=self.HEADERS) as response:
-            return await response.json()
-
-    async def _fetch_all(self, url):
-        async with aiohttp.ClientSession() as session:
-            results = []
-            while url:
-                data = await self._fetch(url, session)
-                results += data.get("results")
-                url = data.get("next")
-            return results
-
-    async def get_ticket_type(self, order: str, full_name: str) -> str:
+    async def get_ticket_type(self, order: str, full_name: str) -> dict | None:
         """With user input `order` and `full_name`, check for their ticket type"""
 
-        return "Personal"
+        # return "Personal"
 
         key = f"{order}-{sanitize_string(input_string=full_name)}"
         self.validate_key(key)
-        ticket_type = None
-        try:
-            ticket_type = self.orders[key]
-            self.REGISTERED_SET.add(key)
-            async with aiofiles.open(self.registered_file, mode="a") as f:
-                await f.write(f"{key}\n")
-        except KeyError:
-            async with aiohttp.ClientSession() as session:
-                async with session.get(
-                    f"{self.config.PRETIX_BASE_URL}/orders",
-                    headers=self.HEADERS,
-                    params={
-                        "code": order,
-                        "search": full_name,
-                    },
-                ) as request:
-                    if request.status == HTTPStatus.OK:
-                        data = await request.json()
-                        # when using search params, pretix returns a list of results of size 1
-                        # with a list of positions of size 1
-                        if len(data.get("results")) > 0:
-                            result = data.get("results")[0]
-                            if result.get("status") != "p":
-                                raise Exception("Order not paid")
-                            ticket_type = self.id_to_name.get(
-                                result.get("positions")[0].get("item")
-                            )
-                            self.REGISTERED_SET.add(key)
-                            async with aiofiles.open(self.registered_file, mode="a") as f:
-                                await f.write(f"{key}\n")
-                        else:
-                            raise NotFoundError(f"No ticket found - inputs: {order=}, {full_name=}")
+        data = None
+       
+        async with aiohttp.ClientSession() as session:
+            async with session.post(
+                f"{self.config.TITO_BASE_URL}/tickets/validate_name",
+                # headers=self.HEADERS,
+                json={
+                    "ticket_id": order,
+                    "name": full_name,
+                },
+            ) as request:
+                if request.status == HTTPStatus.OK:
+                    data = await request.json()
+                    if data.get("is_attendee"):
+                        self.REGISTERED_SET.add(key)
+                        async with aiofiles.open(self.registered_file, mode="a") as f:
+                            await f.write(f"{key}\n")
                     else:
-                        _logger.error("Error occurred: Status %r", request.status)
+                        hint = data.get("hint")
+                        raise NotFoundError(
+                            f"No ticket found - inputs: {order=}, {full_name=}. {hint=}",
+                            hint,
+                        )
+                else:
+                    _logger.error("Error occurred: Status %r", request.status)
 
-        return ticket_type
+        return data
 
     async def get_roles(self, name: str, order: str) -> List[int]:
-        ticket_type = await self.get_ticket_type(full_name=name, order=order)
-        return self.config.TICKET_TO_ROLE.get(ticket_type)
+        roles: list[int] = []
+
+        data = await self.get_ticket_type(full_name=name, order=order)
+
+        if data:
+            if data.get("is_attendee"):
+                roles.append(1164258218655096884)
+            if data.get("is_speaker"):
+                roles.append(1164258330567516200)
+            if data.get("is_sponsor"):
+                roles.append(1164258080477945886)
+            if data.get("is_organizer"):
+                roles.append(1229442731227484188)
+            if data.get("is_volunteer"):
+                roles.append(1164258157833490512)
+            if data.get("is_remote"):
+                roles.append(1164258270605754428)
+            if data.get("is_volunteer") and data.get("is_remote"):
+                # OnlineVolunteer
+                roles.append(1227325517900943513)
+            # if data.get("is_onsite"):
+            #     roles.append("")
+
+        return roles
 
     def validate_key(self, key: str) -> bool:
         if key in self.REGISTERED_SET:

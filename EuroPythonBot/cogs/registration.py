@@ -9,11 +9,10 @@ from configuration import Config
 from error import AlreadyRegisteredError, NotFoundError
 from helpers.channel_logging import log_to_channel
 
-# from helpers.pretix_connector import PretixOrder
 from helpers.tito_connector import TitoOrder
 
 config = Config()
-order_ins = TitoOrder()  # PretixOrder()
+order_ins = TitoOrder()
 
 CHANGE_NICKNAME = True
 
@@ -49,20 +48,20 @@ class RegistrationButton(discord.ui.Button["Registration"]):
 
 class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
     order = discord.ui.TextInput(
-        label="Order",
+        label="Order/Reference Number (e.g. 'XXXX-X')",
         required=True,
-        min_length=4,
-        max_length=6,
-        placeholder="5-character combination of capital letters and numbers",
+        min_length=6,
+        max_length=7,
+        placeholder="6- or 7-character combination of capital letters and numbers with a dash '-'.",
     )
 
     name = discord.ui.TextInput(
-        label="Full Name",
+        label="Full Name (first and last name)",
         required=True,
         min_length=3,
-        max_length=50,
+        # max_length=50,
         style=discord.TextStyle.short,
-        placeholder="Your full name as printed on your ticket/badge",
+        placeholder="Your full name as printed on your ticket/badge.",
     )
 
     async def on_submit(self, interaction: discord.Interaction) -> None:
@@ -122,7 +121,11 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         if isinstance(error, AlreadyRegisteredError):
             _msg = "You have already registered! If you think it is not true"
         elif isinstance(error, NotFoundError):
-            _msg = "We cannot find your ticket, double check your input and try again, or"
+            _msg = "We cannot find your ticket, double check your input "
+            # add hint if available
+            if error.args and len(error.args) > 1 and error.args[1]:
+                _msg += f"({error.args[1]}) "
+            _msg += "and try again, or"
         else:
             _msg = "Something went wrong,"
         _msg += f" ask for help in <#{config.REG_HELP_CHANNEL_ID}>"
