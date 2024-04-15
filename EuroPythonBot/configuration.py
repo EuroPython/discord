@@ -1,4 +1,3 @@
-import json
 import logging
 import sys
 from pathlib import Path
@@ -47,16 +46,19 @@ class Config(metaclass=Singleton):
                 self.REG_LOG_CHANNEL_ID = int(config["registration"]["REG_LOG_CHANNEL_ID"])
 
                 # Pretix
-                self.PRETIX_BASE_URL = ""  # config["pretix"]["PRETIX_BASE_URL"]
-                self.TICKET_TO_ROLES_JSON = config["pretix"]["TICKET_TO_ROLES_JSON"]
+                # self.PRETIX_BASE_URL = ""  # config["pretix"]["PRETIX_BASE_URL"]
+                # self.TICKET_TO_ROLES_JSON = ""  # config["pretix"]["TICKET_TO_ROLES_JSON"]
+
+                # Tito
+                self.TITO_BASE_URL = config["tito"]["TITO_BASE_URL"]
 
                 # Mapping
-                with self.BASE_PATH.joinpath(
-                    self.TICKET_TO_ROLES_JSON
-                ).open() as ticket_to_roles_file:
-                    ticket_to_roles = json.load(ticket_to_roles_file)
+                # with self.BASE_PATH.joinpath(
+                #     self.TICKET_TO_ROLES_JSON
+                # ).open() as ticket_to_roles_file:
+                #     ticket_to_roles = json.load(ticket_to_roles_file)
 
-                self.TICKET_TO_ROLE = ticket_to_roles
+                self.TICKET_TO_ROLE = {}  # ticket_to_roles
 
         except KeyError:
             _logger.critical(
