@@ -11,10 +11,8 @@ from dotenv import load_dotenv
 import configuration
 from cogs.ping import Ping
 
-# from cogs.registration import Registration
 from cogs.registration_pydata import RegistrationPyData
 
-# from helpers.pretix_connector import PretixOrder
 from helpers.tito_connector import TitoOrder
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".secrets")
@@ -86,7 +84,6 @@ async def main():
 
 if __name__ == "__main__":
     bot = Bot()
-    # orders = PretixOrder()
     orders = TitoOrder()
     try:
         asyncio.run(main())
