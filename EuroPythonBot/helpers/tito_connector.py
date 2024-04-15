@@ -1,13 +1,11 @@
 import logging
-
-# import os
-from datetime import datetime
 from http import HTTPStatus
 from pathlib import Path
 from time import time
 
 import aiofiles
 import aiohttp
+from discord.ext import tasks
 from dotenv import load_dotenv
 
 from configuration import Config, Singleton
@@ -30,9 +28,6 @@ class TitoOrder(metaclass=Singleton):
 
         self.id_to_name = None
         self.orders = {}
-        # TODO: fetch data every 5 minutes, triggered when validating tickets and checking
-        # last_fetch
-        self.last_fetch = None
 
         self.registered_file = getattr(self.config, "REGISTERED_LOG_FILE", "./registered_log.txt")
         self.REGISTERED_SET = set()
@@ -46,15 +41,13 @@ class TitoOrder(metaclass=Singleton):
         except Exception:
             _logger.exception("Cannot load registered data, starting from scratch. Error:")
 
+    @tasks.loop(minutes=10.0)
     async def fetch_data(self) -> None:
         """Run refresh_all route from API that reloads ticket data from Tito."""
-
         _logger.info("Refresh tickets from Tito")
         time_start = time()
         await self._update_tito(f"{self.config.TITO_BASE_URL}/tickets/refresh_all")
         _logger.info("Updated tickets from Tito in %r seconds", time() - time_start)
-
-        self.last_fetch = datetime.now()
 
     async def _update_tito(self, url) -> bool:
         async with aiohttp.ClientSession() as session:
@@ -66,9 +59,6 @@ class TitoOrder(metaclass=Singleton):
 
     async def get_ticket_type(self, order: str, full_name: str) -> dict | None:
         """With user input `order` and `full_name`, check for their ticket type"""
-
-        # return "Personal"
-
         key = f"{order}-{sanitize_string(input_string=full_name)}"
         self.validate_key(key)
         data = None
@@ -101,7 +91,6 @@ class TitoOrder(metaclass=Singleton):
 
     async def get_roles(self, name: str, order: str) -> list[int]:
         roles: list[int] = []
-
         data = await self.get_ticket_type(full_name=name, order=order)
 
         if data:
