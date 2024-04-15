@@ -172,7 +172,8 @@ class Registration(commands.Cog):
         reg_channel = self.bot.get_channel(config.REG_CHANNEL_ID)
 
         await reg_channel.purge()
-        await order_ins.fetch_data()
+        # start the async fetch_data task with will be triggered automatically using discord tasks
+        order_ins.fetch_data.start()
         order_ins.load_registered()
 
         embed = discord.Embed(
