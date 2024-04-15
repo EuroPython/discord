@@ -8,7 +8,6 @@ from discord.ext import commands
 from configuration import Config
 from error import AlreadyRegisteredError, NotFoundError
 from helpers.channel_logging import log_to_channel
-
 from helpers.tito_connector import TitoOrder
 
 config = Config()
