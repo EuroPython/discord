@@ -21,21 +21,21 @@ class Organisers(commands.Cog):
     async def participants(self, ctx: commands.Context) -> None:
         """Get statistics about registered participants."""
         embed = discord.Embed(
-            title="Participant Statistics",
+            title="Participant Statistics 2024",
             colour=16747421,
         )
         counts = self._get_counts(ctx.guild)
         embed.add_field(name="Members (total)", value=counts.everyone, inline=False)
-        embed.add_field(name="Unregistered", value=counts.not_registered, inline=False)
-        embed.add_field(name="Participants", value=counts.participants, inline=False)
-        embed.add_field(name="Onsite Participants", value=counts.participants_onsite, inline=False)
-        embed.add_field(name="Remote Participants", value=counts.participants_remote, inline=False)
+        # embed.add_field(name="Unregistered", value=counts.not_registered, inline=False)
+        embed.add_field(name="Attendee", value=counts.attendee, inline=False)
         embed.add_field(name="Sponsors", value=counts.sponsors, inline=False)
         embed.add_field(name="Speakers", value=counts.speakers, inline=False)
-        embed.add_field(name="Volunteers", value=counts.volunteers, inline=False)
-        embed.add_field(name="Onsite Volunteers", value=counts.volunteers_onsite, inline=False)
-        embed.add_field(name="Remote Volunteers", value=counts.volunteers_remote, inline=False)
         embed.add_field(name="Organisers", value=counts.organisers, inline=False)
+        embed.add_field(name="Volunteers", value=counts.volunteers, inline=False)
+        embed.add_field(name="Remote Volunteers", value=counts.volunteers_remote, inline=False)
+        embed.add_field(name="Onsite", value=counts.onsite, inline=False)        
+        embed.add_field(name="Remote", value=counts.remote, inline=False)
+
         await ctx.send(embed=embed)
 
     def _get_counts(self, guild: discord.Guild) -> "_RoleCount":
@@ -46,7 +46,7 @@ class Organisers(commands.Cog):
         """
         return _RoleCount(
             everyone=guild.member_count,
-            not_registered=sum(len(m.roles) == 1 for m in guild.members),
+            # not_registered=sum(len(m.roles) == 1 for m in guild.members),
             **{
                 role: len(guild.get_role(role_id).members)
                 for role, role_id in attrs.asdict(self._roles).items()
@@ -81,13 +81,12 @@ class _RoleCount:
     """Counts of members."""
 
     everyone: int
-    not_registered: int
+    # not_registered: int
     organisers: int
     volunteers: int
-    volunteers_onsite: int
-    sponsors: int
-    speakers: int
     volunteers_remote: int
-    participants: int
-    participants_onsite: int
-    participants_remote: int
+    speakers: int
+    sponsors: int
+    attendee: int
+    onsite: int
+    remote: int
