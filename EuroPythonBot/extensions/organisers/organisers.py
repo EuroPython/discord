@@ -33,7 +33,7 @@ class Organisers(commands.Cog):
         embed.add_field(name="Organisers", value=counts.organisers, inline=False)
         embed.add_field(name="Volunteers", value=counts.volunteers, inline=False)
         embed.add_field(name="Remote Volunteers", value=counts.volunteers_remote, inline=False)
-        embed.add_field(name="Onsite", value=counts.onsite, inline=False)        
+        embed.add_field(name="Onsite", value=counts.onsite, inline=False)
         embed.add_field(name="Remote", value=counts.remote, inline=False)
 
         await ctx.send(embed=embed)
