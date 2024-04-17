@@ -8,10 +8,9 @@ class Roles:
 
     organisers: int
     volunteers: int
-    volunteers_onsite: int
     volunteers_remote: int
-    sponsors: int
     speakers: int
-    participants: int
-    participants_onsite: int
-    participants_remote: int
+    sponsors: int
+    attendee: int
+    onsite: int
+    remote: int
