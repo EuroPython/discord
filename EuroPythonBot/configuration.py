@@ -54,6 +54,7 @@ class Config(metaclass=Singleton):
 
                 # Job Board
                 self.JOB_BOARD_CHANNEL_ID = config["job_board"]["JOB_BOARD_CHANNEL_ID"]
+                self.JOB_BOARD_TESTING = config["job_board"]["JOB_BOARD_TESTING"]
 
                 # Mapping
                 # with self.BASE_PATH.joinpath(

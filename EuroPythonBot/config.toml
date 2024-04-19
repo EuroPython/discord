@@ -18,6 +18,7 @@ REG_LOG_CHANNEL_ID=1216373483114598491
 
 [job_board]
 JOB_BOARD_CHANNEL_ID=1228683389888892980
+JOB_BOARD_TESTING = false
 
 # [pretix]
 # PRETIX_BASE_URL = "https://pretix.eu/api/v1/organizers/europython/events/ep2023"

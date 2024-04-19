@@ -32,18 +32,20 @@ class JobBoard(commands.Cog):
         # get discord guild and channel
         self.guild = self._bot.get_guild(self._config.GUILD)
         self.channel = self._bot.get_channel(self._config.JOB_BOARD_CHANNEL_ID)
+        # set to True for testing to delete the threads automatically after posting
+        self.JOB_BOARD_TESTING = self._config.JOB_BOARD_TESTING
 
         # get set of already posted jobs
         self.posted_jobs_file = "./posted_jobs.txt"
         self.posted_jobs_set = self.load_posted_jobs()
 
         # read jobs from csv file (exported from google form)
-        job_list = self.get_job_positions_from_csv(
-            filename="Job Posts 2024 (Antworten) - Formularantworten 2.csv",
-        )
+        job_list = self.get_job_positions_from_csv(filename="jobs.csv")
 
-        for job in job_list:
-            key, name, content, thread_messages, file = self.prepare_job_post(job)
+        threads = []  # list of threads to delete when testing
+
+        for n, job in enumerate(job_list):
+            key, name, content, thread_messages, file = self.prepare_job_post(n, job)
             if key not in self.posted_jobs_set:
                 _logger.info(f"Posting new job: {key}")
                 if file:
@@ -57,8 +59,12 @@ class JobBoard(commands.Cog):
                         name=name,
                         content=content,
                     )
+                # get thread and add to threads list
+                thread = thread_with_message.thread
+                threads.append(thread)
+
                 for thread_message in thread_messages:
-                    await thread_with_message.thread.send(thread_message)
+                    await thread.send(thread_message)
 
                 # add key to posted_jobs_set and file
                 self.posted_jobs_set.add(key)
@@ -66,6 +72,10 @@ class JobBoard(commands.Cog):
                     await f.write(f"{key}\n")
             else:
                 _logger.info(f"Job already posted: {key}")
+
+        if self.JOB_BOARD_TESTING:
+            for thread in threads:
+                await thread.delete()
 
     def load_posted_jobs(self) -> set:
         """Load already posted jobs from txt file."""
@@ -80,7 +90,22 @@ class JobBoard(commands.Cog):
             next(csv_reader)  # skip header row
             return [row for row in csv_reader]
 
-    def prepare_job_post(self, job: list) -> tuple[str, str, str, list, discord.File | None]:
+    def format_thread_message(self, title: str, message: str) -> list:
+        """Split thread messages that are too long for discord to handle into multiple messages."""
+        MESSAGE_LIMIT = 2000
+        if len(title) + len(message) + 10 > MESSAGE_LIMIT:
+            split_message = [
+                message[i : i + MESSAGE_LIMIT]  # noqa: E203
+                for i in range(0, len(message), MESSAGE_LIMIT)
+            ]
+            return [f"**{title}:**\n", *split_message]
+        return [f"**{title}:**\n{message}"]
+
+    def prepare_job_post(
+        self,
+        n: int,
+        job: list,
+    ) -> tuple[str, str, str, list, discord.File | None]:
         """Prepare the job post."""
         # get values from job list
         timestamp = job[0]
@@ -99,16 +124,22 @@ class JobBoard(commands.Cog):
         job_picture = job[13]
 
         # create unique key per job post
-        key = f"{timestamp};{author};{job_title}"
+        key = f"{timestamp};{author};{job_title};{company_name}"
 
-        name = f"{company_name} is hiring: {job_title}"
-        content = f"**Job location:** {job_location}\n" f"**Job description:**\n{job_description}"
-        thread_messages = [
-            f"**Duties and responsibilities:**\n{duties_and_responsibilities}",
-            f"**Appreciated qualification and experience:**\n{qualifications}",
-        ]
+        name = f"{company_name} is hiring: {job_title}"[:100]
+        content = f"**Job title:** {job_title}\n**Job location:** {job_location}"
+
+        thread_messages = []
+        thread_messages.extend(self.format_thread_message("Job description", job_description))
+        thread_messages.extend(
+            self.format_thread_message("Duties and responsibilities", duties_and_responsibilities),
+        )
+        thread_messages.extend(
+            self.format_thread_message("Appreciated qualification and experience", qualifications),
+        )
+
         if additional_info:
-            thread_messages.append(f"**Additional info:**\n{additional_info}")
+            thread_messages.extend(self.format_thread_message("Additional info", additional_info))
         if deadline:
             thread_messages.append(f"**Application deadline:**\n{deadline}")
 
@@ -124,10 +155,14 @@ class JobBoard(commands.Cog):
         if url:
             thread_messages.append(f"**More info at:** {url}")
 
+        COMAPNIES_WITH_DIFFERENT_PICTURES = ["energy & meteo systems GmbH"]
+
         file = None
         if job_picture:
             path = Path(__file__).resolve().parent
             filename = f"{company_name}.png"
+            if company_name in COMAPNIES_WITH_DIFFERENT_PICTURES:
+                filename = f"{company_name}-{n}.jpg"
             file = discord.File(path / "pictures" / filename, filename=filename)
 
         return key, name, content, thread_messages, file
