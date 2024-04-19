@@ -20,11 +20,13 @@ _CONFERENCE_WEBSITE: Final = "[2024.pycon.de](https://2024.pycon.de)"
 
 def create_session_embed(
     session: europython.Session,
+    slido_url: str | None = None,
     include_discord_channel: bool = True,
 ) -> discord.Embed:
     """Create a Discord embed for a conference session.
 
     :param session: The session information as provided by Pretalx
+    :param slido_url: The url to slido
     :param include_discord_channel: If the discord channel should be
       linked in the embed
     :return: A Discord embed for this session
@@ -32,12 +34,16 @@ def create_session_embed(
     livestream_value = (
         f"[YouTube]({session.livestream_url})" if session.livestream_url else _FIELD_VALUE_EMTPY
     )
+    slido_value = f"[Slido]({slido_url})" if slido_url else _FIELD_VALUE_EMTPY
+    survey_value = f"[sci-an]({session.survey_url})" if session.survey_url else _FIELD_VALUE_EMTPY
     fields = [
         discord.Field(name="Start Time", value=_format_start_time(session), inline=True),
         discord.Field(name="Room", value=_format_room(session), inline=True),
         discord.Field(name="Track", value=_format_track(session), inline=True),
         discord.Field(name="Duration", value=_format_duration(session.duration), inline=True),
         discord.Field(name="Livestream", value=livestream_value, inline=True),
+        discord.Field(name="Live Q&A", value=slido_value, inline=True),
+        discord.Field(name="Feedback", value=survey_value, inline=True),
     ]
     if include_discord_channel and session.discord_channel_id:
         channel_value = f"<#{session.discord_channel_id}>"

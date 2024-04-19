@@ -34,6 +34,7 @@ conference_days_last = "2024-04-24"
 pretalx_schedule_url = "https://pretalx.com/api/events/pyconde-pydata-2024/schedules/latest/"
 conference_website_session_base_url = "https://2024.pycon.de/program/{slug}"
 conference_website_api_session_url = "https://2024.pycon.de/program/{code}"
+slido_url = "https://app.sli.do/event/m2rb5rZWkVCvarCFemtqoe"
 
 # we do not need this webhook. not really sure what it should be for
 # [[programme_notifications.notification_channels]]
@@ -49,6 +50,7 @@ include_channel_in_embeds = true
 [programme_notifications.rooms.2578]
 webhook_id = "ROOM_2578"
 discord_channel_id = "1225453671152877680"
+survey_url = "https://survey.sci-an.com/UZpiArTDj7OzJsAU?s=7"
 
 [programme_notifications.rooms.2578.livestreams]
 # TODO: update URLs
@@ -60,6 +62,7 @@ discord_channel_id = "1225453671152877680"
 [programme_notifications.rooms.2579]
 webhook_id = "ROOM_2579"
 discord_channel_id = "1225453705910816868"
+survey_url = "https://survey.sci-an.com/UZpiArTDj7OzJsAU?s=4"
 
 [programme_notifications.rooms.2579.livestreams]
 # TODO: update URLs
@@ -71,6 +74,7 @@ discord_channel_id = "1225453705910816868"
 [programme_notifications.rooms.2580]
 webhook_id = "ROOM_2580"
 discord_channel_id = "1225454000800006144"
+survey_url = "https://survey.sci-an.com/UZpiArTDj7OzJsAU?s=5"
 
 [programme_notifications.rooms.2580.livestreams]
 # TODO: update URLs
@@ -82,6 +86,7 @@ discord_channel_id = "1225454000800006144"
 [programme_notifications.rooms.2581]
 webhook_id = "ROOM_2581"
 discord_channel_id = "1225454340513464340"
+survey_url = "https://survey.sci-an.com/UZpiArTDj7OzJsAU?s=6"
 
 [programme_notifications.rooms.2581.livestreams]
 # TODO: update URLs
@@ -93,6 +98,7 @@ discord_channel_id = "1225454340513464340"
 [programme_notifications.rooms.2582]
 webhook_id = "ROOM_2582"
 discord_channel_id = "1225454099533791303"
+survey_url = "https://survey.sci-an.com/UZpiArTDj7OzJsAU?s=3"
 
 [programme_notifications.rooms.2582.livestreams]
 # TODO: update URLs
@@ -104,6 +110,7 @@ discord_channel_id = "1225454099533791303"
 [programme_notifications.rooms.2583]
 webhook_id = "ROOM_2583"
 discord_channel_id = "1225454458935181493"
+survey_url = "https://survey.sci-an.com/UZpiArTDj7OzJsAU?s=1"
 
 [programme_notifications.rooms.2583.livestreams]
 # TODO: update URLs
@@ -115,6 +122,7 @@ discord_channel_id = "1225454458935181493"
 [programme_notifications.rooms.2584]
 webhook_id = "ROOM_2584"
 discord_channel_id = "1225453715079827577"
+survey_url = "https://survey.sci-an.com/UZpiArTDj7OzJsAU?s=2"
 
 [programme_notifications.rooms.2584.livestreams]
 # TODO: update URLs

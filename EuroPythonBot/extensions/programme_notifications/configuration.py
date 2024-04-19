@@ -30,6 +30,7 @@ class RoomConfiguration:
 
     discord_channel_id: str = attrs.field(validator=validators.matches_re(r"\d+"))
     webhook_id: str
+    survey_url: yarl.URL
     livestreams: Mapping[str, yarl.URL]
 
 
@@ -51,6 +52,7 @@ class NotifierConfiguration:
     conference_website_session_base_url: str = attrs.field(validator=_WEBSITE_SESSION_URL)
     conference_website_api_session_url: str = attrs.field(validator=_API_SESSION_URL)
     pretalx_schedule_url: str = attrs.field(validator=_INSTANCE_OF_STR)
+    slido_url: str = attrs.field(validator=_INSTANCE_OF_STR)
     notification_channels: list[NotificationChannel]
     rooms: Mapping[str, RoomConfiguration]
     webhooks: Mapping[str, yarl.URL] = attrs.field(repr=False, validator=_URL_MAPPING)

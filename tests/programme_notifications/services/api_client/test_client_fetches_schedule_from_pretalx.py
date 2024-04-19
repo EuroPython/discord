@@ -155,6 +155,9 @@ async def test_api_client_returns_schedule_instance(
     config = configuration_factory(
         {"pretalx_schedule_url": "https://europython.api/schedule/latest"}
     )
+    # AND a configuration repository with a slido url
+    config = configuration_factory({"slido_url": "https://app.sli.do/event/test"})
+
     # AND an api client with that session and configuration repository
     client = api.ApiClient(session=client_session, config=config)
 

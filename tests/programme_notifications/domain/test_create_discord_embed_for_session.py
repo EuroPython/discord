@@ -40,11 +40,15 @@ def test_create_embed_from_session_information() -> None:
         ],
         url=yarl.URL("https://ep.session/a-tale-of-two-pythons-subinterpreters-in-action"),
         livestream_url=yarl.URL("https://livestreams.com/best-conference-sessions-of-2023"),
+        survey_url=yarl.URL("https://survey.com"),
         discord_channel_id="123456789123456",
     )
+    slido_url = "https://app.sli.do/event/test"
 
     # WHEN an embed is created with that information
-    embed = services.create_session_embed(europython_session, include_discord_channel=True)
+    embed = services.create_session_embed(
+        europython_session, slido_url, include_discord_channel=True
+    )
 
     # THEN the embed is equal to the expected embed
     session_url = "https://ep.session/a-tale-of-two-pythons-subinterpreters-in-action"
@@ -67,6 +71,12 @@ def test_create_embed_from_session_information() -> None:
                 value="[YouTube](https://livestreams.com/best-conference-sessions-of-2023)",
                 inline=True,
             ),
+            discord.Field(
+                name="Live Q&A",
+                value="[Slido](https://app.sli.do/event/test)",
+                inline=True,
+            ),
+            discord.Field(name="Feedback", value="[sci-an](https://survey.com)", inline=True),
             discord.Field(name="Discord Channel", value="<#123456789123456>", inline=True),
         ],
         footer=discord.Footer(text="This session starts at 09:55:00 (local conference time)"),
@@ -105,7 +115,6 @@ def test_title_gets_formatted_according_to_maximum_width(
     """Title fields don't support an 'infinite' length."""
     # GIVEN a session with a known session title
     session = session_factory(title=session_title)
-
     # WHEN the embed is created
     embed = services.create_session_embed(session)
 
@@ -202,7 +211,6 @@ def test_abstract_gets_formatted_including_width_and_session_url(
     """Abstracts may be shortened and a url is added if available."""
     # GIVEN a session with a known abstract and session url
     session = session_factory(abstract=abstract, url=session_url)
-
     # WHEN the embed is created
     embed = services.create_session_embed(session)
 
@@ -295,7 +303,6 @@ def test_include_speakers_in_embed_author_field(
     """Format speakers to a single author field."""
     # GIVEN a pretalx session instance
     pretalx_session = session_factory(speakers=speakers)
-
     # WHEN an embed is created with that information
     embed = services.create_session_embed(pretalx_session)
 
@@ -322,7 +329,6 @@ def test_embed_gets_url_if_session_url_is_available(
     """If possible, make the embed link to the session page."""
     # GIVEN a session with a known session url
     session = session_factory(url=session_url)
-
     # WHEN the embed is created
     embed = services.create_session_embed(session)
 
@@ -342,7 +348,6 @@ def test_start_time_is_available_in_embed(
             "start": "2023-07-19T09:55:00+02:00",
         }
     )
-
     # WHEN the embed is created
     embed = services.create_session_embed(session)
 
@@ -499,7 +504,7 @@ def test_discord_channel_is_linked_if_available(
     embed = services.create_session_embed(session, include_discord_channel=True)
 
     # THEN the embed shows the Discord channel
-    assert embed.fields[5].value == "<#123456789123456>"
+    assert embed.fields[7].value == "<#123456789123456>"
 
 
 @pytest.mark.parametrize(
@@ -525,8 +530,8 @@ def test_show_experience_if_discord_channel_is_unavailable(
     # THEN the embed does not the discord channel
     assert not any(field.name == "Discord Channel" for field in embed.fields)
     # BUT it does show the experience level
-    assert embed.fields[5].name == "Python Level"
-    assert embed.fields[5].value == "Intermediate"
+    assert embed.fields[7].name == "Python Level"
+    assert embed.fields[7].value == "Intermediate"
 
 
 def test_show_website_url_if_discord_channel_and_experience_are_unavailable(
@@ -535,15 +540,14 @@ def test_show_website_url_if_discord_channel_and_experience_are_unavailable(
     """Without Discord channel and experience, display website URL."""
     # GIVEN a session without a discord channel and experience level
     session = session_factory(discord_channel_id=None, experience=None)
-
     # WHEN the embed is created
     embed = services.create_session_embed(session, include_discord_channel=True)
 
     # THEN the embed does not the discord channel or experience
     assert not any(f.name == "Python Level" or f.name == "Discord Channel" for f in embed.fields)
     # BUT it does show a link to the europython website
-    assert embed.fields[5].name == "PyCon/PyData Website"
-    assert embed.fields[5].value == "[2024.pycon.de](https://2024.pycon.de)"
+    assert embed.fields[7].name == "PyCon/PyData Website"
+    assert embed.fields[7].value == "[2024.pycon.de](https://2024.pycon.de)"
 
 
 @pytest.mark.parametrize(
