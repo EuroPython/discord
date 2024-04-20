@@ -1,6 +1,7 @@
 """Extension for posting in job board forum."""
 import csv
 import logging
+import random
 from pathlib import Path
 
 import aiofiles
@@ -44,8 +45,11 @@ class JobBoard(commands.Cog):
 
         threads = []  # list of threads to delete when testing
 
-        for n, job in enumerate(job_list):
-            key, name, content, thread_messages, file = self.prepare_job_post(n, job)
+        # shuffle job_list for random post order
+        random.seed(42)
+        random.shuffle(job_list)
+        for job in job_list:
+            key, name, content, thread_messages, file = self.prepare_job_post(job)
             if key not in self.posted_jobs_set:
                 _logger.info(f"Posting new job: {key}")
                 if file:
@@ -103,11 +107,10 @@ class JobBoard(commands.Cog):
 
     def prepare_job_post(
         self,
-        n: int,
         job: list,
     ) -> tuple[str, str, str, list, discord.File | None]:
         """Prepare the job post."""
-        # get values from job list
+        # get values from job columns
         timestamp = job[0]
         author = job[1]
         job_title = job[2].strip()
@@ -162,7 +165,10 @@ class JobBoard(commands.Cog):
             path = Path(__file__).resolve().parent
             filename = f"{company_name}.png"
             if company_name in COMAPNIES_WITH_DIFFERENT_PICTURES:
-                filename = f"{company_name}-{n}.jpg"
+                # replace special characters in job_title
+                job_title_r = job_title.replace("/", "_")
+                job_title_r = job_title_r.replace(":", "_")
+                filename = f"{company_name}-{job_title_r}.jpg"
             file = discord.File(path / "pictures" / filename, filename=filename)
 
         return key, name, content, thread_messages, file
