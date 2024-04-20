@@ -77,7 +77,7 @@ async def main():
         await bot.add_cog(RegistrationPyData(bot))
         await bot.load_extension("extensions.programme_notifications")
         await bot.load_extension("extensions.organisers")
-        await bot.load_extension("extensions.job_board")
+        # await bot.load_extension("extensions.job_board")
         await bot.start(DISCORD_BOT_TOKEN)
 
 
