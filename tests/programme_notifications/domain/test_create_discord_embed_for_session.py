@@ -493,6 +493,68 @@ def test_livestream_url_is_displayed_if_available(
     assert embed.fields[4].value == expected_livestream_value
 
 
+@pytest.mark.parametrize(
+    ("slido_url", "expected_slido_value"),
+    [
+        pytest.param(
+            None,
+            "—",
+            id="No slido URL available",
+        ),
+        pytest.param(
+            yarl.URL("https://app.sli.do/event/test"),
+            "[Slido](https://app.sli.do/event/test)",
+            id="Slido URL is available",
+        ),
+    ],
+)
+def test_slido_url_is_displayed_if_available(
+    slido_url: yarl.URL | None,
+    expected_slido_value: str,
+    session_factory: factories.SessionFactory,
+) -> None:
+    """Show a livestream url, if available."""
+    # GIVEN a session with a livestream url
+    session = session_factory()
+
+    # WHEN the embed is created
+    embed = services.create_session_embed(session, slido_url=slido_url)
+
+    # THEN the embed url is as expected
+    assert embed.fields[5].value == expected_slido_value
+
+
+@pytest.mark.parametrize(
+    ("survey_url", "expected_survey_value"),
+    [
+        pytest.param(
+            None,
+            "—",
+            id="No survey URL available",
+        ),
+        pytest.param(
+            yarl.URL("https://survey.com"),
+            "[sci-an](https://survey.com)",
+            id="Survey URL is available",
+        ),
+    ],
+)
+def test_survey_url_is_displayed_if_available(
+    survey_url: yarl.URL | None,
+    expected_survey_value: str,
+    session_factory: factories.SessionFactory,
+) -> None:
+    """Show a livestream url, if available."""
+    # GIVEN a session with a livestream url
+    session = session_factory(survey_url=survey_url)
+
+    # WHEN the embed is created
+    embed = services.create_session_embed(session)
+
+    # THEN the embed url is as expected
+    assert embed.fields[6].value == expected_survey_value
+
+
 def test_discord_channel_is_linked_if_available(
     session_factory: factories.SessionFactory,
 ) -> None:
