@@ -513,11 +513,11 @@ def test_slido_url_is_displayed_if_available(
     expected_slido_value: str,
     session_factory: factories.SessionFactory,
 ) -> None:
-    """Show a livestream url, if available."""
-    # GIVEN a session with a livestream url
+    """Show a slido url, if available."""
+    # GIVEN a session
     session = session_factory()
 
-    # WHEN the embed is created
+    # WHEN the embed is created with slido_url
     embed = services.create_session_embed(session, slido_url=slido_url)
 
     # THEN the embed url is as expected
@@ -544,8 +544,8 @@ def test_survey_url_is_displayed_if_available(
     expected_survey_value: str,
     session_factory: factories.SessionFactory,
 ) -> None:
-    """Show a livestream url, if available."""
-    # GIVEN a session with a livestream url
+    """Show a survey url, if available."""
+    # GIVEN a session with a survey url
     session = session_factory(survey_url=survey_url)
 
     # WHEN the embed is created
