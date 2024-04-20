@@ -155,6 +155,7 @@ async def test_api_client_returns_schedule_instance(
     config = configuration_factory(
         {"pretalx_schedule_url": "https://europython.api/schedule/latest"}
     )
+
     # AND an api client with that session and configuration repository
     client = api.ApiClient(session=client_session, config=config)
 

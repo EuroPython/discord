@@ -91,6 +91,7 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                 "1234": {
                     "discord_channel_id": "1234567890",
                     "webhook_id": "room_1234",
+                    "survey_url": "https://survey.com",
                     "livestreams": {
                         "2024-04-22": "https://one.livestream.ep",
                         "2024-04-23": "https://two.livestream.ep",
@@ -156,6 +157,16 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                             value="[YouTube](https://one.livestream.ep)",
                             inline=True,
                         ),
+                        discord.Field(
+                            name="Live Q&A",
+                            value="[Slido](https://app.sli.do/event/test)",
+                            inline=True,
+                        ),
+                        discord.Field(
+                            name="Feedback",
+                            value="[sci-an](https://survey.com)",
+                            inline=True,
+                        ),
                         discord.Field(name="Discord Channel", value="<#1234567890>", inline=True),
                     ],
                     footer=discord.Footer(
@@ -191,6 +202,16 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                             value="[YouTube](https://one.livestream.ep)",
                             inline=True,
                         ),
+                        discord.Field(
+                            name="Live Q&A",
+                            value="[Slido](https://app.sli.do/event/test)",
+                            inline=True,
+                        ),
+                        discord.Field(
+                            name="Feedback",
+                            value="[sci-an](https://survey.com)",
+                            inline=True,
+                        ),
                         discord.Field(name="Python Level", value="Intermediate", inline=True),
                     ],
                     footer=discord.Footer(
@@ -224,6 +245,16 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                         discord.Field(
                             name="Livestream",
                             value="[YouTube](https://one.livestream.ep)",
+                            inline=True,
+                        ),
+                        discord.Field(
+                            name="Live Q&A",
+                            value="[Slido](https://app.sli.do/event/test)",
+                            inline=True,
+                        ),
+                        discord.Field(
+                            name="Feedback",
+                            value="[sci-an](https://survey.com)",
                             inline=True,
                         ),
                         discord.Field(name="Python Level", value="Intermediate", inline=True),

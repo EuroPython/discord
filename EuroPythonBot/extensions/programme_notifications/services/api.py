@@ -131,7 +131,7 @@ class ApiClient:
         converter.register_structure_hook(arrow.Arrow, lambda raw_dt, _: arrow.get(raw_dt))
         return converter
 
-    async def fetch_session_details(self, code: str) -> tuple[yarl.URL, str]:
+    async def fetch_session_details(self, code: str) -> tuple[yarl.URL, yarl.URL, str]:
         """Fetch session information from the PyCon/PyData website.
 
         :param code: The session identifier code, as used by pretalx
