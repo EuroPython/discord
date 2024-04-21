@@ -1,4 +1,5 @@
 import logging
+import os
 
 import attrs
 import yarl
@@ -56,14 +57,16 @@ class SessionInformation:
         return url, experience
 
     def _get_livestream_url(self, session: europython.Session) -> yarl.URL | None:
-        """Get the livestream URL for this session from the config.
+        """Get the livestream env var name for this session from the config and then get the
+        livestream url from the env var.
 
         :param session: The session
         :return: The livestream URL or None
         """
         date = session.slot.start.strftime("%Y-%m-%d")
         try:
-            return self._config.rooms[str(session.slot.room_id)].livestreams[date]
+            env_var_name = self._config.rooms[str(session.slot.room_id)].livestreams[date]
+            return os.getenv(env_var_name)
         except (KeyError, AttributeError):
             return
 

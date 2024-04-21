@@ -52,11 +52,11 @@ webhook_id = "ROOM_2578"
 discord_channel_id = "1225453671152877680"
 survey_url = "https://survey.sci-an.com/UZpiArTDj7OzJsAU?s=7"
 
+# livestreams are hidden in env vars. add the livestream links to .secrets
 [programme_notifications.rooms.2578.livestreams]
-# TODO: update URLs
-"2024-04-22" = "https://2024.pycon.de/live"
-"2024-04-23" = "https://2024.pycon.de/live"
-"2024-04-24" = "https://2024.pycon.de/live"
+"2024-04-22" = "LIVESTREAM_URL_KUPPELSAAL_DAY_1"
+"2024-04-23" = "LIVESTREAM_URL_KUPPELSAAL_DAY_2"
+"2024-04-24" = "LIVESTREAM_URL_KUPPELSAAL_DAY_3"
 
 # B09: 2579
 [programme_notifications.rooms.2579]
@@ -65,10 +65,9 @@ discord_channel_id = "1225453705910816868"
 survey_url = "https://survey.sci-an.com/UZpiArTDj7OzJsAU?s=4"
 
 [programme_notifications.rooms.2579.livestreams]
-# TODO: update URLs
-"2024-04-22" = "https://2024.pycon.de/live"
-"2024-04-23" = "https://2024.pycon.de/live"
-"2024-04-24" = "https://2024.pycon.de/live"
+"2024-04-22" = "LIVESTREAM_URL_B09_DAY_1"
+"2024-04-23" = "LIVESTREAM_URL_B09_DAY_2"
+"2024-04-24" = "LIVESTREAM_URL_B09_DAY_3"
 
 # B07-B08: 2580
 [programme_notifications.rooms.2580]
@@ -77,10 +76,9 @@ discord_channel_id = "1225454000800006144"
 survey_url = "https://survey.sci-an.com/UZpiArTDj7OzJsAU?s=5"
 
 [programme_notifications.rooms.2580.livestreams]
-# TODO: update URLs
-"2024-04-22" = "https://2024.pycon.de/live"
-"2024-04-23" = "https://2024.pycon.de/live"
-"2024-04-24" = "https://2024.pycon.de/live"
+"2024-04-22" = "LIVESTREAM_URL_B07_08_DAY_1"
+"2024-04-23" = "LIVESTREAM_URL_B07_08_DAY_2"
+"2024-04-24" = "LIVESTREAM_URL_B07_08_DAY_3"
 
 # B05-B06: 2581
 [programme_notifications.rooms.2581]
@@ -89,10 +87,9 @@ discord_channel_id = "1225454340513464340"
 survey_url = "https://survey.sci-an.com/UZpiArTDj7OzJsAU?s=6"
 
 [programme_notifications.rooms.2581.livestreams]
-# TODO: update URLs
-"2024-04-22" = "https://2024.pycon.de/live"
-"2024-04-23" = "https://2024.pycon.de/live"
-"2024-04-24" = "https://2024.pycon.de/live"
+"2024-04-22" = "LIVESTREAM_URL_B05_06_DAY_1"
+"2024-04-23" = "LIVESTREAM_URL_B05_06_DAY_2"
+"2024-04-24" = "LIVESTREAM_URL_B05_06_DAY_3"
 
 # A1: 2582
 [programme_notifications.rooms.2582]
@@ -101,10 +98,9 @@ discord_channel_id = "1225454099533791303"
 survey_url = "https://survey.sci-an.com/UZpiArTDj7OzJsAU?s=3"
 
 [programme_notifications.rooms.2582.livestreams]
-# TODO: update URLs
-"2024-04-22" = "https://2024.pycon.de/live"
-"2024-04-23" = "https://2024.pycon.de/live"
-"2024-04-24" = "https://2024.pycon.de/live"
+"2024-04-22" = "LIVESTREAM_URL_A1_DAY_1"
+"2024-04-23" = "LIVESTREAM_URL_A1_DAY_2"
+"2024-04-24" = "LIVESTREAM_URL_A1_DAY_3"
 
 # A03-A04: 2583
 [programme_notifications.rooms.2583]
@@ -113,10 +109,9 @@ discord_channel_id = "1225454458935181493"
 survey_url = "https://survey.sci-an.com/UZpiArTDj7OzJsAU?s=1"
 
 [programme_notifications.rooms.2583.livestreams]
-# TODO: update URLs
-"2024-04-22" = "https://2024.pycon.de/live"
-"2024-04-23" = "https://2024.pycon.de/live"
-"2024-04-24" = "https://2024.pycon.de/live"
+"2024-04-22" = "LIVESTREAM_URL_A03_04_DAY_1"
+"2024-04-23" = "LIVESTREAM_URL_A03_04_DAY_2"
+"2024-04-24" = "LIVESTREAM_URL_A03_04_DAY_3"
 
 # A05-A06: 2584
 [programme_notifications.rooms.2584]
@@ -125,7 +120,6 @@ discord_channel_id = "1225453715079827577"
 survey_url = "https://survey.sci-an.com/UZpiArTDj7OzJsAU?s=2"
 
 [programme_notifications.rooms.2584.livestreams]
-# TODO: update URLs
-"2024-04-22" = "https://2024.pycon.de/live"
-"2024-04-23" = "https://2024.pycon.de/live"
-"2024-04-24" = "https://2024.pycon.de/live"
+"2024-04-22" = "LIVESTREAM_URL_A05_06_DAY_1"
+"2024-04-23" = "LIVESTREAM_URL_A05_06_DAY_2"
+"2024-04-24" = "LIVESTREAM_URL_A05_06_DAY_3"

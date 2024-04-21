@@ -154,7 +154,7 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                         discord.Field(name="Duration", value="37 minutes", inline=True),
                         discord.Field(
                             name="Livestream",
-                            value="[YouTube](https://one.livestream.ep)",
+                            value="[Vimeo](https://one.livestream.ep)",
                             inline=True,
                         ),
                         discord.Field(
@@ -199,7 +199,7 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                         discord.Field(name="Duration", value="37 minutes", inline=True),
                         discord.Field(
                             name="Livestream",
-                            value="[YouTube](https://one.livestream.ep)",
+                            value="[Vimeo](https://one.livestream.ep)",
                             inline=True,
                         ),
                         discord.Field(
@@ -244,7 +244,7 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                         discord.Field(name="Duration", value="37 minutes", inline=True),
                         discord.Field(
                             name="Livestream",
-                            value="[YouTube](https://one.livestream.ep)",
+                            value="[Vimeo](https://one.livestream.ep)",
                             inline=True,
                         ),
                         discord.Field(
