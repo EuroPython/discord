@@ -66,7 +66,10 @@ class SessionInformation:
         date = session.slot.start.strftime("%Y-%m-%d")
         try:
             env_var_name = self._config.rooms[str(session.slot.room_id)].livestreams[date]
-            return os.getenv(env_var_name)
+            livestream_url = os.getenv(env_var_name)
+            if livestream_url:
+                return yarl.URL(livestream_url)
+            return None
         except (KeyError, AttributeError):
             return
 

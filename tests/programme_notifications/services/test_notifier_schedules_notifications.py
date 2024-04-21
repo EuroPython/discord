@@ -1,3 +1,4 @@
+import os
 from unittest import mock
 
 import arrow
@@ -93,9 +94,9 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                     "webhook_id": "room_1234",
                     "survey_url": "https://survey.com",
                     "livestreams": {
-                        "2024-04-22": "https://one.livestream.ep",
-                        "2024-04-23": "https://two.livestream.ep",
-                        "2024-04-24": "https://three.livestream.ep",
+                        "2024-04-22": "LIVESTREAM_URL_TEST_DAY_1",
+                        "2024-04-23": "LIVESTREAM_URL_TEST_DAY_2",
+                        "2024-04-24": "LIVESTREAM_URL_TEST_DAY_3",
                     },
                 }
             },
@@ -109,6 +110,11 @@ async def test_scheduling_notifications_delivers_to_webhooks(
             ],
         }
     )
+
+    os.environ["LIVESTREAM_URL_TEST_DAY_1"] = "https://one.livestream.ep"
+    os.environ["LIVESTREAM_URL_TEST_DAY_2"] = "https://two.livestream.ep"
+    os.environ["LIVESTREAM_URL_TEST_DAY_3"] = "https://three.livestream.ep"
+
     # AND a session information service with the session
     session_info = services.SessionInformation(
         session_repository=repositories.SessionRepository(),
