@@ -32,7 +32,7 @@ def create_session_embed(
     :return: A Discord embed for this session
     """
     livestream_value = (
-        f"[YouTube]({session.livestream_url})" if session.livestream_url else _FIELD_VALUE_EMTPY
+        f"[Vimeo]({session.livestream_url})" if session.livestream_url else _FIELD_VALUE_EMTPY
     )
     slido_value = f"[Slido]({slido_url})" if slido_url else _FIELD_VALUE_EMTPY
     survey_value = f"[sci-an]({session.survey_url})" if session.survey_url else _FIELD_VALUE_EMTPY

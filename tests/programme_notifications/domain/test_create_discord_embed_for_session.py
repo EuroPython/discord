@@ -68,7 +68,7 @@ def test_create_embed_from_session_information() -> None:
             discord.Field(name="Duration", value="45 minutes", inline=True),
             discord.Field(
                 name="Livestream",
-                value="[YouTube](https://livestreams.com/best-conference-sessions-of-2023)",
+                value="[Vimeo](https://livestreams.com/best-conference-sessions-of-2023)",
                 inline=True,
             ),
             discord.Field(
@@ -472,7 +472,7 @@ def test_duration_is_displayed_correctly(
         ),
         pytest.param(
             yarl.URL("https://some.stream.live/"),
-            "[YouTube](https://some.stream.live/)",
+            "[Vimeo](https://some.stream.live/)",
             id="Livestream URL is available",
         ),
     ],
