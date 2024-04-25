@@ -52,6 +52,10 @@ class Config(metaclass=Singleton):
                 # Tito
                 self.TITO_BASE_URL = config["tito"]["TITO_BASE_URL"]
 
+                # Job Board
+                self.JOB_BOARD_CHANNEL_ID = config["job_board"]["JOB_BOARD_CHANNEL_ID"]
+                self.JOB_BOARD_TESTING = config["job_board"]["JOB_BOARD_TESTING"]
+
                 # Mapping
                 # with self.BASE_PATH.joinpath(
                 #     self.TICKET_TO_ROLES_JSON

@@ -1,0 +1,840 @@
+Zeitstempel,E-Mail-Adresse,Job title,Company name,Job Location,Deadline,Job description,Duties and responsibilities,Appreciated qualification and experience,Additional info (optional),Contact person name,Contact person email,URL/Link to job posting,Picture for job posting (if available)
+15.04.2024 17:19:17,x,Data Engineer (d/f/m),mobile.de,Berlin,,"Our team's mission is to facilitate seamless communication between potential car buyers and dealers and build tools for dealers to help them manage their leads effectively. Collaborating closely with other teams, we integrate written communication requests, phone leads, financing requests, and other such leads into a cohesive product for a unified user experience. We aim to collect the right information and data points from dealers, offering and guiding them to what suits their needs best.
+
+We are an agile, cross-functional, and cross-platform team that continuously improves the user experience on mobile.de iOS, Android, and Web applications.","You design, implement, schedule, supervise, document and maintain ETL/ELT pipelines into our data lake and data warehouse while following software engineering best practices
+
+You are involved in the creation and definition of reports and dashboards to create transparency into current business processes
+
+You are part of a cross-functional product development following the data mesh philosophy
+
+You collaborate with analysts, data engineers, data scientists and product managers across mobile.de and serve as a contact for questions regarding the data related aspects of your team’s products
+
+The core of our relevant tech stack is SQL, Python, Airbyte, DBT, BigQuery/Redshift, Looker ","You have 4+ years hands-on experience using big data technologies
+
+You have worked with cloud providers, such as Amazon Web Services or Google Cloud Platform
+
+You are familiar with building data pipelines and commonly used data technologies like DBT, Airbyte, Airflow, Kafka, Apache Spark or BigQuery/Redshift
+
+You have experience consuming source data from SQL and no-SQL databases (mysql, mongodb), Kafka, S3, Google Analytics, REST APIs
+
+You have experience with custom business logic implemented in Python or Scala.
+
+You have experience with BI tools like Looker/Looker Studio, Data Studio or Tableau, easyBI
+
+Experience having worked in a data mesh environment a big plus
+
+Experience in data engineering in a marketplace environment a big plus
+
+Experience with JVM based and Javascript based technologies a plus
+
+Based or entitled to work in the EU and willing to relocate to the Berlin metropolitan area","An attractive Base Salary.
+Participation in our Short Term Incentive plan (annual bonus).
+Employee Stock Purchase Program.
+Work From Anywhere: Enjoy up to 20 days a year of working from anywhere! Maybe not from the moon - well why not! just make sure you have internet connection!
+A 24/7 Employee Assistance Program for you and your family, because we care.",,,https://www.mobile.de/careers/jobs/cdd7be5648f210014c1bbed7c32e0000/,https://drive.google.com/open?id=1joEfAMVk5HDmIq-xOzCtyXxD409USQhL
+15.04.2024 17:21:39,x,Senior Data Scientist C2B (d/f/m),mobile.de,Berlin,,"At mobile.de, we are seeking a Senior Data Scientist (d/f/m) for our C2B Team in Berlin. Our team's mission is to empower Private Sellers and our Dealers, providing them with the best tools and data-driven insights to reach the perfect match. We focus on bridging the gap between individual sellers and dealerships, ensuring a seamless and efficient sales process. In this dynamic environment, we maintain a collaborative approach, fostering a close-knit and supportive team atmosphere. Join us in our pursuit to revolutionise the way private sellers engage with the automotive marketplace.","As a Senior Data Scientist, you will help us refine and personalise our pricing models. This ensures our sellers get both accurate and competitive prices for their cars based on the market situation and our dealers get access to a wide range of quality vehicles at fair and transparent prices.
+
+Translate customer insights / business problems into impactful experiments/ ML challenges
+
+Build POCs and demonstrate their value to stakeholders
+
+Implement complex solutions using readable, reusable code along with the right technology
+
+Iterate on and improve our pricing algorithm to ensure it's both competitive and precise
+
+Leverage data to better understand user behaviours and segment them accordingly
+
+Work closely with the team to use these insights to create specific products or services
+
+Proactively support the team in shaping the strategic approach to develop our products and businesses
+
+Implement continuous improvements to ensure we stay ahead in the market","Relevant education on MSc or Ph.D. level (statistics, computer science, economics, or similar)
+
+4+ years of experience in software development and data analysis using Python, R, SQL and/or NoSQL
+
+Proven data science experience – preferably in marketplaces and tech industries
+
+Strong background in Machine Learning and Cloud Platforms
+
+Experience in cross-functional product development (e.g. Developers, UX, Product Managers)
+
+Passion for Agile (Kanban/Scrum) software development, product discovery, and continuous deployment
+
+Based or entitled to work in the EU","An attractive Base Salary.
+Participation in our Short Term Incentive plan (annual bonus).
+Employee Stock Purchase Program.
+Work From Anywhere: Enjoy up to 20 days a year of working from anywhere! Maybe not from the moon - well why not! just make sure you have internet connection!
+A 24/7 Employee Assistance Program for you and your family, because we care.",,,https://www.mobile.de/careers/jobs/ac5aa0c7ef5e10018f38e06dad440000/,https://drive.google.com/open?id=11dEC7EnDl7sFvXZ8ug-RRkvjyAJCM0We
+15.04.2024 17:24:07,x,Senior Data Engineer – Communications (d/f/m),mobile.de,Berlin,,"For our team in Berlin we are looking for a Senior Data Engineer (d/f/m) for our Communications team.
+
+Our mission is to enable our customers to do the mobility changes that they need (buying and selling of vehicles, including concerns on the way like financing and insuring a car) completely online, and to enable the more than 40.000 car dealers in Germany who are our partners to compete in this increasingly digitized market by providing them top-in-class tools and processes. This specific role is for the Communication team, responsible for the written communication in mobile.de.
+
+This agile and cross-functional team is equipped with software developers, UX specialists, product owners, analysts and business developers so that it can holistically own and grow this business and develop a product that serves our users’ needs excellently. Reporting to the Team Lead of Software Engineering, the person has the technical skills to manage data engineering, has a business focus and loves to work with passionate and engaged people in one of the world’s leading automotive platforms. Are you this person?","Experience creating detailed technical documentation building data flows into and out of our data lake / data mesh infrastructures and suggest/promote how data can enable better products and grow our business
+You design, implement, schedule and supervise ETL/ELT pipelines into our data lake and data warehouse while following software engineering best practices
+You are involved in the creation and definition of reports and dashboards to create transparency into current business processes
+You craft clean, accurate, integrated, automatically tested, well-documented, and efficient datasets with a high usability for analysts and our users
+You collaborate with analysts, data engineers, data scientists and product managers across mobile.de and serve as a contact for questions regarding the datasets of your business unit and you feel responsible for data quality and tackle issues
+Develop and maintain backend solutions for customer-facing and internal applications and contribute to the team’s work with clean, maintainable and testable code, participate and lead design and code reviews","You have a degree in data engineering, data science, (business) computer science or comparable working experience
+You have 4+ years hands-on experience using big data technologies in cloud environments, such as Amazon Web Services or Google Cloud Platform
+You are familiar with building data integration pipelines and commonly used data technologies like dbt, Airbyte, Airflow, Kafka, Spark or BigQuery
+You have knowledge about supporting build and deploy technologies (e.g. Maven/Gradle, Docker)
+You have experience with relational and object databases like MySQL, MongoDB and comfortable with data exploration using SQL; NoSQL databases
+You have experience with BI tools like Looker, Data Studio or Tableau
+You have experience with Java/Spring Boot-based backend technologies and have implemented and consumed RESTful (micro-)services","An attractive Base Salary.
+Participation in our Short Term Incentive plan (annual bonus).
+Employee Stock Purchase Program.
+Work From Anywhere: Enjoy up to 20 days a year of working from anywhere! Maybe not from the moon - well why not! just make sure you have internet connection!
+A 24/7 Employee Assistance Program for you and your family, because we care.",,,https://www.mobile.de/careers/jobs/ecb3f7f62809100192dcb5ac14020000/,https://drive.google.com/open?id=15mmBaDE3xrZL7OcCjSryPVrH2GQwtHA3
+16.04.2024 08:58:35,x,Experienced Machine Learning Research Scientists (f/m/x),ZEISS,Jena,,The employees of Corporate Research & Technology work under the best possible conditions on innovative technologies and the latest application possibilities that benefit all ZEISS business areas - from the Semiconductor Division to Microscopy and Medical Technology. We are looking for you for our team in Jena.,"Want to drive the next generation of intelligent products?
+
+We are seeking passionate and talented scientists who want to drive the development of next generation products and cutting-edge machine learning algorithms at ZEISS. Integrated in a fast growing team of scientists and research engineers, you will develop core algorithms that extract information from the diverse data sources present across our complete product portfolio and take project ideas from academic and idea stages to prototypes. We have just started to scrape the surface of what can be done with the data our products deliver. You will contribute to realizing the prospects of machine learning, modern computer vision and scene understanding technologies for our customers. You will also support technology adoption and integration into our flagship products. This comprises conceptualizing, initiating, prototyping as well as scaling and instrumenting methods and evaluating their performance. During your work you build an excellent network with us in both academia and industry that will help us to leverage the latest technology advancements to address tomorrow's challenges.","You have
+_a university degree and proven expertise in state-of-the-art machine learning techniques like multi-modal deep learning, autoML, or reinforcement learning - a PhD would be a plus
+
+_a deep understanding of statistics and machine learning as well as best practices in model development and deployment
+
+_a strong programming background in Python or C++ and familiarity with software development best practices and toolkits such as TensorFlow or pytorch
+
+_a very good overview of latest research and industry trends as well as the ability to understand customer needs and to solve real-world problems
+
+_the vision and hands-on mindset to make your ideas come to life in ZEISS products",,Katharina Dandorfer,,https://zeissgroup.wd3.myworkdayjobs.com/de-DE/External/job/Jena/Experienced-Machine-Learning-Research-Scientists--f-m-x-_JR_1008583-2?source=ZEISS,
+16.04.2024 09:00:27,x,System Developer Algorithms (Metrology Software) (f/m/x),ZEISS,"Jena, Oberkochen",,"Shape the digital future of ZEISS in the Global Algorithms & Software Semiconductor Mask Solutions team!
+
+Your sophisticated algorithms evaluate enormous amounts of image data in a highly efficient manner. Only in this way we enable the performance of our complex photomask systems - the essential building block to manufacture defect-free microchips. ","Your Role
+
+Our high-tech measurement systems for semiconductor lithography are characterized by extreme demands on measurement performance. This performance is essentially achieved by optical components at the highest level. Nevertheless, remaining manufacturing tolerances lead to almost insurmountable accuracy limits. Breaking through these limits using algorithms is your new challenge at ZEISS.
+
+
+
+You will architect and implement highly accurate mathematical-optical models and their numerical solutions in expert teams. Your tasks will range from conceptual design to implementation and performance evaluation. Product maturity and value adding algorithms are your success. You continuously expand your network within the company and are in close contact with our research partners.
+
+
+
+Your innovation-driven mindset allows you to keep an eye on the latest technical developments and publications. You and your colleagues thus create the conditions for excellence","Your Profile
+
+_Excellent practical programming experience with: Scientific Python, and possibly C++, preferably also with parallel computing (CUDA, Cloud)
+
+_Ideally proven SW architecture skills and FOSS contributions
+
+_Intensive experience in implementing numerical simulation methods and optimization techniques for solving forward and inverse problems
+
+_Very good knowledge of classical image processing and machine learning as well as good physical and methodological knowledge of geometric and physical optics
+
+_A very successfully completed degree in physics, computer science, engineering, or applied mathematics
+
+_Great passion to successfully solve complex and difficult problems independently and in a team ",,Kathrin Siegel,,https://zeissgroup.wd3.myworkdayjobs.com/de-DE/External/job/Jena/System-Developer-Algorithms--Metrology-Software----f-m-x-_JR_1028590?source=ZEISS,
+16.04.2024 09:02:32,x,Knowledge Graph Engineer (f/m/x),ZEISS,München,,"Your Role
+
+You will play a crucial role in shaping the future of Data & Analytics and actively contribute to the success of the digital transformation at ZEISS. Within the Enterprise Data Management Team of our rapidly growing Data & Analytics organisation, you will help our business units to design, build, and maintain knowledge-based systems, driven by the vision to enable everyone to effectively find, learn, share, & innovate throughout the enterprise. ","You will
+
+_Integrate information into knowledge-graph based systems and engage in data & knowledge / ontology modelling, knowledge graph construction, and validation
+
+_Develop and apply algorithms based on graph queries / analytics (e.g., SPARQL), graph reasoning (e.g., RDFS+, OWL), AI/ML (e.g., NLP, graph embeddings) to enable various analytics use cases leveraging knowledge graphs
+
+_Work in a team with data scientists, data & software engineers & product owners to create scalable, reusable and performant data-oriented applications, incl. e.g., chatbots, recommender, search, and other knowledge-based systems
+
+_Convey technically difficult concepts in a clear and understandable way, translate business needs to technical specifications, and provide guidance for knowledge graph & ontology development to other teams
+
+_Evaluate the latest methods and technologies and support the design of our data & analytics platforms and governance infrastructures - Continuously improve quality and performance while owning applications from idea to operations","
+Your profile
+
+_An excellent university degree (MSc/PhD) in information technology, computer science, natural sciences, or similar training
+
+_At least 3 years of working experience in data integration, building (semantic) knowledge graphs, querying (graph) data using standard query languages (SQL, SPARQL)
+
+_Familiarity with machine actionable languages (e.g., RDF), linked data principles and standards, & OWL-based ontology modelling in commonly used tools
+
+_Excellent programming skills in Python, including mastering the standard libraries for NLP, machine learning and data science; knowledge of at least one other programming language (e.g. Java, Javascript) is a plus
+
+_Solid understanding of at least one of Graph Analytics, Machine Learning / Deep Learning, Natural Language Processing
+
+_An independent (“can-do”), solution-oriented and team-oriented way of working, not afraid to take on responsibility
+
+_Strong desire to learn & upskill at the intersection of data, science & industry
+
+_Experience with the following is welcome and considered as a plus: Cloud technologies like Microsoft Azure (e.g., Synapse, Databricks, Azure DevOps) - CI/CD using e.g., git, docker - Agile software-development using Scrum / Kanban",,"Annett Burger, Markus Repp",,https://zeissgroup.wd3.myworkdayjobs.com/de-DE/External/job/Mnchen/Senior-Knowledge-Graph-Engineer--m-f-d-_JR_1020632?source=ZEISS,
+17.04.2024 10:33:31,x,Senior Backend Developer (m/w/d) - Germany based,Kraken Technologies Germany ,"Berlin, DE / – Software Engineering /Full-Time /Hybrid",,"Kraken is the technology tentacle of the Octopus Energy Group.
+
+All technology is written and maintained by a multi-discipline engineering team of around 500 people globally. Our engineers work in ‘super teams’ which are focused on key domains of our platform as well as other innovative products. This also includes server-side, client-side and mobile engineers working closely with UX experts, copywriters and designers.
+
+Teams are empowered to choose a way of working that works for them, often opting for a Kanban-like approach. Notion and Asana are then used to specify and manage work; Github, CircleCI and Terraform Enterprise as part of an immutable-infrastructure, continuous delivery pipeline; and Datadog, Sentry and Cloudwatch to measure performance and monitor production.
+
+Some of our coding conventions are open-source .
+ Kraken is a great place to learn, work with talented engineers and have a lot of fun.","- We have lots of difficult design challenges to solve. The utilities market is complicated, outdated and process-heavy - there's an awful lot of domain modelling that we need to get right. Strong attention to detail is essential.
+
+-We have challenging technical problems to solve; like processing tens of millions of meter readings a day. We need the right technology in place to handle this smoothly as well as feeding data into a machine learning pipeline that models and predicts consumption. Or thinking about how we adapt Kraken to improve other utilities like water and broadband.
+
+-There's a great opportunity for disruption across the energy market. The big suppliers still dominate, but are not exactly popular. The energy landscape is changing as we move to more dis-aggregated forms of generation, with less predictability, more dynamism and smarter technology.
+
+-You'll be working for a company that’s fighting climate change. Our generation arm is the largest investor in solar generation in the UK, and is funding wind and anaerobic digestion. As a supplier, we're helping people to use greener technology and renewable energy, all helping move the UK towards a lower carbon future.","-Good communication in English - other languages such as German, French, Italian or Spanish is a plus
+
+-A general interest in technology and problem-solving; someone diligent and thoughtful. It would be helpful to have experience/expertise in the following (in rough priority order):
+
+-Python: You should have solid knowledge and experience in Python development to create efficient and scalable backend solutions.
+
+-Django (or equivalent web framework): You have worked with Django or an equivalent web framework to support and accelerate web application development.
+
+-Domain modeling: You possess competence in domain modeling and implementing these models into effective backend structures to support complex business logic.
+
+-HTTP and REST APIs, as well as GraphQL: You have in-depth understanding and hands-on experience in developing and implementing both REST and GraphQL APIs, ensuring efficient communication and flexibility between frontend and backend systems.
+
+-Writing robust and fault-tolerant software: You can write robust and fault-tolerant software that runs smoothly and reliably even under adverse conditions.
+
+-Celery and async processing: You have gained experience with Celery and asynchronous processing to efficiently handle tasks in the background and optimize backend performance.
+
+-Postgres: You have knowledge and experience in working with Postgres to develop and manage database applications that meet scalability, performance, and data integrity requirements.","Our Benefits: (Headline)
+
+-An internationally positioned team with flat hierarchies and open and transparent communication
+
+-We rely on flexible working hours
+
+-Green energy starts with each individual: That's why you get discounted conditions for our electricity or gas tariffs.
+
+-Share options: You will have the opportunity to participate in the international success of Octopus Energy Group Ltd. through share options.
+
+-Language connects: Take your English skills to the next level with Busuu, our corporate language training provider
+
+-For more exercise: Lease your favourite bicycle from us at a low price
+
+-For a healthy work-life balance: train with Wellpass in over 6000 sports and health facilities all over Germany
+
+-Eating makes you happy: We'll give you a monthly allowance of 108,45€ for your daily lunch (easily via app).
+
+-For a relaxed commute to work: We reimburse you for public transport costs
+
+-One less thing to worry about: we'll cover some of your childcare costs
+
+-Whether online or offline - team cohesion and joint events are part of our everyday working life
+
+-A stylish working environment in our Berlin office close to Moritzplatz in Kreuzberg
+
+-For a secure future: the opportunity to take out a company pension scheme through us
+
+
+Above all, we’re looking for someone who thrives on providing alternative opinions, challenging those around them and being challenged. We would prefer someone who can work in our Berlin office, but will consider remote candidates within Germany. Curious? In the podcast, our tech team tells you more about the work and culture at Octopus Energy. Have a listen! Tech-Team Podcast (only in German though..)
+(Please use ""Tech- Team Podcast"" as a hyperlink: https://open.spotify.com/episode/05Em3Jn62NVgMS7Vi6klE6?si=14936448b22f46d7&nd=1&dlsi=94ee01a0db2d4f7a)
+",,,https://jobs.lever.co/octoenergy/289517b4-e860-4e25-b1f7-42c935e0ee54  ,https://drive.google.com/open?id=1x6voVm0eLQtHOhNprPFXfR3c3pNWTrDg
+17.04.2024 10:49:38,x,Senior Frontend Developer (m/w/d) - Germany based,Kraken Technologies Germany,"Munich, DE /Software Engineering /Full-Time /Hybrid",,"Kraken is the technology tentacle of the Octopus Energy Group.
+
+Our team
+All technology is written and maintained by a multi-discipline engineering team of around 500 people globally. Our engineers work in ‘super teams’ which are focused on key domains of our platform as well as other innovative products. This also includes server-side, client-side and mobile engineers working closely with UX experts, copywriters and designers.
+
+Teams are empowered to choose a way of working that works for them, often opting for a Kanban-like approach. Notion and Asana are then used to specify and manage work; Github, CircleCI and Terraform Enterprise as part of an immutable-infrastructure, continuous delivery pipeline; and Datadog, Sentry and Cloudwatch to measure performance and monitor production.
+
+Some of our coding conventions are open-source .
+
+Kraken is a great place to learn, work with talented engineers and have a lot of fun.
+","-You write solid, semantic HTML and have experience with SASS
+
+-You develop our Next.js apps with the help of Typescript and React
+
+-Your expertise in developing responsive websites with a mobile-first approach and your deep-rooted understanding of accessibility will help ensure that AAA accessibility guidelines are met
+
+-Your created code works consistently in different browsers and on different platforms, with testing being part of your understanding of quality
+
+-You can translate UI designs into code
+
+-You are fascinated by new digital technologies and love to combine usability with appealing design
+
+-You ensure a consistent presentation of our brand with high-quality graphic standards
+
+-Experience with the Django templating language is an advantage","-You have successfully completed your training as an IT specialist or a technical degree (e.g. computer science, business informatics) or have several years of relevant professional experience
+
+-You have already gained experience with large projects and ideally have experience in the following areas JavaScript/Typescript frameworks, especially React & Next.js
+
+-Unit and end-to-end testing
+
+-Website development that complies with AA & AAA guidelines
+
+-You have a deep understanding of the entire web development process
+
+-Very good English skills are important. Do you also speak German, Spanish, Italian or French? The better...","Our Benefits: (Headline)
+
+-An internationally positioned team with flat hierarchies and open and transparent communication
+
+-We rely on flexible working hours
+
+-Share options: You will have the opportunity to participate in the international success of Octopus Energy Group Ltd. through share options.
+
+-Language connects: Take your English skills to the next level with Busuu, our corporate language training provider
+
+-For more exercise: Lease your favourite bicycle from us at a low price
+
+-For a healthy work-life balance: train with Wellpass in over 6000 sports and health facilities all over Germany
+
+-Eating makes you happy: We'll give you a monthly allowance of €108,45 for your daily lunch (easily via app).
+
+-For a relaxed commute to work: We reimburse you for public transport costs
+
+-One less thing to worry about: we'll cover some of your childcare costs
+
+-Whether online or offline - team cohesion and joint events are part of our everyday working life
+
+-A stylish working environment in our office in Munich's Werksviertel district
+
+-For a secure future: the opportunity to take out a company pension scheme through us
+
+Some Tech-Details: (Headline)
+-React
+-Next.js
+-GraphQL & Apollo
+-Styled components & SASS
+-Jest & React Testing Library
+-Webpack
+-TypeScript
+-Django/Python (server-side and templating)
+
+Your further development is important to us, which is why we offer you: (Headline)
+-Weekly tech talks
+-Participation in conferences, meet-ups and trade fairs
+-Subscriptions: egghead.io, DestroyAllSoftware
+-Active participation in our tech blog
+
+Curious? In the podcast, our tech team tells you more about the work and culture at Octopus Energy. Have a listen! (in German though..) Tech-Team Podcast
+
+(Please use ""Tech-Team Podcast"" as a hyperlink: https://open.spotify.com/episode/05Em3Jn62NVgMS7Vi6klE6?si=14936448b22f46d7&nd=1&dlsi=2fd745f1b9484989)",,,https://jobs.lever.co/octoenergy/a43495e6-5563-48b8-9574-9e4ee165914d,https://drive.google.com/open?id=1e9wjd0LBmNjsFRqQsqxIpWLKAjjrVDBW
+18.04.2024 13:52:42,x,Softwareentwickler Python,energy & meteo systems GmbH,Oldenburg,,"Bei energy & meteo systems trägst du dazu bei, die erneuerbaren Energien effizient in die Stromnetze und -märkte zu integrieren. Als Experten an der Schnittstelle von Meteorologie und Energiewirtschaft stellen wir Stromhändlern und Netzbetreibern weltweit IT-Lösungen für die präzise Vorhersage von fluktuierendem Solar- und Windstrom bereit. Hierfür suchen wir an unserem Firmensitz in Oldenburg zum nächstmöglichen Zeitpunkt eine:n Python-Softwareentwickler:in.","- Python ist deine Programmiersprache: Damit entwickelst du einzelne Softwarekomponenten für unsere Vorhersageprodukte.
+- Mit deinem Know-how unterstützt du uns auch bei der Weiterentwicklung der Software-Systemarchitektur – gern mittels Microservices und REST.
+- Du überführst Anwendungen aus dem Testbetrieb in den produktiven Einsatz und sorgst dafür, dass alles dabei rund läuft.
+- Deine Webanwendungen hast du auch nach dem Deployment im Blick – Wartung, Fehleranalyse und Debugging gehören für dich einfach dazu.
+- Für unsere Kunden bist du als technischer Ansprechpartner (w/m/d) präsent, z. B. wenn es um die Einrichtung von Wind- und Solarleistungsvorhersagen oder die Anbindung von Schnittstellen zum Datenaustausch geht.
+- Mit deiner Teilnahme an unserer 24/7-Rufbereitschaft – natürlich im Wechsel mit deinen Kollegen und Kolleginnen – stellst du sicher, dass unsere Kunden weltweit und rund um die Uhr ihre Mess- und Prognosedaten abrufen können.
+- Die Zusammenarbeit der verschiedenen Fachbereiche – Methodenentwicklung, Meteorologie und IT – ist uns wichtig und du bringst gern dein Wissen für bestmögliche Kundenprodukte ein.","- Du hast ein naturwissenschaftliches Studium in Informatik, Software Engineering oder Mathematik oder eine Ausbildung zum Fachinformatiker für Anwendungsentwicklung (w/m/d) abgeschlossen oder eine vergleichbare Qualifikation.
+- Als Berufseinsteiger (w/m/d) bist du uns genauso willkommen wie mit Berufserfahrung in der Softwareentwicklung – entscheidend ist, dass du mit deinen fundierten Programmierkenntnissen in Python bei uns loslegen möchtest und ein gutes Gespür für
+Softwareergonomie und grafische Oberflächen mitbringst.
+- Du bist es gewohnt mit Open-Source-Paketen – Python Pytest, NumPy, Pandas, Hypothesis, Dask, FastAPI, QtPy, u.v.m. – zu arbeiten.
+- Zudem kennst du dich mit Datenbanken und -verwaltungssystemen, z. B. MariaDB, PostgreSQL, Cassandra oder Neo4J, aus.
+- Damit Datenströme schnell fließen, setzt du auf Messaging Broker wie RabbitMQ und Kafka sowie auf Webservice-Technologien wie
+http/REST und SOAP/XML, um den Anforderungen ans Web gerecht zu werden.
+- Idealerweise hattest du schon Berührungspunkte zu Container-Plattformen wie Kubernetes, Docker und Podman zur automatisierten Bereitstellung, Skalierung und Verwaltung von Anwendungen.
+- Vielleicht bist du auch schon mit Linux-Tools wie Bash, Vim, grep/rg, less und Cowsay vertraut.
+- Ob IT-Sicherheit, Fehlertoleranz, Load-Balancing oder Verfügbarkeit von IT-Infrastruktur – du erarbeitest gemeinsam im Team kreative und pragmatische Lösungsansätze und lernst gern dazu.",,Alexandra Jobst,jobs@energymeteo.de,https://www.energymeteo.de/ueber_uns/jobs/softwareentwickler-python.php,https://drive.google.com/open?id=11IKEWgWbKD_m1KMYGAXWVhyQrb673spF
+18.04.2024 14:07:32,x,Datenanalyst:in / Data Scientist zur Analyse und Optimierung von Netzprognosen,emsys grid services GmbH,Oldenburg / Niedersachsen,,"Bei emsys grid services trägst du dazu bei, die erneuerbaren Energien effizient in die Stromnetze und -märkte zu integrieren. Mit der Softwarelösung FuturePowerFlow für Redispatch bieten wir Netzbetreibern in ganz Deutschland eine Plattform, die die Verfügbarkeit erneuerbarer Energien für den Planungsprozess vorausschaubar macht.
+Für den Bereich Netzprognosen suchen wir an unserem Firmensitz in Oldenburg zum nächstmöglichen Zeitpunkt eine:n Datenanalyst:in / Data Scientist.","Als Datenanalyst:in agierst du übergreifend zwischen Programmierung, Datenanalyse und kritischem Denken. Dein Aufgabenfeld umfasst u. a.:
+- Du validierst und analysierst unsere Netzprognosen und stellst so eine bestmögliche Qualität unserer Vorhersagen sicher.
+- Dabei verlässt du dich teilweise auf bereits bestehende Infrastruktur zur Qualitätsüberwachung, bringst aber auch Ideen zu neuen Analysemethoden mit und begleitest die Weiterentwicklung unserer Analysetools.
+- Stößt du mit deinen Analysen auf Schwachstellen, so gehst du mit deinem Prozessverständnis auf die Suche nach den Ursachen und entwickelst Konzepte zur Optimierung unseres Vorhersagesystems.
+- Dafür arbeitest du eng mit Teams aus der Softwareentwicklung zusammen und begleitest die Implementierung von der Idee bis hin zum Roll-out auf produktiven Systemen.
+- Unsere Systemlandschaft bietet viele Konfigurationsmöglichkeiten. Diese Stellschrauben kennst du und passt sie im Bedarfsfall optimal an.
+- Du tauschst dich mit anderen Expert:innen zur Optimierung der Prognosequalität sowie zur Weiterentwicklung der Qualitätssicherungsprozesse aus und treibst diese Themen kontinuierlich und aktiv voran.
+- Sowohl intern als auch für unsere Kunden aus der Energiewirtschaft bist du Ansprechpartner:in bei Fragen zur Prognosequalität.","- Mit einem naturwissenschaftlichen oder ingenieurwissenschaftlichen Studium, z. B. Physik, Umweltmodellierung, Ozeanographie oder Geographische Systemwissenschaften, bringst du beste Voraussetzungen mit.
+- Idealerweise konntest du bereits Erfahrungen mit numerischen Vorhersagemodellen sowie deren Validierung sammeln.
+- Begeistert hinterfragst du komplexe Prozesse, die du dank deiner ausgeprägten analytischen Fähigkeiten schnell durchdringst.
+- Mit deiner Leidenschaft für Datenqualität kannst du die Datensätze unserer Vorhersagesysteme systematisch sowie zielorientiert bewerten.
+- Detektivarbeit macht dir Spaß: Du suchst mit Vorliebe nach Hinweisen, die dich zum Kern führen und setzt strukturiert aus mehreren Puzzleteilen ein Gesamtbild zusammen.
+- Statt selbst aktiv Programmcode zu schreiben, möchtest du lieber an der inhaltlichen und konzeptionellen Weiterentwicklung unserer Vorhersagesysteme mitwirken.
+- Du arbeitest gerne im Team und verfügst über verhandlungssichere Deutschkenntnisse.
+- Die Energiewende aktiv mitzugestalten, bereitet dir Freude und du gehst die Themen mit einem hohen Maß an Neugier, Eigeninitiative und Verantwortungsbewusstsein an.
+- Wir freuen uns über Zusatzwissen zu erneuerbaren Energien, Stromnetzen, Energiemärkten oder numerischen Vorhersagen – du lernst jedenfalls immer gern dazu.","Unser Angebot
+- Du erhältst die Chance, an sinnstiftenden Projekten im Bereich Erneuerbare Energien mitzuarbeiten und dein Potenzial sowie deine Ideen einzubringen.
+- Dein Arbeitstag ist abwechslungsreich, deine Tätigkeit anspruchsvoll und dein Team motiviert.
+- Ein unbefristeter Arbeitsvertrag – wir rechnen längerfristig mit dir.
+- Flexible Arbeitszeit und die Erfassung jeder Überstunde: Du musst nicht um 7 Uhr auf der Matte stehen – wichtig ist uns, dass du vollen Einsatz zeigst, wenn du da bist.
+- Flache Hierarchien und kurze Entscheidungswege – unsere Chefs haben offene
+Ohren und Türen.
+- Für den kleinen Break zwischendurch gibt es Getränke, Bio-Obst und Snacks for free – für den großen Hunger erwartet dich unsere hauseigene Kantine mit vegetarischen, veganen und fleischhaltigen Gerichten aus regionalen Produkten.
+- Auch außerhalb unserer Büroräume ist die Stimmung gut, z. B. auf dem jährlichen Betriebsausflug, bei Teambuildingmaßnahmen, Weihnachtsfeiern, unserem monatlichen Spieleabend etc. – hier reden wir nicht nur über Arbeit.
+- Weitere Benefits: betriebliche Altersvorsorge, Berufsunfähigkeitsversicherung,
+Fahrradleasing sowie Sportzuschuss und guud-Karte mit vielen nachhaltigen Vorteilen.",Alexandra Jobst,jobs@energymeteo.de,https://www.energymeteo.de/ueber_uns/jobs/data-scientist.php,https://drive.google.com/open?id=193BfhBZIRU3mrS8Wlu1hgoG5kXbPwMA4
+18.04.2024 14:20:21,x,Administrator:in / Systembetreuer:in Python,energy & meteo systems GmbH,Oldenburg / Niedersachsen,,"Bei energy & meteo systems trägst du dazu bei, die erneuerbaren Energien effizient in die Stromnetze und -märkte zu integrieren. Als Experten an der Schnittstelle von Meteorologie und Energiewirtschaft stellen wir Stromhändlern und Netzbetreibern weltweit IT-Lösungen für die präzise Vorhersage von fluktuierendem Solar- und Windstrom bereit. Hierfür suchen wir an unserem Firmensitz in Oldenburg zum nächstmöglichen Zeitpunkt eine:n Systembetreuer:in für Programme in der Programmiersprache Python.","- Als technische:r Ansprechpartner:in hast du für unsere Kunden immer ein offenes Ohr, z. B. wenn es um die Einrichtung von Wind- und Solarleistungsvorhersagen geht oder um die Pflege bestehender Vorhersage-Portfolios gemäß Kundenwünschen.
+- Du integrierst neue Vorhersageprodukte in den operativen Betrieb und sorgst dafür, dass alles rund läuft.
+- Darüber hinaus entwickelst du einzelne Softwarekomponenten für unsere Vorhersageprodukte.
+- Als Systembetreuer:in bist du auch für die Wartung von Webanwendungen sowie für Fehleranalyse und Debugging zuständig.
+- Unsere Kunden können weltweit und rund um die Uhr ihre Mess- und Prognosedaten abrufen – um das sicherzustellen, nimmst du im Wechsel mit deinen Kollegen und Kolleginnen an unserer 24/7-Rufbereitschaft teil.
+- Allein auf einer Insel wird es irgendwann langweilig, deshalb arbeitest du mit interdisziplinären Teams, bestehend aus Methodenentwickler:innen und Meteorolog:innen, zusammen.","- Du bist uns mit einem naturwissenschaftlichen Studium in Informatik, Software Engineering oder Mathematik genauso willkommen wie mit einer Ausbildung zum:zur Fachinformatiker:in für Anwendungsentwicklung oder vergleichbar.
+- Berufserfahrung in der Softwareentwicklung, z. B. als Application Manager, Integration Engineer oder Softwareentwickler:in, bringst du außerdem mit.
+- Du hast fundierte Kenntnisse in der Programmiersprache Python und bist im Linux-Umfeld praxiserprobt.
+- Idealerweise bist du erfahren mit SQL, Bash, GitLab, Ansible und pytest oder hast Lust, dein Wissen zu erweitern.
+- Eigenverantwortlich arbeitest du ebenso effizient und zielorientiert wie mit einem Team an deiner Seite.
+- Du bist kommunikativ, begegnest anderen Meinungen aufgeschlossen und schätzt den Austausch auch über deinen IT-Horizont hinweg.
+- Von Vorteil sind Kenntnisse über erneuerbare Energien, Energiemärkte und das Stromnetz – alles, was du nicht weißt, lernst du bei uns.","Unser Angebot
+
+- Du erhältst die Chance, an sinnstiftenden Projekten im Bereich Erneuerbare Energien mitzuarbeiten und dein Potenzial sowie deine Ideen einzubringen.
+- Dein Arbeitstag ist abwechslungsreich, deine Tätigkeit anspruchsvoll und dein Team motiviert.
+- Unbefristeter Arbeitsvertrag – wir rechnen längerfristig mit dir.
+- Flexible Arbeitszeit und die Erfassung jeder Überstunde: Du musst nicht um 7 Uhr auf der Matte stehen – wichtig ist uns, dass du vollen Einsatz zeigst, wenn du da bist.
+- Flache Hierarchien und kurze Entscheidungswege – unsere Chefs haben offene Ohren und Türen.
+- Für den kleinen Break zwischendurch gibt es Getränke, Bio-Obst und Snacks for free – für den großen Hunger erwartet dich unsere hauseigene Kantine mit vegetarischen, veganen und fleischhaltigen Gerichten aus regionalen Produkten.
+- Auch außerhalb unserer Büroräume ist die Stimmung gut, z. B. auf dem jährlichen Betriebsausflug, bei Teambuildingmaßnahmen, Weihnachtsfeiern, unserem monatlichen Spieleabend etc. – hier reden wir nicht nur über Arbeit.
+- Weitere Benefits: betriebliche Altersvorsorge, Berufsunfähigkeitsversicherung, Fahrradleasing, Sportzuschuss, guud-Karte mit vielen nachhaltigen Vorteilen.",Alexandra Jobst,jobs@energymeteo.de,https://www.energymeteo.de/ueber_uns/jobs/systembetreuer-python.php,https://drive.google.com/open?id=1bpj2NjRMBTZjeV2idXXbogqRuy_alKRj
+18.04.2024 14:33:46,x,Senior Backend Engineer,alcemy,Berlin/remote,,"Help us decarbonize the cement and concrete industry.
+
+alcemy was founded to reduce the massive CO2 footprint of the cement and concrete industry. Concrete is humanity's second most used material by volume and its production is responsible for around 8% of global CO2 emissions.
+
+We are changing this! We leverage machine learning to provide smart production control software to the cement and concrete supply chain to improve efficiency and allow for the production of low-carbon cement and concrete at large scale. Our software is used 24/7 in cement and concrete plants to optimize production and reduce carbon emissions today. We are currently enabling our customers to save more than 100 000 tons of CO2 emissions each year and we aim to save 100 million tons per year in 2030.","
+* You’ll join us as a senior software engineer in our cement app team to develop one of our core products.
+* Take co-ownership of our back-end code base, make architectural decisions and ensure high software quality standards.
+* Help us scale internationally by building new features and improving the performance of our existing application.
+* We’re a small start-up, so you’ll also have the opportunity to explore and work on other areas. For example one of our front-end engineers recently took the responsibility for moving our web app deployment over to Kubernetes.
+","* You care about climate change.
+* You are a strong Python developer with ≥ 2 years of experience, ideally in developing and testing data-focused applications.
+* You have experience building production-ready APIs and back-end software using Django, Flask, or ideally FastAPI.
+* You know how to write SQL and have experience working with PostgreSQL.
+* You are excited by data and math.","What we offer:
+* A company culture where honesty, professionalism, and integrity run deep with an open feedback culture and regular 1:1 meetings.
+* Flat hierarchies, efficient decision-making processes, and an agile company structure.
+* Competitive market-rate salary aligned with your experience, within the budget of €80-95k.
+* VSOP equity options vested equally over 4 years.
+* Work fully remotely within Germany or from our office in the heart of Berlin with flexible working hours.
+* Of course, free drinks, fruit and snacks in the office.
+* Regular team activities and team weeks a few times per year.
+* Mac or Linux laptop of your choice.
+* Budget for personal and professional development - 1500€/year & 3 days/quarter.
+* Access to nilo.health - the comprehensive mental well-being platform that provides access to 1-to-1 sessions with psychologists, group sessions and self-guided tools.
+* English is our main language of communication.
+* 28 days of vacation per year and an additional day of vacation every 2 years at alcemy.
+
+Working at alcemy
+* We value transparency, and direct feedback and are always open to refactoring how we work together.
+* Engineers take ownership of their features from implementation, testing through code reviews, and deployment.
+* No engineer is on-call.
+* We’ve been working hard to get a defined career progression framework in place, charting out both technical expert & management tracks.
+* We are passionate about helping our customers and always approach them and each other in a supportive and appreciative way.
+
+Tech Stack
+Python for everything in our back-end. Our RESTful APIs are built using FastAPI with auto-generated Swagger UI documentation and OpenAPI schema. Our database schema is defined using SQLAlchemy and our data models using pydantic. We test our code using pytest and write modern, type-hinted Python checked with mypy. Number crunching and analyses are done using pandas, numpy and sklearn.
+We store our data in PostgreSQL and our infrastructure runs on AWS using Kubernetes.
+We use React & Next.js for building our front-ends. Everything is written in TypeScript. We use Blueprint.js as our component library and layout our application using TailwindCSS. Our RESTful API is integrated using RTK Query and any shared state is managed using Redux via Redux Toolkit.",Nico Ring,nico.ring@alcemy.tech,https://apply.workable.com/alcemy/j/C66124C76F/,https://drive.google.com/open?id=1miOM6rwVjCSWBfNVAb-lUMkQ9vOwh-dM
+18.04.2024 15:05:24,x,Senior DevOps Engineer (m/w/d),StackFuel GmbH,Berlin,,"Our Engineering team is responsible for the technical development of our digital learning platforms, allowing people to learn knowledge and learning content in the field of programming, data science and artificial intelligence interactively via the browser in a practical way.
+
+In addition to our own StackFuel learning platform, the Engineering team also works on two projects for the German Federal Ministry of Education and Research, to promote data and programming skills in German society. With your knowledge, you will be contributing in creating an interactive learning experience to get people interested in digital skills.","As a Senior/Lead DevOps Engineer [m/f/d], you implement automated and scalable infrastructure for our learning platforms, which is able to react dynamically to load requirements. As a leading engineer, you are also the go-to person for the engineers in your domain, supporting them in their tasks and promoting their development.","- At least 5 years of hands-on experience in infrastructure management for service-oriented web applications
+- You have sound practical experience with Linux, networks, container technologies
+- You have experience with cloud infrastructure solutions, experience especially with Kubernetes (k8s) is an advantage
+- You master ""Infrastructure as Code"" for the automation of server provisioning (Ansible) and deployment processes (CI/CD tools, esp. GitLab CI)
+- Confident in dealing with stakeholders to identify complex requirements and develop solutions in a team
+- You support your colleagues in expanding their technical skills through mentoring and coaching
+- You live in the Berlin area, with your excellent communication skills in English or German, you operate confidently in a multilingual team","Our interview process is straight-forward. Here is what you can expect:
+- Quick call with our recruiter Felix to get to know another and learn more about the role
+- Meet and interview with the people you'll be working with on two more occasions
+- No take-home coding challenges
+
+Our tech stack:
+- JavaScript, TypeScript, React, NextJS and Chakra UI on the frontend
+- Python, Django and Django Rest Framework on backend
+- NPM (JavaScript) and Poetry (Python) for package management
+- Jupyter Ecosystem (Notebooks, Hub, Lab)
+- Hetzner Cloud, Ionos, Ansible, NewRelic
+- Docker, GitLab, Jira, Confluence, Slack, MS-Teams",Christian Scheb,christian.scheb@stackfuel.com,https://stackfuel-gmbh.jobs.personio.de/job/1394003?display=en,https://drive.google.com/open?id=1-bEljJtSJSEtEyQQSCouJqO989wHx7R9
+18.04.2024 17:05:36,x,Software Engineer,QuantCo,"Berlin, Munich, Zurich, London",21.11.2024,"Engineers at QuantCo build robust and scalable products that reach millions of people and impact billions of dollars.
+
+Started in 2016 by four PhDs from Harvard and Stanford, we are now over 180 professionals with extensive quantitative, engineering, and business experience.
+
+QuantCo’s product line includes algorithmic pricing, data driven claims management, high dimensional forecasting solutions, and deep learning expertise.
+
+You will be part of a smart, supportive, and diverse organization that embraces different viewpoints and ideas; revels in finding novel solutions for challenging problems; values our clients and user base; and strives to deliver thoughtfully impactful products.
+","As a Software Engineer, you will own systems from end to end, collaborating closely with internal stakeholders and exceptionally talented colleagues to develop and implement industry-leading models into our clients’ businesses. You will be responsible for driving the design, development, testing, deployment, and operation of business-critical systems, thereby bridging the worlds of infrastructure, software engineering, and data science.","Extensive programming experience in at least 1 modern programming ecosystem for languages such as C++, Java, Python, or Rust (bonus if skilled in: C#, Go, Java, Kotlin, Ruby, or Scala).
+
+Ability to write maintainable, tested, and production ready code
+
+Strong computer science fundamentals in areas such as data structures, cloud infrastructure, distributed systems, machine learning, and high performance computing.
+
+Bachelors, Masters, or PhD in a STEM or quantitative field
+",,Botan Creighton,botan.creighton@quantco.com,https://jobs.lever.co/quantco-/a0cea6e8-0a22-4208-a869-45faa5ee6261,https://drive.google.com/open?id=1x4_m_Rsbx5giN92ozlpfSwRqaTfF3PCw
+18.04.2024 17:34:26,x,Senior Backend Engineer (m/w/d),StackFuel GmbH,Berlin,,"Our Engineering team is responsible for the technical development of our digital learning platforms, allowing people to learn knowledge and learning content in the field of programming, data science and artificial intelligence interactively via the browser in a practical way.
+
+In addition to our own StackFuel learning platform, the Engineering team also works on two projects for the German Federal Ministry of Education and Research, to promote data and programming skills in German society. With your knowledge, you will be contributing in creating an interactive learning experience to get people interested in digital skills.","As a Senior Python Engineer (Python, Django) [m/w/d] you will work on the next generation of our learning platform, which is built on technologies like React, NextJS, Python and Django. Your job would involve developing new features in our backend, working closely with other engineers, implementing integrations with 3rd party applications and our own infrastructure, as well delivering these changes onto production.","- You have at least 4 years of experience in the development of backend applications for a service-oriented system architecture
+- Python and Django skills are part of your profile
+- Experience with the development of RESTful services, API design and API documentation (Swagger)
+- You are proficient in automated quality assurance tools (e.g. CI/CD pipelines, test automation) and want to be involved in the further development of our quality standards
+- You are familiar with Docker, cloud technologies (e.g. Kubernetes) and DevOps principles
+- You like to work with other developers in a team and you also see it as your task to support your colleagues
+- You are are resident in Germany, with your excellent communication skills in German and English, you operate confidently in a German-speaking team
+","Our interview process is straight-forward. Here is what you can expect:
+- Quick call with our recruiter Felix to get to know another and learn more about the role
+- Meet and interview with the people you'll be working with on two more occasions
+- No take-home coding challenges
+
+Our tech stack:
+- JavaScript, TypeScript, React, NextJS and Chakra UI on the frontend
+- Python, Django and Django Rest Framework on backend
+- NPM (JavaScript) and Poetry (Python) for package management
+- Jupyter Ecosystem (Notebooks, Hub, Lab)
+- Hetzner Cloud, Ionos, Ansible, NewRelic
+- Docker, GitLab, Jira, Confluence, Slack, MS-Teams",Christian Scheb,christian.scheb@stackfuel.com,https://stackfuel-gmbh.jobs.personio.de/job/857979?display=en,https://drive.google.com/open?id=1AX53k4AOWG1CLRlw_sdgvmzNI1vLp90j
+18.04.2024 17:44:41,x,Senior Frontend Engineer (m/w/d),StackFuel GmbH,Berlin,,"Our Engineering team is responsible for the technical development of our digital learning platforms, allowing people to learn knowledge and learning content in the field of programming, data science and artificial intelligence interactively via the browser in a practical way.","As a Senior Frontend Engineer [m/f/d] you will work on the next generation of our learning platform, which is built on technologies like React, NextJS, Python and Django. In addition to our own StackFuel learning platform, the Engineering team also works on two projects for the German Federal Ministry of Education and Research, to promote data and programming skills in German society. With your knowledge, you will be contributing in creating an interactive learning experience to get people interested in digital skills.","- You have at least 3 years of experience with modern frontend development. You know how to develop frontend applications at scale and how to operate them reliably.
+- You are familiar with React, ideally NextJS experience
+- Your priorities include Responsive Design and Accessibility
+- You have experience with using UI component frameworks, technologies like Material UI, Tailwind, Chakra UI, Storybook.
+- You are familiar with automated quality assurance tools (e.g. CI/CD Pipelines, React Testing Library, Jest, Cypress or Playwright) and know how to use them effectively
+- If you've had touch points with backend API development, particularly Python/Django, this would be an advantage
+- If you are familiar with Docker or cloud technology, this would also be an advantage
+- You like to work with other developers in a team and you also see it as your task to support your colleagues
+- You are resident in Germany, with your excellent communication skills in English or German, you operate confidently in a multilingual team
+","Our interview process is straight-forward. Here is what you can expect:
+- Quick call with our recruiter Felix to get to know another and learn more about the role
+- Meet and interview with the people you'll be working with on two more occasions
+- No take-home coding challenges
+
+Our tech stack:
+- JavaScript, TypeScript, React, NextJS and Chakra UI on the frontend
+- Python, Django and Django Rest Framework on backend
+- NPM (JavaScript) and Poetry (Python) for package management
+- Jupyter Ecosystem (Notebooks, Hub, Lab)
+- Hetzner Cloud, Ionos, Ansible, NewRelic
+- Docker, GitLab, Jira, Confluence, Slack, MS-Teams",Gordon Tschirner,gordon.tschirner@stackfuel.com,https://stackfuel-gmbh.jobs.personio.de/job/1366610?display=en,https://drive.google.com/open?id=1-IeQMmtQxY8bjn0UOuMphwrmgaHPNTzV
+19.04.2024 00:49:00,x,Infrastructure Team Lead,deepset GmbH,Remote ,,"You’ll be leading our passionate Infrastructure Team that directly impacts the success of our products and the productivity of our teams. You’ll ensure high performance, security, and availability of deepset Cloud, our end-to-end LLM platform, to satisfy the demands of our customers. You’ll support all engineering teams with best practices and tooling around cloud infrastructure, security, and automation to create a better “flow” of work for them.","You will manage a team responsible for providing infrastructure, tooling, and services used by deepset Cloud and Haystack engineering teams.
+
+You will define, facilitate and continuously improve the processes of the Infrastructure team.
+
+You will join customer conversations to make sure that our deployment topology and security practices meet the customer needs.
+
+Your team will enable success of the product teams by giving them guidance on the best practices in cloud architecture, observability, security and scalability.
+
+You will take ownership of Security and Privacy initiatives for our SaaS product, from introducing best practices to maintaining SOC2 compliance.
+
+Your team will manage the company’s IT infrastructure (incl. provisioning of employees’ devices and accounts). ","3+ years of experience leading an infrastructure team in a product company.
+
+9+ years of overall experience, and experience working with large scale production infrastructure.
+
+Strong communication skills, with the ability to explain complex concepts to non-technical users.
+
+Experience in designing & building service-oriented architectures.
+
+Experience with Security and Compliance topics, and experience going through external audits.
+
+Proficient with AWS and Kubernetes.
+
+Experience maintaining hybrid SaaS products and integrating customer’s cloud resources to preserve customer’s data within their own cloud.
+
+Working knowledge of Infrastructure as Code (we use Terraform), GitOps(we use ArgoCD).
+
+Multi-cloud experience (preferably AWS+Azure) is a nice to have.
+
+Familiarity with Machine Learning/NLP or the motivation to learn about it are considered a plus. ","Our vision: We make machines understand language so that humans can achieve more.
+
+Our mission: We empower developers to make NLP part of every application in every enterprise.",,,https://deepset.jobs.personio.de/job/1458739?display=en,
+19.04.2024 00:52:33,x,Account Executive (DACH),deepset GmbH,Remote,,"You will be the first Account Executive in the DACH region, responsible for continuing to grow our client pipeline and contribute to the direction and execution of the go-to-market strategy. ","Achieve annual Enterprise bookings quota, with monthly and quarterly targets, managing your own pipeline and forecast, and closing deals.
+
+Work collaboratively with the Marketing and Product teams to use modern ABM and inbound marketing approaches, creating targeted messaging and collateral, and mapping the customer journey to your specific region.
+
+Work with the Solution Engineering team to design and adapt our offerings for your target client prospects.
+
+Perform complementary PG and participate in regional marketing events as needed to support your pipeline.
+
+Track, review, and evolve deal win rate, and forecast accuracy through a proactive sales cycle, contributing to the Sales strategy.
+
+Build relationships at multiple levels of Enterprise accounts, from developers to executive C-suite leaders, and manage complex Enterprise deals and negotiations. ","Experienced at working in a high performing Enterprise Sales team for a B2B technology company, with 5+ years of overall experience.
+
+Fluent in German and English, with strong communication and relationship-building skills, and empathy for different personas in client teams.
+
+Confident in managing complex sales processes with multiple stakeholders and negotiations with pricing based on business value, legal and procurement, with a successful track record of closing deals.
+
+Curious and eager to learn, excited about technology and Machine Learning and Natural Language Processing in particular
+Comfortable working remotely and travelling to client and team meetings up to 50% of the time. ","Our vision: We make machines understand language so that humans can achieve more.
+
+Our mission: We empower developers to make NLP part of every application in every enterprise.",,,https://deepset.jobs.personio.de/job/1130070?language=en&display=en,
+19.04.2024 00:55:29,x,IT Administrator ,deepset GmbH,Remote,,"We are on the lookout for a pragmatic, forward-thinking IT Administrator within our Infrastructure team to enhance our IT service infrastructure and process efficiency. In this role you will focus on one main goal: ensure that everyone on the deepset team has the technology they need to get their job done. Your typical work will range from provisioning laptops for new employees, helping them out with IT problems (Hard/Software), automating processes with the People Team, and working closely with our DevOps Engineers to ensure we remain SOC2 compliant. ","You will manage IT equipment of our remote working employees and the IT hardware of our Berlin office.
+
+You will manage accounts of our employees in various third-party systems
+You will be responsible for managing our Google Workspace from employee accounts to Google Drive and Google Groups.
+
+Be responsible for the processes for onboarding and offboarding, ensuring a seamless integration with Security, PeopleOps, and Business Operations
+Act as the go-to expert for IT-related questions, providing timely and effective solutions.
+
+Design and maintain integrations, facilitating seamless data exchange between the HRIS and third-party systems. ","3+ years of experience managing the lifecycle of devices and software (evaluation, introduction, commission, maintenance / service desk, migration, decommission).
+
+Experience administering Google Workspace.
+
+Experience deploying efficiently software to laptops and other devices - we are a Windows, Mac and Linux environments.
+
+Hands-on experience supporting non-technical Windows, Linux & Mac users
+Hands-on experience with Bash, SQL, Git and Python is a great plus.
+
+Familiarity with SOC2 and GDPR is a nice to have. ","Our vision: We make machines understand language so that humans can achieve more.
+
+Our mission: We empower developers to make NLP part of every application in every enterprise.",,,https://deepset.jobs.personio.de/job/1456014?language=en&display=en,
+19.04.2024 08:05:20,x,Full Stack Python Developer (all genders welcome),Rosenxt Group,"Lingen, Osnabrück",,"To strengthen our team at the location in Lingen (Ems) or Osnabrück with flexible working time models and the option of home office we are looking for a
+
+Full Stack Python Developer (all genders welcome)
+
+To call you as a true Python allrounder describes you best? You love having a great variety in your tasks? Taking development steps in short cycles is exactly your thing? You are very communicative and like to exchange your ideas in the team to bring the project forward?
+
+Then speak to us to join a motivated, interdisciplinary, creative and talented team to bring fresh ideas for watersport solutions/technology to life. If you ever wanted your work to be part of a product that makes thousands of customers happy, then we might be the right place for you!
+
+As a new team member, you will get the support you need to get started right away!","- You will implement and maintain Python solutions for applications in various areas around our project
+
+- Help us pave the way for a continuous improvement of our future products
+
+- Support us in creating data evaluation workflows and experiment control
+
+- You will work on multiple operating systems and platforms to get the job done
+
+- You work in an interdisciplinary team, develop and share your knowledge and experience","- Experience with Python
+
+- Confident handling of command line based development workflows especially with Linux
+
+-Embedded Linux experience is advantageous
+
+- Experience in the area of UI/UX is helpful
+
+- Azure based DevOps workflow experience regarding version control, packaging, tests and deployments is beneficial
+
+- Strong analytical and conceptual skills
+
+- A high degree of initiative, commitment and the ability to work in a team
+
+- Good knowledge of German and/or English, both spoken and written",,Mareike Schroeder,recruiting@rosen-nxt.com,https://rosennxt.wd3.myworkdayjobs.com/de-DE/ROSENXT/details/Full-Stack-Python-Developer--all-genders-welcome-_JR100211,https://drive.google.com/open?id=1v0fgPsOMeG73K2ReAuhSMEttghLLZ3lV
+19.04.2024 08:07:40,x,Software Developer (all genders welcome) in the field of Water Line Integrity Solutions,Rosenxt Group,"Lingen, Osnabrück, Enschede",,"To strengthen our development team located in Lingen (Ems), Osnabrück, or Enschede (Netherlands), offering flexible working hours and the option for home office, we are looking for a:
+
+
+Software Developer (m/f/d) in the field of Water Line Integrity Solutions
+
+ Water Line Integrity Solutions, an innovative division of the Rosenxt Group, which was spun off in 2023 and is dedicated to expanding into new business areas. Our focus is on developing advanced technologies for the inspection and assurance of water pipeline integrity. In doing so, we contribute to the better use of limited water resources, supporting sustainability and environmental protection. Our state-of-the-art inspection devices autonomously move through water pipelines, gathering extensive data, including video and ultrasound data. To evaluate this data, we develop cloud-based software solutions that utilize classic signal processing algorithms and artificial intelligence (AI). In our interdisciplinary, agile, and autonomous teams, we foster innovations that create both business and ecological value. ","- Design and develop robust software solutions on Microsoft Azure for processing large sensor data, ensuring scalability and maintainability
+
+- Own team-level architecture and product solutions, influencing related teams on certain projects
+
+- Define and implement innovative technological solutions to complex business problems
+
+- Independently code and design, with guidance on overall architecture when needed
+
+- Develop, test, deploy, and operate software, delivering high-quality production code
+
+- Clarify requirements, review code, provide constructive direction, and mitigate immediate risks
+
+- Significantly impact the software quality and user experience of the product and its features","- Proficient in software development with experience in cloud platforms, preferably MS Azure
+
+- Proficient in python and/or typescript/javascript
+
+- Knowledge and ideally experience in the implementation of Microservices, Kubernetes / AKS, Container / Docker or similar technologie
+
+- Demonstrated ability to own and influence team-level architecture and product solutions
+
+- Skilled in coding and designing production SW independently, with an understanding of broader architectural guidance
+
+- Experience in solving complex software problems and delivering high-quality production code
+
+- Strong impact on software quality and the user experience of products and features
+
+- Excellent problem-solving skills, attention to detail, and strong communication and teamwork abilities",,Mareike Schroeder,recruiting@rosen-nxt.com,https://rosennxt.wd3.myworkdayjobs.com/en-US/ROSENXT/details/Software-Developer--all-genders-welcome--in-the-field-of-Water-Line-Integrity-Solutions_JR100117?q=water,https://drive.google.com/open?id=1lESW5mcvtgYAuYQ7YPtlhtntSBr5Y-WU
+19.04.2024 08:10:26,x,Software Test Engineer in an agile Environment for Autonomous Diving Robots (all genders welcome),Rosenxt Group,Bremen,,"To strengthen our team in our development and quality assurance section at the location in Bremen with flexible working time models and the option of home office we are looking for a
+
+Software Test Engineer in an agile Environment for Autonomous Diving Robots (all genders welcome)
+
+You are right in the middle of the rollout process and contribute to bringing the reliability of autonomous behaviors for our robots to the highest level. We fully support you to get started right away.","- You extend our existing continuous testing solutions in DevOps environments
+
+- You manage the setup and maintenance of the automated build and deployment with your colleagues
+
+- You create and test test approaches, data and scripts and, together with expert colleagues, improve the code quality of our software solutions - so you can experience the improvements in the robustness of our software stack directly in the field by participating in field tests with underwater robots
+
+- You will actively develop our software stack for autonomous underwater robots and thus stay up to date with the latest development technology","- Degree in Computer Science or related field, or extensive professional experience
+
+- Knowledge in the execution and evaluation of software tests in the context of continuous improvement processes
+
+- Knowledge of Linux as well as object oriented and generic programming with C++
+
+- Ability to design maintainable solutions to complex problems
+
+- Hands-on experience working with Shell scripting, Python, Azure DevOps
+
+- Knowledge of ROS, Gazebo or simulation in general is a plus
+
+- A high degree of initiative, commitment and the ability to work in a team
+
+- Good knowledge of German and English, both spoken and written",,Mareike Schroeder,recruiting@rosen-nxt.com,https://rosennxt.wd3.myworkdayjobs.com/en-US/ROSENXT/details/Software-Test-Engineer-in-an-agile-Environment-for-Autonomous-Diving-Robots--all-genders-welcome-_?q=software,https://drive.google.com/open?id=1Wud-mNeZnEbPmSKaqDIPVwo9AMVJfOuR
+19.04.2024 12:03:38,x,Data Scientist (all genders welcome) ,ROSEN Group,"Lingen (Ems), Osnabrück",,"Data science refers to the extraction of knowledge from data. We achieve this through the use of the most modern tools from the areas of big data, high performance computing and artificial intelligence, especially deep learning. Our solutions in the area of predictive analytics allow the safe operation of critical infrastructures. An agile way of working and technological expertise enable us to master the greatest challenges. You will become part of our self-organizing teams, in which an exchange of knowledge with colleagues from different departments is inherent. We have the highest demands on ourselves to learn new things and to perfect old things. In this way, we are prepared for the future.","Development of algorithms for the detection and classification of objects from data, that has been measured by our pipeline inspection equipment
+
+Active participation and influencing towards technology trends in the areas of High Performance Computing, NoSQL Databases and Big Data
+
+Collection, preparation, processing and analysis of large heterogeneous data sources
+Development of algorithmic methods in the areas of Signal Processing, Machine Learning and Computer Vision, and the use of 3rd party components
+
+Preparation of algorithms in minimum viable product (MVP) form, with a strong focus and commitment towards customer experience
+
+Interdisciplinary teamwork with, for example, the integration of algorithms into our software applications","Degree in Information Technology, Physics, Mathematics, Computer Science or comparable field of study (Ph.D. level is also desirable)
+
+Experience in the area of Computer Vision, especially with respect to Pattern Recognition and Segmentation
+
+Demonstrable skills in the area of Applied Statistics and Data Mining
+
+High level problem solving skills in the area of Machine Learning, Parameter Extraction and Classification
+
+Sound knowledge of Applied Mathematics (Linear Algebra, Optimization Methods, Stochastics)
+
+Ability to program in at least one object oriented Programming Language (e.g. Python, C/C++ or Java)
+
+Good verbal and written English communication skills","Development opportunities and career opportunities in a global, innovative and long-term oriented group of companies with family character
+
+Flexible working time  and Home Office possible
+
+An open,  informal corporate culture, where we celebrate success with social events
+Compatibility of work and family through our company-owned bilingual day care center ROKIDS as well as our bilingual elementary school ROBIGS (optional: day care during the holiday in Lingen)
+
+Employer funded pension and capital accumulation benefits
+
+Company Restaurant (only in Lingen) and fresh fruit is available daily
+
+Various in-house sports activities (EGYM Wellpass and other offers)
+
+Attractive leasing offers for IT-products and bikes for private use
+
+Corporate Benefits - employee offers in changing online shops at top conditions",Kerstin Lange,hr-lin@rosen-group.com,https://jobs.rosen-group.com/Job/3201,
+19.04.2024 12:07:37,x,Software Developer Python / DevOps (all genders welcome),ROSEN Gruppe,"Lingen (Ems, Osnabrück",,"As a Python developer with a strong focus on DevOps, you will support us in developing and supporting our innovative software solutions.","Automating software development processes with CI/CD tools and managing infrastructure as code to ensure an agile development and deployment process
+
+Applying DevOps practices to empower deployment, monitoring, and management of machine learning models and utilizing the Kubeflow API to efficiently orchestrate machine learning pipelines
+
+Writing clean, efficient and maintainable code in Python
+
+Implementation of microservices-based software process applications for our inspection systems
+
+You are part of an autonomous development team in an agile environment
+
+Optimizing and monitoring the performance and scalability of our systems","Completed studies in the field of information technology or a comparable qualification (e.g. completed training in the IT environment)
+
+Profound experience with DevOps practices and advanced knowledge of the Python programming language
+
+Strong experience in container infrastructures (Docker, Kubernetes, Kubeflow) and CI/CD environments
+
+Hands-on experience with Linux and Windows systems as well as a basic understanding of AI and ML technologies
+
+Solid experience with Microsoft Azure DevOps (TFS)
+
+Knowledge of MongoDB and Amazon S3 desirable
+
+Strong analytical and conceptual skills as well as a high degree of initiative, commitment and ability to work in a team
+
+Good knowledge of the English language, both spoken and written, knowledge of the German language is an advantage","Development opportunities and career opportunities in a global, innovative and long-term oriented group of companies with family character
+
+Flexible working time  and Home Office possible
+
+An open,  informal corporate culture, where we celebrate success with social events
+
+Compatibility of work and family through our company-owned bilingual day care center ROKIDS as well as our bilingual elementary school ROBIGS (optional: day care during the holiday in Lingen)
+
+Employer funded pension and capital accumulation benefits
+
+Company Restaurant (only in Lingen) and fresh fruit is available daily
+
+Various in-house sports activities (EGYM Wellpass and other offers)
+
+Attractive leasing offers for IT-products and bikes for private use
+
+Corporate Benefits - employee offers in changing online shops at top conditions",Kerstin Lange,hr-lin@rosen-group.com,https://jobs.rosen-group.com/Job/4243,
+19.04.2024 12:11:32,x,Business Process Architect (all genders welcome),ROSEN Gruppe,"Lingen (Ems), Osnabrück",,"You are bridging business, technology and development within ROSEN. As market leader ROSEN is facing a continuous acceleration of our business needs and opportunities, which are based on industry regulations, safety goals and the Energy Transition. As technology leader we are on track with the technology drivers, such as Artificial Intelligence, Data-driven decision making and business process flexibility.
+
+As part of our System Architects and our AI, Data and Architecture Team, you ensure that our business needs and architectural strategy are synchronized and aligned with upcoming technologies. To do so, you are working hand in hand with our Data Architects, AI Specialists, Process Owners, Business Analysts, and our Development Teams.
+
+In this position, you will ensure that ROSEN adheres to industry regulations and internal protocols from a standards and compliance perspective. Your responsibilities include establishing and maintaining standards that enhance the organization's effectiveness and efficiency. You will support teams in business process analysis and transformation, identifying opportunities for improvement and optimization to enhance ROSEN's competitive flexibility and integration between business and technology.
+
+As a Process Architect at ROSEN Group, you will advance our capabilities in business process automation and orchestration - currently based on Camunda. You take Ownership about these solutions and process infrastructure which also require dealing with external companies such as Cloud and SaaS providers.","Architectural Leadership: Lead the development of business process automation and orchestration strategies, set standards and ensure architectural compliance within our development teams. Ensure process alignment and integration across the organization and maintain relevant documentation
+
+Process Mining: Analyze and access existing business processes to create transparency, identify inefficiencies and areas for improvement. Initialize and steer process mining initiatives to ensure that results are beneficial for our Workflow and Algorithm teams and provide business benefits
+
+Process Design: Guide design and redesign of business processes using industry-specific methodologies and tools for maximum efficiency, employing BPMN for process execution on process engines like Camunda. Develop process models, workflows, and documentation to visualize proposed changes and collaborate with cross-functional teams
+
+Technology Ownership: Work with IT teams to align technology solutions with optimized business processes. Recommend and integrate technology tools and platforms that support process improvements
+
+Proof of concepts: Identify business or technology gaps and opportunities and implement first approaches up to a Proof of concept and pitch these to stakeholders, decision makers and management
+
+AI, Data and Architecture: Drive decisions together with our AI Specialist, Data and System Architects. Develop strategies and solutions for the integration of AI and Deep Learning technologies in partnership with experts and product managers","Minimum of 5 years of experience in process architecture, business process management and automation (BPM/A), or a related field
+
+Strong knowledge of BPMN for process execution and experience in developing process models, workflows, and documentation also for orchestration
+
+Strong knowledge of BPM and BPA tools, as well as process engines like Camunda
+
+Proficiency in data analysis and process mining with established toolkits and Python
+
+Effective communication and collaboration skills to work hand in hand with Data and System Architects, AI Specialists, Process Owners, Business Analysts, and Development Teams
+
+Innovation-oriented mindset, with a focus on continuous improvement and staying on top of the latest technology trends
+
+Professional German and English language skills","Development opportunities and career opportunities in a global, innovative and long-term oriented group of companies with family character
+
+Flexible working time  and Home Office possible
+
+An open,  informal corporate culture, where we celebrate success with social events
+Compatibility of work and family through our company-owned bilingual day care center ROKIDS as well as our bilingual elementary school ROBIGS (optional: day care during the holiday in Lingen)
+
+Employer funded pension and capital accumulation benefits
+
+Company Restaurant (only in Lingen) and fresh fruit is available daily
+
+Various in-house sports activities (Qualitrain and other offers)
+
+Attractive leasing offers for IT-products and bikes for private use
+
+Corporate Benefits - employee offers in changing online shops at top conditions",Kerstin Lange,hr-lin@rosen-group.com,https://jobs.rosen-group.com/Job/4287,
+19.04.2024 17:46:37,x,Intel DevOps Engineer in OpenVINO Developer Tools (ODT),Intel Technology,"Gdansk, Poland/ Hybrid Work Mode",31.05.2024,"The OpenVINO Developer Tools, part of NEX group is looking for a devops engineer to join the team that runs CI infrastructure, maintains physical and virtual servers and helps development and validation teams with devops related tasks.
+
+We're constantly working on making a more connected and intelligent future, and we need your help. Change tomorrow. Start today.
+
+We are waiting for you. If you want to gather some more information, please see: Intel in Poland, company overview, our Facebook and LinkedIn sites.
+","What will you do:
+
+Create high-quality production code according to specifications and conforming to coding standards
+Develop and supervise CI pipelines that run CI/CD jobs for all of projects developed in our Polish group
+Work on products in the Artificial Intelligence and Deep Learning domain
+Participate in proof-of-concepts design, implementation and validation stages
+Build systems according to the principle of infrastructure-as-a-code
+Assemble and maintain lab and public cloud environments based on the code developed by the team","Minimum Requirements:
+
+Bachelor's or Master's Degree in Computer Science or related field with 3+ years of DevOps and Systems Administration experience.
+Knowledge of Ansible
+Knowledge of container technologies: Docker and container orchestration: Kubernetes
+Scripting / Development expertise Bash, Python
+Knowledge of CI engines: preferably Jenkins, Github Actions
+Source code management with Git and Github
+Linux/Windows/MacOS problem solving / troubleshooting / administration
+Understanding of HW components with troubleshooting experience
+Fluency in Polish and good command of English
+
+Additional nice to have experience/skills:
+
+Monitoring tools like Zabbix.
+Public cloud administration/development: AWS, Azure.","What do we offer?
+
+Market-leading, competitive pay and benefits - quarterly pay bonuses, private medical plan, life insurance, lunch card, multisport/holiday card and many more (read about our benefits here).
+Flexible working time that could change during the internship and the remote or hybrid model of work.
+Diverse and inclusive environment (read more about it here) and a dedicated intern community to help you get started in your new job.
+Being a part of a socially and ecologically responsible company (read more about it here).
+Dedicated training for you during your first weeks at the company to make your transition into work easier and a personal buddy to help you build your network, answer any questions and integrate you into your position.
+Opportunities for professional development - wide library of online trainings and learning platforms, support and guidance from your team and manager, and different assignment programs.
+The possibility to build a lifelong career at Intel.",,,https://jobs.intel.com/en/job/gdansk/devops-engineer-in-openvino-developer-tools-odt/41147/63145832400,https://drive.google.com/open?id=15gKCZyt_hZnHmRWHJHS1JUr3coIkI03z
+19.04.2024 17:52:00,x,OpenVINO GPU Optimization Engineer,Intel Technology,"Gdansk, Poland/ Hybrid Work Model",31.05.2024,"In this position:
+
+You will be a part of OpenVINO Runtime Engineering team, and will participate in Deep Learning models optimization for Intel GPUs.
+You will be involved into the development of GPU Plugin for Intel OpenVINO toolkit.","Your responsibilities will include:
+
+Efficiency analysis of existing algorithms and finding areas for performance improvement
+Implementation and low-level optimizations of kernels for Intel and 3rd party GPUs
+Optimizations of execution graphs and pipelines
+Enablement of new deep learning models from various domains in Intel OpenVINO toolkit.","Requirements:
+
+Strong knowledge of Computer Science
+At least 4 years of experience in programming
+C/C++/OpenCL programming skills
+Understanding of multithreading and multithreaded application design
+Knowledge of modern processor architecture
+Experience in low level optimization, vectorization
+
+The following will be an additional advantage:
+
+Knowledge of Image Processing / Computer Vision, Machine Learning / Neural Networks
+Knowledge of modern Intel processors architectures
+Spoken and written English: Upper-Intermediate level or Advanced","What do we offer?
+
+Market-leading, competitive pay and benefits - quarterly pay bonuses, private medical plan, life insurance, lunch card, multisport/holiday card and many more (read about our benefits here).
+Flexible working time.
+Diverse and inclusive environment (read more about it here).
+Being a part of a socially and ecologically responsible company (read more about it here).
+Dedicated training for you during your first weeks at the company to make your transition into work easier and a personal buddy to help you build your network, answer any questions and integrate you into your position.
+Opportunities for professional development - wide library of online trainings and learning platforms, support and guidance from your team and manager, and different assignment programs.
+The possibility to build a lifelong career at Intel.",,,https://jobs.intel.com/en/job/gdansk/openvino-gpu-optimization-engineer/41147/63145820288,https://drive.google.com/open?id=1D6eWeb7_vQFw1-P_4hTQjpHdwiVy38EC
+19.04.2024 17:56:39,x,AI Software Solutions Engineer,Intel Technology,"Gdansk, Poland/ Hybrid Work Model",30.06.2024,"Habana Labs is a group at Intel that focuses on developing disruptive solutions that will shape the future of AI and Deep Learning computing.
+
+Inside this Business Group
+
+The Data Center & Artificial Intelligence Group (DCAI) is at the heart of Intel’s transformation from a PC company to a company that runs the cloud and billions of smart, connected computing devices. The data center is the underpinning for every data-driven service, from artificial intelligence to 5G to high-performance computing, and DCG delivers the products and technologies—spanning software, processors, storage, I/O, and networking solutions—that fuel cloud, communications, enterprise, and government data centers around the world.","In this position you will work with an experienced software engineering team on developing software solutions based on deep learning frameworks and our proprietary software stack for hardware deep learning accelerators.
+We are looking for a dynamic and motivated engineer to join our team.","Job Qualifications:
+
+AI/machine/deep learning knowledge/experience/passion
+Ability to work in high paced environment.
+Strong problem-solving, debug skills and can-do attitude
+Professional experience 5+ years
+Python programming experience
+Familiarity with working in Linux environment, no need to have administrative skills
+
+Optional/ nice to have:
+
+C++ experience
+GPU/parallel programming experience","What we offer:
+At Intel, we offer a collaborative, supportive environment, where your equally brilliant colleagues will push you to be your best. There's no fear of failure - we know that's how innovation happens, and you'll never be bored.
+We offer competitive benefits and pay, opportunities for professional development and the flexibility you need to achieve balance. Intel fosters a collaborative environment allowing the brightest minds in the world to come together to achieve exceptional results.",,,https://jobs.intel.com/en/job/gdansk/ai-software-solutions-engineer/41147/61234286512,https://drive.google.com/open?id=1XKWcnbmJkoiV4LZZUs-B8CYRLq4EC29Q
