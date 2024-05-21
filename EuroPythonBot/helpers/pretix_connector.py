@@ -101,15 +101,17 @@ class PretixOrder(metaclass=Singleton):
                         id_to_name[variation_id] = variation_name
         return id_to_name
 
-    async def _fetch_all(self, url):
+    async def _fetch_all(self, url: str):
         async with aiohttp.ClientSession() as session:
             results = []
-            while url:
-                async with session.get(url, headers=self.HEADERS) as response:
+
+            next_url: str | None = url
+            while next_url is not None:
+                async with session.get(next_url, headers=self.HEADERS) as response:
                     data = await response.json()
 
                 results += data.get("results")
-                url = data.get("next")
+                next_url = data.get("next")
             return results
 
     async def get_ticket_type(self, order: str, full_name: str) -> str:
