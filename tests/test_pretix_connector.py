@@ -24,7 +24,7 @@ async def positions(request):
 
 
 @pytest.mark.asyncio
-async def test_get_pretix_orders_data(aiohttp_client, event_loop):
+async def test_get_pretix_orders_data(aiohttp_client):
     expected_response = {
         "90LKW-dogtbd": "Personal",
         "90LKW-cattbd": "Remote Ticket",
@@ -59,7 +59,7 @@ async def test_get_pretix_orders_data(aiohttp_client, event_loop):
 
 
 @pytest.mark.asyncio
-async def test_get_roles(aiohttp_client, event_loop):
+async def test_get_roles(aiohttp_client):
     test_data = [
         (
             "TODOG GODOT",
