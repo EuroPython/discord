@@ -1,3 +1,4 @@
+import itertools
 import logging
 import os
 from datetime import datetime
@@ -55,15 +56,9 @@ class PretixOrder(metaclass=Singleton):
         results = await self._fetch_all(f"{self.config.PRETIX_BASE_URL}/orders")
         _logger.info("Fetched %r orders in%r seconds", len(results), time() - time_start)
 
-        def flatten_concatenation(matrix):
-            flat_list = []
-            for row in matrix:
-                flat_list += row
-            return flat_list
-
         orders = {}
-        for position in flatten_concatenation(
-            [result.get("positions") for result in results if result.get("status") == "p"]
+        for position in itertools.chain(
+            *[result.get("positions") for result in results if result.get("status") == "p"]
         ):
             item = position.get("item")
             if self.id_to_name.get(item) in [
