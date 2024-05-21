@@ -4,7 +4,6 @@ from datetime import datetime
 from http import HTTPStatus
 from pathlib import Path
 from time import time
-from typing import Dict, List
 
 import aiofiles
 import aiohttp
@@ -28,14 +27,14 @@ class PretixOrder(metaclass=Singleton):
         PRETIX_TOKEN = os.getenv("PRETIX_TOKEN")
         self.HEADERS = {"Authorization": f"Token {PRETIX_TOKEN}"}
 
-        self.id_to_name = None
-        self.orders = {}
-        self.last_fetch = None
+        self.id_to_name: dict[int, str] | None = None
+        self.orders: dict[str, str | None] = {}
+        self.last_fetch: datetime | None = None
 
         self.registered_file = getattr(self.config, "REGISTERED_LOG_FILE", "./registered_log.txt")
         self.REGISTERED_SET = set()
 
-    def load_registered(self):
+    def load_registered(self) -> None:
         try:
             f = open(self.registered_file, "r")
             registered = [reg.strip() for reg in f.readlines()]
@@ -81,7 +80,7 @@ class PretixOrder(metaclass=Singleton):
         self.orders = orders
         self.last_fetch = datetime.now()
 
-    async def _get_id_to_name_map(self) -> Dict[int, str]:
+    async def _get_id_to_name_map(self) -> dict[int, str]:
         url = f"{self.config.PRETIX_BASE_URL}/items"
 
         async with aiohttp.ClientSession() as session:
@@ -157,7 +156,7 @@ class PretixOrder(metaclass=Singleton):
 
         return ticket_type
 
-    async def get_roles(self, name: str, order: str) -> List[int]:
+    async def get_roles(self, name: str, order: str) -> list[int]:
         ticket_type = await self.get_ticket_type(full_name=name, order=order)
         return self.config.TICKET_TO_ROLE.get(ticket_type)
 
