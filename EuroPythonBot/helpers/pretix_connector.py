@@ -37,10 +37,8 @@ class PretixOrder(metaclass=Singleton):
 
     def load_registered(self) -> None:
         try:
-            f = open(self.registered_file, "r")
-            registered = [reg.strip() for reg in f.readlines()]
-            self.REGISTERED_SET = set(registered)
-            f.close()
+            with open(self.registered_file) as f:
+                self.REGISTERED_SET = set(line.strip() for line in f)
         except Exception:
             _logger.exception("Cannot load registered data, starting from scratch. Error:")
 
