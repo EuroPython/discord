@@ -44,16 +44,12 @@ class Config(metaclass=Singleton):
 
             # Pretix
             self.PRETIX_BASE_URL = config["pretix"]["PRETIX_BASE_URL"]
-            self.TICKET_TO_ROLES_JSON = config["pretix"]["TICKET_TO_ROLES_JSON"]
+            self.TICKET_TO_ROLE = self._parse_ticket_mapping(
+                config["ticket_to_role"], config["roles"]
+            )
 
             # Logging
             self.LOG_LEVEL = config.get("logging", {}).get("LOG_LEVEL", "INFO")
-
-            # Mapping
-            with self.BASE_PATH.joinpath(self.TICKET_TO_ROLES_JSON).open() as ticket_to_roles_file:
-                ticket_to_roles = json.load(ticket_to_roles_file)
-
-            self.TICKET_TO_ROLE = ticket_to_roles
 
         except KeyError:
             _logger.critical(
@@ -63,6 +59,24 @@ class Config(metaclass=Singleton):
                 self.CONFIG_PATH,
             )
             sys.exit(-1)
+
+    @staticmethod
+    def _parse_ticket_mapping(
+        mapping: dict[str, list[str]], roles: dict[str, int]
+    ) -> dict[str, list[int]]:
+        """Parse the ticket mappig from role names to role ids."""
+        ticket_mapping = {}
+
+        for ticket_type, roles_as_strings in mapping.items():
+            ticket_type = ticket_type.replace("_", " ")  # modify the type name
+            roles_ids = [
+                roles.get(role_name) for role_name in roles_as_strings
+            ]  # sub names for ids
+
+            assert all(roles_ids), "Unknown role in ticket to role maping."
+            ticket_mapping[ticket_type] = roles_ids
+
+        return ticket_mapping
 
     def _get_config_path(self, base_path: Path) -> Path:
         """Get the path to the relevant configuration file.
@@ -88,4 +102,4 @@ class Config(metaclass=Singleton):
           points to a non-existing file
         """
         local_config = base_path / self._CONFIG_LOCAL
-        return local_config if local_config.is_file() else base_path / self._CONFIG_DEFAULT
+        return local_config
