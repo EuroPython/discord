@@ -5,10 +5,10 @@ import pytest
 from aiohttp import web
 
 from configuration import Config
-from helpers.pretix_connector import PretixOrder
+from helpers.pretix_connector import PretixConnector
 
 config = Config()
-order_ins = PretixOrder()
+order_ins = PretixConnector()
 
 
 async def items(request):

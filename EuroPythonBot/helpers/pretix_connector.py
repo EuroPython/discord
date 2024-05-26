@@ -21,7 +21,7 @@ def sanitize_string(input_string: str) -> str:
     return input_string.replace(" ", "").lower()
 
 
-class PretixOrder(metaclass=Singleton):
+class PretixConnector(metaclass=Singleton):
     def __init__(self):
         self.config = Config()
         load_dotenv(Path(__file__).resolve().parent.parent.parent / ".secrets")

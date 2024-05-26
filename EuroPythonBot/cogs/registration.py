@@ -6,10 +6,10 @@ from discord.ext import commands
 from configuration import Config
 from error import AlreadyRegisteredError, NotFoundError
 from helpers.channel_logging import log_to_channel
-from helpers.pretix_connector import PretixOrder
+from helpers.pretix_connector import PretixConnector
 
 config = Config()
-order_ins = PretixOrder()
+order_ins = PretixConnector()
 
 EMOJI_POINT = "\N{WHITE LEFT POINTING BACKHAND INDEX}"
 ZERO_WIDTH_SPACE = "\N{ZERO WIDTH SPACE}"
