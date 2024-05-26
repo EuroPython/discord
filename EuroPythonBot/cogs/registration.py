@@ -1,6 +1,7 @@
 import logging
 
 import discord
+from discord import Client
 from discord.ext import commands
 
 from configuration import Config
@@ -27,7 +28,7 @@ class RegistrationButton(discord.ui.Button["Registration"]):
 
 
 class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
-    order = discord.ui.TextInput(
+    order_field = discord.ui.TextInput(
         label="Order",
         required=True,
         min_length=4,
@@ -35,7 +36,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         placeholder="5-character combination of capital letters and numbers",
     )
 
-    name = discord.ui.TextInput(
+    name_field = discord.ui.TextInput(
         label="Full Name",
         required=True,
         min_length=3,
@@ -47,16 +48,18 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
     async def on_submit(self, interaction: discord.Interaction) -> None:
         """Assign the role to the user and send a confirmation message."""
 
-        name = self.name.value
-        order_id = self.order.value
+        name = self.name_field.value
+        order_id = self.order_field.value
 
         roles = await pretix_connector.get_roles(name=name, order=order_id)
         _logger.info("Assigning %r roles=%r", name, roles)
         for role in roles:
             role = discord.utils.get(interaction.guild.roles, id=role)
             await interaction.user.add_roles(role)
+
         nickname = name[:32]  # Limit to the max length
         await interaction.user.edit(nick=nickname)
+
         await log_to_channel(
             channel=interaction.client.get_channel(config.REG_LOG_CHANNEL_ID),
             interaction=interaction,
@@ -96,38 +99,35 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
 
 
 class Registration(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: Client):
         self.bot = bot
-        self.guild = None
         _logger.info("Cog 'Registration' has been initialized")
 
     @commands.Cog.listener()
     async def on_ready(self):
-        self.guild = self.bot.get_guild(config.GUILD)
-
         reg_channel = self.bot.get_channel(config.REG_CHANNEL_ID)
 
         await reg_channel.purge()
         await pretix_connector.fetch_pretix_data()
         await pretix_connector.load_registered()
 
-        _title = "Welcome to EuroPython 2023 on Discord! 🎉🐍"
-        _desc = (
+        title = "Welcome to EuroPython 2023 on Discord! 🎉🐍"
+        description = (
             "Follow these steps to complete your registration:\n\n"
             '1️⃣ Click on the green "Register Here 👈" button.\n\n'
             '2️⃣ Fill in the "Order" (found by clicking the order URL in your confirmation '
-            'email from support@pretix.eu with the Subject: Your order: XXXX) and "Full Name" '
+            'email from support@pretix.eu with the Subject: Your order: XXXXX) and "Full Name" '
             "(as printed on your ticket/badge).\n\n"
-            '3️⃣ Click "Submit". We\'ll verify your ticket and give you your role based on '
+            '3️⃣ Click "Submit". We\'ll verify your ticket and assign you your roles based on '
             "your ticket type.\n\n"
             f"Experiencing trouble? Ask for help in the <#{config.REG_HELP_CHANNEL_ID}> channel "
             "or from a volunteer in yellow t-shirt at the conference.\n\n"
             "See you on the server! 🐍💻🎉"
         )
 
-        view = discord.ui.View(timeout=None)  # no timeout -> persistent
+        view = discord.ui.View(timeout=None)
         view.add_item(RegistrationButton())
 
-        embed = discord.Embed(title=_title, description=_desc, colour=ORANGE)
+        embed = discord.Embed(title=title, description=description, color=ORANGE)
 
         await reg_channel.send(embed=embed, view=view)
