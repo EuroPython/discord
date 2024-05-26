@@ -1,18 +1,15 @@
 import logging
 
 import discord
-from discord import Client
+from discord import Client, Interaction
 from discord.ext import commands
 
 from configuration import Config
 from error import AlreadyRegisteredError, NotFoundError
-from helpers.channel_logging import log_to_channel
 from helpers.pretix_connector import PretixConnector
 
 config = Config()
 pretix_connector = PretixConnector()
-
-ORANGE = 0xFF8331
 
 _logger = logging.getLogger(f"bot.{__name__}")
 
@@ -51,51 +48,62 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         name = self.name_field.value
         order_id = self.order_field.value
 
-        roles = await pretix_connector.get_roles(name=name, order=order_id)
-        _logger.info("Assigning %r roles=%r", name, roles)
-        for role in roles:
-            role = discord.utils.get(interaction.guild.roles, id=role)
-            await interaction.user.add_roles(role)
+        _logger.debug("Fetching roles from Pretix connector")
+        role_ids = await pretix_connector.get_roles(name=name, order=order_id)
+
+        _logger.info("Assigning %r role_ids=%r", name, role_ids)
+        roles = [discord.utils.get(interaction.guild.roles, id=role_id) for role_id in role_ids]
+        await interaction.user.add_roles(*roles)
 
         nickname = name[:32]  # Limit to the max length
+        _logger.info("Assigning nickname %r", nickname)
         await interaction.user.edit(nick=nickname)
 
-        await log_to_channel(
-            channel=interaction.client.get_channel(config.REG_LOG_CHANNEL_ID),
-            user=interaction.user,
-            name=name,
-            order=order_id,
-            roles=roles,
+        await self.log_registration_to_channel(
+            interaction,
+            f"{name=} {order_id=} roles={[role.name for role in roles]}",
         )
 
         await pretix_connector.mark_as_registered(order=order_id, full_name=name)
         await interaction.response.send_message(
-            f"Thank you {name}, you are now registered!\n\nAlso, your nickname was"
-            f"changed to the name you used to register your ticket. This is also the name that"
-            f" would be on your conference badge, which means that your nickname can be your"
-            f"'virtual conference badge'.",
+            f"Thank you {name}, you are now registered!\n\n"
+            f"Also, your nickname was changed to the name you used to register your ticket. "
+            f"This is also the name that would be on your conference badge, which means that "
+            f"your nickname can be your 'virtual conference badge'.",
             ephemeral=True,
-            delete_after=20,
+            delete_after=None,
         )
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
-        # Make sure we know what the error actually is
-        _logger.error("An error occurred!", exc_info=error)
+        _logger.exception("An error occurred!")
 
-        # log error message in discord channel
-        await log_to_channel(
-            channel=interaction.client.get_channel(config.REG_LOG_CHANNEL_ID),
-            user=interaction.user,
-            error=error,
-        )
+        await self.log_error_to_channel(interaction, f"{error.__class__.__name__}: {error}")
+
         if isinstance(error, AlreadyRegisteredError):
             _msg = "You have already registered! If you think it is not true"
         elif isinstance(error, NotFoundError):
-            _msg = "We cannot find your ticket, double check your input and try again, or"
+            _msg = "We cannot find your ticket. Please double check your input and try again, or"
         else:
-            _msg = "Something went wrong,"
+            _msg = "Something went wrong, please"
         _msg += f" ask for help in <#{config.REG_HELP_CHANNEL_ID}>"
-        await interaction.response.send_message(_msg, ephemeral=True, delete_after=180)
+        await interaction.response.send_message(_msg, ephemeral=True, delete_after=None)
+
+    async def log_registration_to_channel(self, interaction: Interaction, message: str) -> None:
+        await self._log_to_channel(
+            interaction,
+            f"✅ : **<@{interaction.user.id}> REGISTERED**\n{message}",
+        )
+
+    async def log_error_to_channel(self, interaction: Interaction, message: str) -> None:
+        await self._log_to_channel(
+            interaction,
+            f"❌ : **<@{interaction.user.id}> ERROR**\n{message}",
+        )
+
+    @staticmethod
+    async def _log_to_channel(interaction: Interaction, message: str) -> None:
+        channel = interaction.client.get_channel(config.REG_LOG_CHANNEL_ID)
+        await channel.send(content=message)
 
 
 class Registration(commands.Cog):
@@ -128,6 +136,7 @@ class Registration(commands.Cog):
         view = discord.ui.View(timeout=None)  # timeout=None to make it persistent
         view.add_item(RegistrationButton())
 
-        embed = discord.Embed(title=title, description=description, color=ORANGE)
+        orange = 0xFF8331
+        embed = discord.Embed(title=title, description=description, color=orange)
 
         await reg_channel.send(embed=embed, view=view)
