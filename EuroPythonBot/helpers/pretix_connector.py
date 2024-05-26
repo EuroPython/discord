@@ -51,6 +51,10 @@ def sanitize_string(input_string: str) -> str:
     return input_string.replace(" ", "").lower()
 
 
+def generate_registration_log_key(*, order: str, name: str) -> str:
+    return f"{order}-{sanitize_string(input_string=name)}"
+
+
 class PretixConnector(metaclass=Singleton):
     def __init__(self):
         self.config = Config()
@@ -145,7 +149,7 @@ class PretixConnector(metaclass=Singleton):
     async def get_ticket_type(self, order: str, full_name: str) -> str:
         """With user input `order` and `full_name`, check for their ticket type"""
 
-        key = f"{order}-{sanitize_string(input_string=full_name)}"
+        key = generate_registration_log_key(order=order, name=full_name)
 
         if key in self.REGISTERED_SET:
             raise AlreadyRegisteredError(f"Ticket already registered - id: {key}")
@@ -155,13 +159,16 @@ class PretixConnector(metaclass=Singleton):
                 await self.fetch_data()
 
         if key in self.orders:
-            self.REGISTERED_SET.add(key)
-            async with aiofiles.open(self.registered_file, mode="a") as f:
-                await f.write(f"{key}\n")
-
             return self.orders[key]
 
         raise NotFoundError(f"No ticket found - inputs: {order=}, {full_name=}")
+
+    async def mark_as_registered(self, *, order: str, full_name: str) -> None:
+        key = generate_registration_log_key(order=order, name=full_name)
+
+        self.REGISTERED_SET.add(key)
+        async with aiofiles.open(self.registered_file, mode="a") as f:
+            await f.write(f"{key}\n")
 
     async def get_roles(self, name: str, order: str) -> list[int]:
         ticket_type = await self.get_ticket_type(full_name=name, order=order)

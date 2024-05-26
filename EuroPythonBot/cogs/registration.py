@@ -71,6 +71,8 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
             order=order_id,
             roles=roles,
         )
+
+        await pretix_connector.mark_as_registered(order=order_id, full_name=name)
         await interaction.response.send_message(
             f"Thank you {name}, you are now registered!\n\nAlso, your nickname was"
             f"changed to the name you used to register your ticket. This is also the name that"
