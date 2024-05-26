@@ -69,6 +69,11 @@ class PretixConnector(metaclass=Singleton):
         try:
             with open(self.registered_file) as f:
                 self.REGISTERED_SET = set(line.strip() for line in f)
+        except FileNotFoundError:
+            _logger.warning(
+                f"Cannot load registered data, starting from scratch "
+                f"({self.registered_file} does not exist)"
+            )
         except Exception:
             _logger.exception("Cannot load registered data, starting from scratch. Error:")
 
