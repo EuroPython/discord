@@ -11,16 +11,16 @@ from helpers.pretix_connector import PretixConnector
 config = Config()
 pretix_connector = PretixConnector()
 
-EMOJI_POINT = "\N{WHITE LEFT POINTING BACKHAND INDEX}"
+ORANGE = 0xFF8331
 
 _logger = logging.getLogger(f"bot.{__name__}")
 
 
 class RegistrationButton(discord.ui.Button["Registration"]):
-    def __init__(self, label: str, style: discord.ButtonStyle):
+    def __init__(self):
         super().__init__()
-        self.label = label
-        self.style = style
+        self.label = "Register here 👈"
+        self.style = discord.ButtonStyle.green
 
     async def callback(self, interaction: discord.Interaction) -> None:
         await interaction.response.send_modal(RegistrationForm())
@@ -95,16 +95,6 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         await interaction.response.send_message(_msg, ephemeral=True, delete_after=180)
 
 
-class RegistrationView(discord.ui.View):
-    def __init__(self):
-        # We don't timeout to have a persistent View
-        super().__init__(timeout=None)
-        self.value = None
-        self.add_item(
-            RegistrationButton(f"Register here {EMOJI_POINT}", discord.ButtonStyle.green)
-        )
-
-
 class Registration(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -124,7 +114,7 @@ class Registration(commands.Cog):
         _title = "Welcome to EuroPython 2023 on Discord! 🎉🐍"
         _desc = (
             "Follow these steps to complete your registration:\n\n"
-            f'1️⃣ Click on the green "Register Here {EMOJI_POINT}" button.\n\n'
+            '1️⃣ Click on the green "Register Here 👈" button.\n\n'
             '2️⃣ Fill in the "Order" (found by clicking the order URL in your confirmation '
             'email from support@pretix.eu with the Subject: Your order: XXXX) and "Full Name" '
             "(as printed on your ticket/badge).\n\n"
@@ -135,11 +125,9 @@ class Registration(commands.Cog):
             "See you on the server! 🐍💻🎉"
         )
 
-        view = RegistrationView()
-        embed = discord.Embed(
-            title=_title,
-            description=_desc,
-            colour=0xFF8331,
-        )
+        view = discord.ui.View(timeout=None)  # no timeout -> persistent
+        view.add_item(RegistrationButton())
+
+        embed = discord.Embed(title=_title, description=_desc, colour=ORANGE)
 
         await reg_channel.send(embed=embed, view=view)
