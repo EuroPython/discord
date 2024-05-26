@@ -46,6 +46,7 @@ class PretixOrder(pydantic.BaseModel):
 
     @property
     def is_paid(self) -> bool:
+        # n: pending, p: paid, e: expired, c: canceled
         return self.status == "p"
 
 
