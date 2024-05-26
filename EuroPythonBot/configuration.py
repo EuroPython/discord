@@ -45,7 +45,7 @@ class Config(metaclass=Singleton):
             # Pretix
             self.PRETIX_BASE_URL = config["pretix"]["PRETIX_BASE_URL"]
             self.TICKET_TO_ROLE = self._parse_ticket_mapping(
-                config["roles"]["ticket_to_role"], config["roles"]
+                config["ticket_to_role"], config["roles"]
             )
 
             # Logging
@@ -102,4 +102,4 @@ class Config(metaclass=Singleton):
           points to a non-existing file
         """
         local_config = base_path / self._CONFIG_LOCAL
-        return local_config if local_config.is_file() else base_path / self._CONFIG_DEFAULT
+        return local_config
