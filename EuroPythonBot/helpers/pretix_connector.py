@@ -21,6 +21,7 @@ _logger = logging.getLogger(f"bot.{__name__}")
 
 class PretixItem(pydantic.BaseModel):
     """Item which can be ordered, e.g. 'Business', 'Personal', 'Education'."""
+    # https://docs.pretix.eu/en/latest/api/resources/items.html
 
     id: int
     names_by_locale: dict[str, str] = pydantic.Field(alias="name")
@@ -29,6 +30,7 @@ class PretixItem(pydantic.BaseModel):
 
 class PretixItemVariation(pydantic.BaseModel):
     """Variation of item, e.g. 'Conference', 'Tutorial', 'Volunteer'."""
+    # https://docs.pretix.eu/en/latest/api/resources/item_variations.html
 
     id: int
     names_by_locale: dict[str, str] = pydantic.Field(alias="value")
@@ -36,6 +38,7 @@ class PretixItemVariation(pydantic.BaseModel):
 
 class PretixOrder(pydantic.BaseModel):
     """Order containing one or more positions."""
+    # https://docs.pretix.eu/en/latest/api/resources/orders.html#order-resource
 
     id: str = pydantic.Field(alias="code")
     status: str
@@ -48,6 +51,7 @@ class PretixOrder(pydantic.BaseModel):
 
 class PretixOrderPosition(pydantic.BaseModel):
     """Ordered position, e.g. a ticket or a T-shirt"""
+    # https://docs.pretix.eu/en/latest/api/resources/orders.html#order-position-resource
 
     order_id: str = pydantic.Field(alias="order")
     attendee_name: str | None
@@ -69,6 +73,7 @@ class PretixConnector:
         self.config = Config()
         load_dotenv(Path(__file__).resolve().parent.parent.parent / ".secrets")
 
+        # https://docs.pretix.eu/en/latest/api/tokenauth.html#using-an-api-token
         self.pretix_api_token = os.getenv("PRETIX_TOKEN")
         self.http_headers = {"Authorization": f"Token {self.pretix_api_token}"}
 
