@@ -62,7 +62,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
 
         await log_to_channel(
             channel=interaction.client.get_channel(config.REG_LOG_CHANNEL_ID),
-            interaction=interaction,
+            user=interaction.user,
             name=name,
             order=order_id,
             roles=roles,
@@ -85,7 +85,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         # log error message in discord channel
         await log_to_channel(
             channel=interaction.client.get_channel(config.REG_LOG_CHANNEL_ID),
-            interaction=interaction,
+            user=interaction.user,
             error=error,
         )
         if isinstance(error, AlreadyRegisteredError):
