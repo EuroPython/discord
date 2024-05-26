@@ -126,8 +126,8 @@ class Registration(commands.Cog):
         reg_channel = self.bot.get_channel(config.REG_CHANNEL_ID)
 
         await reg_channel.purge()
-        await pretix_connector.fetch_data()
-        pretix_connector.load_registered()
+        await pretix_connector.fetch_pretix_data()
+        await pretix_connector.load_registered()
 
         _title = "Welcome to EuroPython 2023 on Discord! 🎉🐍"
         _desc = (

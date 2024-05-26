@@ -78,11 +78,12 @@ class PretixConnector(metaclass=Singleton):
         self.registered_file = getattr(self.config, "REGISTERED_LOG_FILE", "./registered_log.txt")
         self.REGISTERED_SET = set()
 
-    def load_registered(self) -> None:
+    async def load_registered(self) -> None:
         """Load previously registered participants from the log file."""
         try:
-            with open(self.registered_file) as f:
-                self.REGISTERED_SET = set(line.strip() for line in f)
+            async with aiofiles.open(self.registered_file) as f:
+                lines = await f.readlines()
+                self.REGISTERED_SET = {line.strip() for line in lines}
         except FileNotFoundError:
             _logger.warning(
                 f"Cannot load registered data, starting from scratch "
