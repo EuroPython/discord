@@ -97,7 +97,9 @@ class PretixConnector(metaclass=Singleton):
                 continue
             attendee_name = sanitize_string(position.attendee_name)
 
-            orders[f"{position.order_id}-{attendee_name}"] = self.item_id_to_name.get(position.item_id)
+            orders[f"{position.order_id}-{attendee_name}"] = self.item_id_to_name.get(
+                position.item_id
+            )
 
         self.orders = orders
         self.last_fetch = datetime.now()
