@@ -74,10 +74,8 @@ class PretixConnector(metaclass=Singleton):
         self.last_fetch = datetime.now()
 
     async def _get_id_to_name_map(self) -> dict[int, str]:
-        url = f"{self.config.PRETIX_BASE_URL}/items"
-
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url, headers=self.HEADERS) as response:
+        async with aiohttp.ClientSession(headers=self.HEADERS) as session:
+            async with session.get(f"{self.config.PRETIX_BASE_URL}/items") as response:
                 if response.status != HTTPStatus.OK:
                     response.raise_for_status()
 
@@ -95,7 +93,7 @@ class PretixConnector(metaclass=Singleton):
         return id_to_name
 
     async def _fetch_all(self, url: str):
-        async with aiohttp.ClientSession() as session:
+        async with aiohttp.ClientSession(headers=self.HEADERS) as session:
             results = []
 
             next_url: str | None = url
@@ -122,10 +120,9 @@ class PretixConnector(metaclass=Singleton):
             async with aiofiles.open(self.registered_file, mode="a") as f:
                 await f.write(f"{key}\n")
         except KeyError:
-            async with aiohttp.ClientSession() as session:
+            async with aiohttp.ClientSession(headers=self.HEADERS) as session:
                 async with session.get(
                     f"{self.config.PRETIX_BASE_URL}/orders",
-                    headers=self.HEADERS,
                     params={
                         "code": order,
                         "search": full_name,
