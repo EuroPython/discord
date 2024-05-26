@@ -101,6 +101,9 @@ class PretixConnector(metaclass=Singleton):
             next_url: str | None = url
             while next_url is not None:
                 async with session.get(next_url, headers=self.HEADERS) as response:
+                    if response.status != HTTPStatus.OK:
+                        response.raise_for_status()
+
                     data = await response.json()
 
                 results += data.get("results")
