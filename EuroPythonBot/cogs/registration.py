@@ -9,7 +9,7 @@ from helpers.channel_logging import log_to_channel
 from helpers.pretix_connector import PretixConnector
 
 config = Config()
-order_ins = PretixConnector()
+pretix_connector = PretixConnector()
 
 EMOJI_POINT = "\N{WHITE LEFT POINTING BACKHAND INDEX}"
 ZERO_WIDTH_SPACE = "\N{ZERO WIDTH SPACE}"
@@ -54,7 +54,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
     async def on_submit(self, interaction: discord.Interaction) -> None:
         """Assign the role to the user and send a confirmation message."""
 
-        roles = await order_ins.get_roles(
+        roles = await pretix_connector.get_roles(
             name=self.name.value,
             order=self.order.value,
         )
@@ -124,8 +124,8 @@ class Registration(commands.Cog):
         reg_channel = self.bot.get_channel(config.REG_CHANNEL_ID)
 
         await reg_channel.purge()
-        await order_ins.fetch_data()
-        order_ins.load_registered()
+        await pretix_connector.fetch_data()
+        pretix_connector.load_registered()
 
         _title = "Welcome to EuroPython 2023 on Discord! 🎉🐍"
         _desc = (
