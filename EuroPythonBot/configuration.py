@@ -102,4 +102,4 @@ class Config(metaclass=Singleton):
           points to a non-existing file
         """
         local_config = base_path / self._CONFIG_LOCAL
-        return local_config
+        return local_config if local_config.is_file() else base_path / self._CONFIG_DEFAULT
