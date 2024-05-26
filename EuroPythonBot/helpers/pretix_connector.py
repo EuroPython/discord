@@ -88,7 +88,7 @@ class PretixConnector(metaclass=Singleton):
         time_start = time()
         results_json = await self.fetch_pretix_orders(f"{self.config.PRETIX_BASE_URL}/orders")
         results = [PretixOrder(**result) for result in results_json]
-        _logger.info("Fetched %r orders in%r seconds", len(results), time() - time_start)
+        _logger.info("Fetched %d orders in %.3f seconds", len(results), time() - time_start)
 
         orders = {}
         for position in itertools.chain(
