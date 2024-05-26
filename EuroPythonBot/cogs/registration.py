@@ -120,8 +120,8 @@ class Registration(commands.Cog):
             "(as printed on your ticket/badge).\n\n"
             '3️⃣ Click "Submit". We\'ll verify your ticket and give you your role based on '
             "your ticket type.\n\n"
-            "Experiencing trouble? Ask for help in the registration-help channel or from a "
-            "volunteer in yellow t-shirt at the conference.\n\n"
+            f"Experiencing trouble? Ask for help in the <#{config.REG_HELP_CHANNEL_ID}> channel "
+            "or from a volunteer in yellow t-shirt at the conference.\n\n"
             "See you on the server! 🐍💻🎉"
         )
 
