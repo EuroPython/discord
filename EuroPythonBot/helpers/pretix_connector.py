@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import itertools
 import logging
 import os
 import time
@@ -59,14 +58,14 @@ class PretixOrderPosition(pydantic.BaseModel):
     item_id: int = pydantic.Field(alias="item")
 
 
-def sanitize_string(input_string: str) -> str:
+def sanitize_username(username: str) -> str:
     """Process the name to make it more uniform."""
-    return input_string.replace(" ", "").lower()
+    return username.replace(" ", "").lower()
 
 
 def generate_ticket_key(*, order: str, name: str) -> str:
     """Generate a key for identifying ticket registrations."""
-    return f"{order}-{sanitize_string(input_string=name)}"
+    return f"{order}-{sanitize_username(username=name)}"
 
 
 class PretixConnector:
@@ -79,7 +78,7 @@ class PretixConnector:
         self.http_headers = {"Authorization": f"Token {self.pretix_api_token}"}
 
         self.items_by_id: dict[int, PretixItem | PretixItemVariation] | None = None
-        self.orders: dict[str, str | None] = {}
+        self.ticket_types_by_key: dict[str, str] = {}
         self.last_fetch: datetime | None = None
 
         self.registered_file = getattr(self.config, "REGISTERED_LOG_FILE", "./registered_log.txt")
@@ -102,31 +101,37 @@ class PretixConnector:
     async def fetch_pretix_data(self) -> None:
         """Fetch order and item data from the Pretix API and cache it."""
 
-        _logger.info("Fetching IDs names from pretix")
+        _logger.info("Fetching items from pretix")
         self.items_by_id = await self._fetch_pretix_items()
 
         _logger.info("Fetching orders from pretix")
-        results_json = await self._fetch_all_pages(f"{self.config.PRETIX_BASE_URL}/orders")
-        results = [PretixOrder(**result) for result in results_json]
+        self.ticket_types_by_key = await self._fetch_pretix_orders()
 
-        orders = {}
-        for position in itertools.chain(
-            *[result.positions for result in results if result.is_paid]
-        ):
-            item = self.items_by_id[position.item_id]
-            item_name = item.names_by_locale["en"]
-            if item_name in [
-                "T-shirt (free)",
-                "Childcare (Free)",
-                "Livestream Only",
-            ]:
-                continue
-            attendee_name = sanitize_string(position.attendee_name)
-
-            orders[f"{position.order_id}-{attendee_name}"] = item_name
-
-        self.orders = orders
         self.last_fetch = datetime.now()
+
+    async def _fetch_pretix_orders(self) -> dict[str, str]:
+        orders_as_json = await self._fetch_all_pages(f"{self.config.PRETIX_BASE_URL}/orders")
+        orders = [PretixOrder(**order_as_json) for order_as_json in orders_as_json]
+
+        ticket_types_by_key = {}
+        for order in orders:
+            if not order.is_paid:
+                continue
+
+            for position in order.positions:
+                item = self.items_by_id[position.item_id]
+                item_name = item.names_by_locale["en"]
+
+                if item_name in [
+                    "T-shirt (free)",
+                    "Childcare (Free)",
+                    "Livestream Only",
+                ]:
+                    continue
+
+                order_key = generate_ticket_key(order=order.id, name=position.attendee_name)
+                ticket_types_by_key[order_key] = item_name
+        return ticket_types_by_key
 
     async def _fetch_pretix_items(self) -> dict[int, PretixItem | PretixItemVariation]:
         """Fetch all items from the Pretix API."""
@@ -175,12 +180,12 @@ class PretixConnector:
         if key in self.registered_users:
             raise AlreadyRegisteredError(f"Ticket already registered: {key=}")
 
-        if key not in self.orders:
+        if key not in self.ticket_types_by_key:
             if datetime.now() - self.last_fetch < timedelta(minutes=15):
                 await self.fetch_pretix_data()
 
-        if key in self.orders:
-            return self.orders[key]
+        if key in self.ticket_types_by_key:
+            return self.ticket_types_by_key[key]
 
         raise NotFoundError(f"No ticket found: {order=}, {name=}")
 
@@ -192,7 +197,7 @@ class PretixConnector:
         async with aiofiles.open(self.registered_file, mode="a") as f:
             await f.write(f"{key}\n")
 
-    async def get_roles(self, name: str, order: str) -> list[int]:
+    async def get_roles(self, *, order: str, name: str) -> list[int]:
         """Get the role IDs for a given ticket holder."""
 
         ticket_type = await self._get_ticket_type(order=order, name=name)

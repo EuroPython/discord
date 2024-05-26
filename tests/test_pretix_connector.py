@@ -56,7 +56,7 @@ async def test_get_pretix_orders_data(aiohttp_client, monkeypatch, pretix_connec
 
     await pretix_connector.fetch_pretix_data()
 
-    assert expected_response == pretix_connector.orders
+    assert expected_response == pretix_connector.ticket_types_by_key
 
 
 @pytest.mark.asyncio
