@@ -1,7 +1,7 @@
 import logging
 
 import discord
-from discord import Client, Interaction
+from discord import Client, Forbidden, Interaction
 from discord.ext import commands
 
 from configuration import Config
@@ -57,7 +57,12 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
 
         nickname = name[:32]  # Limit to the max length
         _logger.info("Assigning nickname %r", nickname)
-        await interaction.user.edit(nick=nickname)
+        try:
+            await interaction.user.edit(nick=nickname)
+        except Forbidden:
+            # encountered during testing, hypothesis: bot cannot set nickname for Admin users
+            await self.log_error_to_channel(interaction, "Failed to set nickname")
+            _logger.warning("Failed to set nickname %r: Forbidden", nickname)
 
         await self.log_registration_to_channel(
             interaction,
