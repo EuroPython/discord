@@ -78,7 +78,7 @@ class PretixConnector:
         self.pretix_api_token = os.getenv("PRETIX_TOKEN")
         self.http_headers = {"Authorization": f"Token {self.pretix_api_token}"}
 
-        self.item_id_to_name: dict[int, str] | None = None
+        self.items_by_id: dict[int, PretixItem | PretixItemVariation] | None = None
         self.orders: dict[str, str | None] = {}
         self.last_fetch: datetime | None = None
 
@@ -103,8 +103,7 @@ class PretixConnector:
         """Fetch order and item data from the Pretix API and cache it."""
 
         _logger.info("Fetching IDs names from pretix")
-        self.item_id_to_name = await self._fetch_pretix_items()
-        _logger.info("Done fetching IDs names from pretix")
+        self.items_by_id = await self._fetch_pretix_items()
 
         _logger.info("Fetching orders from pretix")
         results_json = await self._fetch_all_pages(f"{self.config.PRETIX_BASE_URL}/orders")
@@ -114,7 +113,9 @@ class PretixConnector:
         for position in itertools.chain(
             *[result.positions for result in results if result.is_paid]
         ):
-            if self.item_id_to_name.get(position.item_id) in [
+            item = self.items_by_id[position.item_id]
+            item_name = item.names_by_locale["en"]
+            if item_name in [
                 "T-shirt (free)",
                 "Childcare (Free)",
                 "Livestream Only",
@@ -122,30 +123,23 @@ class PretixConnector:
                 continue
             attendee_name = sanitize_string(position.attendee_name)
 
-            orders[f"{position.order_id}-{attendee_name}"] = self.item_id_to_name.get(
-                position.item_id
-            )
+            orders[f"{position.order_id}-{attendee_name}"] = item_name
 
         self.orders = orders
         self.last_fetch = datetime.now()
 
-    async def _fetch_pretix_items(self) -> dict[int, str]:
+    async def _fetch_pretix_items(self) -> dict[int, PretixItem | PretixItemVariation]:
         """Fetch all items from the Pretix API."""
-        async with aiohttp.ClientSession(headers=self.http_headers) as session:
-            async with session.get(f"{self.config.PRETIX_BASE_URL}/items") as response:
-                if response.status != HTTPStatus.OK:
-                    response.raise_for_status()
+        items_as_json = await self._fetch_all_pages(f"{self.config.PRETIX_BASE_URL}/items")
 
-                data = await response.json()
+        items_by_id = {}
+        for item_as_json in items_as_json:
+            item = PretixItem(**item_as_json)
+            items_by_id[item.id] = item
+            for variation in item.variations:
+                items_by_id[variation.id] = variation
 
-                id_to_name = {}
-                for result in data.get("results"):
-                    item = PretixItem(**result)
-                    id_to_name[item.id] = item.names_by_locale["en"]
-                    for variation in item.variations:
-                        id_to_name[variation.id] = variation.names_by_locale["en"]
-
-        return id_to_name
+        return items_by_id
 
     async def _fetch_all_pages(self, url: str) -> list[dict]:
         """Fetch all pages from a paginated Pretix API endpoint."""
