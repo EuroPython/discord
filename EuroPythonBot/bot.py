@@ -11,7 +11,6 @@ from dotenv import load_dotenv
 import configuration
 from cogs.ping import Ping
 from cogs.registration import Registration
-from helpers.pretix_connector import PretixConnector
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".secrets")
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
@@ -82,7 +81,7 @@ async def main():
 
 if __name__ == "__main__":
     bot = Bot()
-    orders = PretixConnector()
+
     try:
         asyncio.run(main())
     except KeyboardInterrupt:

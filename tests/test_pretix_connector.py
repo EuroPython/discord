@@ -8,7 +8,11 @@ from configuration import Config
 from helpers.pretix_connector import PretixConnector
 
 config = Config()
-order_ins = PretixConnector()
+
+
+@pytest.fixture()
+def pretix_connector() -> PretixConnector:
+    return PretixConnector()
 
 
 async def items(request):
@@ -24,7 +28,7 @@ async def positions(request):
 
 
 @pytest.mark.asyncio
-async def test_get_pretix_orders_data(aiohttp_client, monkeypatch):
+async def test_get_pretix_orders_data(aiohttp_client, monkeypatch, pretix_connector):
     expected_response = {
         "90LKW-dogtbd": "Personal",
         "90LKW-cattbd": "Remote Ticket",
@@ -50,13 +54,13 @@ async def test_get_pretix_orders_data(aiohttp_client, monkeypatch):
     # Replace the actual PRETIX_BASE_URL with the mock server URL
     monkeypatch.setattr(config, "PRETIX_BASE_URL", str(client.make_url("")))
 
-    await order_ins.fetch_pretix_data()
+    await pretix_connector.fetch_pretix_data()
 
-    assert expected_response == order_ins.orders
+    assert expected_response == pretix_connector.orders
 
 
 @pytest.mark.asyncio
-async def test_get_roles(aiohttp_client, monkeypatch):
+async def test_get_roles(aiohttp_client, monkeypatch, pretix_connector):
     test_data = [
         (
             "TODOG GODOT",
@@ -124,8 +128,8 @@ async def test_get_roles(aiohttp_client, monkeypatch):
     # Replace the actual PRETIX_BASE_URL with the mock server URL
     monkeypatch.setattr(config, "PRETIX_BASE_URL", str(client.make_url("")))
 
-    await order_ins.fetch_pretix_data()
+    await pretix_connector.fetch_pretix_data()
 
     for name, order, role_ids in test_data:
-        roles = await order_ins.get_roles(name=name, order=order)
+        roles = await pretix_connector.get_roles(name=name, order=order)
         assert roles == role_ids

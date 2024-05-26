@@ -13,7 +13,7 @@ import aiohttp
 import pydantic
 from dotenv import load_dotenv
 
-from configuration import Config, Singleton
+from configuration import Config
 from error import AlreadyRegisteredError, NotFoundError
 
 _logger = logging.getLogger(f"bot.{__name__}")
@@ -64,7 +64,7 @@ def generate_registration_log_key(*, order: str, name: str) -> str:
     return f"{order}-{sanitize_string(input_string=name)}"
 
 
-class PretixConnector(metaclass=Singleton):
+class PretixConnector:
     def __init__(self):
         self.config = Config()
         load_dotenv(Path(__file__).resolve().parent.parent.parent / ".secrets")
