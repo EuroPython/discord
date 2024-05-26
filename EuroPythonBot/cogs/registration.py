@@ -12,24 +12,17 @@ config = Config()
 pretix_connector = PretixConnector()
 
 EMOJI_POINT = "\N{WHITE LEFT POINTING BACKHAND INDEX}"
-ZERO_WIDTH_SPACE = "\N{ZERO WIDTH SPACE}"
-REGISTERED_LIST = {}
 
 _logger = logging.getLogger(f"bot.{__name__}")
 
 
 class RegistrationButton(discord.ui.Button["Registration"]):
-    def __init__(self, x: int, y: int, label: str, style: discord.ButtonStyle):
-        super().__init__(style=discord.ButtonStyle.secondary, label=ZERO_WIDTH_SPACE, row=y)
-        self.x = x
-        self.y = y
+    def __init__(self, label: str, style: discord.ButtonStyle):
+        super().__init__()
         self.label = label
         self.style = style
 
     async def callback(self, interaction: discord.Interaction) -> None:
-        assert self.view is not None
-
-        # Launch the modal form
         await interaction.response.send_modal(RegistrationForm())
 
 
@@ -108,7 +101,7 @@ class RegistrationView(discord.ui.View):
         super().__init__(timeout=None)
         self.value = None
         self.add_item(
-            RegistrationButton(0, 0, f"Register here {EMOJI_POINT}", discord.ButtonStyle.green)
+            RegistrationButton(f"Register here {EMOJI_POINT}", discord.ButtonStyle.green)
         )
 
 
@@ -120,8 +113,7 @@ class Registration(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        if self.guild is None:
-            self.guild = self.bot.get_guild(config.GUILD)
+        self.guild = self.bot.get_guild(config.GUILD)
 
         reg_channel = self.bot.get_channel(config.REG_CHANNEL_ID)
 
