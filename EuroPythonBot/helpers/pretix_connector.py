@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import itertools
 import logging
 import os
@@ -8,12 +10,40 @@ from time import time
 
 import aiofiles
 import aiohttp
+import pydantic
 from dotenv import load_dotenv
 
 from configuration import Config, Singleton
 from error import AlreadyRegisteredError, NotFoundError
 
 _logger = logging.getLogger(f"bot.{__name__}")
+
+
+class PretixItem(pydantic.BaseModel):
+    id: int
+    names_by_locale: dict[str, str] = pydantic.Field(alias="name")
+    variations: list[PretixItemVariation]
+
+
+class PretixItemVariation(pydantic.BaseModel):
+    id: int
+    names_by_locale: dict[str, str] = pydantic.Field(alias="value")
+
+
+class PretixOrder(pydantic.BaseModel):
+    id: str = pydantic.Field(alias="code")
+    status: str
+    positions: list[PretixOrderPosition]
+
+    @property
+    def is_paid(self) -> bool:
+        return self.status == "p"
+
+
+class PretixOrderPosition(pydantic.BaseModel):
+    order_id: str = pydantic.Field(alias="order")
+    attendee_name: str | None
+    item_id: int = pydantic.Field(alias="item")
 
 
 def sanitize_string(input_string: str) -> str:
@@ -51,24 +81,23 @@ class PretixConnector(metaclass=Singleton):
 
         _logger.info("Fetching orders from pretix")
         time_start = time()
-        results = await self._fetch_all(f"{self.config.PRETIX_BASE_URL}/orders")
+        results_json = await self._fetch_all(f"{self.config.PRETIX_BASE_URL}/orders")
+        results = [PretixOrder(**result) for result in results_json]
         _logger.info("Fetched %r orders in%r seconds", len(results), time() - time_start)
 
         orders = {}
         for position in itertools.chain(
-            *[result.get("positions") for result in results if result.get("status") == "p"]
+            *[result.positions for result in results if result.is_paid]
         ):
-            item = position.get("item")
-            if self.id_to_name.get(item) in [
+            if self.id_to_name.get(position.item_id) in [
                 "T-shirt (free)",
                 "Childcare (Free)",
                 "Livestream Only",
             ]:
                 continue
-            order = position.get("order")
-            attendee_name = sanitize_string(position.get("attendee_name"))
+            attendee_name = sanitize_string(position.attendee_name)
 
-            orders[f"{order}-{attendee_name}"] = self.id_to_name.get(item)
+            orders[f"{position.order_id}-{attendee_name}"] = self.id_to_name.get(position.item_id)
 
         self.orders = orders
         self.last_fetch = datetime.now()
@@ -83,13 +112,11 @@ class PretixConnector(metaclass=Singleton):
 
                 id_to_name = {}
                 for result in data.get("results"):
-                    id = result.get("id")
-                    name = result.get("name").get("en")
-                    id_to_name[id] = name
-                    for variation in result.get("variations"):
-                        variation_id = variation.get("id")
-                        variation_name = variation.get("value").get("en")
-                        id_to_name[variation_id] = variation_name
+                    item = PretixItem(**result)
+                    id_to_name[item.id] = item.names_by_locale["en"]
+                    for variation in item.variations:
+                        id_to_name[variation.id] = variation.names_by_locale["en"]
+
         return id_to_name
 
     async def _fetch_all(self, url: str):
@@ -132,13 +159,12 @@ class PretixConnector(metaclass=Singleton):
                         data = await request.json()
                         # when using search params, pretix returns a list of results of size 1
                         # with a list of positions of size 1
-                        if len(data.get("results")) > 0:
-                            result = data.get("results")[0]
-                            if result.get("status") != "p":
+                        results = data.get("results")
+                        if len(results) > 0:
+                            order = PretixOrder(**results[0])
+                            if not order.is_paid:
                                 raise Exception("Order not paid")
-                            ticket_type = self.id_to_name.get(
-                                result.get("positions")[0].get("item")
-                            )
+                            ticket_type = self.id_to_name.get(order.positions[0].item_id)
                             self.REGISTERED_SET.add(key)
                             async with aiofiles.open(self.registered_file, mode="a") as f:
                                 await f.write(f"{key}\n")
