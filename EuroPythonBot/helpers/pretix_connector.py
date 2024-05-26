@@ -68,22 +68,23 @@ class PretixConnector(metaclass=Singleton):
     def __init__(self):
         self.config = Config()
         load_dotenv(Path(__file__).resolve().parent.parent.parent / ".secrets")
-        PRETIX_TOKEN = os.getenv("PRETIX_TOKEN")
-        self.HEADERS = {"Authorization": f"Token {PRETIX_TOKEN}"}
+
+        self.pretix_api_token = os.getenv("PRETIX_TOKEN")
+        self.http_headers = {"Authorization": f"Token {self.pretix_api_token}"}
 
         self.item_id_to_name: dict[int, str] | None = None
         self.orders: dict[str, str | None] = {}
         self.last_fetch: datetime | None = None
 
         self.registered_file = getattr(self.config, "REGISTERED_LOG_FILE", "./registered_log.txt")
-        self.REGISTERED_SET = set()
+        self.registered_users = set()
 
     async def load_registered(self) -> None:
         """Load previously registered participants from the log file."""
         try:
             async with aiofiles.open(self.registered_file) as f:
                 lines = await f.readlines()
-                self.REGISTERED_SET = {line.strip() for line in lines}
+                self.registered_users = {line.strip() for line in lines}
         except FileNotFoundError:
             _logger.warning(
                 f"Cannot load registered data, starting from scratch "
@@ -126,7 +127,7 @@ class PretixConnector(metaclass=Singleton):
 
     async def _fetch_pretix_items(self) -> dict[int, str]:
         """Fetch all items from the Pretix API."""
-        async with aiohttp.ClientSession(headers=self.HEADERS) as session:
+        async with aiohttp.ClientSession(headers=self.http_headers) as session:
             async with session.get(f"{self.config.PRETIX_BASE_URL}/items") as response:
                 if response.status != HTTPStatus.OK:
                     response.raise_for_status()
@@ -144,12 +145,12 @@ class PretixConnector(metaclass=Singleton):
 
     async def _fetch_pretix_orders(self, url: str):
         """Fetch all orders from the Pretix API."""
-        async with aiohttp.ClientSession(headers=self.HEADERS) as session:
+        async with aiohttp.ClientSession(headers=self.http_headers) as session:
             results = []
 
             next_url: str | None = url
             while next_url is not None:
-                async with session.get(next_url, headers=self.HEADERS) as response:
+                async with session.get(next_url, headers=self.http_headers) as response:
                     if response.status != HTTPStatus.OK:
                         response.raise_for_status()
 
@@ -164,7 +165,7 @@ class PretixConnector(metaclass=Singleton):
 
         key = generate_registration_log_key(order=order, name=full_name)
 
-        if key in self.REGISTERED_SET:
+        if key in self.registered_users:
             raise AlreadyRegisteredError(f"Ticket already registered - id: {key}")
 
         if key not in self.orders:
@@ -180,7 +181,7 @@ class PretixConnector(metaclass=Singleton):
         """Mark a ticket holder as registered."""
         key = generate_registration_log_key(order=order, name=full_name)
 
-        self.REGISTERED_SET.add(key)
+        self.registered_users.add(key)
         async with aiofiles.open(self.registered_file, mode="a") as f:
             await f.write(f"{key}\n")
 
