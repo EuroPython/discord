@@ -20,17 +20,23 @@ _logger = logging.getLogger(f"bot.{__name__}")
 
 
 class PretixItem(pydantic.BaseModel):
+    """Item which can be ordered, e.g. 'Business', 'Personal', 'Education'."""
+
     id: int
     names_by_locale: dict[str, str] = pydantic.Field(alias="name")
     variations: list[PretixItemVariation]
 
 
 class PretixItemVariation(pydantic.BaseModel):
+    """Variation of item, e.g. 'Conference', 'Tutorial', 'Volunteer'."""
+
     id: int
     names_by_locale: dict[str, str] = pydantic.Field(alias="value")
 
 
 class PretixOrder(pydantic.BaseModel):
+    """Order containing one or more positions."""
+
     id: str = pydantic.Field(alias="code")
     status: str
     positions: list[PretixOrderPosition]
@@ -41,6 +47,8 @@ class PretixOrder(pydantic.BaseModel):
 
 
 class PretixOrderPosition(pydantic.BaseModel):
+    """Ordered position, e.g. a ticket or a T-shirt"""
+
     order_id: str = pydantic.Field(alias="order")
     attendee_name: str | None
     item_id: int = pydantic.Field(alias="item")
@@ -52,6 +60,7 @@ def sanitize_string(input_string: str) -> str:
 
 
 def generate_registration_log_key(*, order: str, name: str) -> str:
+    """Generate a key to be used for checking and logging successful registrations."""
     return f"{order}-{sanitize_string(input_string=name)}"
 
 
@@ -70,6 +79,7 @@ class PretixConnector(metaclass=Singleton):
         self.REGISTERED_SET = set()
 
     def load_registered(self) -> None:
+        """Load previously registered participants from the log file."""
         try:
             with open(self.registered_file) as f:
                 self.REGISTERED_SET = set(line.strip() for line in f)
@@ -82,7 +92,7 @@ class PretixConnector(metaclass=Singleton):
             _logger.exception("Cannot load registered data, starting from scratch. Error:")
 
     async def fetch_data(self) -> None:
-        """Fetch data from Pretix, store id_to_name mapping and formated orders internally"""
+        """Fetch order and item data from the Pretix API and cache it."""
 
         _logger.info("Fetching IDs names from pretix")
         self.item_id_to_name = await self._fetch_pretix_items()
@@ -114,6 +124,7 @@ class PretixConnector(metaclass=Singleton):
         self.last_fetch = datetime.now()
 
     async def _fetch_pretix_items(self) -> dict[int, str]:
+        """Fetch all items from the Pretix API."""
         async with aiohttp.ClientSession(headers=self.HEADERS) as session:
             async with session.get(f"{self.config.PRETIX_BASE_URL}/items") as response:
                 if response.status != HTTPStatus.OK:
@@ -131,6 +142,7 @@ class PretixConnector(metaclass=Singleton):
         return id_to_name
 
     async def fetch_pretix_orders(self, url: str):
+        """Fetch all orders from the Pretix API."""
         async with aiohttp.ClientSession(headers=self.HEADERS) as session:
             results = []
 
@@ -147,7 +159,7 @@ class PretixConnector(metaclass=Singleton):
             return results
 
     async def get_ticket_type(self, order: str, full_name: str) -> str:
-        """With user input `order` and `full_name`, check for their ticket type"""
+        """Get a given ticket holder's ticket type."""
 
         key = generate_registration_log_key(order=order, name=full_name)
 
@@ -164,6 +176,7 @@ class PretixConnector(metaclass=Singleton):
         raise NotFoundError(f"No ticket found - inputs: {order=}, {full_name=}")
 
     async def mark_as_registered(self, *, order: str, full_name: str) -> None:
+        """Mark a ticket holder as registered."""
         key = generate_registration_log_key(order=order, name=full_name)
 
         self.REGISTERED_SET.add(key)
@@ -171,5 +184,7 @@ class PretixConnector(metaclass=Singleton):
             await f.write(f"{key}\n")
 
     async def get_roles(self, name: str, order: str) -> list[int]:
+        """Get the role IDs for a given ticket holder."""
+
         ticket_type = await self.get_ticket_type(full_name=name, order=order)
         return self.config.TICKET_TO_ROLE.get(ticket_type)
