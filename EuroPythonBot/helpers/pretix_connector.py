@@ -63,8 +63,8 @@ def sanitize_string(input_string: str) -> str:
     return input_string.replace(" ", "").lower()
 
 
-def generate_registration_log_key(*, order: str, name: str) -> str:
-    """Generate a key to be used for checking and logging successful registrations."""
+def generate_ticket_key(*, order: str, name: str) -> str:
+    """Generate a key for identifying ticket registrations."""
     return f"{order}-{sanitize_string(input_string=name)}"
 
 
@@ -165,13 +165,13 @@ class PretixConnector:
                 next_url = data.get("next")
             return results
 
-    async def _get_ticket_type(self, order: str, full_name: str) -> str:
+    async def _get_ticket_type(self, *, order: str, name: str) -> str:
         """Get a given ticket holder's ticket type."""
 
-        key = generate_registration_log_key(order=order, name=full_name)
+        key = generate_ticket_key(order=order, name=name)
 
         if key in self.registered_users:
-            raise AlreadyRegisteredError(f"Ticket already registered - id: {key}")
+            raise AlreadyRegisteredError(f"Ticket already registered: {key=}")
 
         if key not in self.orders:
             if datetime.now() - self.last_fetch < timedelta(minutes=15):
@@ -180,11 +180,11 @@ class PretixConnector:
         if key in self.orders:
             return self.orders[key]
 
-        raise NotFoundError(f"No ticket found - inputs: {order=}, {full_name=}")
+        raise NotFoundError(f"No ticket found: {order=}, {name=}")
 
-    async def mark_as_registered(self, *, order: str, full_name: str) -> None:
+    async def mark_as_registered(self, *, order: str, name: str) -> None:
         """Mark a ticket holder as registered."""
-        key = generate_registration_log_key(order=order, name=full_name)
+        key = generate_ticket_key(order=order, name=name)
 
         self.registered_users.add(key)
         async with aiofiles.open(self.registered_file, mode="a") as f:
@@ -193,5 +193,5 @@ class PretixConnector:
     async def get_roles(self, name: str, order: str) -> list[int]:
         """Get the role IDs for a given ticket holder."""
 
-        ticket_type = await self._get_ticket_type(full_name=name, order=order)
+        ticket_type = await self._get_ticket_type(order=order, name=name)
         return self.config.TICKET_TO_ROLE.get(ticket_type)

@@ -49,7 +49,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         order_id = self.order_field.value
 
         _logger.debug("Fetching roles from Pretix connector")
-        role_ids = await pretix_connector.get_roles(name=name, order=order_id)
+        role_ids = await pretix_connector.get_roles(order=order_id, name=name)
 
         _logger.info("Assigning %r role_ids=%r", name, role_ids)
         roles = [discord.utils.get(interaction.guild.roles, id=role_id) for role_id in role_ids]
@@ -64,7 +64,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
             f"{name=} {order_id=} roles={[role.name for role in roles]}",
         )
 
-        await pretix_connector.mark_as_registered(order=order_id, full_name=name)
+        await pretix_connector.mark_as_registered(order=order_id, name=name)
         await interaction.response.send_message(
             f"Thank you {name}, you are now registered!\n\n"
             f"Also, your nickname was changed to the name you used to register your ticket. "
