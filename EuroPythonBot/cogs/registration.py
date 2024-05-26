@@ -54,25 +54,25 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
     async def on_submit(self, interaction: discord.Interaction) -> None:
         """Assign the role to the user and send a confirmation message."""
 
-        roles = await pretix_connector.get_roles(
-            name=self.name.value,
-            order=self.order.value,
-        )
-        _logger.info("Assigning %r roles=%r", self.name.value, roles)
+        name = self.name.value
+        order_id = self.order.value
+
+        roles = await pretix_connector.get_roles(name=name, order=order_id)
+        _logger.info("Assigning %r roles=%r", name, roles)
         for role in roles:
             role = discord.utils.get(interaction.guild.roles, id=role)
             await interaction.user.add_roles(role)
-        nickname = self.name.value[:32]  # Limit to the max length
+        nickname = name[:32]  # Limit to the max length
         await interaction.user.edit(nick=nickname)
         await log_to_channel(
             channel=interaction.client.get_channel(config.REG_LOG_CHANNEL_ID),
             interaction=interaction,
-            name=self.name.value,
-            order=self.order.value,
+            name=name,
+            order=order_id,
             roles=roles,
         )
         await interaction.response.send_message(
-            f"Thank you {self.name.value}, you are now registered!\n\nAlso, your nickname was"
+            f"Thank you {name}, you are now registered!\n\nAlso, your nickname was"
             f"changed to the name you used to register your ticket. This is also the name that"
             f" would be on your conference badge, which means that your nickname can be your"
             f"'virtual conference badge'.",
