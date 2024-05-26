@@ -125,7 +125,7 @@ class Registration(commands.Cog):
             "See you on the server! 🐍💻🎉"
         )
 
-        view = discord.ui.View(timeout=None)
+        view = discord.ui.View(timeout=None)  # timeout=None to make it persistent
         view.add_item(RegistrationButton())
 
         embed = discord.Embed(title=title, description=description, color=ORANGE)
