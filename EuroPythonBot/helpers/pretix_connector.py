@@ -3,10 +3,10 @@ from __future__ import annotations
 import itertools
 import logging
 import os
+import time
 from datetime import datetime, timedelta
 from http import HTTPStatus
 from pathlib import Path
-from time import time
 
 import aiofiles
 import aiohttp
@@ -107,10 +107,8 @@ class PretixConnector:
         _logger.info("Done fetching IDs names from pretix")
 
         _logger.info("Fetching orders from pretix")
-        time_start = time()
-        results_json = await self._fetch_pretix_orders(f"{self.config.PRETIX_BASE_URL}/orders")
+        results_json = await self._fetch_all_pages(f"{self.config.PRETIX_BASE_URL}/orders")
         results = [PretixOrder(**result) for result in results_json]
-        _logger.info("Fetched %d orders in %.3f seconds", len(results), time() - time_start)
 
         orders = {}
         for position in itertools.chain(
@@ -149,21 +147,30 @@ class PretixConnector:
 
         return id_to_name
 
-    async def _fetch_pretix_orders(self, url: str):
-        """Fetch all orders from the Pretix API."""
-        async with aiohttp.ClientSession(headers=self.http_headers) as session:
-            results = []
+    async def _fetch_all_pages(self, url: str) -> list[dict]:
+        """Fetch all pages from a paginated Pretix API endpoint."""
+        # https://docs.pretix.eu/en/latest/api/fundamentals.html#pagination
+        results = []
 
+        _logger.debug("Fetching all pages from %s", url)
+        start = time.perf_counter()
+        async with aiohttp.ClientSession() as session:
             next_url: str | None = url
             while next_url is not None:
+                _logger.debug("Fetching %s", url)
                 async with session.get(next_url, headers=self.http_headers) as response:
                     if response.status != HTTPStatus.OK:
                         response.raise_for_status()
 
                     data = await response.json()
 
-                results += data.get("results")
-                next_url = data.get("next")
+                results += data["results"]
+                next_url = data["next"]
+                _logger.debug("Found %d items", data["count"])
+
+            _logger.info(
+                "Fetched %d results in %.3f seconds", len(results), time.perf_counter() - start
+            )
             return results
 
     async def _get_ticket_type(self, *, order: str, name: str) -> str:
