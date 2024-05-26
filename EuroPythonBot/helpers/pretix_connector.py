@@ -122,11 +122,8 @@ class PretixConnector:
                 item = self.items_by_id[position.item_id]
                 item_name = item.names_by_locale["en"]
 
-                if item_name in [
-                    "T-shirt (free)",
-                    "Childcare (Free)",
-                    "Livestream Only",
-                ]:
+                if item_name not in self.config.TICKET_TO_ROLE:
+                    # item does not grant any Discord roles (e.g. 'T-Shirt')
                     continue
 
                 order_key = generate_ticket_key(order=order.id, name=position.attendee_name)
