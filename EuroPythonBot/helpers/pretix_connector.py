@@ -91,7 +91,7 @@ class PretixConnector(metaclass=Singleton):
         except Exception:
             _logger.exception("Cannot load registered data, starting from scratch. Error:")
 
-    async def fetch_data(self) -> None:
+    async def fetch_pretix_data(self) -> None:
         """Fetch order and item data from the Pretix API and cache it."""
 
         _logger.info("Fetching IDs names from pretix")
@@ -100,7 +100,7 @@ class PretixConnector(metaclass=Singleton):
 
         _logger.info("Fetching orders from pretix")
         time_start = time()
-        results_json = await self.fetch_pretix_orders(f"{self.config.PRETIX_BASE_URL}/orders")
+        results_json = await self._fetch_pretix_orders(f"{self.config.PRETIX_BASE_URL}/orders")
         results = [PretixOrder(**result) for result in results_json]
         _logger.info("Fetched %d orders in %.3f seconds", len(results), time() - time_start)
 
@@ -141,7 +141,7 @@ class PretixConnector(metaclass=Singleton):
 
         return id_to_name
 
-    async def fetch_pretix_orders(self, url: str):
+    async def _fetch_pretix_orders(self, url: str):
         """Fetch all orders from the Pretix API."""
         async with aiohttp.ClientSession(headers=self.HEADERS) as session:
             results = []
@@ -158,7 +158,7 @@ class PretixConnector(metaclass=Singleton):
                 next_url = data.get("next")
             return results
 
-    async def get_ticket_type(self, order: str, full_name: str) -> str:
+    async def _get_ticket_type(self, order: str, full_name: str) -> str:
         """Get a given ticket holder's ticket type."""
 
         key = generate_registration_log_key(order=order, name=full_name)
@@ -168,7 +168,7 @@ class PretixConnector(metaclass=Singleton):
 
         if key not in self.orders:
             if datetime.now() - self.last_fetch < timedelta(minutes=15):
-                await self.fetch_data()
+                await self.fetch_pretix_data()
 
         if key in self.orders:
             return self.orders[key]
@@ -186,5 +186,5 @@ class PretixConnector(metaclass=Singleton):
     async def get_roles(self, name: str, order: str) -> list[int]:
         """Get the role IDs for a given ticket holder."""
 
-        ticket_type = await self.get_ticket_type(full_name=name, order=order)
+        ticket_type = await self._get_ticket_type(full_name=name, order=order)
         return self.config.TICKET_TO_ROLE.get(ticket_type)

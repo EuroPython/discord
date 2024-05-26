@@ -50,7 +50,7 @@ async def test_get_pretix_orders_data(aiohttp_client, monkeypatch):
     # Replace the actual PRETIX_BASE_URL with the mock server URL
     monkeypatch.setattr(config, "PRETIX_BASE_URL", str(client.make_url("")))
 
-    await order_ins.fetch_data()
+    await order_ins.fetch_pretix_data()
 
     assert expected_response == order_ins.orders
 
@@ -124,7 +124,7 @@ async def test_get_roles(aiohttp_client, monkeypatch):
     # Replace the actual PRETIX_BASE_URL with the mock server URL
     monkeypatch.setattr(config, "PRETIX_BASE_URL", str(client.make_url("")))
 
-    await order_ins.fetch_data()
+    await order_ins.fetch_pretix_data()
 
     for name, order, role_ids in test_data:
         roles = await order_ins.get_roles(name=name, order=order)
