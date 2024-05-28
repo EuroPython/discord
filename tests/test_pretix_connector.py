@@ -58,62 +58,19 @@ async def test_get_pretix_orders_data(aiohttp_client, monkeypatch):
 
 @pytest.mark.asyncio
 async def test_get_roles(aiohttp_client, monkeypatch):
+    # (name, order, roles)
     test_data = [
-        (
-            "TODOG GODOT",
-            "RCZN9",
-            config.TICKET_TO_ROLE["Presenter"],
-        ),
-        (
-            "order 6 dog",
-            "M09CT",
-            config.TICKET_TO_ROLE["Business"],
-        ),
-        (
-            "TBD TBD",
-            "90LKW",
-            config.TICKET_TO_ROLE["Business"],
-        ),
-        (
-            "TODOG Talks No EMu",
-            "30QNE",
-            config.TICKET_TO_ROLE["Presenter"],
-        ),
-        (
-            "Raquel Individual",
-            "C0MV7",
-            config.TICKET_TO_ROLE["Business"],
-        ),
-        (
-            "Raquel Individual",
-            "G0CFM",
-            config.TICKET_TO_ROLE["Business"],
-        ),
-        (
-            "order 2 dog",
-            "M09CT",
-            config.TICKET_TO_ROLE["Business"],
-        ),
-        (
-            "Dog TBD",
-            "90LKW",
-            config.TICKET_TO_ROLE["Personal"],
-        ),
-        (
-            "order 3 dog",
-            "M09CT",
-            config.TICKET_TO_ROLE["Business"],
-        ),
-        (
-            "order 4 dog",
-            "M09CT",
-            config.TICKET_TO_ROLE["Business"],
-        ),
-        (
-            "order 5 dog",
-            "M09CT",
-            config.TICKET_TO_ROLE["Business"],
-        ),
+        ("TODOG GODOT", "RCZN9", config.TICKET_TO_ROLE["Presenter"]),
+        ("order 6 dog", "M09CT", config.TICKET_TO_ROLE["Business"]),
+        ("TBD TBD", "90LKW", config.TICKET_TO_ROLE["Business"]),
+        ("TODOG Talks No EMu", "30QNE", config.TICKET_TO_ROLE["Presenter"]),
+        ("Raquel Individual", "C0MV7", config.TICKET_TO_ROLE["Business"]),
+        ("Raquel Individual", "G0CFM", config.TICKET_TO_ROLE["Business"]),
+        ("order 2 dog", "M09CT", config.TICKET_TO_ROLE["Business"]),
+        ("Dog TBD", "90LKW", config.TICKET_TO_ROLE["Personal"]),
+        ("order 3 dog", "M09CT", config.TICKET_TO_ROLE["Business"]),
+        ("order 4 dog", "M09CT", config.TICKET_TO_ROLE["Business"]),
+        ("order 5 dog", "M09CT", config.TICKET_TO_ROLE["Business"]),
     ]
 
     app = web.Application()
@@ -153,7 +110,7 @@ def test_name_normalization(name, result):
     [
         ("Jane Doe", "Jane Doe"),
         ("Ki-moon Ban", "Ban Ki-moon"),
-    ]
+    ],
 )
 async def test_name_permutations(name_in_pretix, name):
     pretix_connector = PretixConnector()
