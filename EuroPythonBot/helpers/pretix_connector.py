@@ -77,7 +77,7 @@ class PretixConnector:
         async with self.fetch_lock:
             # ... but does not trigger a second fetch
             now = datetime.now(tz=timezone.utc)
-            if self.last_fetch and now - self.last_fetch < timedelta(minutes=5):
+            if self.last_fetch and now - self.last_fetch < timedelta(minutes=2):
                 return
 
             self.last_fetch = now
@@ -163,9 +163,6 @@ class PretixConnector:
 
         if key in self.registered_users:
             raise AlreadyRegisteredError(f"Ticket already registered: {key=}")
-
-        if key not in self.ticket_types_by_key:
-            await self.fetch_pretix_data()
 
         if key in self.ticket_types_by_key:
             return self.ticket_types_by_key[key]

@@ -2,7 +2,7 @@ import logging
 
 import discord
 from discord import Client, Interaction
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 from configuration import Config
 from error import AlreadyRegisteredError, NotFoundError
@@ -140,3 +140,7 @@ class Registration(commands.Cog):
         embed = discord.Embed(title=title, description=description, color=orange)
 
         await reg_channel.send(embed=embed, view=view)
+
+    @tasks.loop(minutes=5)
+    async def fetch_pretix_updates(self):
+        await pretix_connector.fetch_pretix_data()
