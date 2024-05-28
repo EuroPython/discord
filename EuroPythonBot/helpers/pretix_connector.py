@@ -106,7 +106,7 @@ class PretixConnector:
         # if called during an ongoing fetch, the caller waits until the fetch is done...
         async with self.fetch_lock:
             # ... but does not trigger a second fetch
-            if self.last_fetch is not None and datetime.now() - self.last_fetch < timedelta(minutes=15):
+            if self.last_fetch and datetime.now() - self.last_fetch < timedelta(minutes=15):
                 return
 
             _logger.info("Fetching items from pretix")
