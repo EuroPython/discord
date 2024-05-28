@@ -1,7 +1,7 @@
 import logging
 
 import discord
-from discord import Client, Forbidden, Interaction
+from discord import Client, Interaction
 from discord.ext import commands
 
 from configuration import Config
@@ -51,18 +51,13 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         _logger.debug("Fetching roles from Pretix connector")
         role_ids = await pretix_connector.get_roles(order=order_id, name=name)
 
+        nickname = name[:32]  # Limit to the max length
+        _logger.info("Assigning nickname %r", nickname)
+        await interaction.user.edit(nick=nickname)
+
         _logger.info("Assigning %r role_ids=%r", name, role_ids)
         roles = [discord.utils.get(interaction.guild.roles, id=role_id) for role_id in role_ids]
         await interaction.user.add_roles(*roles)
-
-        nickname = name[:32]  # Limit to the max length
-        _logger.info("Assigning nickname %r", nickname)
-        try:
-            await interaction.user.edit(nick=nickname)
-        except Forbidden:
-            # encountered during testing, hypothesis: bot cannot set nickname for Admin users
-            await self.log_error_to_channel(interaction, "Failed to set nickname")
-            _logger.warning("Failed to set nickname %r: Forbidden", nickname)
 
         await self.log_registration_to_channel(
             interaction,
