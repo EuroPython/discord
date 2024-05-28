@@ -52,7 +52,7 @@ class PretixConnector:
         try:
             async with aiofiles.open(self.registered_file) as f:
                 lines = await f.readlines()
-                self.registered_users = {line.strip() for line in lines}
+                self.registered_users.update(line.strip() for line in lines)
         except FileNotFoundError:
             _logger.warning(
                 f"Cannot load registered data, starting from scratch "
