@@ -16,13 +16,13 @@ def pretix_connector() -> PretixConnector:
 
 
 async def items(request):
-    with open(Path("tests", "mock_pretix_items.json")) as json_file:
+    with open(Path(__file__).parent / "mock_pretix_items.json") as json_file:
         mock_response = json.load(json_file)
     return web.json_response(mock_response)
 
 
-async def positions(request):
-    with open(Path("tests", "mock_pretix_orders.json")) as json_file:
+async def orders(request):
+    with open(Path(__file__).parent / "mock_pretix_orders.json") as json_file:
         mock_response = json.load(json_file)
     return web.json_response(mock_response)
 
@@ -32,7 +32,7 @@ async def test_get_pretix_orders_data(aiohttp_client, monkeypatch, pretix_connec
     expected_response = {
         "90LKW-dogtbd": "Personal",
         "90LKW-cattbd": "Remote Ticket",
-        "N0XE9-thepetk@gmail.comthepetk@gmail.com": "Remote Ticket",
+        "N0XE9-thepetkgmailcomthepetkgmailcom": "Remote Ticket",
         "M09CT-order2dog": "Business",
         "M09CT-order3dog": "Business",
         "M09CT-order4dog": "Business",
@@ -47,7 +47,7 @@ async def test_get_pretix_orders_data(aiohttp_client, monkeypatch, pretix_connec
 
     app = web.Application()
     app.router.add_get("/items", items)
-    app.router.add_get("/orders", positions)
+    app.router.add_get("/orders", orders)
 
     client = await aiohttp_client(app)
 
@@ -121,7 +121,7 @@ async def test_get_roles(aiohttp_client, monkeypatch, pretix_connector):
 
     app = web.Application()
     app.router.add_get("/items", items)
-    app.router.add_get("/orders", positions)
+    app.router.add_get("/orders", orders)
 
     client = await aiohttp_client(app)
 
@@ -142,7 +142,8 @@ async def test_get_roles(aiohttp_client, monkeypatch, pretix_connector):
         ("Shin Kyung-sook", "shinkyungsook"),
         ("Ch'oe Yun", "choeyun"),
         ("Æmilia Lanyer", "aemilialanyer"),
-    ]
+        ("name@example.com", "nameexamplecom"),
+    ],
 )
 def test_name_normalization(name, result):
     assert generate_ticket_key(order="ABC01", name=name) == f"ABC01-{result}"

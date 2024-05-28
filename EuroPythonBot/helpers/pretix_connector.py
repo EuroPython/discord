@@ -5,8 +5,7 @@ import logging
 import os
 import string
 import time
-import unicodedata
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from http import HTTPStatus
 from pathlib import Path
 
@@ -32,7 +31,7 @@ def sanitize_username(username: str) -> str:
     username = "".join(c for c in username if not c.isspace())  # "A b" -> "a b"
     username = "".join(c for c in username if c not in string.punctuation)  # "a'b c-d" -> "abcd"
 
-    return username.replace(" ", "").lower()
+    return username
 
 
 def generate_ticket_key(*, order: str, name: str) -> str:
@@ -51,7 +50,7 @@ class PretixConnector:
 
         self.fetch_lock = asyncio.Lock()
 
-        self.items_by_id: dict[int, PretixItem | PretixItemVariation] | None = None
+        self.items_by_id: dict[int, PretixItem | PretixItemVariation] = {}
         self.ticket_types_by_key: dict[str, str] = {}
         self.last_fetch: datetime | None = None
 
@@ -77,22 +76,29 @@ class PretixConnector:
         # if called during an ongoing fetch, the caller waits until the fetch is done...
         async with self.fetch_lock:
             # ... but does not trigger a second fetch
-            if self.last_fetch and datetime.now() - self.last_fetch < timedelta(minutes=15):
+            now = datetime.now(tz=timezone.utc)
+            if self.last_fetch and now - self.last_fetch < timedelta(minutes=5):
                 return
 
-            _logger.info("Fetching items from pretix")
-            self.items_by_id = await self._fetch_pretix_items()
+            self.last_fetch = now
+            await self._fetch_pretix_items()
+            await self._fetch_pretix_orders()
 
-            _logger.info("Fetching orders from pretix")
-            self.ticket_types_by_key = await self._fetch_pretix_orders()
+    async def _fetch_pretix_orders(self) -> None:
+        # initially fetch all orders, then only fetch updates
+        params = {"testmode": "false"}
+        if len(self.ticket_types_by_key) == 0:
+            _logger.info("Fetching all pretix orders")
+        else:
+            _logger.info("Fetching pretix orders since %s", self.last_fetch)
+            params["last_modified"] = self.last_fetch.isoformat()
 
-            self.last_fetch = datetime.now()
-
-    async def _fetch_pretix_orders(self) -> dict[str, str]:
-        orders_as_json = await self._fetch_all_pages(f"{self.config.PRETIX_BASE_URL}/orders")
+        orders_as_json = await self._fetch_all_pages(
+            f"{self.config.PRETIX_BASE_URL}/orders",
+            params=params,
+        )
         orders = [PretixOrder(**order_as_json) for order_as_json in orders_as_json]
 
-        ticket_types_by_key = {}
         for order in orders:
             if not order.is_paid:
                 continue
@@ -106,23 +112,19 @@ class PretixConnector:
                     continue
 
                 order_key = generate_ticket_key(order=order.id, name=position.attendee_name)
-                ticket_types_by_key[order_key] = item_name
-        return ticket_types_by_key
+                self.ticket_types_by_key[order_key] = item_name
 
-    async def _fetch_pretix_items(self) -> dict[int, PretixItem | PretixItemVariation]:
+    async def _fetch_pretix_items(self) -> None:
         """Fetch all items from the Pretix API."""
         items_as_json = await self._fetch_all_pages(f"{self.config.PRETIX_BASE_URL}/items")
 
-        items_by_id = {}
         for item_as_json in items_as_json:
             item = PretixItem(**item_as_json)
-            items_by_id[item.id] = item
+            self.items_by_id[item.id] = item
             for variation in item.variations:
-                items_by_id[variation.id] = variation
+                self.items_by_id[variation.id] = variation
 
-        return items_by_id
-
-    async def _fetch_all_pages(self, url: str) -> list[dict]:
+    async def _fetch_all_pages(self, url: str, params: dict[str, str] | None = None) -> list[dict]:
         """Fetch all pages from a paginated Pretix API endpoint."""
         # https://docs.pretix.eu/en/latest/api/fundamentals.html#pagination
         results = []
@@ -133,7 +135,13 @@ class PretixConnector:
             next_url: str | None = url
             while next_url is not None:
                 _logger.debug("Fetching %s", url)
-                async with session.get(next_url, headers=self.http_headers) as response:
+
+                if next_url != url:
+                    params = None  # only send params on initial request
+
+                async with session.get(
+                    next_url, headers=self.http_headers, params=params
+                ) as response:
                     if response.status != HTTPStatus.OK:
                         response.raise_for_status()
 
