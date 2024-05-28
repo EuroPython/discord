@@ -92,7 +92,7 @@ class PretixConnector:
             _logger.info("Fetching all pretix orders")
         else:
             _logger.info("Fetching pretix orders since %s", self.last_fetch)
-            params["last_modified"] = self.last_fetch.isoformat()
+            params["modified_since"] = self.last_fetch.isoformat()
 
         orders_as_json = await self._fetch_all_pages(
             f"{self.config.PRETIX_BASE_URL}/orders",
@@ -130,7 +130,7 @@ class PretixConnector:
         # https://docs.pretix.eu/en/latest/api/fundamentals.html#pagination
         results = []
 
-        _logger.debug("Fetching all pages from %s", url)
+        _logger.debug("Fetching all pages from %s (params: %r)", url, params)
         start = time.perf_counter()
         async with aiohttp.ClientSession() as session:
             next_url: str | None = url
