@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import logging
 import os
 import time
@@ -77,6 +78,8 @@ class PretixConnector:
         self.pretix_api_token = os.getenv("PRETIX_TOKEN")
         self.http_headers = {"Authorization": f"Token {self.pretix_api_token}"}
 
+        self.fetch_lock = asyncio.Lock()
+
         self.items_by_id: dict[int, PretixItem | PretixItemVariation] | None = None
         self.ticket_types_by_key: dict[str, str] = {}
         self.last_fetch: datetime | None = None
@@ -100,14 +103,19 @@ class PretixConnector:
 
     async def fetch_pretix_data(self) -> None:
         """Fetch order and item data from the Pretix API and cache it."""
+        # if called during an ongoing fetch, the caller waits until the fetch is done...
+        async with self.fetch_lock:
+            # ... but does not trigger a second fetch
+            if self.last_fetch is not None and datetime.now() - self.last_fetch < timedelta(minutes=15):
+                return
 
-        _logger.info("Fetching items from pretix")
-        self.items_by_id = await self._fetch_pretix_items()
+            _logger.info("Fetching items from pretix")
+            self.items_by_id = await self._fetch_pretix_items()
 
-        _logger.info("Fetching orders from pretix")
-        self.ticket_types_by_key = await self._fetch_pretix_orders()
+            _logger.info("Fetching orders from pretix")
+            self.ticket_types_by_key = await self._fetch_pretix_orders()
 
-        self.last_fetch = datetime.now()
+            self.last_fetch = datetime.now()
 
     async def _fetch_pretix_orders(self) -> dict[str, str]:
         orders_as_json = await self._fetch_all_pages(f"{self.config.PRETIX_BASE_URL}/orders")
@@ -178,8 +186,7 @@ class PretixConnector:
             raise AlreadyRegisteredError(f"Ticket already registered: {key=}")
 
         if key not in self.ticket_types_by_key:
-            if datetime.now() - self.last_fetch < timedelta(minutes=15):
-                await self.fetch_pretix_data()
+            await self.fetch_pretix_data()
 
         if key in self.ticket_types_by_key:
             return self.ticket_types_by_key[key]
