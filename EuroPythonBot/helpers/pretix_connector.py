@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import itertools
 import logging
 import os
 import string
@@ -159,13 +160,18 @@ class PretixConnector:
     async def _get_ticket_type(self, *, order: str, name: str) -> str:
         """Get a given ticket holder's ticket type."""
 
-        key = generate_ticket_key(order=order, name=name)
+        # try different name orders (e.g. family name first vs last)
+        name_parts = name.split(maxsplit=5)
+        for permutation in itertools.permutations(name_parts):
+            possible_name = " ".join(permutation)
 
-        if key in self.registered_users:
-            raise AlreadyRegisteredError(f"Ticket already registered: {key=}")
+            key = generate_ticket_key(order=order, name=possible_name)
 
-        if key in self.ticket_types_by_key:
-            return self.ticket_types_by_key[key]
+            if key in self.registered_users:
+                raise AlreadyRegisteredError(f"Ticket already registered: {key=}")
+
+            if key in self.ticket_types_by_key:
+                return self.ticket_types_by_key[key]
 
         raise NotFoundError(f"No ticket found: {order=}, {name=}")
 

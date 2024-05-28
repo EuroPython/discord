@@ -10,11 +10,6 @@ from helpers.pretix_connector import PretixConnector, generate_ticket_key
 config = Config()
 
 
-@pytest.fixture()
-def pretix_connector() -> PretixConnector:
-    return PretixConnector()
-
-
 async def items(request):
     with open(Path(__file__).parent / "mock_pretix_items.json") as json_file:
         mock_response = json.load(json_file)
@@ -28,7 +23,7 @@ async def orders(request):
 
 
 @pytest.mark.asyncio
-async def test_get_pretix_orders_data(aiohttp_client, monkeypatch, pretix_connector):
+async def test_get_pretix_orders_data(aiohttp_client, monkeypatch):
     expected_response = {
         "90LKW-dogtbd": "Personal",
         "90LKW-cattbd": "Remote Ticket",
@@ -54,13 +49,15 @@ async def test_get_pretix_orders_data(aiohttp_client, monkeypatch, pretix_connec
     # Replace the actual PRETIX_BASE_URL with the mock server URL
     monkeypatch.setattr(config, "PRETIX_BASE_URL", str(client.make_url("")))
 
+    pretix_connector = PretixConnector()
+
     await pretix_connector.fetch_pretix_data()
 
     assert expected_response == pretix_connector.ticket_types_by_key
 
 
 @pytest.mark.asyncio
-async def test_get_roles(aiohttp_client, monkeypatch, pretix_connector):
+async def test_get_roles(aiohttp_client, monkeypatch):
     test_data = [
         (
             "TODOG GODOT",
@@ -128,6 +125,8 @@ async def test_get_roles(aiohttp_client, monkeypatch, pretix_connector):
     # Replace the actual PRETIX_BASE_URL with the mock server URL
     monkeypatch.setattr(config, "PRETIX_BASE_URL", str(client.make_url("")))
 
+    pretix_connector = PretixConnector()
+
     await pretix_connector.fetch_pretix_data()
 
     for name, order, role_ids in test_data:
@@ -147,3 +146,20 @@ async def test_get_roles(aiohttp_client, monkeypatch, pretix_connector):
 )
 def test_name_normalization(name, result):
     assert generate_ticket_key(order="ABC01", name=name) == f"ABC01-{result}"
+
+
+@pytest.mark.parametrize(
+    ("name_in_pretix", "name"),
+    [
+        ("Jane Doe", "Jane Doe"),
+        ("Ki-moon Ban", "Ban Ki-moon"),
+    ]
+)
+async def test_name_permutations(name_in_pretix, name):
+    pretix_connector = PretixConnector()
+
+    key = generate_ticket_key(order="ABC01", name=name_in_pretix)
+    pretix_connector.ticket_types_by_key[key] = "Business"
+
+    roles = await pretix_connector.get_roles(order="ABC01", name=name)
+    assert len(roles) > 0
