@@ -143,4 +143,6 @@ class Registration(commands.Cog):
 
     @tasks.loop(minutes=5)
     async def fetch_pretix_updates(self):
+        _logger.info("Starting the periodic pretix update...")
         await pretix_connector.fetch_pretix_data()
+        _logger.info("Finished the periodic pretix update.")
