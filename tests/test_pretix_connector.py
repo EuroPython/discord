@@ -5,7 +5,7 @@ import pytest
 from aiohttp import web
 
 from configuration import Config
-from helpers.pretix_connector import PretixConnector
+from helpers.pretix_connector import PretixConnector, generate_ticket_key
 
 config = Config()
 
@@ -133,3 +133,15 @@ async def test_get_roles(aiohttp_client, monkeypatch, pretix_connector):
     for name, order, role_ids in test_data:
         roles = await pretix_connector.get_roles(name=name, order=order)
         assert roles == role_ids
+
+
+@pytest.mark.parametrize(
+    ("name", "result"),
+    [
+        ("Karel Čapek", "karelcapek"),
+        ("Shin Kyung-sook", "shinkyungsook"),
+        ("Ch'oe Yun", "choeyun"),
+    ]
+)
+def test_name_normalization(name, result):
+    assert generate_ticket_key(order="ABC01", name=name) == f"ABC01-{result}"

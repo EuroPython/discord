@@ -3,7 +3,9 @@ from __future__ import annotations
 import asyncio
 import logging
 import os
+import string
 import time
+import unicodedata
 from datetime import datetime, timedelta
 from http import HTTPStatus
 from pathlib import Path
@@ -21,6 +23,16 @@ _logger = logging.getLogger(f"bot.{__name__}")
 
 def sanitize_username(username: str) -> str:
     """Process the name to make it more uniform."""
+    # remove accents etc.
+    # code from: https://stackoverflow.com/a/517974
+    # further information on unicode normalization: https://www.unicode.org/reports/tr15/
+    username = unicodedata.normalize("NFKD", username)  # "á" -> "a´"
+    username = "".join(c for c in username if not unicodedata.combining(c))  # "a´" -> "a"
+
+    # convert to lowercase, remove spaces and punctuation
+    username = username.lower()  # 'A' -> 'a'
+    username = "".join(c for c in username if c.isspace() or c in string.punctuation)  # "a'b c-d" -> "abcd"
+
     return username.replace(" ", "").lower()
 
 
