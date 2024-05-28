@@ -15,6 +15,7 @@ python-dotenv = "*"
 toml = "*"
 yarl = "*"
 pydantic = "*"
+unidecode = "*"
 
 [dev-packages]
 ansible = "*"

@@ -141,6 +141,7 @@ async def test_get_roles(aiohttp_client, monkeypatch, pretix_connector):
         ("Karel Čapek", "karelcapek"),
         ("Shin Kyung-sook", "shinkyungsook"),
         ("Ch'oe Yun", "choeyun"),
+        ("Æmilia Lanyer", "aemilialanyer"),
     ]
 )
 def test_name_normalization(name, result):

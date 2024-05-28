@@ -13,6 +13,7 @@ from pathlib import Path
 import aiofiles
 import aiohttp
 from dotenv import load_dotenv
+from unidecode import unidecode
 
 from configuration import Config
 from error import AlreadyRegisteredError, NotFoundError
@@ -24,14 +25,12 @@ _logger = logging.getLogger(f"bot.{__name__}")
 def sanitize_username(username: str) -> str:
     """Process the name to make it more uniform."""
     # remove accents etc.
-    # code from: https://stackoverflow.com/a/517974
-    # further information on unicode normalization: https://www.unicode.org/reports/tr15/
-    username = unicodedata.normalize("NFKD", username)  # "á" -> "a´"
-    username = "".join(c for c in username if not unicodedata.combining(c))  # "a´" -> "a"
+    username = unidecode(username)
 
     # convert to lowercase, remove spaces and punctuation
-    username = username.lower()  # 'A' -> 'a'
-    username = "".join(c for c in username if c.isspace() or c in string.punctuation)  # "a'b c-d" -> "abcd"
+    username = username.lower()  # "A" -> "a"
+    username = "".join(c for c in username if not c.isspace())  # "A b" -> "a b"
+    username = "".join(c for c in username if c not in string.punctuation)  # "a'b c-d" -> "abcd"
 
     return username.replace(" ", "").lower()
 
