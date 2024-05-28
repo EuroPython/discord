@@ -141,6 +141,11 @@ class Registration(commands.Cog):
 
         await reg_channel.send(embed=embed, view=view)
 
+    async def cog_load(self) -> None:
+        """Load the initial schedule."""
+        _logger.info("Scheduling periodic pretix update task.")
+        self.fetch_pretix_updates.start()
+
     @tasks.loop(minutes=5)
     async def fetch_pretix_updates(self):
         _logger.info("Starting the periodic pretix update...")
