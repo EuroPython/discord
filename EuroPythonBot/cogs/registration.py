@@ -146,6 +146,11 @@ class Registration(commands.Cog):
         _logger.info("Scheduling periodic pretix update task.")
         self.fetch_pretix_updates.start()
 
+    async def cog_unload(self) -> None:
+        """Load the initial schedule."""
+        _logger.info("Scheduling periodic pretix update task.")
+        self.fetch_pretix_updates.cancel()
+
     @tasks.loop(minutes=5)
     async def fetch_pretix_updates(self):
         _logger.info("Starting the periodic pretix update...")
