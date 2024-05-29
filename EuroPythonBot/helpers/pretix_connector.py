@@ -81,9 +81,9 @@ class PretixConnector:
             if self.last_fetch and now - self.last_fetch < timedelta(minutes=2):
                 return
 
-            self.last_fetch = now
             await self._fetch_pretix_items()
             await self._fetch_pretix_orders()
+            self.last_fetch = now
 
     async def _fetch_pretix_orders(self) -> None:
         # initially fetch all orders, then only fetch updates
