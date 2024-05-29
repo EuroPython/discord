@@ -157,5 +157,5 @@ class Registration(commands.Cog):
         try:
             await pretix_connector.fetch_pretix_data()
             _logger.info("Finished the periodic pretix update.")
-        except Exception as e:
+        except Exception:
             _logger.exception("Periodic pretix update failed")
