@@ -148,9 +148,10 @@ class PretixConnector:
 
                     data = await response.json()
 
-                results += data["results"]
+                page_results = data["results"]
+                results += page_results
                 next_url = data["next"]
-                _logger.debug("Found %d items", data["count"])
+                _logger.debug("Found %d items", len(page_results))
 
             _logger.info(
                 "Fetched %d results in %.3f seconds", len(results), time.perf_counter() - start

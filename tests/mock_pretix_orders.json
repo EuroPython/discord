@@ -1,5 +1,4 @@
 {
-    "count": 15,
     "next": null,
     "previous": null,
     "results": [
@@ -7,69 +6,33 @@
             "code": "BR7UH",
             "status": "e",
             "positions": [
-                {
-                    "order": "BR7UH",
-                    "item": 339041,
-                    "attendee_name": "TBD TBD"
-                },
-                {
-                    "order": "BR7UH",
-                    "item": 339041,
-                    "attendee_name": "TBD TBD"
-                },
-                {
-                    "order": "BR7UH",
-                    "item": 339041,
-                    "attendee_name": "TBD TBD"
-                }
+                {"order": "BR7UH", "item": 339041, "attendee_name": "TBD TBD"},
+                {"order": "BR7UH", "item": 339041, "attendee_name": "TBD TBD"},
+                {"order": "BR7UH", "item": 339041, "attendee_name": "TBD TBD"}
             ]
         },
         {
             "code": "PFZBT",
             "status": "e",
             "positions": [
-                {
-                    "order": "PFZBT",
-                    "item": 339041,
-                    "attendee_name": "TBD TBD"
-                }
+                {"order": "PFZBT", "item": 339041, "attendee_name": "TBD TBD"}
             ]
         },
         {
             "code": "VEC9Q",
             "status": "e",
             "positions": [
-                {
-                    "order": "VEC9Q",
-                    "item": 339041,
-                    "attendee_name": "TBD TBD"
-                }
+                {"order": "VEC9Q", "item": 339041, "attendee_name": "TBD TBD"}
             ]
         },
         {
             "code": "WZPMF",
             "status": "e",
             "positions": [
-                {
-                    "order": "WZPMF",
-                    "item": 339041,
-                    "attendee_name": "TBD TBD"
-                },
-                {
-                    "order": "WZPMF",
-                    "item": 339041,
-                    "attendee_name": "TBD TBD"
-                },
-                {
-                    "order": "WZPMF",
-                    "item": 339041,
-                    "attendee_name": "TBD TBD"
-                },
-                {
-                    "order": "WZPMF",
-                    "item": 339041,
-                    "attendee_name": "TBD TBD"
-                },
+                {"order": "WZPMF", "item": 339041, "attendee_name": "TBD TBD"},
+                {"order": "WZPMF", "item": 339041, "attendee_name": "TBD TBD"},
+                {"order": "WZPMF", "item": 339041, "attendee_name": "TBD TBD"},
+                {"order": "WZPMF", "item": 339041, "attendee_name": "TBD TBD"},
                 {
                     "order": "WZPMF",
                     "item": 339041,
@@ -81,22 +44,14 @@
             "code": "PKBBT",
             "status": "c",
             "positions": [
-                {
-                    "order": "PKBBT",
-                    "item": 339041,
-                    "attendee_name": "TBD TBD"
-                }
+                {"order": "PKBBT", "item": 339041, "attendee_name": "TBD TBD"}
             ]
         },
         {
             "code": "RCZN9",
             "status": "p",
             "positions": [
-                {
-                    "order": "RCZN9",
-                    "item": 339045,
-                    "attendee_name": "TODOG GODOT"
-                }
+                {"order": "RCZN9", "item": 339045, "attendee_name": "TODOG GODOT"}
             ]
         },
         {
@@ -108,113 +63,41 @@
             "code": "M09CT",
             "status": "p",
             "positions": [
-                {
-                    "order": "M09CT",
-                    "item": 339041,
-                    "attendee_name": "order 6 dog"
-                },
-                {
-                    "order": "M09CT",
-                    "item": 339041,
-                    "attendee_name": "order 2 dog"
-                },
-                {
-                    "order": "M09CT",
-                    "item": 339041,
-                    "attendee_name": "order 3 dog"
-                },
-                {
-                    "order": "M09CT",
-                    "item": 339041,
-                    "attendee_name": "order 4 dog"
-                },
-                {
-                    "order": "M09CT",
-                    "item": 339041,
-                    "attendee_name": "order 5 dog"
-                }
+                {"order": "M09CT", "item": 339041, "attendee_name": "order 6 dog"},
+                {"order": "M09CT", "item": 339041, "attendee_name": "order 2 dog"},
+                {"order": "M09CT", "item": 339041, "attendee_name": "order 3 dog"},
+                {"order": "M09CT", "item": 339041, "attendee_name": "order 4 dog"},
+                {"order": "M09CT", "item": 339041, "attendee_name": "order 5 dog"}
             ]
         },
         {
             "code": "N0XE9",
             "status": "p",
             "positions": [
-                {
-                    "order": "N0XE9",
-                    "item": 355520,
-                    "attendee_name": "thepetk@gmail.com thepetk@gmail.com"
-                }
+                {"order": "N0XE9", "item": 355520, "attendee_name": "thepetk@gmail.com thepetk@gmail.com"}
             ]
         },
         {
             "code": "F0MDL",
             "status": "e",
             "positions": [
-                {
-                    "order": "F0MDL",
-                    "item": 339041,
-                    "attendee_name": "a b"
-                },
+                {"order": "F0MDL", "item": 339041, "attendee_name": "a b"},
                 {
                     "order": "F0MDL",
                     "item": 339040,
                     "attendee_name": null
                 },
-                {
-                    "order": "F0MDL",
-                    "item": 339041,
-                    "attendee_name": "s v"
-                },
-                {
-                    "order": "F0MDL",
-                    "item": 339041,
-                    "attendee_name": "c c"
-                },
-                {
-                    "order": "F0MDL",
-                    "item": 339041,
-                    "attendee_name": "w w"
-                },
-                {
-                    "order": "F0MDL",
-                    "item": 339041,
-                    "attendee_name": "w w"
-                },
-                {
-                    "order": "F0MDL",
-                    "item": 339041,
-                    "attendee_name": "z z"
-                },
-                {
-                    "order": "F0MDL",
-                    "item": 339041,
-                    "attendee_name": "w w"
-                },
-                {
-                    "order": "F0MDL",
-                    "item": 339041,
-                    "attendee_name": "l h"
-                },
-                {
-                    "order": "F0MDL",
-                    "item": 355520,
-                    "attendee_name": "l h"
-                },
-                {
-                    "order": "F0MDL",
-                    "item": 355520,
-                    "attendee_name": "l h"
-                },
-                {
-                    "order": "F0MDL",
-                    "item": 355520,
-                    "attendee_name": "l h"
-                },
-                {
-                    "order": "F0MDL",
-                    "item": 355520,
-                    "attendee_name": "l h"
-                },
+                {"order": "F0MDL", "item": 339041, "attendee_name": "s v"},
+                {"order": "F0MDL", "item": 339041, "attendee_name": "c c"},
+                {"order": "F0MDL", "item": 339041, "attendee_name": "w w"},
+                {"order": "F0MDL", "item": 339041, "attendee_name": "w w"},
+                {"order": "F0MDL", "item": 339041, "attendee_name": "z z"},
+                {"order": "F0MDL", "item": 339041, "attendee_name": "w w"},
+                {"order": "F0MDL", "item": 339041, "attendee_name": "l h"},
+                {"order": "F0MDL", "item": 355520, "attendee_name": "l h"},
+                {"order": "F0MDL", "item": 355520, "attendee_name": "l h"},
+                {"order": "F0MDL", "item": 355520, "attendee_name": "l h"},
+                {"order": "F0MDL", "item": 355520, "attendee_name": "l h"},
                 {
                     "order": "F0MDL",
                     "item": 355527,
@@ -226,43 +109,23 @@
             "code": "90LKW",
             "status": "p",
             "positions": [
-                {
-                    "order": "90LKW",
-                    "item": 339041,
-                    "attendee_name": "TBD TBD"
-                },
-                {
-                    "order": "90LKW",
-                    "item": 339042,
-                    "attendee_name": "Dog TBD"
-                },
-                {
-                    "order": "90LKW",
-                    "item": 355520,
-                    "attendee_name": "cat TBD"
-                }
+                {"order": "90LKW", "item": 339041, "attendee_name": "TBD TBD"},
+                {"order": "90LKW", "item": 339042, "attendee_name": "Dog TBD"},
+                {"order": "90LKW", "item": 355520, "attendee_name": "cat TBD"}
             ]
         },
         {
             "code": "Q0Z39",
             "status": "e",
             "positions": [
-                {
-                    "order": "Q0Z39",
-                    "item": 339041,
-                    "attendee_name": "Name Family Name"
-                }
+                {"order": "Q0Z39", "item": 339041, "attendee_name": "Name Family Name"}
             ]
         },
         {
             "code": "30QNE",
             "status": "p",
             "positions": [
-                {
-                    "order": "30QNE",
-                    "item": 339045,
-                    "attendee_name": "TODOG Talks No EMu"
-                },
+                {"order": "30QNE", "item": 339045, "attendee_name": "TODOG Talks No EMu"},
                 {
                     "order": "30QNE",
                     "item": 339039,
@@ -279,22 +142,14 @@
             "code": "C0MV7",
             "status": "p",
             "positions": [
-                {
-                    "order": "C0MV7",
-                    "item": 339041,
-                    "attendee_name": "Raquel Individual"
-                }
+                {"order": "C0MV7", "item": 339041, "attendee_name": "Raquel Individual"}
             ]
         },
         {
             "code": "G0CFM",
             "status": "p",
             "positions": [
-                {
-                    "order": "G0CFM",
-                    "item": 339041,
-                    "attendee_name": "Raquel Individual"
-                }
+                {"order": "G0CFM", "item": 339041, "attendee_name": "Raquel Individual"}
             ]
         }
     ]

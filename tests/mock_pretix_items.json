@@ -1,247 +1,90 @@
 {
-    "count": 12,
     "next": null,
     "previous": null,
     "results": [
         {
             "id": 339041,
-            "name": {
-                "en": "Business"
-            },
+            "name": {"en": "Business"},
             "variations": [
-                {
-                    "id": 163246,
-                    "value": {
-                        "en": "Conference"
-                    }
-                },
-                {
-                    "id": 163247,
-                    "value": {
-                        "en": "Tutorials"
-                    }
-                },
-                {
-                    "id": 163248,
-                    "value": {
-                        "en": "Combined (Conference + Tutorials)"
-                    }
-                },
-                {
-                    "id": 163249,
-                    "value": {
-                        "en": "Late Conference"
-                    }
-                },
-                {
-                    "id": 163250,
-                    "value": {
-                        "en": "Late Combined"
-                    }
-                }
+                {"id": 163246, "value": {"en": "Conference"}},
+                {"id": 163247, "value": {"en": "Tutorials"}}
             ]
         },
         {
             "id": 339042,
-            "name": {
-                "en": "Personal"
-            },
+            "name": {"en": "Personal"},
             "variations": [
-                {
-                    "id": 163251,
-                    "value": {
-                        "en": "Conference"
-                    }
-                },
-                {
-                    "id": 163252,
-                    "value": {
-                        "en": "Tutorials"
-                    }
-                },
-                {
-                    "id": 163253,
-                    "value": {
-                        "en": "Combined (Conference + Tutorials)"
-                    }
-                },
-                {
-                    "id": 163254,
-                    "value": {
-                        "en": "Late Conference"
-                    }
-                },
-                {
-                    "id": 163255,
-                    "value": {
-                        "en": "Late Combined"
-                    }
-                }
+                {"id": 163253, "value": {"en": "Combined (Conference + Tutorials)"}}
             ]
         },
         {
             "id": 339043,
-            "name": {
-                "en": "Education"
-            },
+            "name": {"en": "Education"},
             "variations": [
-                {
-                    "id": 163256,
-                    "value": {
-                        "en": "Conference"
-                    }
-                },
-                {
-                    "id": 163257,
-                    "value": {
-                        "en": "Tutorials"
-                    }
-                },
-                {
-                    "id": 163258,
-                    "value": {
-                        "en": "Combined (Conference + Tutorials)"
-                    }
-                }
+                {"id": 163256, "value": {"en": "Conference"}},
+                {"id": 163257, "value": {"en": "Tutorials"}},
+                {"id": 163258, "value": {"en": "Combined (Conference + Tutorials)"}}
             ]
         },
         {
             "id": 339044,
-            "name": {
-                "en": "Community Contributors"
-            },
+            "name": {"en": "Community Contributors"},
             "variations": [
-                {
-                    "id": 163259,
-                    "value": {
-                        "en": "Volunteer"
-                    }
-                },
-                {
-                    "id": 163260,
-                    "value": {
-                        "en": "EPS Fellow"
-                    }
-                },
-                {
-                    "id": 163261,
-                    "value": {
-                        "en": "GVR - Python Core Dev"
-                    }
-                },
-                {
-                    "id": 163262,
-                    "value": {
-                        "en": "Python Community Organiser"
-                    }
-                }
+                {"id": 163259, "value": {"en": "Volunteer"}},
+                {"id": 163260, "value": {"en": "EPS Fellow"}},
+                {"id": 163261, "value": {"en": "GVR - Python Core Dev"}},
+                {"id": 163262, "value": {"en": "Python Community Organiser"}}
             ]
         },
         {
             "id": 339039,
-            "name": {
-                "en": "Childcare (Free)"
-            },
+            "name": {"en": "Childcare (Free)"},
             "variations": []
         },
         {
             "id": 339045,
-            "name": {
-                "en": "Presenter"
-            },
+            "name": {"en": "Presenter"},
             "variations": [
-                {
-                    "id": 163263,
-                    "value": {
-                        "en": "Speaker"
-                    }
-                },
-                {
-                    "id": 163264,
-                    "value": {
-                        "en": "Tutorial & Workshop Presenter"
-                    }
-                },
-                {
-                    "id": 163265,
-                    "value": {
-                        "en": "Keynote Presenter"
-                    }
-                }
+                {"id": 163263, "value": {"en": "Speaker"}},
+                {"id": 163264, "value": {"en": "Tutorial & Workshop Presenter"}},
+                {"id": 163265, "value": {"en": "Keynote Presenter"}}
             ]
         },
         {
             "id": 339040,
-            "name": {
-                "en": "T-shirt (free)"
-            },
+            "name": {"en": "T-shirt (free)"},
             "variations": []
         },
         {
             "id": 339046,
-            "name": {
-                "en": "Grant ticket"
-            },
+            "name": {"en": "Grant ticket"},
             "variations": []
         },
         {
             "id": 339056,
-            "name": {
-                "en": "Sponsor Conference Ticket"
-            },
+            "name": {"en": "Sponsor Conference Ticket"},
             "variations": [
-                {
-                    "id": 163266,
-                    "value": {
-                        "en": "Sponsor Complimentary Conference Pass"
-                    }
-                },
-                {
-                    "id": 163267,
-                    "value": {
-                        "en": "Sponsor Conference Pass with Discount"
-                    }
-                }
+                {"id": 163266, "value": {"en": "Sponsor Complimentary Conference Pass"}},
+                {"id": 163267, "value": {"en": "Sponsor Conference Pass with Discount"}}
             ]
         },
         {
             "id": 355520,
-            "name": {
-                "en": "Remote Ticket"
-            },
+            "name": {"en": "Remote Ticket"},
             "variations": [
-                {
-                    "id": 181957,
-                    "value": {
-                        "en": "Business Remote"
-                    }
-                },
-                {
-                    "id": 181958,
-                    "value": {
-                        "en": "Personal Remote"
-                    }
-                },
-                {
-                    "id": 181959,
-                    "value": {
-                        "en": "Livestream Only"
-                    }
-                }
+                {"id": 181957, "value": {"en": "Business Remote"}},
+                {"id": 181958, "value": {"en": "Personal Remote"}},
+                {"id": 181959, "value": {"en": "Livestream Only"}}
             ]
         },
         {
             "id": 355521,
-            "name": {
-                "en": "Remote Grant ticket"
-            },
+            "name": {"en": "Remote Grant ticket"},
             "variations": []
         },
         {
             "id": 355527,
-            "name": {
-                "en": "Livestream Only"
-            },
+            "name": {"en": "Livestream Only"},
             "variations": []
         }
     ]
