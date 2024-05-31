@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+import aiohttp
 import pytest
 from aiohttp import web
 from aiohttp.test_utils import TestClient, TestServer
@@ -23,8 +24,6 @@ PRETIX_API_TOKEN = "MY_PRETIX_API_TOKEN"
 class PretixMock:
     base_url: str
     requests: list[Request]
-    client: TestClient
-    server: TestServer
 
 
 async def create_pretix_app_mock(
@@ -61,9 +60,7 @@ async def create_pretix_app_mock(
     server = TestServer(app, port=port)
     client = await aiohttp_client(server)  # start server
 
-    return PretixMock(
-        base_url=str(client.make_url("")), requests=requests, client=client, server=server
-    )
+    return PretixMock(base_url=str(client.make_url("")), requests=requests)
 
 
 @pytest.fixture()
@@ -254,3 +251,22 @@ async def test_consecutive_fetches_after_some_time_fetch_updates(pretix_mock):
     assert requests[0].url.path == "/items"
     assert requests[1].url.path == "/orders"
     assert datetime.fromisoformat(requests[1].url.query["modified_since"]) == three_minutes_before
+
+
+@pytest.mark.asyncio
+async def test_api_error_responses_are_raised(aiohttp_client, unused_tcp_port_factory):
+    pretix_mock = await create_pretix_app_mock(
+        response_factories={
+            "/items": lambda: web.json_response({"error": "Crash"}, status=500),
+            "/orders": lambda: web.json_response(json.loads(mock_orders_file.read_text())),
+        },
+        aiohttp_client=aiohttp_client,
+        unused_tcp_port_factory=unused_tcp_port_factory,
+    )
+
+    pretix_connector = PretixConnector(url=pretix_mock.base_url, token=PRETIX_API_TOKEN)
+
+    with pytest.raises(aiohttp.ClientResponseError) as e:
+        await pretix_connector.fetch_pretix_data()
+
+    assert e.value.code == 500
