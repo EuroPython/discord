@@ -39,5 +39,5 @@ class PretixOrderPosition(pydantic.BaseModel):
 
     # https://docs.pretix.eu/en/latest/api/resources/orders.html#order-position-resource
     order_id: str = pydantic.Field(alias="order")
-    attendee_name: str | None
     item_id: int = pydantic.Field(alias="item")
+    attendee_name: str | None
