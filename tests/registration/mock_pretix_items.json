@@ -1,0 +1,20 @@
+{
+    "next": null,
+    "results": [
+        {
+            "id": 339041,
+            "name": {"en": "Business"},
+            "variations": [
+                {"id": 163246, "value": {"en": "Conference"}},
+                {"id": 163247, "value": {"en": "Tutorials"}}
+            ]
+        },
+        {
+            "id": 339042,
+            "name": {"en": "Personal"},
+            "variations": [
+                {"id": 163253, "value": {"en": "Combined (Conference + Tutorials)"}}
+            ]
+        }
+    ]
+}

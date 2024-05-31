@@ -1,0 +1,34 @@
+{
+    "next": null,
+    "results": [
+        {
+            "code": "BR7UH",
+            "status": "p",
+            "positions": [
+                {"order": "BR7UH", "item": 339041, "attendee_name": "Eva Nováková"},
+                {"order": "BR7UH", "item": 339041, "attendee_name": "Jan Novák"}
+            ]
+        },
+        {
+            "code": "PFZBT",
+            "status": "e",
+            "positions": [
+                {"order": "PFZBT", "item": 163253, "attendee_name": "Erika Mustermann"}
+            ]
+        },
+        {
+            "code": "PKBBT",
+            "status": "c",
+            "positions": [
+                {"order": "PKBBT", "item": 163247, "attendee_name": "Jane Doe"}
+            ]
+        },
+        {
+            "code": "RCZN9",
+            "status": "p",
+            "positions": [
+                {"order": "RCZN9", "item": 339042, "attendee_name": "Maija Meikäläinen"}
+            ]
+        }
+    ]
+}

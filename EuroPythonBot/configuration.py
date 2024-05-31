@@ -40,6 +40,7 @@ class Config(metaclass=Singleton):
             self.REG_CHANNEL_ID = int(config["registration"]["REG_CHANNEL_ID"])
             self.REG_HELP_CHANNEL_ID = int(config["registration"]["REG_HELP_CHANNEL_ID"])
             self.REG_LOG_CHANNEL_ID = int(config["registration"]["REG_LOG_CHANNEL_ID"])
+            self.REGISTERED_LOG_FILE = Path(config["registration"]["REGISTERED_LOG_FILE"])
 
             # Pretix
             self.PRETIX_BASE_URL = config["pretix"]["PRETIX_BASE_URL"]
