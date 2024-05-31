@@ -28,7 +28,7 @@ class PretixMock:
 
 
 async def create_pretix_app_mock(
-    handlers: dict[str, Response],
+    response_factories: dict[str, Callable[[], Response]],
     *,
     port: int | None = None,
     aiohttp_client: Callable[[TestServer], Awaitable[TestClient]],
@@ -37,7 +37,7 @@ async def create_pretix_app_mock(
     """
     Create a Pretix mock app with the provided handlers.
 
-    :param handlers: Map of url paths (e.g. '/items') to the GET response
+    :param response_factories: Map of url paths (e.g. '/items') to response factory functions
     :param port: The port to run on (default: generate random port)
     :param aiohttp_client: Test client generator (fixture from 'pytest-aiohttp')
     :param unused_tcp_port_factory: Random port generator (fixture from 'pytest-asyncio')
@@ -45,17 +45,17 @@ async def create_pretix_app_mock(
     # store all requests to allow introspection
     requests: list[Request] = []
 
-    def make_handler(response_):
+    def make_handler(response_factory):
         async def handler_(request_: Request) -> Response:
             requests.append(request_)
-            return response_
+            return response_factory()
 
         return handler_
 
     app = web.Application()
 
-    for path, response in handlers.items():
-        app.router.add_get(path, make_handler(response))
+    for path, response_factory in response_factories.items():
+        app.router.add_get(path, make_handler(response_factory))
 
     port: int = unused_tcp_port_factory() if port is None else port
     server = TestServer(app, port=port)
@@ -69,9 +69,9 @@ async def create_pretix_app_mock(
 @pytest.fixture()
 async def pretix_mock(aiohttp_client, unused_tcp_port_factory) -> PretixMock:
     return await create_pretix_app_mock(
-        handlers={
-            "/items": web.json_response(json.loads(mock_items_file.read_text())),
-            "/orders": web.json_response(json.loads(mock_orders_file.read_text())),
+        response_factories={
+            "/items": lambda: web.json_response(json.loads(mock_items_file.read_text())),
+            "/orders": lambda: web.json_response(json.loads(mock_orders_file.read_text())),
         },
         aiohttp_client=aiohttp_client,
         unused_tcp_port_factory=unused_tcp_port_factory,
@@ -165,7 +165,7 @@ async def test_pagination(aiohttp_client, unused_tcp_port_factory):
 
     pretix_mock = await create_pretix_app_mock(
         {
-            "/items": web.json_response(
+            "/items": lambda: web.json_response(
                 {
                     "next": f"{base_url}/items2",
                     "results": [
@@ -180,7 +180,7 @@ async def test_pagination(aiohttp_client, unused_tcp_port_factory):
                     ],
                 }
             ),
-            "/items2": web.json_response(
+            "/items2": lambda: web.json_response(
                 {
                     "next": None,
                     "results": [
@@ -197,7 +197,7 @@ async def test_pagination(aiohttp_client, unused_tcp_port_factory):
                     ],
                 }
             ),
-            "/orders": web.json_response(json.loads(mock_orders_file.read_text())),
+            "/orders": lambda: web.json_response(json.loads(mock_orders_file.read_text())),
         },
         port=port,
         aiohttp_client=aiohttp_client,
