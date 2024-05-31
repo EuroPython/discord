@@ -35,6 +35,7 @@ class PretixConnector:
             # ... but does not trigger a second fetch
             now = datetime.now(tz=timezone.utc)
             if self._last_fetch and now - self._last_fetch < timedelta(minutes=2):
+                _logger.info(f"Skipping pretix fetch (last fetch was at {self._last_fetch})")
                 return
 
             await self._fetch_pretix_items()
