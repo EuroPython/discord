@@ -90,8 +90,9 @@ class PretixConnector:
             while next_url is not None:
                 _logger.debug("Fetching %s", url)
 
+                # only send params on initial request
                 if next_url != url:
-                    params = None  # only send params on initial request
+                    params = None
 
                 async with session.get(next_url, params=params) as response:
                     if response.status != HTTPStatus.OK:
