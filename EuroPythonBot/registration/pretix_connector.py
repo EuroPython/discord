@@ -85,7 +85,7 @@ class PretixConnector:
 
         _logger.debug("Fetching all pages from %s (params: %r)", url, params)
         start = time.perf_counter()
-        async with aiohttp.ClientSession() as session:
+        async with aiohttp.ClientSession(headers=self._http_headers) as session:
             next_url: str | None = url
             while next_url is not None:
                 _logger.debug("Fetching %s", url)
@@ -93,9 +93,7 @@ class PretixConnector:
                 if next_url != url:
                     params = None  # only send params on initial request
 
-                async with session.get(
-                    next_url, headers=self._http_headers, params=params
-                ) as response:
+                async with session.get(next_url, params=params) as response:
                     if response.status != HTTPStatus.OK:
                         response.raise_for_status()
 
