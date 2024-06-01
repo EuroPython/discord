@@ -95,9 +95,7 @@ class PretixConnector:
                     params = None
 
                 async with session.get(next_url, params=params) as response:
-                    if response.status != HTTPStatus.OK:
-                        response.raise_for_status()
-
+                    response.raise_for_status()
                     data = await response.json()
 
                 page_results = data["results"]
