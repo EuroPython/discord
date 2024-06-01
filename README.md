@@ -29,6 +29,41 @@ Is a service to push the programme notification to Discord. Pretalx API is used 
 A set of commands that are available only for organizers that are allowing to get statistics about the Discord server.
 
 ## Setup
+### Install Python, Pipenv, Pyenv (Ubuntu)
+```shell
+# dependencies of readline, sqlite3, ctypes
+sudo apt install libreadline-dev libsqlite3-dev lzma libbz2-dev liblzma-dev
+
+# python, pip
+sudo apt install python3 python3-pip
+
+# pyenv
+curl https://pyenv.run | bash
+pyenv install 3.11.4
+
+echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+echo '[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+. ~/.bashrc
+
+# pipenv
+python3 -m pip install pipenv
+```
+
+### Clone repo, install dependencies, run tests
+```shell
+# clone repo, install dependencies
+git clone https://github.com/EuroPython/discord europython-discord/
+cd europython-discord
+
+# install dependencies
+python3 -m pipenv install --dev
+
+# run tests
+python3 -m pipenv run pytest .
+```
+
+### Configuration
 Create `config.local.toml` file in EuroPythonBot directory, it would be used instead of `config.toml` if exists.
 
 Add `.secrets` file to the root of the repository with the following content:

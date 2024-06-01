@@ -1,5 +1,6 @@
 [tool.isort]
 profile = "black"
+line_length = 100
 src_paths = ["EuroPythonBot"]
 
 [tool.black]

@@ -10,8 +10,7 @@ from dotenv import load_dotenv
 
 import configuration
 from cogs.ping import Ping
-from cogs.registration import Registration
-from helpers.pretix_connector import PretixOrder
+from registration.cog import RegistrationCog
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".secrets")
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
@@ -74,7 +73,7 @@ async def main():
     _setup_logging()
     async with bot:
         await bot.add_cog(Ping(bot))
-        await bot.add_cog(Registration(bot))
+        await bot.add_cog(RegistrationCog(bot))
         await bot.load_extension("extensions.programme_notifications")
         await bot.load_extension("extensions.organisers")
         await bot.start(DISCORD_BOT_TOKEN)
@@ -82,7 +81,7 @@ async def main():
 
 if __name__ == "__main__":
     bot = Bot()
-    orders = PretixOrder()
+
     try:
         asyncio.run(main())
     except KeyboardInterrupt:

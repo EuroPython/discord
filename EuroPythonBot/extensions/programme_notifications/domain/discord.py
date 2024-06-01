@@ -74,5 +74,5 @@ class WebhookMessage:
         default=attrs.Factory(list), validator=validators.max_len(_MAX_LEN["embeds"])
     )
     allowed_mentions: dict[str, list[str]] = attrs.field(
-        init=False, default=attrs.Factory(lambda: {"parse": []})
+        default=attrs.Factory(lambda: {"parse": []})
     )
