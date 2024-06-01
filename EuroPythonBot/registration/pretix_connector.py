@@ -81,9 +81,9 @@ class PretixConnector:
     async def _fetch_all_pages(self, url: str, params: dict[str, str] | None = None) -> list[dict]:
         """Fetch all pages from a paginated Pretix API endpoint."""
         # https://docs.pretix.eu/en/latest/api/fundamentals.html#pagination
-        results = []
-
         _logger.debug("Fetching all pages from %s (params: %r)", url, params)
+
+        results = []
         start = time.perf_counter()
         async with aiohttp.ClientSession(headers=self._http_headers) as session:
             next_url: str | None = url
@@ -99,14 +99,13 @@ class PretixConnector:
                     data = await response.json()
 
                 page_results = data["results"]
-                results += page_results
-                next_url = data["next"]
+                results.extend(page_results)
                 _logger.debug("Found %d items", len(page_results))
 
-            _logger.info(
-                "Fetched %d results in %.3f seconds", len(results), time.perf_counter() - start
-            )
-            return results
+                next_url = data["next"]
+
+        _logger.info("Fetched %d results in %.3f s", len(results), time.perf_counter() - start)
+        return results
 
     def get_ticket(self, *, order: str, name: str) -> Ticket | None:
         """Get the ticket for a given order ID and name, or None if none was found."""
