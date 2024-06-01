@@ -2,6 +2,7 @@ import json
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
+from http import HTTPStatus
 from pathlib import Path
 
 import aiohttp
@@ -257,7 +258,10 @@ async def test_consecutive_fetches_after_some_time_fetch_updates(pretix_mock):
 async def test_api_error_responses_are_raised(aiohttp_client, unused_tcp_port_factory):
     pretix_mock = await create_pretix_app_mock(
         response_factories={
-            "/items": lambda: web.json_response({"error": "Crash"}, status=500),
+            "/items": lambda: web.json_response(
+                {"error": "Crash"},
+                status=HTTPStatus.INTERNAL_SERVER_ERROR,
+            ),
             "/orders": lambda: web.json_response(json.loads(mock_orders_file.read_text())),
         },
         aiohttp_client=aiohttp_client,
@@ -269,4 +273,4 @@ async def test_api_error_responses_are_raised(aiohttp_client, unused_tcp_port_fa
     with pytest.raises(aiohttp.ClientResponseError) as e:
         await pretix_connector.fetch_pretix_data()
 
-    assert e.value.code == 500
+    assert e.value.status == HTTPStatus.INTERNAL_SERVER_ERROR
