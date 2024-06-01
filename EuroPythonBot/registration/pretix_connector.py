@@ -5,7 +5,6 @@ import itertools
 import logging
 import time
 from datetime import datetime, timedelta, timezone
-from http import HTTPStatus
 
 import aiohttp
 
