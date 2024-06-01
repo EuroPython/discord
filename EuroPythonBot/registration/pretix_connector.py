@@ -55,9 +55,9 @@ class PretixConnector:
             f"{self._pretix_api_url}/orders",
             params=params,
         )
-        orders = [PretixOrder(**order_as_json) for order_as_json in orders_as_json]
 
-        for order in orders:
+        for order_as_json in orders_as_json:
+            order = PretixOrder(**order_as_json)
             if not order.is_paid:
                 continue
 
