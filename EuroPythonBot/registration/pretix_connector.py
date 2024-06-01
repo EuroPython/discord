@@ -114,7 +114,9 @@ class PretixConnector:
     def get_ticket(self, *, order: str, name: str) -> Ticket | None:
         """Get the ticket for a given order ID and name, or None if none was found."""
         # try different name orders (e.g. family name first vs last)
-        name_parts = name.split(maxsplit=5)
+        # limit number of possible permutations to test to prevent abuse
+        max_name_components = 5
+        name_parts = name.split(maxsplit=max_name_components - 1)
         for permutation in itertools.permutations(name_parts):
             possible_name = " ".join(permutation)
 
