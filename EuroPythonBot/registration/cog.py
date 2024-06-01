@@ -160,7 +160,7 @@ class RegistrationCog(commands.Cog):
             '3️⃣ Click "Submit". We\'ll verify your ticket and assign you your roles based on '
             "your ticket type.\n\n"
             f"Experiencing trouble? Ask for help in the <#{config.REG_HELP_CHANNEL_ID}> channel "
-            "or from a volunteer in yellow t-shirt at the conference.\n\n"
+            "or from a volunteer a in yellow t-shirt at the conference.\n\n"
             "See you on the server! 🐍💻🎉"
         )
 
