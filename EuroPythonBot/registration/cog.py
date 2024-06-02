@@ -35,8 +35,8 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
     order_field = discord.ui.TextInput(
         label="Order",
         required=True,
-        min_length=4,
-        max_length=6,
+        min_length=5,
+        max_length=5,
         placeholder="5-character combination of capital letters and numbers",
     )
 

@@ -13,7 +13,7 @@ def generate_ticket_key(*, order: str, name: str) -> str:
     name = "".join(c for c in name if not c.isspace())
     name = "".join(c for c in name if c not in string.punctuation)
 
-    return f"{order}-{name}"
+    return f"{order.upper()}-{name}"
 
 
 @dataclass(frozen=True)
