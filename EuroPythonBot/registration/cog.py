@@ -150,8 +150,10 @@ class RegistrationCog(commands.Cog):
         await reg_channel.purge()
         await self.pretix_connector.fetch_pretix_data()
 
-        title = "Welcome to EuroPython 2023 on Discord! 🎉🐍"
-        description = (
+        view = discord.ui.View(timeout=None)  # timeout=None to make it persistent
+        view.add_item(RegistrationButton(parent_cog=self))
+
+        welcome_message = create_welcome_message(
             "Follow these steps to complete your registration:\n\n"
             '1️⃣ Click on the green "Register Here 👈" button.\n\n'
             '2️⃣ Fill in the "Order" (found by clicking the order URL in your confirmation '
@@ -164,13 +166,7 @@ class RegistrationCog(commands.Cog):
             "See you on the server! 🐍💻🎉"
         )
 
-        view = discord.ui.View(timeout=None)  # timeout=None to make it persistent
-        view.add_item(RegistrationButton(parent_cog=self))
-
-        orange = 0xFF8331
-        embed = discord.Embed(title=title, description=description, color=orange)
-
-        await reg_channel.send(embed=embed, view=view)
+        await reg_channel.send(embed=welcome_message, view=view)
 
     async def cog_load(self) -> None:
         """Load the initial schedule."""
@@ -179,8 +175,18 @@ class RegistrationCog(commands.Cog):
 
     async def cog_unload(self) -> None:
         """Load the initial schedule."""
-        _logger.info("Scheduling periodic pretix update task.")
+        _logger.info("Canceling periodic pretix update task.")
         self.fetch_pretix_updates.cancel()
+
+        _logger.info("Replacing registration form with 'currently offline' message")
+        reg_channel = self.bot.get_channel(config.REG_CHANNEL_ID)
+        await reg_channel.purge()
+        await reg_channel.send(
+            embed=create_welcome_message(
+                "The registration bot is currently offline. "
+                "We apologize for the inconvenience and are working hard to fix the issue."
+            )
+        )
 
     @tasks.loop(minutes=5)
     async def fetch_pretix_updates(self):
@@ -190,3 +196,12 @@ class RegistrationCog(commands.Cog):
             _logger.info("Finished the periodic pretix update.")
         except Exception:
             _logger.exception("Periodic pretix update failed")
+
+
+def create_welcome_message(body: str) -> discord.Embed:
+    orange = 0xFF8331
+    return discord.Embed(
+        title="Welcome to EuroPython 2024 on Discord! 🎉🐍",
+        description=body,
+        color=orange,
+    )
