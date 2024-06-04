@@ -2,7 +2,7 @@ FROM python:3.11.4-slim
 
 RUN groupadd --gid 1000 bot && \
     useradd --uid 1000 --gid bot bot --create-home && \
-    rm -rf /var/cache/* var/log/*
+    rm -rf /var/cache/* /var/log/*
 
 USER bot
 WORKDIR /home/bot
