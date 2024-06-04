@@ -33,20 +33,20 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         self.parent_cog = parent_cog
 
     order_field = discord.ui.TextInput(
-        label="Order",
+        label="Order ID (As on your ticket)",
         required=True,
         min_length=5,
         max_length=5,
-        placeholder="5-character combination of capital letters and numbers",
+        placeholder="e.g. 'ABC12'",
     )
 
     name_field = discord.ui.TextInput(
-        label="Full Name",
+        label="Full Name (As on your ticket)",
         required=True,
         min_length=3,
         max_length=50,
         style=discord.TextStyle.short,
-        placeholder="Your Full Name as printed on your ticket/badge",
+        placeholder="e.g. 'Jane Doe'",
     )
 
     async def on_submit(self, interaction: discord.Interaction) -> None:
@@ -145,6 +145,7 @@ class RegistrationCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
+        print("HERE!!")
         reg_channel = self.bot.get_channel(config.REG_CHANNEL_ID)
 
         await reg_channel.purge()
