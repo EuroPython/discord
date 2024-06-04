@@ -33,20 +33,20 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         self.parent_cog = parent_cog
 
     order_field = discord.ui.TextInput(
-        label="Order",
+        label="Order ID",
         required=True,
-        min_length=4,
-        max_length=6,
-        placeholder="5-character combination of capital letters and numbers",
+        min_length=5,
+        max_length=5,
+        placeholder="123AB",
     )
 
     name_field = discord.ui.TextInput(
-        label="Full Name",
+        label="Full Name (As printed on your badge)",
         required=True,
-        min_length=3,
+        min_length=1,
         max_length=50,
         style=discord.TextStyle.short,
-        placeholder="Your Full Name as printed on your ticket/badge",
+        placeholder="Jane Doe",
     )
 
     async def on_submit(self, interaction: discord.Interaction) -> None:
