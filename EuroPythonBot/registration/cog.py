@@ -184,7 +184,7 @@ class RegistrationCog(commands.Cog):
         await reg_channel.purge()
         await reg_channel.send(
             embed=create_welcome_message(
-                "The registration bot is currently offline."
+                "The registration bot is currently offline. "
                 "We are sorry for the inconvenience and are working hard on fixing the issue."
             )
         )
