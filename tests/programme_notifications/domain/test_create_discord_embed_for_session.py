@@ -8,6 +8,7 @@ As we're sending embeds to webhooks in other Discord communities, the
 Discord channel information is optional: Members of other communities
 do not have access to the room channel in the EuroPython 2023 server.
 """
+
 import arrow
 import pytest
 import yarl

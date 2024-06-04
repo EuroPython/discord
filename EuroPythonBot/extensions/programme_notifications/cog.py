@@ -1,4 +1,5 @@
 """Cog that handles programme notifications for EuroPython 2023."""
+
 import logging
 
 import aiohttp

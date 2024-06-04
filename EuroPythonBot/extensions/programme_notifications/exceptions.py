@@ -1,4 +1,5 @@
 """Exceptions raised as part of the programme notifications cog."""
+
 import attrs
 
 

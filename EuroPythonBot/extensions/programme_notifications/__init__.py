@@ -1,4 +1,5 @@
 """Programme Notifications extension for the EuroPython 2023 bot."""
+
 import functools
 import logging
 import ssl

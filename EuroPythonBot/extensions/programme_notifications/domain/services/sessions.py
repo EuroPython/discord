@@ -1,4 +1,5 @@
 """Manipulate iterables of EuroPython sessions."""
+
 import collections
 from collections.abc import Iterator
 from typing import Iterable, TypeAlias
