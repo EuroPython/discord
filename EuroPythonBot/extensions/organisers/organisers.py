@@ -1,4 +1,5 @@
 """Commands for organisers."""
+
 import logging
 
 import attrs

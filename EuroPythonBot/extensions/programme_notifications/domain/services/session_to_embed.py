@@ -1,4 +1,5 @@
 """Translate EuroPython sessions to Discord embeds."""
+
 import textwrap
 from typing import Final
 

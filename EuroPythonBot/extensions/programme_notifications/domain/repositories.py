@@ -1,4 +1,5 @@
 """A repository for EuroPython sessions."""
+
 import logging
 from collections.abc import Sized
 from typing import Protocol

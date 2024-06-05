@@ -5,6 +5,7 @@ Pretalx API and the EuroPython API. This API-client provides an
 abstraction layer in which the caller does not have to care about the
 actual endpoint that gets polled.
 """
+
 import functools
 import hashlib
 import json

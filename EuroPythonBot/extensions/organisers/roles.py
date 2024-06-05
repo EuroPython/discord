@@ -1,4 +1,5 @@
 """Data structure for role IDs."""
+
 import attrs
 
 

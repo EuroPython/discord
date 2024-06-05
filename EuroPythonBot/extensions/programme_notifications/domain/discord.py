@@ -1,4 +1,5 @@
 """Models to represent Discord objects."""
+
 from typing import Final
 
 import attrs
