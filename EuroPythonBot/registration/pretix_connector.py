@@ -93,7 +93,7 @@ class PretixConnector:
                 if next_url != url:
                     params = None
 
-                async with session.get(next_url, params=params) as response:
+                async with session.get(next_url, params=params, timeout=5) as response:
                     response.raise_for_status()
                     data = await response.json()
 
