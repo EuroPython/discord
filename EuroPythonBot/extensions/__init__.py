@@ -1,1 +1,1 @@
-"""Extensions for the EuroPython 2023 Discord bot."""
+"""Extensions for the EuroPython Discord bot."""
