@@ -1,4 +1,4 @@
-# Europython 2023 Discord Bot
+# Europython Discord Bot
 
 An easy to deploy conference bot that manages roles for attendees via registration, notifies about upcoming sessions.
 Exposes Discord server statistics to organizers.

@@ -27,7 +27,7 @@ class RegistrationButton(discord.ui.Button["Registration"]):
         await interaction.response.send_modal(RegistrationForm(parent_cog=self.parent_cog))
 
 
-class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
+class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
     def __init__(self, parent_cog: RegistrationCog):
         super().__init__()
         self.parent_cog = parent_cog
