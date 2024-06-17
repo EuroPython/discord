@@ -7,7 +7,6 @@ from program_notifications.models import Session, Speaker
 
 _AUTHOR_WIDTH: Final = 128
 _TWEET_WIDTH: Final = 200
-_TWEET_EMPTY: Final = "*This session does not have a tweet.*"
 _TITLE_WIDTH: Final = 128
 _FIELD_VALUE_EMPTY: Final = "—"
 _LEVEL_COLORS: Final = {
@@ -36,7 +35,7 @@ def create_session_embed(session: Session) -> Embed:
 
     embed = Embed(
         title=_format_title(session.title),
-        description=_create_description(session),
+        description=_create_description(session) if session.tweet else None,
         url=str(session.website_url) if session.website_url else None,
         color=_get_color(session.level),
     )
@@ -80,16 +79,14 @@ def _create_author_from_speakers(speakers: list[Speaker]) -> dict | None:
     return {"name": author_name, "icon_url": icon_url}
 
 
-def _create_description(session: Session) -> str:
+def _create_description(session: Session) -> str | None:
     """Create an embed description from the session.
 
     :param session: The session
     :return: The embed description
     """
     url = session.website_url
-    tweet = (
-        _TWEET_EMPTY if not session.tweet else textwrap.shorten(session.tweet, width=_TWEET_WIDTH)
-    )
+    tweet = textwrap.shorten(session.tweet, width=_TWEET_WIDTH)
     return f"{tweet}\n\n[Read more about this session]({url})" if url else tweet
 
 
