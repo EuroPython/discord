@@ -22,10 +22,10 @@ _logger = logging.getLogger("bot")
 
 class TimeTravel:  # TODO: Remove this once the conference starts
     simulated_start_time = {
-        "simulated_start_time": datetime(2024, 7, 10, 10, 40, tzinfo=timezone(timedelta(hours=2))),
+        "simulated_start_time": datetime(2024, 7, 10, 12, 45, tzinfo=timezone(timedelta(hours=2))),
         "real_start_time": datetime.now(tz=timezone(timedelta(hours=2))),
     }
-    time_multiplier = 30  # 1 minute in real life is 1 hour in the simulation
+    time_multiplier = 30  # progress time 30 times faster
 
 
 class Bot(commands.Bot):

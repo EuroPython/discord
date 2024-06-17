@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
 
 from discord import Client
 from discord.ext import commands, tasks
@@ -11,7 +11,6 @@ from program_notifications import session_to_embed
 from program_notifications.program_connector import ProgramConnector
 
 config = Config()
-
 _logger = logging.getLogger(f"bot.{__name__}")
 
 
@@ -72,16 +71,18 @@ class ProgramNotificationsCog(commands.Cog):
         """
         Notify the upcoming sessions to the channel
         """
-        print(room_name, channel_id)
         upcoming_sessions = await self.connector.get_upcoming_sessions_for_room(room_name)
-        for session in upcoming_sessions:
-            if session.code not in self.notified_sessions:
-                embed = session_to_embed.create_session_embed(session)
-                channel = self.bot.get_channel(int(channel_id))
+        if upcoming_sessions:
+            embeds = [session_to_embed.create_session_embed(session) for session in upcoming_sessions 
+                      if session.code not in self.notified_sessions]
+            self.notified_sessions.update(session.code for session in upcoming_sessions)
+            channel = self.bot.get_channel(int(channel_id))
+            for i in range(0, len(embeds), 10):  # Split embeds into chunks of 10
                 await channel.send(
-                    content=f"# Sessions starting in 5 minutes @ {room_name}", embed=embed
+                    content=f"# Sessions starting in 5 minutes @ {room_name}" if len(embeds) > 1 
+                            else f"# Session starting in 5 minutes @ {room_name}", 
+                    embeds=embeds[i:i+10]
                 )
-                self.notified_sessions.add(session.code)
 
     @tasks.loop(seconds=1)
     async def notify_to_all_rooms_channels(self):
@@ -89,23 +90,20 @@ class ProgramNotificationsCog(commands.Cog):
         Notify all upcoming sessions to "All Rooms" channel
         """
         upcoming_sessions = set()
-        embeds = []
         for room in config.PROGRAM_CHANNELS.values():
-            for session in await self.connector.get_upcoming_sessions_for_room(room["name"]):
-                upcoming_sessions.add(session)
+            upcoming_sessions.update(await self.connector.get_upcoming_sessions_for_room(room["name"]))
 
-        for session in upcoming_sessions:
-            if session.code not in self.notified_sessions_all_rooms:
-                embed = session_to_embed.create_session_embed(session)
-                embeds.append(embed)
-                self.notified_sessions_all_rooms.add(session.code)
+        embeds = [session_to_embed.create_session_embed(session) for session in upcoming_sessions 
+                  if session.code not in self.notified_sessions_all_rooms]
+        self.notified_sessions_all_rooms.update(session.code for session in upcoming_sessions)
         if embeds:
             channel_id = config.PROGRAM_CHANNELS["all_rooms"]["channel_id"]
             channel = self.bot.get_channel(int(channel_id))
-            await channel.send(content="# Sessions starting in 5 minutes:", embeds=embeds)
+            for i in range(0, len(embeds), 10):  # Split embeds into chunks of 10
+                await channel.send(content="# Sessions starting in 5 minutes:", embeds=embeds[i:i+10])
 
     async def purge_all_channels(self):
-        print("purging all channels")
+        _logger.info("Purging all channels...")
         for room in config.PROGRAM_CHANNELS.values():
             channel = self.bot.get_channel(int(room["channel_id"]))
             await channel.purge()
