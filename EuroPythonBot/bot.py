@@ -2,6 +2,7 @@ import asyncio
 import logging
 import os
 import sys
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import discord
@@ -10,12 +11,21 @@ from dotenv import load_dotenv
 
 import configuration
 from cogs.ping import Ping
+from program_notifications.cog import ProgramNotificationsCog
 from registration.cog import RegistrationCog
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".secrets")
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 
 _logger = logging.getLogger("bot")
+
+
+class TimeTravel:  # TODO: Remove this once the conference starts
+    simulated_start_time = {
+        "simulated_start_time": datetime(2024, 7, 10, 10, 40, tzinfo=timezone(timedelta(hours=2))),
+        "real_start_time": datetime.now(tz=timezone(timedelta(hours=2))),
+    }
+    time_multiplier = 30  # 1 minute in real life is 1 hour in the simulation
 
 
 class Bot(commands.Bot):
@@ -73,8 +83,12 @@ async def main():
     _setup_logging()
     async with bot:
         await bot.add_cog(Ping(bot))
-        await bot.add_cog(RegistrationCog(bot))
-        await bot.load_extension("extensions.programme_notifications")
+        # await bot.add_cog(RegistrationCog(bot))
+        await bot.add_cog(
+            ProgramNotificationsCog(
+                bot, TimeTravel.simulated_start_time, TimeTravel.time_multiplier
+            )
+        )
         await bot.load_extension("extensions.organisers")
         await bot.start(DISCORD_BOT_TOKEN)
 

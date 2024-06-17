@@ -35,86 +35,39 @@ PRETIX_BASE_URL = "https://pretix.eu/api/v1/organizers/europython/events/ep2023"
 [logging]
 LOG_LEVEL = "INFO"
 
-[programme_notifications]
-timezone = "Europe/Prague"
-timewarp = false
-conference_days_first = "2023-07-19"
-conference_days_last = "2023-07-21"
-pretalx_schedule_url = "https://pretalx.com/api/events/europython-2023/schedules/latest/"
-europython_session_base_url = "https://ep2023.europython.eu/session/{slug}"
-europython_api_session_url = "https://ep2023.europython.eu/api/session/{code}"
+[program_notifications]
+# UTC offset in hours (e.g. 2 for CEST)
+timezone = 2
+api_url = "https://programapi24.europython.eu/2024/schedule.json"
 
-[[programme_notifications.notification_channels]]
-webhook_id = "PYTHON_DISCORD"
-include_channel_in_embeds = false
+[program_notifications.rooms.all_rooms]
+name = "All Rooms"
+channel_id = "1234839795260330064"
 
-[[programme_notifications.notification_channels]]
-webhook_id = "PROGRAMME_NOTIFICATIONS"
-include_channel_in_embeds = true
+[program_notifications.rooms.forum_hall]
+name = "Forum Hall"
+channel_id = "1234839841116782642"
 
-[programme_notifications.rooms.2189]
-# Forum Hall
-webhook_id = "ROOM_2189"
-discord_channel_id = "1120780288755253338"
+[program_notifications.rooms.south_hall_2a]
+name = "South Hall 2A"
+channel_id = "1234839873685295175"
 
-[programme_notifications.rooms.2189.livestreams]
-# Forum Hall Livestream ULRs
-"2023-07-19" = "https://europython.eu/live/forum"
-"2023-07-20" = "https://europython.eu/live/forum"
-"2023-07-21" = "https://europython.eu/live/forum"
+[program_notifications.rooms.south_hall_2b]
+name = "South Hall 2B"
+channel_id = "1234839903968301178"
 
+[program_notifications.rooms.north_hall]
+name = "North Hall"
+channel_id = "1234839930358988840"
 
-[programme_notifications.rooms.2190]
-# South Hall 2A
-webhook_id = "ROOM_2190"
-discord_channel_id = "1120780345575477421"
+[program_notifications.rooms.terrace_2a]
+name = "Terrace 2A"
+channel_id = "1234839950764277793"
 
-[programme_notifications.rooms.2190.livestreams]
-# South Hall 2A Livestream URLs
-"2023-07-19" = "https://europython.eu/live/south-hall-2a"
-"2023-07-20" = "https://europython.eu/live/south-hall-2a"
-"2023-07-21" = "https://europython.eu/live/south-hall-2a"
+[program_notifications.rooms.terrace_2b]
+name = "Terrace 2B"
+channel_id = "1234839969369952378"
 
-[programme_notifications.rooms.2191]
-# South Hall 2B
-webhook_id = "ROOM_2191"
-discord_channel_id = "1120780371622121612"
-
-[programme_notifications.rooms.2191.livestreams]
-# South Hall 2B Livestream URLs
-"2023-07-19" = "https://europython.eu/live/south-hall-2b"
-"2023-07-20" = "https://europython.eu/live/south-hall-2b"
-"2023-07-21" = "https://europython.eu/live/south-hall-2b"
-
-[programme_notifications.rooms.2194]
-# North Hall
-webhook_id = "ROOM_2194"
-discord_channel_id = "1120780401791750315"
-
-[programme_notifications.rooms.2194.livestreams]
-# North Hall Livestream URLs
-"2023-07-19" = "https://europython.eu/live/north-hall"
-"2023-07-20" = "https://europython.eu/live/north-hall"
-"2023-07-21" = "https://europython.eu/live/north-hall"
-
-[programme_notifications.rooms.2192]
-# Terrace 2A
-webhook_id = "ROOM_2192"
-discord_channel_id = "1120780461195657387"
-
-[programme_notifications.rooms.2192.livestreams]
-# Terrace 2A Livestream URLs
-"2023-07-19" = "https://europython.eu/live/terrace-2a"
-"2023-07-20" = "https://europython.eu/live/terrace-2a"
-"2023-07-21" = "https://europython.eu/live/terrace-2a"
-
-[programme_notifications.rooms.2193]
-# Terrace 2B
-webhook_id = "ROOM_2193"
-discord_channel_id = "1120780490576777287"
-
-[programme_notifications.rooms.2193.livestreams]
-# Terrace 2B Livestream URLs
-"2023-07-19" = "https://europython.eu/live/terrace-2b"
-"2023-07-20" = "https://europython.eu/live/terrace-2b"
-"2023-07-21" = "https://europython.eu/live/terrace-2b"
+[program_notifications.rooms.exhibit_hall]
+name = "Exhibit Hall"
+channel_id = "1252295932154740746"

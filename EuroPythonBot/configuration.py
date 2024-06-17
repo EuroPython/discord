@@ -48,6 +48,14 @@ class Config(metaclass=Singleton):
                 config["ticket_to_role"], config["roles"]
             )
 
+            # Program Notifications
+            self.PROGRAM_API_URL = config["program_notifications"]["api_url"]
+            self.TIMEZONE_OFFSET = config["program_notifications"]["timezone"]
+            self.PROGRAM_CHANNELS = {
+                room: {"name": details["name"], "channel_id": details["channel_id"]}
+                for room, details in config["program_notifications"]["rooms"].items()
+            }
+
             # Logging
             self.LOG_LEVEL = config.get("logging", {}).get("LOG_LEVEL", "INFO")
 
