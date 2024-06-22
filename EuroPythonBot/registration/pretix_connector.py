@@ -38,17 +38,17 @@ class PretixConnector:
                 return
 
             await self._fetch_pretix_items()
-            await self._fetch_pretix_orders()
+            await self._fetch_pretix_orders(since=self._last_fetch)
             self._last_fetch = now
 
-    async def _fetch_pretix_orders(self) -> None:
+    async def _fetch_pretix_orders(self, since: datetime | None = None) -> None:
         # initially fetch all orders, then only fetch updates
         params = {"testmode": "false"}
-        if len(self.tickets_by_key) == 0:
+        if since is None:
             _logger.info("Fetching all pretix orders")
         else:
-            _logger.info("Fetching pretix orders since %s", self._last_fetch)
-            params["modified_since"] = self._last_fetch.isoformat()
+            _logger.info("Fetching pretix orders since %s", since)
+            params["modified_since"] = since.isoformat()
 
         orders_as_json = await self._fetch_all_pages(
             f"{self._pretix_api_url}/orders",
