@@ -5,7 +5,7 @@ from typing import Final
 import arrow
 import attrs
 import cattrs
-import toml
+import tomllib
 import yarl
 from attrs import validators
 
@@ -59,8 +59,8 @@ class NotifierConfiguration:
     @classmethod
     def from_environment(cls, config: configuration.Config) -> "NotifierConfiguration":
         """Create a NotifierConfiguration from the environment."""
-        with config.CONFIG_PATH.open("r", encoding="utf-8") as config_file:
-            notifier_config = toml.load(config_file)["programme_notifications"]
+        with config.CONFIG_PATH.open("rb") as config_file:
+            notifier_config = tomllib.load(config_file)["programme_notifications"]
 
         notifier_config["webhooks"] = {
             key.removeprefix(_WEBHOOK_ENVVAR_PREFIX): value
