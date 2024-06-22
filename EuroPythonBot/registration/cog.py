@@ -36,7 +36,7 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
         label="Order ID (As printed on your badge or ticket)",
         required=True,
         min_length=5,
-        max_length=10,
+        max_length=9,
         placeholder="Like '#123AB-1' or '123AB'",
     )
 
