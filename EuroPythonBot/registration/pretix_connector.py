@@ -69,6 +69,7 @@ class PretixConnector:
 
     async def _fetch_pretix_items(self) -> None:
         """Fetch all items from the Pretix API."""
+        _logger.info("Fetching all pretix items")
         items_as_json = await self._fetch_all_pages(f"{self._pretix_api_url}/items")
 
         for item_as_json in items_as_json:
