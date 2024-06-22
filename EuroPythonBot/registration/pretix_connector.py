@@ -112,9 +112,9 @@ class PretixConnector:
         _logger.debug("Lookup for order '%s' and name '%s'", order, name)
 
         # convert ticket ID to order ID ('#ABC01-1' -> 'ABC01')
-        order = order.upper()
         order = order.lstrip("#")
         order = order.split("-")[0]
+        order = order.upper()
 
         # try different name orders (e.g. family name first vs last)
         # prevent abuse by limiting the number of possible permutations to test
