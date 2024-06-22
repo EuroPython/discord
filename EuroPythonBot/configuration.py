@@ -1,8 +1,7 @@
 import logging
 import sys
-from pathlib import Path
-
 import tomllib
+from pathlib import Path
 
 _logger = logging.getLogger(f"bot.{__name__}")
 

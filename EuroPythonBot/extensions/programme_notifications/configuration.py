@@ -1,11 +1,11 @@
 import os
+import tomllib
 from collections.abc import Mapping
 from typing import Final
 
 import arrow
 import attrs
 import cattrs
-import tomllib
 import yarl
 from attrs import validators
 
