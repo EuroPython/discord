@@ -44,7 +44,7 @@ class PretixConnector:
     async def _fetch_pretix_orders(self, since: datetime | None = None) -> None:
         # initially fetch all orders, then only fetch updates
         params = {"testmode": "false"}
-        if since is None:
+        if since is None or not self.tickets_by_key:
             _logger.info("Fetching all pretix orders")
         else:
             _logger.info("Fetching pretix orders since %s", since)
