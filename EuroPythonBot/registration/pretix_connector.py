@@ -61,6 +61,10 @@ class PretixConnector:
                 continue
 
             for position in order.positions:
+                # skip positions without name (e.g. childcare, T-shirt)
+                if position.attendee_name is None:
+                    continue
+
                 item = self.items_by_id[position.item_id]
                 item_name = item.names_by_locale["en"]
 
