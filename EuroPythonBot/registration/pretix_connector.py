@@ -62,7 +62,7 @@ class PretixConnector:
 
             for position in order.positions:
                 # skip positions without name (e.g. childcare, T-shirt)
-                if position.attendee_name is None:
+                if not position.attendee_name:
                     continue
 
                 item = self.items_by_id[position.item_id]
