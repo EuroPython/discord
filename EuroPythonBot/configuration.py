@@ -33,9 +33,6 @@ class Config(metaclass=Singleton):
             sys.exit(-1)
 
         try:
-            # Server
-            self.GUILD = int(config["server"]["GUILD"])
-
             # Registration
             self.REG_CHANNEL_ID = int(config["registration"]["REG_CHANNEL_ID"])
             self.REG_HELP_CHANNEL_ID = int(config["registration"]["REG_HELP_CHANNEL_ID"])
