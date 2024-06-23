@@ -69,6 +69,7 @@ class PretixConnector:
 
     async def _fetch_pretix_items(self) -> None:
         """Fetch all items from the Pretix API."""
+        _logger.info("Fetching all pretix items")
         items_as_json = await self._fetch_all_pages(f"{self._pretix_api_url}/items")
 
         for item_as_json in items_as_json:
@@ -108,8 +109,15 @@ class PretixConnector:
 
     def get_ticket(self, *, order: str, name: str) -> Ticket | None:
         """Get the ticket for a given order ID and name, or None if none was found."""
+        _logger.debug("Lookup for order '%s' and name '%s'", order, name)
+
+        # convert ticket ID to order ID ('#ABC01-1' -> 'ABC01')
+        order = order.lstrip("#")
+        order = order.split("-")[0]
+        order = order.upper()
+
         # try different name orders (e.g. family name first vs last)
-        # limit number of possible permutations to test to prevent abuse
+        # prevent abuse by limiting the number of possible permutations to test
         max_name_components = 5
         name_parts = name.split(maxsplit=max_name_components - 1)
         for permutation in itertools.permutations(name_parts):

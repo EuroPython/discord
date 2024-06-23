@@ -116,6 +116,16 @@ async def test_get_ticket(pretix_mock):
     assert ticket == Ticket(order="BR7UH", name="Eva Nováková", type="Business")
 
 
+async def test_get_ticket_handles_ticket_ids(pretix_mock):
+    pretix_connector = PretixConnector(url=pretix_mock.base_url, token=PRETIX_API_TOKEN)
+
+    await pretix_connector.fetch_pretix_data()
+
+    ticket = pretix_connector.get_ticket(order="#BR7UH-3", name="Eva Nováková")
+
+    assert ticket == Ticket(order="BR7UH", name="Eva Nováková", type="Business")
+
+
 async def test_get_ticket_ignores_accents(pretix_mock):
     pretix_connector = PretixConnector(url=pretix_mock.base_url, token=PRETIX_API_TOKEN)
 
