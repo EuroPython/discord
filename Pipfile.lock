@@ -18,12 +18,12 @@
     "default": {
         "aiofiles": {
             "hashes": [
-                "sha256:19297512c647d4b27a2cf7c34caa7e405c0d60b5560618a29a9fe027b18b0107",
-                "sha256:84ec2218d8419404abcb9f0c02df3f34c6e0a68ed41072acfb1cef5cbc29051a"
+                "sha256:22a075c9e5a3810f0c2e48f3008c94d68c65d763b9b03857924c99e57355166c",
+                "sha256:b4ec55f4195e3eb5d7abd1bf7e061763e864dd4954231fb8539a0ef8bb8260e5"
             ],
             "index": "pypi",
-            "markers": "python_version >= '3.7'",
-            "version": "==23.2.1"
+            "markers": "python_version >= '3.8'",
+            "version": "==24.1.0"
         },
         "aiohttp": {
             "hashes": [
