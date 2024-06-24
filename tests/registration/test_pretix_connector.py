@@ -166,6 +166,40 @@ async def test_get_ticket_ignores_unpaid_orders(pretix_mock):
     assert ticket is None
 
 
+async def test_positions_without_name_are_ignored(aiohttp_client, unused_tcp_port_factory):
+    pretix_mock = await create_pretix_app_mock(
+        response_factories={
+            "/items": lambda: web.json_response(json.loads(mock_items_file.read_text())),
+            "/orders": lambda: web.json_response(
+                {
+                    "next": None,
+                    "results": [
+                        {
+                            "code": "ABC01",
+                            "status": "p",
+                            "positions": [
+                                {
+                                    "order": "ABC01",
+                                    "item": 339041,
+                                    "attendee_name": None,
+                                }
+                            ],
+                        }
+                    ],
+                }
+            ),
+        },
+        aiohttp_client=aiohttp_client,
+        unused_tcp_port_factory=unused_tcp_port_factory,
+    )
+
+    pretix_connector = PretixConnector(url=pretix_mock.base_url, token=PRETIX_API_TOKEN)
+
+    await pretix_connector.fetch_pretix_data()
+
+    assert pretix_connector.tickets_by_key == {}
+
+
 async def test_pagination(aiohttp_client, unused_tcp_port_factory):
     # split items response into two pages
     port = unused_tcp_port_factory()
