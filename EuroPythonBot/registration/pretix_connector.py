@@ -4,6 +4,7 @@ import asyncio
 import itertools
 import logging
 import time
+from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 
 import aiohttp
@@ -24,7 +25,7 @@ class PretixConnector:
         self._fetch_lock = asyncio.Lock()
 
         self.items_by_id: dict[int, PretixItem | PretixItemVariation] = {}
-        self.tickets_by_key: dict[str, Ticket] = {}
+        self.tickets_by_key: dict[str, list[Ticket]] = defaultdict(list)
         self._last_fetch: datetime | None = None
 
     async def fetch_pretix_data(self) -> None:
@@ -69,7 +70,7 @@ class PretixConnector:
                 item_name = item.names_by_locale["en"]
 
                 ticket = Ticket(order=order.id, name=position.attendee_name, type=item_name)
-                self.tickets_by_key[ticket.key] = ticket
+                self.tickets_by_key[ticket.key].append(ticket)
 
     async def _fetch_pretix_items(self) -> None:
         """Fetch all items from the Pretix API."""
@@ -111,8 +112,8 @@ class PretixConnector:
         _logger.info("Fetched %d results in %.3f s", len(results), time.perf_counter() - start)
         return results
 
-    def get_ticket(self, *, order: str, name: str) -> Ticket | None:
-        """Get the ticket for a given order ID and name, or None if none was found."""
+    def get_tickets(self, *, order: str, name: str) -> list[Ticket]:
+        """Get the tickets for a given order ID and name, or None if none was found."""
         _logger.debug("Lookup for order '%s' and name '%s'", order, name)
 
         # convert ticket ID to order ID ('#ABC01-1' -> 'ABC01')
@@ -132,4 +133,4 @@ class PretixConnector:
             if key in self.tickets_by_key:
                 return self.tickets_by_key[key]
 
-        return None
+        return []
