@@ -4,6 +4,7 @@ import asyncio
 import itertools
 import logging
 import time
+from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 
 import aiohttp
@@ -24,7 +25,7 @@ class PretixConnector:
         self._fetch_lock = asyncio.Lock()
 
         self.items_by_id: dict[int, PretixItem | PretixItemVariation] = {}
-        self.tickets_by_key: dict[str, Ticket] = {}
+        self.tickets_by_key: dict[str, list[Ticket]] = defaultdict(list)
         self._last_fetch: datetime | None = None
 
     async def fetch_pretix_data(self) -> None:
@@ -38,17 +39,17 @@ class PretixConnector:
                 return
 
             await self._fetch_pretix_items()
-            await self._fetch_pretix_orders()
+            await self._fetch_pretix_orders(since=self._last_fetch)
             self._last_fetch = now
 
-    async def _fetch_pretix_orders(self) -> None:
+    async def _fetch_pretix_orders(self, since: datetime | None = None) -> None:
         # initially fetch all orders, then only fetch updates
         params = {"testmode": "false"}
-        if len(self.tickets_by_key) == 0:
+        if since is None or not self.tickets_by_key:
             _logger.info("Fetching all pretix orders")
         else:
-            _logger.info("Fetching pretix orders since %s", self._last_fetch)
-            params["modified_since"] = self._last_fetch.isoformat()
+            _logger.info("Fetching pretix orders since %s", since)
+            params["modified_since"] = since.isoformat()
 
         orders_as_json = await self._fetch_all_pages(
             f"{self._pretix_api_url}/orders",
@@ -61,14 +62,19 @@ class PretixConnector:
                 continue
 
             for position in order.positions:
+                # skip positions without name (e.g. childcare, T-shirt)
+                if not position.attendee_name:
+                    continue
+
                 item = self.items_by_id[position.item_id]
                 item_name = item.names_by_locale["en"]
 
                 ticket = Ticket(order=order.id, name=position.attendee_name, type=item_name)
-                self.tickets_by_key[ticket.key] = ticket
+                self.tickets_by_key[ticket.key].append(ticket)
 
     async def _fetch_pretix_items(self) -> None:
         """Fetch all items from the Pretix API."""
+        _logger.info("Fetching all pretix items")
         items_as_json = await self._fetch_all_pages(f"{self._pretix_api_url}/items")
 
         for item_as_json in items_as_json:
@@ -106,10 +112,17 @@ class PretixConnector:
         _logger.info("Fetched %d results in %.3f s", len(results), time.perf_counter() - start)
         return results
 
-    def get_ticket(self, *, order: str, name: str) -> Ticket | None:
-        """Get the ticket for a given order ID and name, or None if none was found."""
+    def get_tickets(self, *, order: str, name: str) -> list[Ticket]:
+        """Get the tickets for a given order ID and name, or None if none was found."""
+        _logger.debug("Lookup for order '%s' and name '%s'", order, name)
+
+        # convert ticket ID to order ID ('#ABC01-1' -> 'ABC01')
+        order = order.lstrip("#")
+        order = order.split("-")[0]
+        order = order.upper()
+
         # try different name orders (e.g. family name first vs last)
-        # limit number of possible permutations to test to prevent abuse
+        # prevent abuse by limiting the number of possible permutations to test
         max_name_components = 5
         name_parts = name.split(maxsplit=max_name_components - 1)
         for permutation in itertools.permutations(name_parts):
@@ -120,4 +133,4 @@ class PretixConnector:
             if key in self.tickets_by_key:
                 return self.tickets_by_key[key]
 
-        return None
+        return []

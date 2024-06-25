@@ -48,6 +48,39 @@ echo 'eval "$(pyenv init -)"' >> ~/.bashrc
 
 # pipenv
 python3 -m pip install pipenv
+echo 'alias pipenv="python3 -m pipenv"' >> ~/.bashrc
+. ~/.bashrc
+```
+
+### Using pipenv
+This is a summary of useful pipenv commands.
+Please refer to the [pipenv documentation](https://pipenv.pypa.io/en/latest/) for details.
+
+```shell
+# generate venv from Pipfile.lock
+pipenv install
+pipenv install --dev  # include dev dependencies
+
+# activate pipenv-generated venv
+pipenv shell
+
+# reset all packages to versions pinned in Pipfile.lock
+pipenv sync
+pipenv sync --dev  # include dev dependencies
+
+# install package and update all other packages
+pipenv install package
+pipenv install --dev package  # install as dev dependency
+
+# upgrade only specific package without updating all other packages
+pipenv upgrade package
+pipenv upgrade --dev package  # upgrade as dev dependency
+
+# remove package and update all other packages
+pipenv uninstall package
+
+# remove only specific packages without updating all other package
+# [impossible]
 ```
 
 ### Clone repo, install dependencies, run tests
@@ -57,10 +90,13 @@ git clone https://github.com/EuroPython/discord europython-discord/
 cd europython-discord
 
 # install dependencies
-python3 -m pipenv install --dev
+pipenv install --dev
 
-# run tests
-python3 -m pipenv run pytest .
+# run linting and tests
+pipenv run black --check .
+pipenv run isort --check .
+pipenv run flake8 .
+pipenv run pytest .
 ```
 
 ### Configuration

@@ -1,8 +1,7 @@
 import logging
 import sys
+import tomllib
 from pathlib import Path
-
-import toml
 
 _logger = logging.getLogger(f"bot.{__name__}")
 
@@ -25,17 +24,14 @@ class Config(metaclass=Singleton):
         config = None
         self.BASE_PATH = Path(__file__).resolve().parent
         self.CONFIG_PATH = self._get_config_path(self.BASE_PATH)
-        with open(self.CONFIG_PATH) as f:
-            config = toml.loads(f.read())
+        with self.CONFIG_PATH.open("rb") as f:
+            config = tomllib.load(f)
 
         if not config:
             _logger.critical("Error: Failed to load the config file at '%s'", self.CONFIG_PATH)
             sys.exit(-1)
 
         try:
-            # Server
-            self.GUILD = int(config["server"]["GUILD"])
-
             # Registration
             self.REG_CHANNEL_ID = int(config["registration"]["REG_CHANNEL_ID"])
             self.REG_HELP_CHANNEL_ID = int(config["registration"]["REG_HELP_CHANNEL_ID"])

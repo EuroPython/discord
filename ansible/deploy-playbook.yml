@@ -2,7 +2,7 @@
 - name: Deploy Discord Bot to the server
   hosts: bot_server
   vars:
-    repository_url: git@github.com:EuroPython/discord.git
+    repository_url: https://github.com/EuroPython/discord.git
 
   tasks:
 
@@ -60,7 +60,11 @@
         accept_hostkey: yes
         single_branch: yes
         version: main
-        key_file: /root/.ssh/deploy_key
+
+    - name: Ensure 'bot' group exists
+      group:
+        name: bot
+        gid: 1000
 
     - name: Create 'bot' user
       user:

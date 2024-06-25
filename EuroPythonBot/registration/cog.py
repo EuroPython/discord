@@ -33,20 +33,20 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
         self.parent_cog = parent_cog
 
     order_field = discord.ui.TextInput(
-        label="Order ID",
+        label="Order ID (As printed on your badge or ticket)",
         required=True,
         min_length=5,
-        max_length=5,
-        placeholder="123AB",
+        max_length=9,
+        placeholder="Like '#123AB-1' or '123AB'",
     )
 
     name_field = discord.ui.TextInput(
-        label="Full Name (As printed on your badge)",
+        label="Name (As printed on your badge or ticket)",
         required=True,
         min_length=1,
         max_length=50,
         style=discord.TextStyle.short,
-        placeholder="Jane Doe",
+        placeholder="Like 'Jane Doe'",
     )
 
     async def on_submit(self, interaction: discord.Interaction) -> None:
@@ -55,9 +55,9 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
         order = self.order_field.value
 
         _logger.debug(f"Registration attempt: {order=}, {name=}")
-        ticket = self.parent_cog.pretix_connector.get_ticket(order=order, name=name)
+        tickets = self.parent_cog.pretix_connector.get_tickets(order=order, name=name)
 
-        if ticket is None:
+        if not tickets:
             await self.log_error_to_user(
                 interaction,
                 "We cannot find your ticket. Please double check your input and try again.",
@@ -66,17 +66,21 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
             _logger.info(f"No ticket found: {order=}, {name=}")
             return
 
-        if self.parent_cog.registration_logger.is_registered(ticket):
+        if any(self.parent_cog.registration_logger.is_registered(ticket) for ticket in tickets):
             await self.log_error_to_user(interaction, "You have already registered.")
             await self.log_error_to_channel(interaction, f"Already registered: {order=}, {name=}")
-            _logger.info(f"Already registered: {ticket}")
+            _logger.info(f"Already registered: {tickets}")
             return
 
-        role_ids = config.TICKET_TO_ROLE.get(ticket.type)
-        if role_ids is None:
+        role_ids = set()
+        for ticket in tickets:
+            if ticket.type in config.TICKET_TO_ROLE:
+                role_ids.update(config.TICKET_TO_ROLE[ticket.type])
+
+        if not role_ids:
             await self.log_error_to_user(interaction, "No ticket found.")
-            await self.log_error_to_channel(interaction, f"Ticket without assigned roles: {ticket}")
-            _logger.info(f"Ticket without role assignments: {ticket}")
+            await self.log_error_to_channel(interaction, f"Tickets without roles: {tickets}")
+            _logger.info(f"Tickets without role assignments: {tickets}")
             return
 
         nickname = name[:32]  # Limit to the max length
@@ -89,7 +93,8 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
 
         await self.log_registration_to_channel(interaction, name=name, order=order, roles=roles)
         await self.log_registration_to_user(interaction, name=name)
-        await self.parent_cog.registration_logger.mark_as_registered(ticket)
+        for ticket in tickets:
+            await self.parent_cog.registration_logger.mark_as_registered(ticket)
         _logger.info(f"Registration successful: {order=}, {name=}")
 
     async def on_error(self, interaction: Interaction, error: Exception) -> None:
