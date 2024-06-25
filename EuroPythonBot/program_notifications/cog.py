@@ -3,6 +3,7 @@ from __future__ import annotations
 import logging
 from datetime import datetime
 
+import aiohttp
 from discord import Client
 from discord.ext import commands, tasks
 
@@ -22,6 +23,7 @@ class ProgramNotificationsCog(commands.Cog):
         self.connector = ProgramConnector(
             api_url=config.PROGRAM_API_URL,
             timezone_offset=config.TIMEZONE_OFFSET,
+            cache_file=config.SCHEDULE_CACHE_FILE,
             simulated_start_time=simulated_start_time or None,
             time_multiplier=time_multiplier,
         )
@@ -39,16 +41,19 @@ class ProgramNotificationsCog(commands.Cog):
         """
         Start schedule updater task
         """
-        _logger.info("Starting schedule updater and session checker")
+        _logger.info("Starting the schedule updater...")
+        self.fetch_schedule.start()
+        _logger.info("Schedule updater started")
 
     async def cog_unload(self) -> None:
         """
-        Stop schedule updater task
+        Stop all tasks
         """
-        _logger.info("Stopping schedule updater and session checker")
+        _logger.info("Stopping the schedule updater and the session notifier...")
         self.fetch_schedule.stop()
         self.notify_sessions.stop()
         self.notify_to_all_rooms_channels.stop()
+        _logger.info("Stopped the schedule updater and the session notifier")
 
     @tasks.loop(minutes=5)
     async def fetch_schedule(self):
@@ -56,8 +61,13 @@ class ProgramNotificationsCog(commands.Cog):
         try:
             await self.connector.fetch_schedule()
             _logger.info("Finished the periodic schedule update.")
-        except Exception:
-            _logger.exception("Periodic schedule update failed")
+        except aiohttp.ClientError as e:
+            _logger.error(f"Failed to fetch schedule: {e}. Trying to load from cache...")
+            try:
+                await self.connector.load_schedule_from_cache()
+                _logger.info("Loaded the schedule from cache.")
+            except FileNotFoundError:
+                _logger.critical("Failed to load schedule from cache.")
 
     @tasks.loop(seconds=1)
     async def notify_sessions(self):
@@ -120,11 +130,11 @@ class ProgramNotificationsCog(commands.Cog):
         for room in config.PROGRAM_CHANNELS.values():
             channel = self.bot.get_channel(int(room["channel_id"]))
             await channel.purge()
+        _logger.info("Purged all channels.")
 
     @commands.Cog.listener()
     async def on_ready(self):
         await self.purge_all_channels()
-        self.fetch_schedule.start()
         self.notify_sessions.start()
         self.notify_to_all_rooms_channels.start()
         _logger.info("Cog 'Program Notifications' is ready")

@@ -47,6 +47,7 @@ class Config(metaclass=Singleton):
             # Program Notifications
             self.PROGRAM_API_URL = config["program_notifications"]["api_url"]
             self.TIMEZONE_OFFSET = config["program_notifications"]["timezone"]
+            self.SCHEDULE_CACHE_FILE = Path(config["program_notifications"]["schedule_cache_file"])
             self.PROGRAM_CHANNELS = {
                 room: {"name": details["name"], "channel_id": details["channel_id"]}
                 for room, details in config["program_notifications"]["rooms"].items()

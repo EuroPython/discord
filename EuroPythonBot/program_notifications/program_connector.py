@@ -4,6 +4,7 @@ import logging
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
+import aiofiles
 import aiohttp
 
 from program_notifications.models import Schedule, Session
@@ -14,48 +15,75 @@ _logger = logging.getLogger(f"bot.{__name__}")
 class ProgramConnector:
     def __init__(
         self,
-        api_url,
-        timezone_offset,
+        api_url: str,
+        timezone_offset: int,
+        cache_file: str,
         simulated_start_time: datetime | None = None,
         time_multiplier: int = 1,
     ) -> None:
         self._api_url = api_url
         self._timezone_offset = timezone_offset
+        self._cache_file = Path(cache_file)
         self._simulated_start_time = simulated_start_time
         self._time_multiplier = time_multiplier
         self._fetch_lock = asyncio.Lock()
         self.sessions_by_day: dict[datetime, list[Session]] | None = None
 
+    async def parse_schedule(self, schedule: dict) -> dict[date, list[Session]]:
+        """
+        Parse the schedule data and return a dictionary with
+        the sessions grouped by date.
+        """
+        schedule = Schedule(**schedule)
+
+        sessions_by_day = {}
+        for day, day_schedule in schedule.days.items():
+            sessions = []
+            for event in day_schedule.events:
+                if event.event_type != "session":
+                    continue
+                sessions.append(event)
+            sessions_by_day[day] = sessions
+
+        return sessions_by_day
+
     async def fetch_schedule(self) -> None:
-        """Fetch schedule data from the Program API and write it to a file in case the API is down."""
+        """
+        Fetch schedule data from the Program API and
+        write it to a file in case the API goes down.
+        """
         async with self._fetch_lock:
             try:
                 async with aiohttp.ClientSession() as session:
                     async with session.get(self._api_url) as response:
-                        if response.status != 200:
-                            raise ValueError(f"Failed to fetch schedule: {response.status}")
-                        schedule = await response.json()
-                # write schedule to file in case the API goes down
-                Path("cached").mkdir(exist_ok=True, parents=True)
-                with open("cached/schedule.json", "w") as f:
-                    f.write(json.dumps(schedule, indent=2))
+                        if response.status == 200:
+                            schedule = await response.json()
 
-            except Exception as e:  # TODO: specify exception asap
-                # read schedule from file in case the API is down
-                _logger.info(f"Failed to fetch schedule: {e}")
-                with open("cached/schedule.json") as f:
-                    schedule = json.load(f)
+                            # write schedule to file in case the API goes down
+                            Path(self._cache_file).parent.mkdir(exist_ok=True, parents=True)
+                            async with aiofiles.open(self._cache_file, "w") as f:
+                                await f.write(json.dumps(schedule, indent=2))
 
-            schedule = Schedule(**schedule)
+                        else:
+                            raise aiohttp.ClientResponseError(
+                                message=response.reason,
+                                history=response.history,
+                                request_info=response.request_info,
+                            )
 
-            self.sessions_by_day = {}
-            for day, day_schedule in schedule.days.items():
-                sessions = []
-                for event in day_schedule.events:
-                    if event.event_type != "session":
-                        continue
-                    sessions.append(event)
-                self.sessions_by_day[day] = sessions
+            except (aiohttp.ClientResponseError, aiohttp.ClientConnectorError) as e:
+                raise aiohttp.ClientError(e)
+
+            self.sessions_by_day = await self.parse_schedule(schedule)
+
+    async def load_schedule_from_cache(self) -> None:
+        """
+        Load schedule data from a file.
+        """
+        async with aiofiles.open(self._cache_file, "r") as f:
+            schedule = json.loads(await f.read())
+
+        self.sessions_by_day = await self.parse_schedule(schedule)
 
     async def _get_now(self) -> datetime:
         """Get the current time in the conference timezone."""

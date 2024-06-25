@@ -83,7 +83,7 @@ async def main():
     _setup_logging()
     async with bot:
         await bot.add_cog(Ping(bot))
-        # await bot.add_cog(RegistrationCog(bot))
+        await bot.add_cog(RegistrationCog(bot))
         await bot.add_cog(
             ProgramNotificationsCog(
                 bot, TimeTravel.simulated_start_time, TimeTravel.time_multiplier
