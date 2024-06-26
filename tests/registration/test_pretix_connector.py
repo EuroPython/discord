@@ -180,11 +180,7 @@ async def test_positions_without_name_are_ignored(aiohttp_client, unused_tcp_por
                             "code": "ABC01",
                             "status": "p",
                             "positions": [
-                                {
-                                    "order": "ABC01",
-                                    "item": 339041,
-                                    "attendee_name": None,
-                                }
+                                {"order": "ABC01", "item": 339041, "attendee_name": None}
                             ],
                         }
                     ],
