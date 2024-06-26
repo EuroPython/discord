@@ -4,7 +4,7 @@ import logging
 import os
 
 import discord
-from discord import Client, Interaction, Role
+from discord import Client, Forbidden, Interaction, Role
 from discord.ext import commands, tasks
 
 from configuration import Config
@@ -98,9 +98,19 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
         _logger.info(f"Registration successful: {order=}, {name=}")
 
     async def on_error(self, interaction: Interaction, error: Exception) -> None:
-        _logger.exception("An error occurred!")
-        await self.log_error_to_user(interaction, "Something went wrong.")
-        await self.log_error_to_channel(interaction, f"{error.__class__.__name__}: {error}")
+        user_is_admin = any(role.name == "Admin" for role in interaction.user.roles)
+        if isinstance(error, Forbidden) and user_is_admin:
+            _logger.exception("An error occurred (user is admin)")
+            await self.log_error_to_user(interaction, "Admins cannot be registered via the bot.")
+            await self.log_error_to_channel(
+                interaction,
+                f"Cannot register admins ({error.__class__.__name__}: {error})",
+            )
+
+        else:
+            _logger.exception("An error occurred!")
+            await self.log_error_to_user(interaction, "Something went wrong.")
+            await self.log_error_to_channel(interaction, f"{error.__class__.__name__}: {error}")
 
     @staticmethod
     async def log_registration_to_user(interaction: Interaction, *, name: str) -> None:
