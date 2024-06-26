@@ -287,7 +287,7 @@ async def test_consecutive_fetches_after_some_time_fetch_updates(pretix_mock):
     assert requests[0].url.path == "/items"
     assert requests[1].url.path == "/orders"
 
-    # third fetch after >2 minutes should fetch updates
+    # fetch after >2 minutes should fetch updates
     three_minutes_before = initial_time - timedelta(minutes=3)
     pretix_connector._last_fetch = three_minutes_before
 
