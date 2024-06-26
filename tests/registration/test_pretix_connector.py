@@ -360,3 +360,38 @@ async def test_multiple_tickets(aiohttp_client, unused_tcp_port_factory):
         Ticket(order="BR7UH", name="Jane Doe", type="Business"),
         Ticket(order="BR7UH", name="Jane Doe", type="Speaker's Dinner"),
     }
+
+
+async def test_cancelled_orders_are_removed(aiohttp_client, unused_tcp_port_factory):
+    pretix_mock = await create_pretix_app_mock(
+        response_factories={
+            "/items": lambda: web.json_response(json.loads(mock_items_file.read_text())),
+            "/orders": lambda: web.json_response(
+                {
+                    "next": None,
+                    "results": [
+                        {
+                            "code": "ABC01",
+                            "status": "c",  # cancelled
+                            "positions": [
+                                {"order": "ABC01", "item": 339041, "attendee_name": "Jane Doe"}
+                            ],
+                        }
+                    ],
+                }
+            ),
+        },
+        aiohttp_client=aiohttp_client,
+        unused_tcp_port_factory=unused_tcp_port_factory,
+    )
+
+    pretix_connector = PretixConnector(url=pretix_mock.base_url, token=PRETIX_API_TOKEN)
+
+    # insert previously paid ticket
+    ticket = Ticket(order="ABC01", name="Jane Doe", type="Business")
+    pretix_connector.tickets_by_key[ticket.key] = [ticket]
+
+    # fetch pretix data: ticket was cancelled
+    await pretix_connector.fetch_pretix_data()
+
+    assert pretix_connector.tickets_by_key == {}

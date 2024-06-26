@@ -58,8 +58,6 @@ class PretixConnector:
 
         for order_as_json in orders_as_json:
             order = PretixOrder(**order_as_json)
-            if not order.is_paid:
-                continue
 
             for position in order.positions:
                 # skip positions without name (e.g. childcare, T-shirt)
@@ -70,7 +68,11 @@ class PretixConnector:
                 item_name = item.names_by_locale["en"]
 
                 ticket = Ticket(order=order.id, name=position.attendee_name, type=item_name)
-                self.tickets_by_key[ticket.key].append(ticket)
+
+                if order.is_paid:
+                    self.tickets_by_key[ticket.key].append(ticket)
+                elif ticket.key in self.tickets_by_key:  # remove cancelled tickets
+                    self.tickets_by_key.pop(ticket.key)
 
     async def _fetch_pretix_items(self) -> None:
         """Fetch all items from the Pretix API."""
