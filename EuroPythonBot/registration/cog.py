@@ -83,7 +83,7 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
             _logger.info(f"Tickets without role assignments: {tickets}")
             return
 
-        nickname = name[:32]  # Limit to the max length
+        nickname = tickets[0].name[:32]  # Limit to the max length
         _logger.info("Assigning nickname %r", nickname)
         await interaction.user.edit(nick=nickname)
 
