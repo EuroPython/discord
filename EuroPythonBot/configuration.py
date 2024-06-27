@@ -50,7 +50,7 @@ class Config(metaclass=Singleton):
             self.TIMEZONE_OFFSET = config["program_notifications"]["timezone"]
             self.SCHEDULE_CACHE_FILE = Path(config["program_notifications"]["schedule_cache_file"])
 
-            ## Optional testing parameters
+            # Optional testing parameters
             if simulated_start_time := config["program_notifications"].get("simulated_start_time"):
                 self.SIMULATED_START_TIME = datetime.fromisoformat(simulated_start_time).replace(
                     tzinfo=timezone(timedelta(hours=self.TIMEZONE_OFFSET))

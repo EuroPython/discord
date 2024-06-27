@@ -46,7 +46,7 @@ def test_create_session_embed_multiple_speaker():
         slug="session-2",
         title="Session 2",
         session_type="talk",
-        speakers=[speaker],
+        speakers=[speaker, speaker2],
         tweet="Excited for this session!",
         level="advanced",
         track="CPython Core",
@@ -65,6 +65,6 @@ def test_create_session_embed_multiple_speaker():
     assert embed.fields[3].value == "60 minutes"
     assert embed.color.value == 13846600
     assert (
-        embed.description
-        == "Excited for this session!\n\n[Read more about this session](http://example.com/session-2)"
+        embed.description == "Excited for this session!\n\n"
+        "[Read more about this session](http://example.com/session-2)"
     )

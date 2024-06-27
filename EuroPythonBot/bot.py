@@ -2,7 +2,6 @@ import asyncio
 import logging
 import os
 import sys
-from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import discord
