@@ -103,5 +103,5 @@ async def test_get_sessions_by_date_key_error(tmp_path):
     )
     await connector.fetch_schedule()
     test_date = date(2024, 7, 13)  # Use a date not in the available schedule
-    with pytest.raises(KeyError):
-        await connector.get_sessions_by_date(test_date)
+    sessions = await connector.get_sessions_by_date(test_date)
+    assert sessions == []
