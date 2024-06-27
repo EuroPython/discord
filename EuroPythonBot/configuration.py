@@ -1,6 +1,7 @@
 import logging
 import sys
 import tomllib
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 _logger = logging.getLogger(f"bot.{__name__}")
@@ -48,6 +49,17 @@ class Config(metaclass=Singleton):
             self.PROGRAM_API_URL = config["program_notifications"]["api_url"]
             self.TIMEZONE_OFFSET = config["program_notifications"]["timezone"]
             self.SCHEDULE_CACHE_FILE = Path(config["program_notifications"]["schedule_cache_file"])
+
+            ## Optional testing parameters
+            if simulated_start_time := config["program_notifications"].get("simulated_start_time"):
+                self.SIMULATED_START_TIME = datetime.fromisoformat(simulated_start_time).replace(
+                    tzinfo=timezone(timedelta(hours=self.TIMEZONE_OFFSET))
+                )
+            else:
+                self.SIMULATED_START_TIME = None
+
+            self.TIME_MULTIPLIER = config["program_notifications"].get("time_multiplier", 1)
+
             self.PROGRAM_CHANNELS = {
                 room: {"name": details["name"], "channel_id": details["channel_id"]}
                 for room, details in config["program_notifications"]["rooms"].items()

@@ -18,14 +18,15 @@ class ProgramConnector:
         api_url: str,
         timezone_offset: int,
         cache_file: str,
+        time_multiplier: int,
         simulated_start_time: datetime | None = None,
-        time_multiplier: int = 1,
     ) -> None:
         self._api_url = api_url
         self._timezone_offset = timezone_offset
         self._cache_file = Path(cache_file)
-        self._simulated_start_time = simulated_start_time
         self._time_multiplier = time_multiplier
+        self._simulated_start_time = simulated_start_time
+        self._real_start_time = datetime.now(tz=timezone(timedelta(hours=timezone_offset)))
         self._fetch_lock = asyncio.Lock()
         self.sessions_by_day: dict[datetime, list[Session]] | None = None
 
@@ -90,26 +91,29 @@ class ProgramConnector:
         # Calling this for every room makes it miss the 5 minute window,
         # if the time multiplier is too high.
         if self._simulated_start_time:
-            elapsed = datetime.now(tz=timezone.utc) - self._simulated_start_time["real_start_time"]
-            simulated_now = (
-                self._simulated_start_time["simulated_start_time"] + elapsed * self._time_multiplier
+            elapsed = (
+                datetime.now(tz=timezone(timedelta(hours=self._timezone_offset)))
+                - self._real_start_time
             )
+            simulated_now = self._simulated_start_time + elapsed * self._time_multiplier
             return simulated_now.astimezone(timezone(timedelta(hours=self._timezone_offset)))
         else:
             return datetime.now(tz=timezone(timedelta(hours=self._timezone_offset)))
 
-    async def get_sessions_by_date(self, datetime_now: date) -> list[Session]:
+    async def get_sessions_by_date(self, date_now: date) -> list[Session]:
         if self.sessions_by_day is None:
             await self.fetch_schedule()
-        return self.sessions_by_day[datetime_now]
+        return self.sessions_by_day[date_now]
 
     async def get_upcoming_sessions_for_room(self, room: str) -> list[Session]:
         # upcoming sessions are those that start in 5 minutes or less
         # and the start time is after the current time
         now = await self._get_now()
-        if self._simulated_start_time:
-            print(f"Simulated time: {now}")  # TODO: Do better
+
+        _logger.debug(f"Time now: {now}")
+
         sessions = await self.get_sessions_by_date(now.date())
+
         return [
             session
             for session in sessions

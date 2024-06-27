@@ -16,16 +16,14 @@ _logger = logging.getLogger(f"bot.{__name__}")
 
 
 class ProgramNotificationsCog(commands.Cog):
-    def __init__(
-        self, bot, simulated_start_time: dict[str, datetime] | None = None, time_multiplier: int = 1
-    ):
+    def __init__(self, bot):
         self.bot: Client = bot
         self.connector = ProgramConnector(
             api_url=config.PROGRAM_API_URL,
             timezone_offset=config.TIMEZONE_OFFSET,
             cache_file=config.SCHEDULE_CACHE_FILE,
-            simulated_start_time=simulated_start_time or None,
-            time_multiplier=time_multiplier,
+            simulated_start_time=config.SIMULATED_START_TIME,
+            time_multiplier=config.TIME_MULTIPLIER,
         )
 
         # These won't work if we decide to offer program notifications

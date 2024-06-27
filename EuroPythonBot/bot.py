@@ -20,14 +20,6 @@ DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 _logger = logging.getLogger("bot")
 
 
-class TimeTravel:  # TODO: Remove this once the conference starts
-    simulated_start_time = {
-        "simulated_start_time": datetime(2024, 7, 10, 13, 45, tzinfo=timezone(timedelta(hours=2))),
-        "real_start_time": datetime.now(tz=timezone(timedelta(hours=2))),
-    }
-    time_multiplier = 30  # progress time 30 times faster
-
-
 class Bot(commands.Bot):
     def __init__(self):
         intents = _get_intents()
@@ -84,11 +76,7 @@ async def main():
     async with bot:
         await bot.add_cog(Ping(bot))
         await bot.add_cog(RegistrationCog(bot))
-        await bot.add_cog(
-            ProgramNotificationsCog(
-                bot, TimeTravel.simulated_start_time, TimeTravel.time_multiplier
-            )
-        )
+        await bot.add_cog(ProgramNotificationsCog(bot))
         await bot.load_extension("extensions.organisers")
         await bot.start(DISCORD_BOT_TOKEN)
 

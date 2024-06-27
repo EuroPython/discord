@@ -39,6 +39,11 @@ LOG_LEVEL = "INFO"
 # UTC offset in hours (e.g. 2 for CEST)
 timezone = 2
 api_url = "https://programapi24.europython.eu/2024/schedule.json"
+schedule_cache_file = "schedule.json"
+
+# optional testing configuration
+# simulated_start_time = "2024-07-10T07:30:00"
+# time_multiplier = 60
 
 [program_notifications.rooms.all_rooms]
 name = "All Rooms"
