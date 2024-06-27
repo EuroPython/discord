@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import os
+import textwrap
 
 import discord
 from discord import Client, Forbidden, Interaction, Role
@@ -37,7 +38,7 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
         required=True,
         min_length=5,
         max_length=9,
-        placeholder="Like '#123AB-1' or '123AB'",
+        placeholder="Like '#XXXXX-X' or 'XXXXX'",
     )
 
     name_field = discord.ui.TextInput(
@@ -169,16 +170,28 @@ class RegistrationCog(commands.Cog):
         view.add_item(RegistrationButton(parent_cog=self))
 
         welcome_message = create_welcome_message(
-            "Follow these steps to complete your registration:\n\n"
-            '1️⃣ Click on the green "Register Here 👈" button.\n\n'
-            '2️⃣ Fill in the "Order" (found by clicking the order URL in your confirmation '
-            'email from support@pretix.eu with the Subject: Your order: XXXXX) and "Full Name" '
-            "(as printed on your ticket/badge).\n\n"
-            '3️⃣ Click "Submit". We\'ll verify your ticket and assign you your roles based on '
-            "your ticket type.\n\n"
-            f"Experiencing trouble? Ask for help in the <#{config.REG_HELP_CHANNEL_ID}> channel "
-            "or from a volunteer a in yellow t-shirt at the conference.\n\n"
-            "See you on the server! 🐍💻🎉"
+            textwrap.dedent(
+                f"""
+                Follow these steps to complete your registration:
+
+                1️⃣ Click on the green "Register here 👈" button below.
+
+                2️⃣ Fill in your Order ID and the name on your ticket. You can find them
+                * Printed on your ticket
+                * Printed on your badge
+                * In the email "[EuroPython 2024] Your order: XXXXX" from support@pretix.eu
+
+                3️⃣ Click "Submit".
+
+                These steps will assign the correct server permissions and set your server nickname.
+
+                Experiencing trouble? Please contact us
+                * In the <#{config.REG_HELP_CHANNEL_ID}> channel
+                * By speaking to a volunteer in a yellow t-shirt
+
+                Enjoy our EuroPython 2024 Community Server! 🐍💻🎉
+                """
+            )
         )
 
         await reg_channel.send(embed=welcome_message, view=view)
