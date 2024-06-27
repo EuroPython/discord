@@ -42,7 +42,9 @@ def create_session_embed(session: Session) -> Embed:
 
     author = _create_author_from_speakers(session.speakers)
     if author:
-        embed.set_author(name=author["name"], icon_url=author.get("icon_url"))
+        embed.set_author(
+            name=author["name"], icon_url=author.get("icon_url"), url=author.get("website_url")
+        )
 
     for field in fields:
         embed.add_field(name=field["name"], value=field["value"], inline=field["inline"])
@@ -76,7 +78,10 @@ def _create_author_from_speakers(speakers: list[Speaker]) -> dict | None:
             return None
     author_name = textwrap.shorten(author_name, width=_AUTHOR_WIDTH)
     icon_url = next((avatar for speaker in speakers if (avatar := speaker.avatar)), None)
-    return {"name": author_name, "icon_url": icon_url}
+    website_url = next(
+        (website_url for speaker in speakers if (website_url := speaker.website_url)), None
+    )
+    return {"name": author_name, "icon_url": icon_url, "website_url": website_url}
 
 
 def _create_description(session: Session) -> str | None:
