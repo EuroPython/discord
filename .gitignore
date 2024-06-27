@@ -8,4 +8,3 @@ __pycache__
 .DS_Store
 registered_log.txt
 schedule.json
-test_cache_schedule.json

@@ -11,9 +11,11 @@ TIMEZONE_OFFSET = 2
 
 
 @pytest.mark.asyncio
-async def test_parse_schedule():
+async def test_parse_schedule(tmp_path):
     connector = ProgramConnector(
-        api_url=API_URL, timezone_offset=TIMEZONE_OFFSET, cache_file="test_cache_schedule.json"
+        api_url=API_URL,
+        timezone_offset=TIMEZONE_OFFSET,
+        cache_file=tmp_path / "test_cache_schedule.json",
     )
     async with aiohttp.ClientSession() as session:
         async with session.get(API_URL) as response:
@@ -23,18 +25,22 @@ async def test_parse_schedule():
 
 
 @pytest.mark.asyncio
-async def test_fetch_schedule():
+async def test_fetch_schedule(tmp_path):
     connector = ProgramConnector(
-        api_url=API_URL, timezone_offset=TIMEZONE_OFFSET, cache_file="test_cache_schedule.json"
+        api_url=API_URL,
+        timezone_offset=TIMEZONE_OFFSET,
+        cache_file=tmp_path / "test_cache_schedule.json",
     )
     await connector.fetch_schedule()
     assert connector.sessions_by_day is not None
 
 
 @pytest.mark.asyncio
-async def test_load_schedule_from_cache():
+async def test_load_schedule_from_cache(tmp_path):
     connector = ProgramConnector(
-        api_url=API_URL, timezone_offset=TIMEZONE_OFFSET, cache_file="test_cache_schedule.json"
+        api_url=API_URL,
+        timezone_offset=TIMEZONE_OFFSET,
+        cache_file=tmp_path / "test_cache_schedule.json",
     )
     await connector.fetch_schedule()  # Ensure cache file is populated
     await connector.load_schedule_from_cache()
@@ -42,14 +48,14 @@ async def test_load_schedule_from_cache():
 
 
 @pytest.mark.asyncio
-async def test_get_now():
+async def test_get_now(tmp_path):
     simulated_start_time = datetime(
         2024, 7, 10, 9, 0, tzinfo=timezone(timedelta(hours=TIMEZONE_OFFSET))
     )
     connector = ProgramConnector(
         api_url=API_URL,
         timezone_offset=TIMEZONE_OFFSET,
-        cache_file="test_cache_schedule.json",
+        cache_file=tmp_path / "test_cache_schedule.json",
         time_multiplier=30,
         simulated_start_time=simulated_start_time,
     )
@@ -58,9 +64,11 @@ async def test_get_now():
 
 
 @pytest.mark.asyncio
-async def test_get_sessions_by_date():
+async def test_get_sessions_by_date(tmp_path):
     connector = ProgramConnector(
-        api_url=API_URL, timezone_offset=TIMEZONE_OFFSET, cache_file="test_cache_schedule.json"
+        api_url=API_URL,
+        timezone_offset=TIMEZONE_OFFSET,
+        cache_file=tmp_path / "test_cache_schedule.json",
     )
     await connector.fetch_schedule()
     test_date = date(2024, 7, 10)  # Use a date from the available schedule
@@ -70,9 +78,11 @@ async def test_get_sessions_by_date():
 
 
 @pytest.mark.asyncio
-async def test_get_upcoming_sessions_for_room():
+async def test_get_upcoming_sessions_for_room(tmp_path):
     connector = ProgramConnector(
-        api_url=API_URL, timezone_offset=TIMEZONE_OFFSET, cache_file="test_cache_schedule.json"
+        api_url=API_URL,
+        timezone_offset=TIMEZONE_OFFSET,
+        cache_file=tmp_path / "test_cache_schedule.json",
     )
     await connector.fetch_schedule()
 
@@ -85,9 +95,11 @@ async def test_get_upcoming_sessions_for_room():
 
 
 @pytest.mark.asyncio
-async def test_get_sessions_by_date_key_error():
+async def test_get_sessions_by_date_key_error(tmp_path):
     connector = ProgramConnector(
-        api_url=API_URL, timezone_offset=TIMEZONE_OFFSET, cache_file="test_cache_schedule.json"
+        api_url=API_URL,
+        timezone_offset=TIMEZONE_OFFSET,
+        cache_file=tmp_path / "test_cache_schedule.json",
     )
     await connector.fetch_schedule()
     test_date = date(2024, 7, 13)  # Use a date not in the available schedule
