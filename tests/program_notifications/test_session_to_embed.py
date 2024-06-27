@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 from discord import Embed
 
@@ -19,7 +19,7 @@ def test_create_session_embed_single_speaker():
         level="beginner",
         track=None,
         rooms=["Room 1"],
-        start=datetime(2023, 6, 27, 10, 0),
+        start=datetime(2023, 6, 27, 10, 0, tzinfo=timezone(timedelta(hours=2))),
         website_url="http://example.com/session-1",
         duration=30,
     )
@@ -51,7 +51,7 @@ def test_create_session_embed_multiple_speaker():
         level="advanced",
         track="CPython Core",
         rooms=["Room 1"],
-        start=datetime(2023, 6, 27, 10, 0),
+        start=datetime(2023, 6, 27, 11, 0, tzinfo=timezone(timedelta(hours=2))),
         website_url="http://example.com/session-2",
         duration=60,
     )
@@ -59,7 +59,7 @@ def test_create_session_embed_multiple_speaker():
     assert isinstance(embed, Embed)
     assert embed.title == "Session 2"
     assert embed.url == "http://example.com/session-2"
-    assert embed.fields[0].value == "<t:1687852800:f>"
+    assert embed.fields[0].value == "<t:1687856400:f>"
     assert embed.fields[1].value == "Room 1"
     assert embed.fields[2].value == "CPython Core"
     assert embed.fields[3].value == "60 minutes"
