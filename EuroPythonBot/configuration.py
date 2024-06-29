@@ -60,7 +60,7 @@ class Config(metaclass=Singleton):
     def _parse_ticket_mapping(
         mapping: dict[str, list[str]], roles: dict[str, int]
     ) -> dict[str, list[int]]:
-        """Parse the ticket mappig from role names to role ids."""
+        """Parse the ticket mapping from role names to role ids."""
         ticket_mapping = {}
 
         for ticket_type, roles_as_strings in mapping.items():
