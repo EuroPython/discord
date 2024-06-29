@@ -67,8 +67,8 @@ class PretixConnector:
                 item = self.items_by_id[position.item_id]
                 item_name = item.names_by_locale["en"]
 
-                if position.variation is not None:
-                    variation = self.items_by_id[position.variation]
+                if position.variation_id is not None:
+                    variation = self.items_by_id[position.variation_id]
                     variation_name = variation.names_by_locale["en"]
                 else:
                     variation_name = None
