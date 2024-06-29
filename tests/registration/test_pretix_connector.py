@@ -104,10 +104,14 @@ async def test_pretix_orders(pretix_mock):
     await pretix_connector.fetch_pretix_data()
 
     assert pretix_connector.tickets_by_key == {
-        "BR7UH-evanovakova": [Ticket(order="BR7UH", name="Eva Nováková", type="Business")],
-        "BR7UH-jannovak": [Ticket(order="BR7UH", name="Jan Novák", type="Business")],
+        "BR7UH-evanovakova": [
+            Ticket(order="BR7UH", name="Eva Nováková", type="Business", variation="Conference")
+        ],
+        "BR7UH-jannovak": [
+            Ticket(order="BR7UH", name="Jan Novák", type="Business", variation="Tutorials")
+        ],
         "RCZN9-maijameikalainen": [
-            Ticket(order="RCZN9", name="Maija Meikäläinen", type="Personal")
+            Ticket(order="RCZN9", name="Maija Meikäläinen", type="Personal", variation=None)
         ],
     }
 
@@ -119,7 +123,9 @@ async def test_get_ticket(pretix_mock):
 
     tickets = pretix_connector.get_tickets(order="BR7UH", name="Eva Nováková")
 
-    assert tickets == [Ticket(order="BR7UH", name="Eva Nováková", type="Business")]
+    assert tickets == [
+        Ticket(order="BR7UH", name="Eva Nováková", type="Business", variation="Conference")
+    ]
 
 
 async def test_get_ticket_handles_ticket_ids(pretix_mock):
@@ -129,7 +135,9 @@ async def test_get_ticket_handles_ticket_ids(pretix_mock):
 
     tickets = pretix_connector.get_tickets(order="#BR7UH-3", name="Eva Nováková")
 
-    assert tickets == [Ticket(order="BR7UH", name="Eva Nováková", type="Business")]
+    assert tickets == [
+        Ticket(order="BR7UH", name="Eva Nováková", type="Business", variation="Conference")
+    ]
 
 
 async def test_get_ticket_ignores_accents(pretix_mock):
@@ -139,7 +147,9 @@ async def test_get_ticket_ignores_accents(pretix_mock):
 
     tickets = pretix_connector.get_tickets(order="BR7UH", name="Jan Novak")
 
-    assert tickets == [Ticket(order="BR7UH", name="Jan Novák", type="Business")]
+    assert tickets == [
+        Ticket(order="BR7UH", name="Jan Novák", type="Business", variation="Tutorials")
+    ]
 
 
 async def test_get_ticket_ignores_name_order(pretix_mock):
@@ -149,7 +159,9 @@ async def test_get_ticket_ignores_name_order(pretix_mock):
 
     tickets = pretix_connector.get_tickets(order="RCZN9", name="Meikäläinen Maija")
 
-    assert tickets == [Ticket(order="RCZN9", name="Maija Meikäläinen", type="Personal")]
+    assert tickets == [
+        Ticket(order="RCZN9", name="Maija Meikäläinen", type="Personal", variation=None)
+    ]
 
 
 async def test_get_ticket_returns_none_on_unknown_input(pretix_mock):
@@ -186,7 +198,12 @@ async def test_positions_without_name_are_ignored(aiohttp_client, unused_tcp_por
                             "code": "ABC01",
                             "status": "p",
                             "positions": [
-                                {"order": "ABC01", "item": 339041, "attendee_name": None}
+                                {
+                                    "order": "ABC01",
+                                    "item": 339041,
+                                    "variation": None,
+                                    "attendee_name": None,
+                                }
                             ],
                         }
                     ],
@@ -349,8 +366,18 @@ async def test_multiple_tickets(aiohttp_client, unused_tcp_port_factory):
                             "code": "BR7UH",
                             "status": "p",
                             "positions": [
-                                {"order": "BR7UH", "item": 123, "attendee_name": "Jane Doe"},
-                                {"order": "BR7UH", "item": 456, "attendee_name": "Jane Doe"},
+                                {
+                                    "order": "BR7UH",
+                                    "item": 123,
+                                    "variation": None,
+                                    "attendee_name": "Jane Doe",
+                                },
+                                {
+                                    "order": "BR7UH",
+                                    "item": 456,
+                                    "variation": None,
+                                    "attendee_name": "Jane Doe",
+                                },
                             ],
                         },
                     ],
@@ -367,8 +394,8 @@ async def test_multiple_tickets(aiohttp_client, unused_tcp_port_factory):
     tickets = pretix_connector.get_tickets(order="BR7UH", name="Jane Doe")
 
     assert set(tickets) == {
-        Ticket(order="BR7UH", name="Jane Doe", type="Business"),
-        Ticket(order="BR7UH", name="Jane Doe", type="Speaker's Dinner"),
+        Ticket(order="BR7UH", name="Jane Doe", type="Business", variation=None),
+        Ticket(order="BR7UH", name="Jane Doe", type="Speaker's Dinner", variation=None),
     }
 
 
@@ -384,7 +411,12 @@ async def test_cancelled_orders_are_removed(aiohttp_client, unused_tcp_port_fact
                             "code": "ABC01",
                             "status": "c",  # cancelled
                             "positions": [
-                                {"order": "ABC01", "item": 339041, "attendee_name": "Jane Doe"}
+                                {
+                                    "order": "ABC01",
+                                    "item": 339041,
+                                    "variation": None,
+                                    "attendee_name": "Jane Doe",
+                                }
                             ],
                         }
                     ],
@@ -398,7 +430,7 @@ async def test_cancelled_orders_are_removed(aiohttp_client, unused_tcp_port_fact
     pretix_connector = PretixConnector(url=pretix_mock.base_url, token=PRETIX_API_TOKEN)
 
     # insert previously paid ticket
-    ticket = Ticket(order="ABC01", name="Jane Doe", type="Business")
+    ticket = Ticket(order="ABC01", name="Jane Doe", type="Business", variation=None)
     pretix_connector.tickets_by_key[ticket.key] = [ticket]
 
     # fetch pretix data: ticket was cancelled
