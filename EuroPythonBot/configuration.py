@@ -50,7 +50,13 @@ class Config(metaclass=Singleton):
             self.TIMEZONE_OFFSET = config["program_notifications"]["timezone_offset"]
             self.SCHEDULE_CACHE_FILE = Path(config["program_notifications"]["schedule_cache_file"])
 
-            # Optional testing parameters
+            # like {'forum_hall': {'name': 'Forum Hall', 'channel_id': '123456'}}
+            self.PROGRAM_CHANNELS: dict[str, dict[str, str]] = {
+                room: {"name": details["name"], "channel_id": details["channel_id"]}
+                for room, details in config["program_notifications"]["rooms"].items()
+            }
+
+            # optional testing parameters for program notifications
             if simulated_start_time := config["program_notifications"].get("simulated_start_time"):
                 self.SIMULATED_START_TIME = datetime.fromisoformat(simulated_start_time).replace(
                     tzinfo=timezone(timedelta(hours=self.TIMEZONE_OFFSET))
@@ -59,12 +65,6 @@ class Config(metaclass=Singleton):
                 self.SIMULATED_START_TIME = None
 
             self.TIME_MULTIPLIER = config["program_notifications"].get("time_multiplier", 1)
-
-            # like {'forum_hall': {'name': 'Forum Hall', 'channel_id': '123456'}}
-            self.PROGRAM_CHANNELS: dict[str, dict[str, str]] = {
-                room: {"name": details["name"], "channel_id": details["channel_id"]}
-                for room, details in config["program_notifications"]["rooms"].items()
-            }
 
             # Logging
             self.LOG_LEVEL = config.get("logging", {}).get("LOG_LEVEL", "INFO")
