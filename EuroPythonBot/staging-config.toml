@@ -23,7 +23,7 @@ PARTICIPANTS_REMOTE = 1249772565866483715
 # sponsors
 "Sponsor Conference Ticket" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE", "SPONSORS"]
 
-[additional_roles_by_variant]
+[additional_roles_by_variation]
 "Volunteer" = ["VOLUNTEERS"]
 
 [registration]

@@ -26,7 +26,7 @@ PARTICIPANTS_REMOTE = 1253767144265482283
 # speakers
 "Presenter" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE", "SPEAKERS"]
 
-[additional_roles_by_variant]
+[additional_roles_by_variation]
 "Volunteer" = ["VOLUNTEERS"]
 
 [registration]

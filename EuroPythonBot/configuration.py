@@ -45,8 +45,8 @@ class Config(metaclass=Singleton):
             self.ITEM_TO_ROLES: dict[str, list[int]] = self._translate_role_names_to_ids(
                 config["ticket_to_role"], role_name_to_id
             )
-            self.VARIANT_TO_ROLES: dict[str, list[int]] = self._translate_role_names_to_ids(
-                config["additional_roles_by_variant"], role_name_to_id
+            self.VARIATION_TO_ROLES: dict[str, list[int]] = self._translate_role_names_to_ids(
+                config["additional_roles_by_variation"], role_name_to_id
             )
 
             # Logging
