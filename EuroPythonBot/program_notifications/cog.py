@@ -26,7 +26,8 @@ class ProgramNotificationsCog(commands.Cog):
         # These won't work if we decide to offer program notifications
         # for tutorial days, because there are multiple sessions
         # with the same code on different times. Because they have
-        # multiple slots.
+        # multiple slots. A better approach would be to use a combination
+        # of session code and start time as the hash.
         self.notified_sessions = set()
         self.notified_sessions_all_rooms = set()
 
