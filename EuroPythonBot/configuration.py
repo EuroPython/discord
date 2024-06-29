@@ -40,7 +40,7 @@ class Config(metaclass=Singleton):
 
             # Pretix
             self.PRETIX_BASE_URL = config["pretix"]["PRETIX_BASE_URL"]
-            self.TICKET_TO_ROLE = self._parse_ticket_mapping(
+            self.ITEM_TO_ROLES: dict[str, list[int]] = self._parse_ticket_mapping(
                 config["ticket_to_role"], config["roles"]
             )
 
