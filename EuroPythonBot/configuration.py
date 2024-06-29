@@ -60,7 +60,8 @@ class Config(metaclass=Singleton):
 
             self.TIME_MULTIPLIER = config["program_notifications"].get("time_multiplier", 1)
 
-            self.PROGRAM_CHANNELS = {
+            # like {'forum_hall': {'name': 'Forum Hall', 'channel_id': '123456'}}
+            self.PROGRAM_CHANNELS: dict[str, dict[str, str]] = {
                 room: {"name": details["name"], "channel_id": details["channel_id"]}
                 for room, details in config["program_notifications"]["rooms"].items()
             }
