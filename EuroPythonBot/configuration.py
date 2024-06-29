@@ -47,7 +47,7 @@ class Config(metaclass=Singleton):
 
             # Program Notifications
             self.PROGRAM_API_URL = config["program_notifications"]["api_url"]
-            self.TIMEZONE_OFFSET = config["program_notifications"]["timezone"]
+            self.TIMEZONE_OFFSET = config["program_notifications"]["timezone_offset"]
             self.SCHEDULE_CACHE_FILE = Path(config["program_notifications"]["schedule_cache_file"])
 
             # Optional testing parameters
