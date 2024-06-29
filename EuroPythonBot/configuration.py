@@ -53,7 +53,7 @@ class Config(metaclass=Singleton):
             self.LOG_LEVEL = config.get("logging", {}).get("LOG_LEVEL", "INFO")
 
         except KeyError:
-            _logger.critical(
+            _logger.exception(
                 "Error encountered while reading '%s'. Ensure that it contains the necessary"
                 " configuration fields. If you are using a local override of the main configuration"
                 " file, please compare the fields in it against the main `config.toml` file.",
