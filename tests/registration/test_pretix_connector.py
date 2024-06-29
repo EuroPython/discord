@@ -68,8 +68,12 @@ async def create_pretix_app_mock(
 async def pretix_mock(aiohttp_client, unused_tcp_port_factory) -> PretixMock:
     return await create_pretix_app_mock(
         response_factories={
-            "/items": lambda: web.json_response(json.loads(mock_items_file.read_text())),
-            "/orders": lambda: web.json_response(json.loads(mock_orders_file.read_text())),
+            "/items": lambda: web.json_response(
+                json.loads(mock_items_file.read_text(encoding="UTF-8"))
+            ),
+            "/orders": lambda: web.json_response(
+                json.loads(mock_orders_file.read_text(encoding="UTF-8"))
+            ),
         },
         aiohttp_client=aiohttp_client,
         unused_tcp_port_factory=unused_tcp_port_factory,
@@ -171,7 +175,9 @@ async def test_get_ticket_ignores_unpaid_orders(pretix_mock):
 async def test_positions_without_name_are_ignored(aiohttp_client, unused_tcp_port_factory):
     pretix_mock = await create_pretix_app_mock(
         response_factories={
-            "/items": lambda: web.json_response(json.loads(mock_items_file.read_text())),
+            "/items": lambda: web.json_response(
+                json.loads(mock_items_file.read_text(encoding="UTF-8"))
+            ),
             "/orders": lambda: web.json_response(
                 {
                     "next": None,
@@ -237,7 +243,9 @@ async def test_pagination(aiohttp_client, unused_tcp_port_factory):
                     ],
                 }
             ),
-            "/orders": lambda: web.json_response(json.loads(mock_orders_file.read_text())),
+            "/orders": lambda: web.json_response(
+                json.loads(mock_orders_file.read_text(encoding="UTF-8"))
+            ),
         },
         port=port,
         aiohttp_client=aiohttp_client,
@@ -304,7 +312,9 @@ async def test_api_error_responses_are_raised(aiohttp_client, unused_tcp_port_fa
                 {"error": "Crash"},
                 status=HTTPStatus.INTERNAL_SERVER_ERROR,
             ),
-            "/orders": lambda: web.json_response(json.loads(mock_orders_file.read_text())),
+            "/orders": lambda: web.json_response(
+                json.loads(mock_orders_file.read_text(encoding="UTF-8"))
+            ),
         },
         aiohttp_client=aiohttp_client,
         unused_tcp_port_factory=unused_tcp_port_factory,
