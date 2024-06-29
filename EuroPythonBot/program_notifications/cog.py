@@ -87,11 +87,7 @@ class ProgramNotificationsCog(commands.Cog):
             channel = self.bot.get_channel(int(channel_id))
             for i in range(0, len(embeds), 10):  # Split embeds into chunks of 10
                 await channel.send(
-                    content=(
-                        f"# Sessions starting in 5 minutes @ {room_name}"
-                        if len(embeds) > 1
-                        else f"# Session starting in 5 minutes @ {room_name}"
-                    ),
+                    content=f"# Starting in 5 minutes @ {room_name}",
                     embeds=embeds[i : i + 10],
                 )
 
