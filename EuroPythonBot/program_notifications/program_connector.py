@@ -7,7 +7,7 @@ from pathlib import Path
 import aiofiles
 import aiohttp
 
-from program_notifications.models import Schedule, Session
+from program_notifications.models import Schedule, Session, Break
 
 _logger = logging.getLogger(f"bot.{__name__}")
 
@@ -35,13 +35,13 @@ class ProgramConnector:
         Parse the schedule data and return a dictionary with
         the sessions grouped by date.
         """
-        schedule = Schedule(**schedule)
+        schedule: Schedule = Schedule.model_validate(schedule)
 
         sessions_by_day = {}
         for day, day_schedule in schedule.days.items():
             sessions = []
             for event in day_schedule.events:
-                if event.event_type != "session":
+                if isinstance(event, Break):
                     continue
                 sessions.append(event)
             sessions_by_day[day] = sessions
