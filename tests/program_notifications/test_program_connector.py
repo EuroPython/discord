@@ -36,18 +36,6 @@ async def test_fetch_schedule(tmp_path):
 
 
 @pytest.mark.asyncio
-async def test_load_schedule_from_cache(tmp_path):
-    connector = ProgramConnector(
-        api_url=API_URL,
-        timezone_offset=TIMEZONE_OFFSET,
-        cache_file=tmp_path / "test_cache_schedule.json",
-    )
-    await connector.fetch_schedule()  # Ensure cache file is populated
-    await connector.load_schedule_from_cache()
-    assert connector.sessions_by_day is not None
-
-
-@pytest.mark.asyncio
 async def test_get_now(tmp_path):
     simulated_start_time = datetime(
         2024, 7, 10, 9, 0, tzinfo=timezone(timedelta(hours=TIMEZONE_OFFSET))

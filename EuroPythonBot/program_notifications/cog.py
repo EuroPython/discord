@@ -1,6 +1,5 @@
 import logging
 
-import aiohttp
 from discord import Client
 from discord.ext import commands, tasks
 
@@ -54,16 +53,7 @@ class ProgramNotificationsCog(commands.Cog):
     @tasks.loop(minutes=5)
     async def fetch_schedule(self):
         _logger.info("Starting the periodic schedule update...")
-        try:
-            await self.connector.fetch_schedule()
-            _logger.info("Finished the periodic schedule update.")
-        except aiohttp.ClientError as e:
-            _logger.error(f"Failed to fetch schedule: {e}. Trying to load from cache...")
-            try:
-                await self.connector.load_schedule_from_cache()
-                _logger.info("Loaded the schedule from cache.")
-            except FileNotFoundError:
-                _logger.critical("Failed to load schedule from cache.")
+        await self.connector.fetch_schedule()
 
     @tasks.loop(seconds=1)
     async def notify_sessions(self):

@@ -17,18 +17,18 @@ class ProgramConnector:
         self,
         api_url: str,
         timezone_offset: int,
-        cache_file: str,
+        cache_file: Path,
         time_multiplier: int = 1,
         simulated_start_time: datetime | None = None,
     ) -> None:
         self._api_url = api_url
         self._timezone_offset = timezone_offset
-        self._cache_file = Path(cache_file)
+        self._cache_file = cache_file
         self._time_multiplier = time_multiplier
         self._simulated_start_time = simulated_start_time
         self._real_start_time = datetime.now(tz=timezone(timedelta(hours=timezone_offset)))
         self._fetch_lock = asyncio.Lock()
-        self.sessions_by_day: dict[datetime, list[Session]] | None = None
+        self.sessions_by_day: dict[date, list[Session]] | None = None
 
     async def parse_schedule(self, schedule: dict) -> dict[date, list[Session]]:
         """
@@ -57,34 +57,45 @@ class ProgramConnector:
             try:
                 async with aiohttp.ClientSession() as session:
                     async with session.get(self._api_url) as response:
-                        if response.status == 200:
-                            schedule = await response.json()
+                        response.raise_for_status()
+                        schedule = await response.json()
 
-                            # write schedule to file in case the API goes down
-                            Path(self._cache_file).parent.mkdir(exist_ok=True, parents=True)
-                            async with aiofiles.open(self._cache_file, "w") as f:
-                                await f.write(json.dumps(schedule, indent=2))
+            except aiohttp.ClientError as e:
+                _logger.warning(f"Error fetching schedule: {e}.")
 
-                        else:
-                            raise aiohttp.ClientResponseError(
-                                message=response.reason,
-                                history=response.history,
-                                request_info=response.request_info,
-                            )
+                if self.sessions_by_day is not None:
+                    _logger.info("Schedule not updated, using the one loaded in memory.")
+                    return
 
-            except (aiohttp.ClientResponseError, aiohttp.ClientConnectorError) as e:
-                raise aiohttp.ClientError(e)
+                self.sessions_by_day = await self._get_schedule_from_cache()
+                _logger.info("Schedule loaded from cache file.")
+                return
+
+            _logger.info("Schedule fetched successfully.")
+
+            # write schedule to file in case the API goes down
+            _logger.info(f"Writing schedule to {self._cache_file}...")
+            Path(self._cache_file).parent.mkdir(exist_ok=True, parents=True)
+            async with aiofiles.open(self._cache_file, "w") as f:
+                await f.write(json.dumps(schedule, indent=2))
+            _logger.info("Schedule written to cache file.")
 
             self.sessions_by_day = await self.parse_schedule(schedule)
+            _logger.info("Schedule parsed and loaded.")
 
-    async def load_schedule_from_cache(self) -> None:
+    async def _get_schedule_from_cache(self) -> dict[date, list[Session]]:
         """
-        Load schedule data from a file.
+        Get the schedule data from the cache file.
         """
-        async with aiofiles.open(self._cache_file, "r") as f:
-            schedule = json.loads(await f.read())
+        try:
+            _logger.info(f"Getting schedule from cache file {self._cache_file}...")
+            async with aiofiles.open(self._cache_file, "r") as f:
+                schedule = json.loads(await f.read())
 
-        self.sessions_by_day = await self.parse_schedule(schedule)
+            return await self.parse_schedule(schedule)
+
+        except FileNotFoundError:
+            _logger.error("Schedule cache file not found and no schedule is already loaded.")
 
     async def _get_now(self) -> datetime:
         """Get the current time in the conference timezone."""
