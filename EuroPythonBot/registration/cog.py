@@ -75,8 +75,10 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
 
         role_ids = set()
         for ticket in tickets:
-            if ticket.type in config.TICKET_TO_ROLE:
-                role_ids.update(config.TICKET_TO_ROLE[ticket.type])
+            if ticket.type in config.ITEM_TO_ROLES:
+                role_ids.update(config.ITEM_TO_ROLES[ticket.type])
+            if ticket.variation in config.VARIATION_TO_ROLES:
+                role_ids.update(config.VARIATION_TO_ROLES[ticket.variation])
 
         if not role_ids:
             await self.log_error_to_user(interaction, "No ticket found.")

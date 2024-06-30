@@ -5,29 +5,29 @@
             "code": "BR7UH",
             "status": "p",
             "positions": [
-                {"order": "BR7UH", "item": 339041, "attendee_name": "Eva Nováková"},
-                {"order": "BR7UH", "item": 339041, "attendee_name": "Jan Novák"}
+                {"order": "BR7UH", "item": 339041, "variation": 163246, "attendee_name": "Eva Nováková"},
+                {"order": "BR7UH", "item": 339041, "variation": 163247, "attendee_name": "Jan Novák"}
             ]
         },
         {
             "code": "PFZBT",
             "status": "e",
             "positions": [
-                {"order": "PFZBT", "item": 163253, "attendee_name": "Erika Mustermann"}
+                {"order": "PFZBT", "item": 339042, "variation": 163253, "attendee_name": "Erika Mustermann"}
             ]
         },
         {
             "code": "PKBBT",
             "status": "c",
             "positions": [
-                {"order": "PKBBT", "item": 163247, "attendee_name": "Jane Doe"}
+                {"order": "PKBBT", "item": 339041, "variation": null, "attendee_name": "Jane Doe"}
             ]
         },
         {
             "code": "RCZN9",
             "status": "p",
             "positions": [
-                {"order": "RCZN9", "item": 339042, "attendee_name": "Maija Meikäläinen"}
+                {"order": "RCZN9", "item": 339042, "variation": null, "attendee_name": "Maija Meikäläinen"}
             ]
         }
     ]
