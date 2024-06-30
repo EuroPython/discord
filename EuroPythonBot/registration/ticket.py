@@ -21,6 +21,7 @@ class Ticket:
     order: str
     name: str
     type: str
+    variation: str | None
 
     @property
     def key(self) -> str:

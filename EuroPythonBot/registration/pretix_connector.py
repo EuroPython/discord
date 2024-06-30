@@ -67,8 +67,18 @@ class PretixConnector:
                 item = self.items_by_id[position.item_id]
                 item_name = item.names_by_locale["en"]
 
-                ticket = Ticket(order=order.id, name=position.attendee_name, type=item_name)
+                if position.variation_id is not None:
+                    variation = self.items_by_id[position.variation_id]
+                    variation_name = variation.names_by_locale["en"]
+                else:
+                    variation_name = None
 
+                ticket = Ticket(
+                    order=order.id,
+                    name=position.attendee_name,
+                    type=item_name,
+                    variation=variation_name,
+                )
                 if order.is_paid:
                     self.tickets_by_key[ticket.key].append(ticket)
                 elif ticket.key in self.tickets_by_key:  # remove cancelled tickets

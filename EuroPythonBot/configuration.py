@@ -41,16 +41,27 @@ class Config(metaclass=Singleton):
 
             # Pretix
             self.PRETIX_BASE_URL = config["pretix"]["PRETIX_BASE_URL"]
-            self.TICKET_TO_ROLE = self._parse_ticket_mapping(
-                config["ticket_to_role"], config["roles"]
+
+            role_name_to_id: dict[str, int] = config["roles"]
+            self.ITEM_TO_ROLES: dict[str, list[int]] = self._translate_role_names_to_ids(
+                config["ticket_to_role"], role_name_to_id
+            )
+            self.VARIATION_TO_ROLES: dict[str, list[int]] = self._translate_role_names_to_ids(
+                config["additional_roles_by_variation"], role_name_to_id
             )
 
             # Program Notifications
-            self.PROGRAM_API_URL = config["program_notifications"]["api_url"]
-            self.TIMEZONE_OFFSET = config["program_notifications"]["timezone"]
+            self.PROGRAM_API_URL: str = config["program_notifications"]["api_url"]
+            self.TIMEZONE_OFFSET: int = config["program_notifications"]["timezone_offset"]
             self.SCHEDULE_CACHE_FILE = Path(config["program_notifications"]["schedule_cache_file"])
 
-            # Optional testing parameters
+            # like {'forum_hall': {'name': 'Forum Hall', 'channel_id': '123456'}}
+            self.PROGRAM_CHANNELS: dict[str, dict[str, str]] = {
+                room: {"name": details["name"], "channel_id": details["channel_id"]}
+                for room, details in config["program_notifications"]["rooms"].items()
+            }
+
+            # optional testing parameters for program notifications
             if simulated_start_time := config["program_notifications"].get("simulated_start_time"):
                 self.SIMULATED_START_TIME = datetime.fromisoformat(simulated_start_time).replace(
                     tzinfo=timezone(timedelta(hours=self.TIMEZONE_OFFSET))
@@ -58,18 +69,13 @@ class Config(metaclass=Singleton):
             else:
                 self.SIMULATED_START_TIME = None
 
-            self.TIME_MULTIPLIER = config["program_notifications"].get("time_multiplier", 1)
-
-            self.PROGRAM_CHANNELS = {
-                room: {"name": details["name"], "channel_id": details["channel_id"]}
-                for room, details in config["program_notifications"]["rooms"].items()
-            }
+            self.FAST_MODE: bool = config["program_notifications"].get("fast_mode", False)
 
             # Logging
             self.LOG_LEVEL = config.get("logging", {}).get("LOG_LEVEL", "INFO")
 
         except KeyError:
-            _logger.critical(
+            _logger.exception(
                 "Error encountered while reading '%s'. Ensure that it contains the necessary"
                 " configuration fields. If you are using a local override of the main configuration"
                 " file, please compare the fields in it against the main `config.toml` file.",
@@ -78,22 +84,17 @@ class Config(metaclass=Singleton):
             sys.exit(-1)
 
     @staticmethod
-    def _parse_ticket_mapping(
-        mapping: dict[str, list[str]], roles: dict[str, int]
+    def _translate_role_names_to_ids(
+        mapping: dict[str, list[str]], role_ids_by_name: dict[str, int]
     ) -> dict[str, list[int]]:
-        """Parse the ticket mappig from role names to role ids."""
-        ticket_mapping = {}
+        """Parse the ticket mapping from role names to role ids."""
+        ticket_to_role_ids = {}
 
-        for ticket_type, roles_as_strings in mapping.items():
-            ticket_type = ticket_type.replace("_", " ")  # modify the type name
-            roles_ids = [
-                roles.get(role_name) for role_name in roles_as_strings
-            ]  # sub names for ids
+        for ticket_type, roles in mapping.items():
+            roles_ids = [role_ids_by_name[role] for role in roles]
+            ticket_to_role_ids[ticket_type] = roles_ids
 
-            assert all(roles_ids), "Unknown role in ticket to role maping."
-            ticket_mapping[ticket_type] = roles_ids
-
-        return ticket_mapping
+        return ticket_to_role_ids
 
     def _get_config_path(self, base_path: Path) -> Path:
         """Get the path to the relevant configuration file.
