@@ -1,6 +1,7 @@
 import json
 import time
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
+from http import HTTPStatus
 from pathlib import Path
 
 import aiofiles
@@ -32,7 +33,7 @@ async def program_connector(cache_file):
 
 
 @pytest.fixture
-async def setup_mock_server(aiohttp_client, unused_tcp_port_factory, mock_schedule):
+async def mock_client(aiohttp_client, unused_tcp_port_factory, mock_schedule):
     async def mock_api_handler(request):
         return web.json_response(mock_schedule)
 
@@ -45,21 +46,25 @@ async def setup_mock_server(aiohttp_client, unused_tcp_port_factory, mock_schedu
     return client
 
 
+@pytest.fixture
+async def mock_schedule_url(mock_client):
+    return str(mock_client.make_url("/schedule"))
+
+
 @pytest.mark.asyncio
 async def test_parse_schedule(program_connector, mock_schedule):
     sessions_by_day = await program_connector.parse_schedule(mock_schedule)
 
     assert len(sessions_by_day) == 3
 
-    assert len(sessions_by_day[datetime(2024, 7, 10).date()]) == 4
-    assert len(sessions_by_day[datetime(2024, 7, 11).date()]) == 3
-    assert len(sessions_by_day[datetime(2024, 7, 12).date()]) == 3
+    assert len(sessions_by_day[date(2024, 7, 10)]) == 4
+    assert len(sessions_by_day[date(2024, 7, 11)]) == 3
+    assert len(sessions_by_day[date(2024, 7, 12)]) == 3
 
 
 @pytest.mark.asyncio
-async def test_fetch_schedule(program_connector, setup_mock_server, cache_file, mock_schedule):
-    client = setup_mock_server
-    program_connector._api_url = str(client.make_url("/schedule"))
+async def test_fetch_schedule(program_connector, mock_schedule_url, cache_file, mock_schedule):
+    program_connector._api_url = mock_schedule_url
 
     await program_connector.fetch_schedule()
 
@@ -76,20 +81,19 @@ async def test_get_schedule_from_cache(program_connector, mock_schedule, cache_f
     sessions_by_day = await program_connector._get_schedule_from_cache()
 
     assert len(sessions_by_day) == 3
-    assert len(sessions_by_day[datetime(2024, 7, 10).date()]) == 4
-    assert len(sessions_by_day[datetime(2024, 7, 11).date()]) == 3
-    assert len(sessions_by_day[datetime(2024, 7, 12).date()]) == 3
+    assert len(sessions_by_day[date(2024, 7, 10)]) == 4
+    assert len(sessions_by_day[date(2024, 7, 11)]) == 3
+    assert len(sessions_by_day[date(2024, 7, 12)]) == 3
 
 
 @pytest.mark.asyncio
-async def test_get_sessions_by_date(program_connector, setup_mock_server):
-    client = setup_mock_server
-    program_connector._api_url = str(client.make_url("/schedule"))
+async def test_get_sessions_by_date(program_connector, mock_schedule_url):
+    program_connector._api_url = mock_schedule_url
 
     await program_connector.fetch_schedule()
 
     # Test for July 10th
-    sessions = await program_connector.get_sessions_by_date(datetime(2024, 7, 10).date())
+    sessions = await program_connector.get_sessions_by_date(date(2024, 7, 10))
     assert len(sessions) == 4
     assert sessions[0].title == "Wednesday Registration & Welcome @ Forum Hall Foyer 1st Floor"
     assert (
@@ -99,28 +103,27 @@ async def test_get_sessions_by_date(program_connector, setup_mock_server):
     assert sessions[2].title == "Learning to code in the age of AI"
 
     # Test for July 11th
-    sessions = await program_connector.get_sessions_by_date(datetime(2024, 7, 11).date())
+    sessions = await program_connector.get_sessions_by_date(date(2024, 7, 11))
     assert len(sessions) == 3
     assert sessions[0].title == "Thursday Registration & Welcome @ Forum Hall Foyer 1st Floor"
     assert sessions[1].title == "Why should we all be hyped about inclusive leadership?"
     assert sessions[2].title == "Rapid Prototyping & Proof of Concepts: Django is all we need"
 
     # Test for July 12th
-    sessions = await program_connector.get_sessions_by_date(datetime(2024, 7, 12).date())
+    sessions = await program_connector.get_sessions_by_date(date(2024, 7, 12))
     assert len(sessions) == 3
     assert sessions[0].title == "Friday Registration & Welcome @ Forum Hall Foyer 1st Floor"
     assert sessions[1].title == "Healthy code for healthy teams (or the other way around)"
     assert sessions[2].title == "Insights and Experiences of Packaging Python Binary Extensions"
 
     # Test for a day with no sessions
-    sessions = await program_connector.get_sessions_by_date(datetime(2024, 7, 13).date())
+    sessions = await program_connector.get_sessions_by_date(date(2024, 7, 13))
     assert len(sessions) == 0
 
 
 @pytest.mark.asyncio
-async def test_get_upcoming_sessions(program_connector, setup_mock_server):
-    client = setup_mock_server
-    program_connector._api_url = str(client.make_url("/schedule"))
+async def test_get_upcoming_sessions(program_connector, mock_schedule_url):
+    program_connector._api_url = mock_schedule_url
 
     await program_connector.fetch_schedule()
 
@@ -164,8 +167,7 @@ async def test_fetch_schedule_error_handling(
     program_connector, unused_tcp_port_factory, aiohttp_client
 ):
     async def mock_api_handler(request):
-        # should be higher than 400
-        return web.Response(status=500)
+        return web.Response(status=HTTPStatus.INTERNAL_SERVER_ERROR)
 
     app = web.Application()
     app.router.add_get("/schedule", mock_api_handler)
@@ -182,13 +184,12 @@ async def test_fetch_schedule_error_handling(
 
 @pytest.mark.asyncio
 async def test_get_sessions_by_date_with_empty_schedule(program_connector):
-    sessions = await program_connector.get_sessions_by_date(datetime(2024, 7, 10).date())
+    sessions = await program_connector.get_sessions_by_date(date(2024, 7, 10))
     assert len(sessions) == 0
 
 
 @pytest.mark.asyncio
-async def test_get_now(program_connector):
-    # Test with simulated time
+async def test_get_now_with_simulation(program_connector):
     simulated_start_time = datetime(2024, 7, 10, 8, 0, 0, tzinfo=timezone.utc)
     program_connector._simulated_start_time = simulated_start_time
     program_connector._real_start_time = datetime.now(tz=timezone.utc)
@@ -197,11 +198,9 @@ async def test_get_now(program_connector):
     # The simulated time should be less than the current time since the time is going backwards
     assert await program_connector._get_now() < simulated_start_time
 
-    # Test with no simulated time
-    program_connector._simulated_start_time = None
-    program_connector._real_start_time = datetime.now(tz=timezone.utc)
-    program_connector._time_multiplier = 1
 
+@pytest.mark.asyncio
+async def test_get_now_without_simulation(program_connector):
     now = await program_connector._get_now()
     time.sleep(0.1)
     assert now < datetime.now(tz=timezone.utc)
