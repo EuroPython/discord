@@ -113,17 +113,14 @@ class ProgramConnector:
             await self.fetch_schedule()
         return self.sessions_by_day[date_now]
 
-    async def get_upcoming_sessions_for_room(self, room: str) -> list[Session]:
+    async def get_upcoming_sessions(self) -> list[Session]:
         # upcoming sessions are those that start in 5 minutes or less
         # and the start time is after the current time
         now = await self._get_now()
-
         _logger.debug(f"Time now: {now}")
 
         sessions = await self.get_sessions_by_date(now.date())
 
         return [
-            session
-            for session in sessions
-            if room in session.rooms and now < session.start <= now + timedelta(minutes=5)
+            session for session in sessions if now < session.start <= now + timedelta(minutes=5)
         ]

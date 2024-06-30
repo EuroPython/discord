@@ -48,8 +48,8 @@ schedule_cache_file = "schedule.json"
 # simulated_start_time = "2024-07-10T07:30:00"
 # time_multiplier = 60
 
-[program_notifications.rooms.all_rooms]
-name = "All Rooms"
+[program_notifications.rooms.main_channel]
+name = "Main Channel"
 channel_id = "1234839795260330064"
 
 [program_notifications.rooms.forum_hall]

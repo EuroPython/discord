@@ -46,7 +46,7 @@ class Session(BaseModel):
     duration: int
 
     def __hash__(self) -> int:
-        return hash(self.code)
+        return hash(self.code + str(self.start))
 
 
 class Speaker(BaseModel):
