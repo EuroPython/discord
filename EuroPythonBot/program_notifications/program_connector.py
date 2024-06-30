@@ -7,7 +7,7 @@ from pathlib import Path
 import aiofiles
 import aiohttp
 
-from program_notifications.models import Schedule, Session, Break
+from program_notifications.models import Break, Schedule, Session
 
 _logger = logging.getLogger(f"bot.{__name__}")
 
@@ -102,10 +102,7 @@ class ProgramConnector:
         # Calling this for every room makes it miss the 5 minute window,
         # if the time multiplier is too high.
         if self._simulated_start_time:
-            elapsed = (
-                datetime.now(tz=self._timezone)
-                - self._real_start_time
-            )
+            elapsed = datetime.now(tz=self._timezone) - self._real_start_time
             simulated_now = self._simulated_start_time + elapsed * self._time_multiplier
             return simulated_now.astimezone(self._timezone)
         else:
@@ -128,6 +125,5 @@ class ProgramConnector:
         return [
             session
             for session in sessions
-            if room in session.rooms
-            and now < session.start <= now + timedelta(minutes=5)
+            if room in session.rooms and now < session.start <= now + timedelta(minutes=5)
         ]
