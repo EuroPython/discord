@@ -128,7 +128,9 @@ class ProgramConnector:
         # upcoming sessions are those that start in 5 minutes or less
         # and the start time is after the current time
         now = await self._get_now()
-        _logger.debug(f"Time now: {now}")
+
+        if self._simulated_start_time:
+            _logger.debug(f"Simulated time now: {now}")
 
         sessions = await self.get_sessions_by_date(now.date())
 
