@@ -129,6 +129,5 @@ class ProgramConnector:
             session
             for session in sessions
             if room in session.rooms
-            and session.start - now <= timedelta(minutes=5)
-            and session.start > now
+            and now < session.start <= now + timedelta(minutes=5)
         ]
