@@ -114,13 +114,16 @@ class ProgramConnector:
         if self.sessions_by_day is None:
             await self.fetch_schedule()
 
+        sessions_on_day = []
+
         try:
             sessions_on_day = self.sessions_by_day[date_now]
         except KeyError:
             # debug to keep the logs clean,
             # because this is expected on non-conference days
             _logger.debug(f"No sessions found on {date_now}")
-            sessions_on_day = []
+        except TypeError:
+            _logger.error("Schedule data is not loaded.")
 
         return sessions_on_day
 
