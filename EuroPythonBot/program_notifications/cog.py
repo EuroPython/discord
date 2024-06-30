@@ -29,7 +29,7 @@ class ProgramNotificationsCog(commands.Cog):
     async def on_ready(self):
         if config.SIMULATED_START_TIME:
             _logger.info("Running in simulated time mode.")
-            _logger.info(f"Will purge all room channels to avoid pile-up of test notifications.")
+            _logger.info("Will purge all room channels to avoid pile-up of test notifications.")
             await self.purge_all_room_channels()
             _logger.debug(f"Simulated start time: {config.SIMULATED_START_TIME}")
             _logger.debug(f"Fast mode: {config.FAST_MODE}")
@@ -90,7 +90,7 @@ class ProgramNotificationsCog(commands.Cog):
             # Prefix the first message to the main channel with a header
             if first_message:
                 await self.notify_room(
-                    "Main Channel", embed, content=f"# Sessions starting in 5 minutes:"
+                    "Main Channel", embed, content="# Sessions starting in 5 minutes:"
                 )
                 first_message = False
             else:
