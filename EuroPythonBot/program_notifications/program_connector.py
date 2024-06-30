@@ -113,7 +113,16 @@ class ProgramConnector:
     async def get_sessions_by_date(self, date_now: date) -> list[Session]:
         if self.sessions_by_day is None:
             await self.fetch_schedule()
-        return self.sessions_by_day[date_now]
+
+        try:
+            sessions_on_day = self.sessions_by_day[date_now]
+        except KeyError:
+            # debug to keep the logs clean,
+            # because this is expected on non-conference days
+            _logger.debug(f"No sessions found on {date_now}")
+            sessions_on_day = []
+
+        return sessions_on_day
 
     async def get_upcoming_sessions(self) -> list[Session]:
         # upcoming sessions are those that start in 5 minutes or less
