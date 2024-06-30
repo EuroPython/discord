@@ -9,7 +9,7 @@ from registration.ticket import Ticket
 def test_with_empty_file(tmp_path: Path) -> None:
     logger = RegistrationLogger(tmp_path / "registrations.txt")
 
-    assert not logger.is_registered(Ticket("ABC01", "John Doe", "Tutorials"))
+    assert not logger.is_registered(Ticket("ABC01", "John Doe", "Business", "Tutorials"))
 
 
 def test_with_existing_file(tmp_path: Path) -> None:
@@ -17,14 +17,14 @@ def test_with_existing_file(tmp_path: Path) -> None:
 
     logger = RegistrationLogger(tmp_path / "registrations.txt")
 
-    assert logger.is_registered(Ticket("ABC01", "John Doe", "Tutorials"))
+    assert logger.is_registered(Ticket("ABC01", "John Doe", "Business", "Tutorials"))
 
 
 @pytest.mark.asyncio
 async def test_register_ticket_on_empty_log(tmp_path: Path) -> None:
     logger = RegistrationLogger(tmp_path / "registrations.txt")
 
-    ticket = Ticket("ABC01", "John Doe", "Tutorials")
+    ticket = Ticket("ABC01", "John Doe", "Business", "Tutorials")
 
     await logger.mark_as_registered(ticket)
 
@@ -36,7 +36,7 @@ async def test_register_ticket_on_empty_log(tmp_path: Path) -> None:
 async def test_register_ticket_with_existing_file(tmp_path: Path) -> None:
     logger = RegistrationLogger(tmp_path / "registrations.txt")
 
-    ticket = Ticket("ABC01", "John Doe", "Tutorials")
+    ticket = Ticket("ABC01", "John Doe", "Business", "Tutorials")
 
     await logger.mark_as_registered(ticket)
 
@@ -50,7 +50,7 @@ async def test_register_ticket_with_existing_log(tmp_path: Path) -> None:
 
     logger = RegistrationLogger(tmp_path / "registrations.txt")
 
-    ticket = Ticket("ABC02", "Jane Doe", "Tutorials")
+    ticket = Ticket("ABC02", "Jane Doe", "Business", "Tutorials")
 
     await logger.mark_as_registered(ticket)
 
@@ -62,7 +62,7 @@ async def test_register_ticket_with_existing_log(tmp_path: Path) -> None:
 async def test_register_already_registered_ticket(tmp_path: Path) -> None:
     logger = RegistrationLogger(tmp_path / "registrations.txt")
 
-    ticket = Ticket("ABC02", "Jane Doe", "Tutorials")
+    ticket = Ticket("ABC02", "Jane Doe", "Business", "Tutorials")
 
     await logger.mark_as_registered(ticket)
 

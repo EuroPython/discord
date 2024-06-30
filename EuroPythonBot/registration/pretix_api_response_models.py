@@ -40,4 +40,5 @@ class PretixOrderPosition(pydantic.BaseModel):
     # https://docs.pretix.eu/en/latest/api/resources/orders.html#order-position-resource
     order_id: str = pydantic.Field(alias="order")
     item_id: int = pydantic.Field(alias="item")
+    variation_id: int | None = pydantic.Field(alias="variation")
     attendee_name: str | None
