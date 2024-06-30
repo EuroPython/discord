@@ -8,6 +8,7 @@ from program_notifications.program_connector import ProgramConnector
 
 API_URL = "https://programapi24.europython.eu/2024/schedule.json"
 TIMEZONE_OFFSET = 2
+CACHE_FILE = "test_cache_schedule.json"
 
 
 @pytest.mark.asyncio
@@ -15,7 +16,7 @@ async def test_parse_schedule(tmp_path):
     connector = ProgramConnector(
         api_url=API_URL,
         timezone_offset=TIMEZONE_OFFSET,
-        cache_file=tmp_path / "test_cache_schedule.json",
+        cache_file=tmp_path / CACHE_FILE,
     )
     async with aiohttp.ClientSession() as session:
         async with session.get(API_URL) as response:
@@ -29,7 +30,7 @@ async def test_fetch_schedule(tmp_path):
     connector = ProgramConnector(
         api_url=API_URL,
         timezone_offset=TIMEZONE_OFFSET,
-        cache_file=tmp_path / "test_cache_schedule.json",
+        cache_file=tmp_path / CACHE_FILE,
     )
     await connector.fetch_schedule()
     assert connector.sessions_by_day is not None
@@ -43,7 +44,7 @@ async def test_get_now(tmp_path):
     connector = ProgramConnector(
         api_url=API_URL,
         timezone_offset=TIMEZONE_OFFSET,
-        cache_file=tmp_path / "test_cache_schedule.json",
+        cache_file=tmp_path / CACHE_FILE,
         time_multiplier=30,
         simulated_start_time=simulated_start_time,
     )
@@ -56,7 +57,7 @@ async def test_get_sessions_by_date(tmp_path):
     connector = ProgramConnector(
         api_url=API_URL,
         timezone_offset=TIMEZONE_OFFSET,
-        cache_file=tmp_path / "test_cache_schedule.json",
+        cache_file=tmp_path / CACHE_FILE,
     )
     await connector.fetch_schedule()
     test_date = date(2024, 7, 10)  # Use a date from the available schedule
@@ -70,7 +71,7 @@ async def test_get_upcoming_sessions_for_room(tmp_path):
     connector = ProgramConnector(
         api_url=API_URL,
         timezone_offset=TIMEZONE_OFFSET,
-        cache_file=tmp_path / "test_cache_schedule.json",
+        cache_file=tmp_path / CACHE_FILE,
     )
     await connector.fetch_schedule()
 
@@ -87,7 +88,7 @@ async def test_get_sessions_by_date_key_error(tmp_path):
     connector = ProgramConnector(
         api_url=API_URL,
         timezone_offset=TIMEZONE_OFFSET,
-        cache_file=tmp_path / "test_cache_schedule.json",
+        cache_file=tmp_path / CACHE_FILE,
     )
     await connector.fetch_schedule()
     test_date = date(2024, 7, 13)  # Use a date not in the available schedule

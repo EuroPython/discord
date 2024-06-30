@@ -22,11 +22,11 @@ class ProgramConnector:
         simulated_start_time: datetime | None = None,
     ) -> None:
         self._api_url = api_url
-        self._timezone_offset = timezone_offset
+        self._timezone = timezone(timedelta(hours=timezone_offset))
         self._cache_file = cache_file
         self._time_multiplier = time_multiplier
         self._simulated_start_time = simulated_start_time
-        self._real_start_time = datetime.now(tz=timezone(timedelta(hours=timezone_offset)))
+        self._real_start_time = datetime.now(tz=self._timezone)
         self._fetch_lock = asyncio.Lock()
         self.sessions_by_day: dict[date, list[Session]] | None = None
 
@@ -103,13 +103,13 @@ class ProgramConnector:
         # if the time multiplier is too high.
         if self._simulated_start_time:
             elapsed = (
-                datetime.now(tz=timezone(timedelta(hours=self._timezone_offset)))
+                datetime.now(tz=self._timezone)
                 - self._real_start_time
             )
             simulated_now = self._simulated_start_time + elapsed * self._time_multiplier
-            return simulated_now.astimezone(timezone(timedelta(hours=self._timezone_offset)))
+            return simulated_now.astimezone(self._timezone)
         else:
-            return datetime.now(tz=timezone(timedelta(hours=self._timezone_offset)))
+            return datetime.now(tz=self._timezone)
 
     async def get_sessions_by_date(self, date_now: date) -> list[Session]:
         if self.sessions_by_day is None:
