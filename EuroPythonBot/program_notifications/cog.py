@@ -25,6 +25,12 @@ class ProgramNotificationsCog(commands.Cog):
         self.notified_sessions = set()
         _logger.info("Cog 'Program Notifications' has been initialized")
 
+    @commands.Cog.listener()
+    async def on_ready(self):
+        await self.purge_all_room_channels()
+        self.notify_sessions.start()
+        _logger.info("Cog 'Program Notifications' is ready")
+
     async def cog_load(self) -> None:
         """
         Start schedule updater task
@@ -81,15 +87,9 @@ class ProgramNotificationsCog(commands.Cog):
 
             self.notified_sessions.add(session)
 
-    async def purge_all_channels(self):
-        _logger.info("Purging all channels...")
+    async def purge_all_room_channels(self):
+        _logger.info("Purging all room channels...")
         for room in config.PROGRAM_CHANNELS.values():
             channel = self.bot.get_channel(int(room["channel_id"]))
             await channel.purge()
-        _logger.info("Purged all channels.")
-
-    @commands.Cog.listener()
-    async def on_ready(self):
-        await self.purge_all_channels()
-        self.notify_sessions.start()
-        _logger.info("Cog 'Program Notifications' is ready")
+        _logger.info("Purged all room channels channels.")
