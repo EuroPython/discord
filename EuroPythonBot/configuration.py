@@ -51,8 +51,8 @@ class Config(metaclass=Singleton):
             )
 
             # Program Notifications
-            self.PROGRAM_API_URL = config["program_notifications"]["api_url"]
-            self.TIMEZONE_OFFSET = config["program_notifications"]["timezone_offset"]
+            self.PROGRAM_API_URL: str = config["program_notifications"]["api_url"]
+            self.TIMEZONE_OFFSET: int = config["program_notifications"]["timezone_offset"]
             self.SCHEDULE_CACHE_FILE = Path(config["program_notifications"]["schedule_cache_file"])
 
             # like {'forum_hall': {'name': 'Forum Hall', 'channel_id': '123456'}}
@@ -69,7 +69,7 @@ class Config(metaclass=Singleton):
             else:
                 self.SIMULATED_START_TIME = None
 
-            self.TIME_MULTIPLIER = config["program_notifications"].get("time_multiplier", 1)
+            self.FAST_MODE: bool = config["program_notifications"].get("fast_mode", False)
 
             # Logging
             self.LOG_LEVEL = config.get("logging", {}).get("LOG_LEVEL", "INFO")

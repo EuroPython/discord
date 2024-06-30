@@ -20,14 +20,20 @@ class ProgramNotificationsCog(commands.Cog):
             timezone_offset=config.TIMEZONE_OFFSET,
             cache_file=config.SCHEDULE_CACHE_FILE,
             simulated_start_time=config.SIMULATED_START_TIME,
-            time_multiplier=config.TIME_MULTIPLIER,
+            fast_mode=config.FAST_MODE,
         )
         self.notified_sessions = set()
         _logger.info("Cog 'Program Notifications' has been initialized")
 
     @commands.Cog.listener()
     async def on_ready(self):
-        await self.purge_all_room_channels()
+        if config.SIMULATED_START_TIME:
+            _logger.info("Running in simulated time mode.")
+            _logger.info(f"Will purge all room channels to avoid pile-up of test notifications.")
+            await self.purge_all_room_channels()
+            _logger.debug(f"Simulated start time: {config.SIMULATED_START_TIME}")
+            _logger.debug(f"Fast mode: {config.FAST_MODE}")
+        _logger.info("Starting the session notifier...")
         self.notify_sessions.start()
         _logger.info("Cog 'Program Notifications' is ready")
 
@@ -40,7 +46,7 @@ class ProgramNotificationsCog(commands.Cog):
         )
         self.fetch_schedule.start()
         self.notify_sessions.change_interval(
-            seconds=await self.calculate_interval(config.TIME_MULTIPLIER)
+            seconds=2 if config.FAST_MODE and config.SIMULATED_START_TIME else 60
         )
         _logger.info("Schedule updater started and interval set for the session notifier")
 
@@ -65,13 +71,6 @@ class ProgramNotificationsCog(commands.Cog):
         channel_id = config.PROGRAM_CHANNELS[room.lower().replace(" ", "_")]["channel_id"]
         channel = self.bot.get_channel(int(channel_id))
         await channel.send(content=content, embed=embed)
-
-    async def calculate_interval(self, time_multiplier) -> int:
-        """
-        Calculate the interval for the session notifier task
-        """
-        # It should be 2 * seconds < 300, so we use 120 seconds to be safe
-        return 120 / time_multiplier
 
     @tasks.loop()
     async def notify_sessions(self):

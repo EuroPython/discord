@@ -44,9 +44,12 @@ timezone_offset = 2
 api_url = "https://programapi24.europython.eu/2024/schedule.json"
 schedule_cache_file = "schedule.json"
 
-# optional testing configuration
+# optional simulated start time for testing program notifications
 # simulated_start_time = "2024-07-10T07:30:00"
-# time_multiplier = 60
+
+# optional fast mode for faster testing of program notifications
+# will only take effect if simulated_start_time is set
+# fast_mode = true
 
 [program_notifications.rooms.main_channel]
 name = "Main Channel"
