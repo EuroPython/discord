@@ -35,9 +35,14 @@ class ProgramNotificationsCog(commands.Cog):
         """
         Start schedule updater task
         """
-        _logger.info("Starting the schedule updater...")
+        _logger.info(
+            "Starting the schedule updater and setting the interval for the session notifier..."
+        )
         self.fetch_schedule.start()
-        _logger.info("Schedule updater started")
+        self.notify_sessions.change_interval(
+            seconds=await self.calculate_interval(config.TIME_MULTIPLIER)
+        )
+        _logger.info("Schedule updater started and interval set for the session notifier")
 
     async def cog_unload(self) -> None:
         """
@@ -61,7 +66,14 @@ class ProgramNotificationsCog(commands.Cog):
         channel = self.bot.get_channel(int(channel_id))
         await channel.send(content=content, embed=embed)
 
-    @tasks.loop(seconds=1)
+    async def calculate_interval(self, time_multiplier) -> int:
+        """
+        Calculate the interval for the session notifier task
+        """
+        # It should be 2 * seconds < 300, so we use 120 seconds to be safe
+        return 120 / time_multiplier
+
+    @tasks.loop()
     async def notify_sessions(self):
         sessions: list[Session] = await self.connector.get_upcoming_sessions()
         sessions_to_notify = [
