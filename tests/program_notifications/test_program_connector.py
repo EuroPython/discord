@@ -202,5 +202,5 @@ async def test_get_now_with_simulation(program_connector):
 @pytest.mark.asyncio
 async def test_get_now_without_simulation(program_connector):
     now = await program_connector._get_now()
-    time.sleep(0.1)
+    time.sleep(0.001)  # ensure time is ticking between start and finish of this test
     assert now < datetime.now(tz=timezone.utc)
