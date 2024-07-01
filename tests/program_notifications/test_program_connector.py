@@ -193,14 +193,19 @@ async def test_get_now_with_simulation(program_connector):
     simulated_start_time = datetime(2024, 7, 10, 8, 0, 0, tzinfo=timezone.utc)
     program_connector._simulated_start_time = simulated_start_time
     program_connector._real_start_time = datetime.now(tz=timezone.utc)
+    program_connector._time_multiplier = 60
 
-    # Exaggerate how fast the time is ticking to ensure the test is valid
-    program_connector._time_multiplier = 1000
+    # ensure time is ticking between start and finish of this test
+    time.sleep(0.001)
+
     assert await program_connector._get_now() > simulated_start_time
 
 
 @pytest.mark.asyncio
 async def test_get_now_without_simulation(program_connector):
     now = await program_connector._get_now()
-    time.sleep(0.001)  # ensure time is ticking between start and finish of this test
-    assert now < datetime.now(tz=timezone.utc)
+
+    # ensure time is ticking between start and finish of this test
+    time.sleep(0.001)
+
+    assert datetime.now(tz=timezone.utc) > now
