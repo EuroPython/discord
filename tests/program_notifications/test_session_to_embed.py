@@ -29,7 +29,7 @@ def create_session_from_event(event):
         session_type=event.get("session_type"),
         slug=event.get("slug"),
         speakers=speakers,
-        start=datetime.fromisoformat(event["start"]),
+        start=event.get("start"),
         title=event.get("title"),
         track=event.get("track"),
         tweet=event.get("tweet", ""),
