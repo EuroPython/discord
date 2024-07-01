@@ -193,10 +193,10 @@ async def test_get_now_with_simulation(program_connector):
     simulated_start_time = datetime(2024, 7, 10, 8, 0, 0, tzinfo=timezone.utc)
     program_connector._simulated_start_time = simulated_start_time
     program_connector._real_start_time = datetime.now(tz=timezone.utc)
-    program_connector._time_multiplier = -60  # time goes backwards
 
-    # The simulated time should be less than the current time since the time is going backwards
-    assert await program_connector._get_now() < simulated_start_time
+    # Exaggerate how fast the time is ticking to ensure the test is valid
+    program_connector._time_multiplier = 1000
+    assert await program_connector._get_now() > simulated_start_time
 
 
 @pytest.mark.asyncio
