@@ -1,6 +1,7 @@
 import logging
 import sys
 import tomllib
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 _logger = logging.getLogger(f"bot.{__name__}")
@@ -48,6 +49,27 @@ class Config(metaclass=Singleton):
             self.VARIATION_TO_ROLES: dict[str, list[int]] = self._translate_role_names_to_ids(
                 config["additional_roles_by_variation"], role_name_to_id
             )
+
+            # Program Notifications
+            self.PROGRAM_API_URL: str = config["program_notifications"]["api_url"]
+            self.TIMEZONE_OFFSET: int = config["program_notifications"]["timezone_offset"]
+            self.SCHEDULE_CACHE_FILE = Path(config["program_notifications"]["schedule_cache_file"])
+
+            # like {'forum_hall': {'name': 'Forum Hall', 'channel_id': '123456'}}
+            self.PROGRAM_CHANNELS: dict[str, dict[str, str]] = {
+                room: {"name": details["name"], "channel_id": details["channel_id"]}
+                for room, details in config["program_notifications"]["rooms"].items()
+            }
+
+            # optional testing parameters for program notifications
+            if simulated_start_time := config["program_notifications"].get("simulated_start_time"):
+                self.SIMULATED_START_TIME = datetime.fromisoformat(simulated_start_time).replace(
+                    tzinfo=timezone(timedelta(hours=self.TIMEZONE_OFFSET))
+                )
+            else:
+                self.SIMULATED_START_TIME = None
+
+            self.FAST_MODE: bool = config["program_notifications"].get("fast_mode", False)
 
             # Logging
             self.LOG_LEVEL = config.get("logging", {}).get("LOG_LEVEL", "INFO")

@@ -1,0 +1,329 @@
+{
+  "days": {
+    "2024-07-10": {
+      "rooms": [
+        "Exhibit Hall",
+        "Forum Hall",
+        "North Hall",
+        "South Hall 2A",
+        "South Hall 2B",
+        "Terrace 2A",
+        "Terrace 2B"
+      ],
+      "events": [
+        {
+          "code": "TZWRJN",
+          "duration": 60,
+          "event_type": "session",
+          "level": "beginner",
+          "rooms": [
+            "Exhibit Hall",
+            "Forum Hall",
+            "North Hall",
+            "South Hall 2A",
+            "South Hall 2B",
+            "Terrace 2A",
+            "Terrace 2B"
+          ],
+          "session_type": "Announcements",
+          "slug": "wednesday-registration-welcome-forum-hall-foyer-1st-floor",
+          "speakers": [],
+          "start": "2024-07-10T08:00:00+00:00",
+          "title": "Wednesday Registration & Welcome @ Forum Hall Foyer 1st Floor",
+          "track": null,
+          "tweet": "",
+          "website_url": "https://ep2024.europython.eu/session/wednesday-registration-welcome-forum-hall-foyer-1st-floor"
+        },
+        {
+          "code": "WQGUTP",
+          "duration": 45,
+          "event_type": "session",
+          "level": "beginner",
+          "rooms": [
+            "Forum Hall"
+          ],
+          "session_type": "Keynote",
+          "slug": "embracing-python-ai-and-heuristics-optimal-paths-for-impactful-software",
+          "speakers": [
+            {
+              "avatar": "https://program.europython.eu/media/avatars/carol_2XdXiWK.webp",
+              "code": "HBHXB3",
+              "name": "Carol Willing",
+              "slug": "carol-willing",
+              "website_url": "https://ep2024.europython.eu/speaker/carol-willing"
+            }
+          ],
+          "start": "2024-07-10T09:30:00+00:00",
+          "title": "Embracing Python, AI, and Heuristics: Optimal Paths for Impactful Software",
+          "track": null,
+          "tweet": "",
+          "website_url": "https://ep2024.europython.eu/session/embracing-python-ai-and-heuristics-optimal-paths-for-impactful-software"
+        },
+        {
+          "duration": 30,
+          "event_type": "break",
+          "rooms": [
+            "Forum Hall",
+            "North Hall",
+            "South Hall 2A",
+            "South Hall 2B",
+            "Terrace 2A",
+            "Terrace 2B"
+          ],
+          "start": "2024-07-10T10:15:00+00:00",
+          "title": "Coffee Break"
+        },
+        {
+          "code": "3XXR79",
+          "duration": 45,
+          "event_type": "session",
+          "level": "beginner",
+          "rooms": [
+            "Terrace 2B"
+          ],
+          "session_type": "Talk (long session)",
+          "slug": "learning-to-code-in-the-age-of-ai",
+          "speakers": [
+            {
+              "avatar": "https://program.europython.eu/media/avatars/PXL_20220202_063143310_vOk18MH.jpg",
+              "code": "GZHPTE",
+              "name": "Sheena O'Connell",
+              "slug": "sheena-o-connell",
+              "website_url": "https://ep2024.europython.eu/speaker/sheena-o-connell"
+            }
+          ],
+          "start": "2024-07-10T10:45:00+00:00",
+          "title": "Learning to code in the age of AI",
+          "track": "Software Engineering & Architecture",
+          "tweet": "Across the industry, programmers of all levels are embracing AI and LLMs. But: it's still worthwhile to learn the foundations of coding. And there's a risk: some learners are using AIs as footguns and limiting their own",
+          "website_url": "https://ep2024.europython.eu/session/learning-to-code-in-the-age-of-ai"
+        },
+        {
+          "code": "ZWDDAT",
+          "duration": 45,
+          "event_type": "session",
+          "level": "advanced",
+          "rooms": [
+            "Forum Hall"
+          ],
+          "session_type": "Talk (long session)",
+          "slug": "spy-static-python-lang-fast-as-c-pythonic-as-python",
+          "speakers": [
+            {
+              "avatar": "https://program.europython.eu/media/avatars/cdc3cafa377f0e0e93fc69636021ef65_Uf9XcVF.jpg",
+              "code": "QMAPYZ",
+              "name": "Antonio Cuni",
+              "slug": "antonio-cuni",
+              "website_url": "https://ep2024.europython.eu/speaker/antonio-cuni"
+            }
+          ],
+          "start": "2024-07-10T10:45:00+00:00",
+          "title": "SPy (Static Python) lang: fast as C, Pythonic as Python",
+          "track": "Python Internals & Ecosystem",
+          "tweet": "",
+          "website_url": "https://ep2024.europython.eu/session/spy-static-python-lang-fast-as-c-pythonic-as-python"
+        }
+      ]
+    },
+    "2024-07-11": {
+      "rooms": [
+        "Exhibit Hall",
+        "Forum Hall",
+        "North Hall",
+        "South Hall 2A",
+        "South Hall 2B",
+        "Terrace 2A",
+        "Terrace 2B"
+      ],
+      "events": [
+        {
+          "code": "CFTYQ3",
+          "duration": 45,
+          "event_type": "session",
+          "level": "beginner",
+          "rooms": [
+            "Exhibit Hall",
+            "Forum Hall",
+            "North Hall",
+            "South Hall 2A",
+            "South Hall 2B",
+            "Terrace 2A",
+            "Terrace 2B"
+          ],
+          "session_type": "Announcements",
+          "slug": "thursday-registration-welcome-forum-hall-foyer-1st-floor",
+          "speakers": [],
+          "start": "2024-07-11T08:15:00+00:00",
+          "title": "Thursday Registration & Welcome @ Forum Hall Foyer 1st Floor",
+          "track": null,
+          "tweet": "",
+          "website_url": "https://ep2024.europython.eu/session/thursday-registration-welcome-forum-hall-foyer-1st-floor"
+        },
+        {
+          "code": "8FY9BC",
+          "duration": 45,
+          "event_type": "session",
+          "level": "beginner",
+          "rooms": [
+            "Forum Hall"
+          ],
+          "session_type": "Keynote",
+          "slug": "why-should-we-all-be-hyped-about-inclusive-leadership",
+          "speakers": [
+            {
+              "avatar": "https://program.europython.eu/media/avatars/DSC01436_XYwYOjf.jpg",
+              "code": "NMACLQ",
+              "name": "Tereza Iofciu",
+              "slug": "tereza-iofciu",
+              "website_url": "https://ep2024.europython.eu/speaker/tereza-iofciu"
+            }
+          ],
+          "start": "2024-07-11T09:15:00+00:00",
+          "title": "Why should we all be hyped about inclusive leadership?",
+          "track": "Education, Community & Diversity",
+          "tweet": "",
+          "website_url": "https://ep2024.europython.eu/session/why-should-we-all-be-hyped-about-inclusive-leadership"
+        },
+        {
+          "duration": 30,
+          "event_type": "break",
+          "rooms": [
+            "Forum Hall",
+            "North Hall",
+            "South Hall 2A",
+            "South Hall 2B",
+            "Terrace 2A",
+            "Terrace 2B"
+          ],
+          "start": "2024-07-11T10:00:00+00:00",
+          "title": "Coffee Break"
+        },
+        {
+          "code": "7PEXTK",
+          "duration": 45,
+          "event_type": "session",
+          "level": "intermediate",
+          "rooms": [
+            "Forum Hall"
+          ],
+          "session_type": "Talk (long session)",
+          "slug": "rapid-prototyping-proof-of-concepts-django-is-all-we-need",
+          "speakers": [
+            {
+              "avatar": "https://program.europython.eu/media/avatars/rado_I79wz8p.jpg",
+              "code": "GLMZDC",
+              "name": "Radoslav Georgiev",
+              "slug": "radoslav-georgiev",
+              "website_url": "https://ep2024.europython.eu/speaker/radoslav-georgiev"
+            }
+          ],
+          "start": "2024-07-11T10:30:00+00:00",
+          "title": "Rapid Prototyping & Proof of Concepts: Django is all we need",
+          "track": "Python Libraries & Tooling",
+          "tweet": "We know Django is great for building mature & long-lasting applications.  In this talk, we'll show that Django's actually also great for rapid prototyping & building proof of concepts.",
+          "website_url": "https://ep2024.europython.eu/session/rapid-prototyping-proof-of-concepts-django-is-all-we-need"
+        }
+      ]
+    },
+    "2024-07-12": {
+      "rooms": [
+        "Exhibit Hall",
+        "Forum Hall",
+        "North Hall",
+        "South Hall 2A",
+        "South Hall 2B",
+        "Terrace 2A",
+        "Terrace 2B"
+      ],
+      "events": [
+        {
+          "code": "JLFDLR",
+          "duration": 30,
+          "event_type": "session",
+          "level": "beginner",
+          "rooms": [
+            "Exhibit Hall",
+            "Forum Hall",
+            "North Hall",
+            "South Hall 2A",
+            "South Hall 2B",
+            "Terrace 2A",
+            "Terrace 2B"
+          ],
+          "session_type": "Announcements",
+          "slug": "friday-registration-welcome-forum-hall-foyer-1st-floor",
+          "speakers": [],
+          "start": "2024-07-12T08:45:00+00:00",
+          "title": "Friday Registration & Welcome @ Forum Hall Foyer 1st Floor",
+          "track": null,
+          "tweet": "",
+          "website_url": "https://ep2024.europython.eu/session/friday-registration-welcome-forum-hall-foyer-1st-floor"
+        },
+        {
+          "code": "3U9ZVR",
+          "duration": 45,
+          "event_type": "session",
+          "level": "beginner",
+          "rooms": [
+            "Forum Hall"
+          ],
+          "session_type": "Keynote",
+          "slug": "healthy-code-for-healthy-teams-or-the-other-way-around",
+          "speakers": [
+            {
+              "avatar": "https://program.europython.eu/media/avatars/mai_w1K4Oqt.webp",
+              "code": "8L79Y8",
+              "name": "Mai Gim\u00e9nez",
+              "slug": "mai-gimenez",
+              "website_url": "https://ep2024.europython.eu/speaker/mai-gimenez"
+            }
+          ],
+          "start": "2024-07-12T09:30:00+00:00",
+          "title": "Healthy code for healthy teams (or the other way around)",
+          "track": null,
+          "tweet": "",
+          "website_url": "https://ep2024.europython.eu/session/healthy-code-for-healthy-teams-or-the-other-way-around"
+        },
+        {
+          "duration": 30,
+          "event_type": "break",
+          "rooms": [
+            "Forum Hall",
+            "North Hall",
+            "South Hall 2A",
+            "South Hall 2B",
+            "Terrace 2A",
+            "Terrace 2B"
+          ],
+          "start": "2024-07-12T10:15:00+00:00",
+          "title": "Coffee Break"
+        },
+        {
+          "code": "HSZBDG",
+          "duration": 30,
+          "event_type": "session",
+          "level": "intermediate",
+          "rooms": [
+            "South Hall 2B"
+          ],
+          "session_type": "Talk",
+          "slug": "insights-and-experiences-of-packaging-python-binary-extensions",
+          "speakers": [
+            {
+              "avatar": "",
+              "code": "JGU3GX",
+              "name": "Goran Jelic-Cizmek",
+              "slug": "goran-jelic-cizmek",
+              "website_url": "https://ep2024.europython.eu/speaker/goran-jelic-cizmek"
+            }
+          ],
+          "start": "2024-07-12T10:45:00+00:00",
+          "title": "Insights and Experiences of Packaging Python Binary Extensions",
+          "track": "Software Engineering & Architecture",
+          "tweet": "",
+          "website_url": "https://ep2024.europython.eu/session/insights-and-experiences-of-packaging-python-binary-extensions"
+        }
+      ]
+    }
+  }
+}

@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 
 import configuration
 from cogs.ping import Ping
+from program_notifications.cog import ProgramNotificationsCog
 from registration.cog import RegistrationCog
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".secrets")
@@ -74,7 +75,7 @@ async def main():
     async with bot:
         await bot.add_cog(Ping(bot))
         await bot.add_cog(RegistrationCog(bot))
-        await bot.load_extension("extensions.programme_notifications")
+        await bot.add_cog(ProgramNotificationsCog(bot))
         await bot.load_extension("extensions.organisers")
         await bot.start(DISCORD_BOT_TOKEN)
 
