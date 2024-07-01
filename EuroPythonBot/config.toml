@@ -56,32 +56,32 @@ schedule_cache_file = "schedule.json"
 
 [program_notifications.rooms.main_channel]
 name = "Main Channel"
-channel_id = "1234839795260330064"
+channel_id = "1253767144899084439"
 
 [program_notifications.rooms.forum_hall]
 name = "Forum Hall"
-channel_id = "1234839841116782642"
+channel_id = "1253767145356005407"
 
 [program_notifications.rooms.south_hall_2a]
 name = "South Hall 2A"
-channel_id = "1234839873685295175"
+channel_id = "1253767145356005408"
 
 [program_notifications.rooms.south_hall_2b]
 name = "South Hall 2B"
-channel_id = "1234839903968301178"
+channel_id = "1253767145356005409"
 
 [program_notifications.rooms.north_hall]
 name = "North Hall"
-channel_id = "1234839930358988840"
+channel_id = "1253767145356005410"
 
 [program_notifications.rooms.terrace_2a]
 name = "Terrace 2A"
-channel_id = "1234839950764277793"
+channel_id = "1253767145356005411"
 
 [program_notifications.rooms.terrace_2b]
 name = "Terrace 2B"
-channel_id = "1234839969369952378"
+channel_id = "1253767145356005412"
 
 [program_notifications.rooms.exhibit_hall]
 name = "Exhibit Hall"
-channel_id = "1252295932154740746"
+channel_id = "1257417344221974639"
