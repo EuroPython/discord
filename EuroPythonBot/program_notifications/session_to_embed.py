@@ -44,9 +44,7 @@ def create_session_embed(session: Session) -> Embed:
             name=author["name"], icon_url=author.get("icon_url"), url=author.get("website_url")
         )
 
-    footer = _format_footer(session.start)
-    if footer:
-        embed.set_footer(text=footer)
+    embed.set_footer(text=_format_footer(session.start))
 
     return embed
 
@@ -100,7 +98,7 @@ def _format_start_time(start_time: datetime) -> str:
     return f"<t:{start_time_timestamp}:f>"
 
 
-def _format_footer(start_time: datetime) -> str | None:
+def _format_footer(start_time: datetime) -> str:
     """Create a footer with the local conference time.
 
     :param start_time: The start time
