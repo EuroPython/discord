@@ -1,55 +1,37 @@
 import json
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 import pytest
+from discord import Embed
 
 from program_notifications import session_to_embed
-from program_notifications.models import Session, Speaker
+from program_notifications.models import Schedule, Session
 
 mock_schedule_file = Path(__file__).parent / "mock_schedule.json"
 
 
 @pytest.fixture
-def mock_schedule():
+def mock_schedule() -> Schedule:
     """Fixture to load the mock schedule data."""
     with mock_schedule_file.open() as f:
-        return json.load(f)
-
-
-def create_session_from_event(event):
-    """Helper function to create a Session object from event data."""
-    speakers = [Speaker(**speaker_data) for speaker_data in event.get("speakers", [])]
-    return Session(
-        code=event.get("code"),
-        duration=event.get("duration"),
-        event_type=event.get("event_type"),
-        level=event.get("level"),
-        rooms=event.get("rooms", []),
-        session_type=event.get("session_type"),
-        slug=event.get("slug"),
-        speakers=speakers,
-        start=event.get("start"),
-        title=event.get("title"),
-        track=event.get("track"),
-        tweet=event.get("tweet", ""),
-        website_url=event.get("website_url"),
-    )
+        schedule_data = json.load(f)
+    return Schedule.model_validate(schedule_data)
 
 
 @pytest.fixture
-def sessions(mock_schedule):
+def sessions(mock_schedule) -> list[Session]:
     """Fixture to create a list of Session objects from mock data."""
     sessions = []
-    for day, day_data in mock_schedule["days"].items():
-        for event in day_data["events"]:
-            if event["event_type"] == "session":
-                sessions.append(create_session_from_event(event))
+    for day_data in mock_schedule.days.values():
+        for event in day_data.events:
+            if isinstance(event, Session):
+                sessions.append(event)
     return sessions
 
 
 @pytest.fixture
-def embeds(sessions):
+def embeds(sessions) -> list[Embed]:
     """Fixture to create a list of embeds from the sessions."""
     return [session_to_embed.create_session_embed(session) for session in sessions]
 
@@ -120,6 +102,20 @@ def test_embed_footer(sessions, embeds):
             assert embed.footer.text is None
 
 
+def test_create_author_from_speakers(sessions):
+    """Test the _create_author_from_speakers function."""
+    for session in sessions:
+        author = session_to_embed._create_author_from_speakers(session.speakers)
+        if session.speakers:
+            assert author["name"] == ", ".join(speaker.name for speaker in session.speakers)
+            assert author["icon_url"] == (
+                session.speakers[0].avatar if session.speakers[0].avatar else None
+            )  # TODO: Return None instead of empty string in the Program API
+            assert author["website_url"] == session.speakers[0].website_url
+        else:
+            assert author is None
+
+
 def test_format_title(sessions):
     """Test the _format_title function."""
     for session in sessions:
@@ -133,6 +129,12 @@ def test_format_start_time(sessions):
         formatted_start_time = session_to_embed._format_start_time(session.start)
         assert formatted_start_time.startswith("<t:")
         assert formatted_start_time.endswith(":f>")
+
+        # The following code assumes that the start time in the mock data is in UTC.
+        datetime_obj = datetime.fromtimestamp(
+            int(formatted_start_time.replace("<t:", "").replace(":f>", "")), tz=timezone.utc
+        )
+        assert datetime_obj == session.start
 
 
 def test_format_duration(sessions):
