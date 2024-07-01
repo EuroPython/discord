@@ -96,17 +96,32 @@ def test_embed_description_long(session: Session) -> None:
     )
 
 
+def test_embed_description_empty(session: Session) -> None:
+    """Test the description (tweet) of the embed when tweet is empty."""
+    session.tweet = ""
+    embed = session_to_embed.create_session_embed(session)
+    assert embed.description is None
+
+
 def test_embed_url(session: Session) -> None:
     """Test the URL of the embed."""
     embed = session_to_embed.create_session_embed(session)
     assert embed.url == "https://example.com/session"
 
 
-def test_embed_color(session: Session) -> None:
-    """Test the color of the embed."""
-    session.level = "beginner"
+@pytest.mark.parametrize(
+    "level,expected_color",
+    [
+        ("beginner", LevelColors.BEGINNER.value),
+        ("intermediate", LevelColors.INTERMEDIATE.value),
+        ("advanced", LevelColors.ADVANCED.value),
+    ],
+)
+def test_embed_color(session: Session, level: str, expected_color: int) -> None:
+    """Test the color of the embed based on session level."""
+    session.level = level
     embed = session_to_embed.create_session_embed(session)
-    assert embed.color.value == LevelColors.BEGINNER.value
+    assert embed.color.value == expected_color
 
 
 def test_embed_fields_start_time(session: Session) -> None:
@@ -244,11 +259,16 @@ def test_format_duration(session: Session) -> None:
 
 def test_format_track(session: Session) -> None:
     """Test the _format_track function."""
+    session.track = "Main Track"
     formatted_track = session_to_embed._format_track(session.track)
-    if session.track:
-        assert formatted_track == session.track
-    else:
-        assert formatted_track == _FIELD_VALUE_EMPTY
+    assert formatted_track == session.track
+
+
+def test_format_track_none(session: Session) -> None:
+    """Test the _format_track function when track is None."""
+    session.track = None
+    formatted_track = session_to_embed._format_track(session.track)
+    assert formatted_track == _FIELD_VALUE_EMPTY
 
 
 def test_format_room(session: Session) -> None:
@@ -258,16 +278,3 @@ def test_format_room(session: Session) -> None:
         assert formatted_room == ", ".join(session.rooms)
     else:
         assert formatted_room == _FIELD_VALUE_EMPTY
-
-
-def test_get_color(session: Session) -> None:
-    """Test the _get_color function."""
-    session.level = "beginner"
-    color = session_to_embed._get_color(session.level)
-    assert color == LevelColors.BEGINNER.value
-    session.level = "intermediate"
-    color = session_to_embed._get_color(session.level)
-    assert color == LevelColors.INTERMEDIATE.value
-    session.level = "advanced"
-    color = session_to_embed._get_color(session.level)
-    assert color == LevelColors.ADVANCED.value
