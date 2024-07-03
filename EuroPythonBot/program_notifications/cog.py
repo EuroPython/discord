@@ -1,10 +1,12 @@
 import logging
+from pathlib import Path
 
 from discord import Client, Embed
 from discord.ext import commands, tasks
 
 from configuration import Config
 from program_notifications import session_to_embed
+from program_notifications.livestream_connector import LivestreamConnector
 from program_notifications.models import Session
 from program_notifications.program_connector import ProgramConnector
 
@@ -15,13 +17,17 @@ _logger = logging.getLogger(f"bot.{__name__}")
 class ProgramNotificationsCog(commands.Cog):
     def __init__(self, bot):
         self.bot: Client = bot
-        self.connector = ProgramConnector(
+        self.program_connector = ProgramConnector(
             api_url=config.PROGRAM_API_URL,
             timezone_offset=config.TIMEZONE_OFFSET,
             cache_file=config.SCHEDULE_CACHE_FILE,
             simulated_start_time=config.SIMULATED_START_TIME,
             fast_mode=config.FAST_MODE,
         )
+
+        livestreams_file = Path(__file__).resolve().parent.parent.parent / "livestreams.toml"
+        self.livestream_connector = LivestreamConnector(livestreams_file)
+
         self.notified_sessions = set()
         _logger.info("Cog 'Program Notifications' has been initialized")
 
@@ -45,6 +51,7 @@ class ProgramNotificationsCog(commands.Cog):
             "Starting the schedule updater and setting the interval for the session notifier..."
         )
         self.fetch_schedule.start()
+        self.fetch_livestreams.start()
         self.notify_sessions.change_interval(
             seconds=2 if config.FAST_MODE and config.SIMULATED_START_TIME else 60
         )
@@ -62,7 +69,21 @@ class ProgramNotificationsCog(commands.Cog):
     @tasks.loop(minutes=5)
     async def fetch_schedule(self):
         _logger.info("Starting the periodic schedule update...")
-        await self.connector.fetch_schedule()
+        await self.program_connector.fetch_schedule()
+
+    @tasks.loop(minutes=5)
+    async def fetch_livestreams(self):
+        _logger.info("Starting the periodic livestream update...")
+        await self.livestream_connector.fetch_livestreams()
+        _logger.info("Finished the periodic livestream update.")
+
+    async def set_room_topic(self, room, topic: str):
+        """
+        Set the topic of a room channel
+        """
+        channel_id = config.PROGRAM_CHANNELS[room.lower().replace(" ", "_")]["channel_id"]
+        channel = self.bot.get_channel(int(channel_id))
+        await channel.edit(topic=topic)
 
     async def notify_room(self, room: str, embed: Embed, content: str = None):
         """
@@ -74,18 +95,33 @@ class ProgramNotificationsCog(commands.Cog):
 
     @tasks.loop()
     async def notify_sessions(self):
-        sessions: list[Session] = await self.connector.get_upcoming_sessions()
+        sessions: list[Session] = await self.program_connector.get_upcoming_sessions()
         sessions_to_notify = [
             session for session in sessions if session not in self.notified_sessions
         ]
         first_message = True
 
         for session in sessions_to_notify:
-            embed = session_to_embed.create_session_embed(session)
+            if len(session.rooms) > 1:
+                continue  # Don't notify registration sessions
 
-            # Notify specific rooms
-            for room in session.rooms:
-                await self.notify_room(room, embed, content=f"# Starting in 5 minutes @ {room}")
+            livestream_url = await self.livestream_connector.get_livestream_url(
+                session.rooms[0], session.start.date()
+            )
+
+            # Set the channel topic
+            await self.set_room_topic(
+                session.rooms[0],
+                f"Livestream: [YouTube]({livestream_url})" if livestream_url else "",
+            )
+
+            embed = session_to_embed.create_session_embed(session, livestream_url)
+
+            # # Notify specific rooms
+            # for room in session.rooms:
+            await self.notify_room(
+                session.rooms[0], embed, content=f"# Starting in 5 minutes @ {session.rooms[0]}"
+            )
 
             # Prefix the first message to the main channel with a header
             if first_message:
