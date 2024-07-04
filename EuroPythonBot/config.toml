@@ -46,6 +46,7 @@ LOG_LEVEL = "INFO"
 timezone_offset = 2
 api_url = "https://programapi24.europython.eu/2024/schedule.json"
 schedule_cache_file = "schedule.json"
+livestream_url_file = "livestreams.toml"
 
 # optional simulated start time for testing program notifications
 # simulated_start_time = "2024-07-10T07:30:00"

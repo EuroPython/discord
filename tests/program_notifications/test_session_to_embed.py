@@ -49,7 +49,7 @@ def session() -> Session:
 def test_embed_title_short(session: Session) -> None:
     """Test the title of the embed with a short title."""
     session.title = "Short Session Title"
-    embed = session_to_embed.create_session_embed(session)
+    embed = session_to_embed.create_session_embed(session, None)
     assert embed.title == "Short Session Title"
 
 
@@ -61,7 +61,7 @@ def test_embed_title_long(session: Session) -> None:
     )
     assert len(session.title) > _TITLE_WIDTH
 
-    embed = session_to_embed.create_session_embed(session)
+    embed = session_to_embed.create_session_embed(session, None)
     assert embed.title == (
         "This is a long title which exceeds our maximum embed title length, "
         "so we expect it to be shortened by our session-to-embed [...]"
@@ -71,7 +71,7 @@ def test_embed_title_long(session: Session) -> None:
 def test_embed_description_short(session: Session) -> None:
     """Test the description (tweet) of the embed with a short description."""
     session.tweet = "Short tweet."
-    embed = session_to_embed.create_session_embed(session)
+    embed = session_to_embed.create_session_embed(session, None)
     assert (
         embed.description
         == f"Short tweet.\n\n[Read more about this session]({session.website_url})"
@@ -87,7 +87,7 @@ def test_embed_description_long(session: Session) -> None:
     )
     assert len(session.tweet) > _TWEET_WIDTH
 
-    embed = session_to_embed.create_session_embed(session)
+    embed = session_to_embed.create_session_embed(session, None)
     assert embed.description == (
         "This is a long tweet which exceeds our maximum embed description length, "
         "so we expect it to be shortened by our session-to-embed converter. Adding "
@@ -99,13 +99,13 @@ def test_embed_description_long(session: Session) -> None:
 def test_embed_description_empty(session: Session) -> None:
     """Test the description (tweet) of the embed when tweet is empty."""
     session.tweet = ""
-    embed = session_to_embed.create_session_embed(session)
+    embed = session_to_embed.create_session_embed(session, None)
     assert embed.description is None
 
 
 def test_embed_url(session: Session) -> None:
     """Test the URL of the embed."""
-    embed = session_to_embed.create_session_embed(session)
+    embed = session_to_embed.create_session_embed(session, None)
     assert embed.url == "https://example.com/session"
 
 
@@ -120,13 +120,13 @@ def test_embed_url(session: Session) -> None:
 def test_embed_color(session: Session, level: str, expected_color: int) -> None:
     """Test the color of the embed based on session level."""
     session.level = level
-    embed = session_to_embed.create_session_embed(session)
+    embed = session_to_embed.create_session_embed(session, None)
     assert embed.color.value == expected_color
 
 
 def test_embed_fields_start_time(session: Session) -> None:
     """Test the 'Start Time' field of the embed."""
-    embed = session_to_embed.create_session_embed(session)
+    embed = session_to_embed.create_session_embed(session, None)
     assert embed.fields[0].name == "Start Time"
     assert embed.fields[0].value.startswith("<t:")
     assert embed.fields[0].value.endswith(":f>")
@@ -135,7 +135,7 @@ def test_embed_fields_start_time(session: Session) -> None:
 def test_embed_fields_room(session: Session) -> None:
     """Test the 'Room' field of the embed."""
     session.rooms = ["Exhibit Hall"]
-    embed = session_to_embed.create_session_embed(session)
+    embed = session_to_embed.create_session_embed(session, None)
     assert embed.fields[1].name == "Room"
     assert embed.fields[1].value == "Exhibit Hall"
 
@@ -143,7 +143,7 @@ def test_embed_fields_room(session: Session) -> None:
 def test_embed_fields_room_multiple(session: Session) -> None:
     """Test the 'Room' field of the embed with multiple rooms."""
     session.rooms = ["Exhibit Hall", "Forum Hall", "South Hall"]
-    embed = session_to_embed.create_session_embed(session)
+    embed = session_to_embed.create_session_embed(session, None)
     assert embed.fields[1].name == "Room"
     assert embed.fields[1].value == "Exhibit Hall, Forum Hall, South Hall"
 
@@ -151,7 +151,7 @@ def test_embed_fields_room_multiple(session: Session) -> None:
 def test_embed_fields_track(session: Session) -> None:
     """Test the 'Track' field of the embed."""
     session.track = "Main Track"
-    embed = session_to_embed.create_session_embed(session)
+    embed = session_to_embed.create_session_embed(session, None)
     assert embed.fields[2].name == "Track"
     assert embed.fields[2].value == "Main Track"
 
@@ -159,31 +159,45 @@ def test_embed_fields_track(session: Session) -> None:
 def test_embed_fields_track_empty(session: Session) -> None:
     """Test the 'Track' field of the embed when track is None."""
     session.track = None
-    embed = session_to_embed.create_session_embed(session)
+    embed = session_to_embed.create_session_embed(session, None)
     assert embed.fields[2].name == "Track"
     assert embed.fields[2].value == _FIELD_VALUE_EMPTY
 
 
 def test_embed_fields_duration(session: Session) -> None:
     """Test the 'Duration' field of the embed."""
-    embed = session_to_embed.create_session_embed(session)
+    embed = session_to_embed.create_session_embed(session, None)
     assert embed.fields[3].name == "Duration"
     assert embed.fields[3].value == "60 minutes"
 
 
+def test_embed_fields_livestream_empty(session: Session) -> None:
+    """Test the 'Livestream' field of the embed."""
+    embed = session_to_embed.create_session_embed(session, None)
+    assert embed.fields[4].name == "Livestream"
+    assert embed.fields[4].value == _FIELD_VALUE_EMPTY
+
+
+def test_embed_fields_livestream_url(session: Session) -> None:
+    """Test the 'Livestream' field of the embed."""
+    embed = session_to_embed.create_session_embed(session, "https://livestream.url")
+    assert embed.fields[4].name == "Livestream"
+    assert embed.fields[4].value == "[YouTube](https://livestream.url)"
+
+
 def test_embed_fields_level(session: Session) -> None:
     """Test the 'Level' field of the embed."""
-    embed = session_to_embed.create_session_embed(session)
-    assert embed.fields[4].name == "Level"
-    assert embed.fields[4].value == "Beginner"
+    embed = session_to_embed.create_session_embed(session, None)
+    assert embed.fields[5].name == "Level"
+    assert embed.fields[5].value == "Beginner"
 
     session.level = "intermediate"
-    embed = session_to_embed.create_session_embed(session)
-    assert embed.fields[4].value == "Intermediate"
+    embed = session_to_embed.create_session_embed(session, None)
+    assert embed.fields[5].value == "Intermediate"
 
     session.level = "advanced"
-    embed = session_to_embed.create_session_embed(session)
-    assert embed.fields[4].value == "Advanced"
+    embed = session_to_embed.create_session_embed(session, None)
+    assert embed.fields[5].value == "Advanced"
 
 
 def test_create_author_from_speakers(session: Session) -> None:
@@ -234,7 +248,7 @@ def test_create_author_without_speakers(session: Session) -> None:
 
 def test_embed_footer(session: Session) -> None:
     """Test the footer of the embed."""
-    embed = session_to_embed.create_session_embed(session)
+    embed = session_to_embed.create_session_embed(session, None)
     assert embed.footer.text == "This session starts at 08:00:00 (local conference time)"
 
 

@@ -19,7 +19,7 @@ class LevelColors(Enum):
     BEGINNER = 0x63D452
 
 
-def create_session_embed(session: Session) -> Embed:
+def create_session_embed(session: Session, livestream_url: str | None) -> Embed:
     """Create a Discord embed for a conference session.
 
     :param session: The session information as provided by Pretalx
@@ -36,6 +36,7 @@ def create_session_embed(session: Session) -> Embed:
     embed.add_field(name="Room", value=_format_room(session.rooms), inline=True)
     embed.add_field(name="Track", value=_format_track(session.track), inline=True)
     embed.add_field(name="Duration", value=_format_duration(session.duration), inline=True)
+    embed.add_field(name="Livestream", value=_format_live_stream(livestream_url), inline=True)
     embed.add_field(name="Level", value=session.level.capitalize(), inline=True)
 
     author = _create_author_from_speakers(session.speakers)
@@ -134,6 +135,15 @@ def _format_duration(duration: int) -> str:
     :return: The duration in minutes
     """
     return f"{duration} minutes"
+
+
+def _format_live_stream(livestream_url: str) -> str:
+    """Format the livestream URL for the embed.
+
+    :param livestream_url: The URL of the livestream
+    :return: A formatted string for the livestream URL
+    """
+    return f"[YouTube]({livestream_url})" if livestream_url else _FIELD_VALUE_EMPTY
 
 
 def _get_color(level: str) -> int:

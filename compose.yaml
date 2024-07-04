@@ -7,10 +7,17 @@ services:
         source: /etc/EuroPython/discord/.secrets
         target: /home/bot/.secrets
         read_only: true
+
+      - type: bind
+        source: /etc/EuroPython/livestreams/livestreams.toml
+        target: /home/bot/livestreams.toml
+        read_only: true
+
       - type: bind
         source: /home/bot/registered_log.txt
         target: /home/bot/registered_log.txt
         read_only: false
+
       - type: bind
         source: /home/bot/schedule.json
         target: /home/bot/schedule.json

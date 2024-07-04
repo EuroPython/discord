@@ -80,5 +80,19 @@
         owner: bot
         group: bot
 
+    - name: Create livestreams.toml in bot's home directory
+      file:
+        path: /home/bot/livestreams.toml
+        state: touch
+        owner: bot
+        group: bot
+
+    - name: Create schedule.json in bot's home directory
+      file:
+        path: /home/bot/schedule.json
+        state: touch
+        owner: bot
+        group: bot
+
     - name: Start EuroPythonBot
       shell: "cd /root/discord && docker compose down && docker compose up --detach --build"
