@@ -171,6 +171,20 @@ def test_embed_fields_duration(session: Session) -> None:
     assert embed.fields[3].value == "60 minutes"
 
 
+def test_embed_fields_livestream_empty(session: Session) -> None:
+    """Test the 'Livestream' field of the embed."""
+    embed = session_to_embed.create_session_embed(session, None)
+    assert embed.fields[4].name == "Livestream"
+    assert embed.fields[4].value == _FIELD_VALUE_EMPTY
+
+
+def test_embed_fields_livestream_url(session: Session) -> None:
+    """Test the 'Livestream' field of the embed."""
+    embed = session_to_embed.create_session_embed(session, "https://livestream.url")
+    assert embed.fields[4].name == "Livestream"
+    assert embed.fields[4].value == "[YouTube](https://livestream.url)"
+
+
 def test_embed_fields_level(session: Session) -> None:
     """Test the 'Level' field of the embed."""
     embed = session_to_embed.create_session_embed(session, None)
