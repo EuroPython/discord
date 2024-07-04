@@ -18,7 +18,7 @@ PARTICIPANTS_REMOTE = 1253767144265482283
 "Grant ticket" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
 # remote participants
 "Remote Community Organiser" = ["PARTICIPANTS", "PARTICIPANTS_REMOTE"]
-"Remote Grant Ticket" = ["PARTICIPANTS", "PARTICIPANTS_REMOTE"]
+"Remote Grant ticket" = ["PARTICIPANTS", "PARTICIPANTS_REMOTE"]
 "Remote Participation Ticket" = ["PARTICIPANTS", "PARTICIPANTS_REMOTE"]
 # sponsors
 "Gold Sponsorship Package" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE", "SPONSORS"]
