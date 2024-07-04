@@ -1,5 +1,4 @@
 import logging
-from pathlib import Path
 
 from discord import Client, Embed
 from discord.ext import commands, tasks
@@ -25,8 +24,7 @@ class ProgramNotificationsCog(commands.Cog):
             fast_mode=config.FAST_MODE,
         )
 
-        livestreams_file = Path(__file__).resolve().parent.parent.parent / "livestreams.toml"
-        self.livestream_connector = LivestreamConnector(livestreams_file)
+        self.livestream_connector = LivestreamConnector(config.LIVESTREAM_URL_FILE)
 
         self.notified_sessions = set()
         _logger.info("Cog 'Program Notifications' has been initialized")

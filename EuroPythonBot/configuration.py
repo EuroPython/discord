@@ -54,6 +54,7 @@ class Config(metaclass=Singleton):
             self.PROGRAM_API_URL: str = config["program_notifications"]["api_url"]
             self.TIMEZONE_OFFSET: int = config["program_notifications"]["timezone_offset"]
             self.SCHEDULE_CACHE_FILE = Path(config["program_notifications"]["schedule_cache_file"])
+            self.LIVESTREAM_URL_FILE = Path(config["program_notifications"]["livestream_url_file"])
 
             # like {'forum_hall': {'name': 'Forum Hall', 'channel_id': '123456'}}
             self.PROGRAM_CHANNELS: dict[str, dict[str, str]] = {
