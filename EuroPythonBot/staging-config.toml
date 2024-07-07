@@ -34,6 +34,7 @@ REGISTERED_LOG_FILE = "registered_log.txt"
 
 [pretix]
 PRETIX_BASE_URL = "https://pretix.eu/api/v1/organizers/europython/events/ep2023-staging2"
+PRETIX_CACHE_FILE = "pretix_cache.json"
 
 [logging]
 LOG_LEVEL = "INFO"

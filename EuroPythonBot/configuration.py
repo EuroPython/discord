@@ -41,6 +41,7 @@ class Config(metaclass=Singleton):
 
             # Pretix
             self.PRETIX_BASE_URL = config["pretix"]["PRETIX_BASE_URL"]
+            self.PRETIX_CACHE_FILE = Path(config["pretix"]["PRETIX_CACHE_FILE"])
 
             role_name_to_id: dict[str, int] = config["roles"]
             self.ITEM_TO_ROLES: dict[str, list[int]] = self._translate_role_names_to_ids(
