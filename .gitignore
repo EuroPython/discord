@@ -8,3 +8,4 @@ __pycache__
 .DS_Store
 registered_log.txt
 schedule.json
+pretix_cache.json
