@@ -1,6 +1,6 @@
 import string
-from dataclasses import dataclass
 
+from pydantic import BaseModel, ConfigDict, computed_field
 from unidecode import unidecode
 
 
@@ -16,13 +16,14 @@ def generate_ticket_key(*, order: str, name: str) -> str:
     return f"{order}-{name}"
 
 
-@dataclass(frozen=True)
-class Ticket:
+class Ticket(BaseModel):
+    model_config = ConfigDict(frozen=True)
+
     order: str
     name: str
     type: str
     variation: str | None
 
-    @property
+    @computed_field
     def key(self) -> str:
         return generate_ticket_key(order=self.order, name=self.name)
