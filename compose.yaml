@@ -23,6 +23,11 @@ services:
         target: /home/bot/schedule.json
         read_only: false
 
+      - type: bind
+        source: /home/bot/pretix_cache.json
+        target: /home/bot/pretix_cache.json
+        read_only: false
+
     # read all container only logs with
     # journalctl -u docker IMAGE_NAME=europythonbot -f
     logging:
