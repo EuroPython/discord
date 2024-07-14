@@ -86,15 +86,15 @@ async def test_pretix_items(pretix_mock):
 
     await pretix_connector.fetch_pretix_data()
 
-    items_by_id = pretix_connector.items_by_id
+    item_names_by_id = pretix_connector.item_names_by_id
 
-    assert len(items_by_id) == 5
+    assert len(item_names_by_id) == 5
 
-    assert items_by_id[339041].names_by_locale["en"] == "Business"
-    assert items_by_id[163246].names_by_locale["en"] == "Conference"
-    assert items_by_id[163247].names_by_locale["en"] == "Tutorials"
-    assert items_by_id[339042].names_by_locale["en"] == "Personal"
-    assert items_by_id[163253].names_by_locale["en"] == "Combined (Conference + Tutorials)"
+    assert item_names_by_id[339041] == "Business"
+    assert item_names_by_id[163246] == "Conference"
+    assert item_names_by_id[163247] == "Tutorials"
+    assert item_names_by_id[339042] == "Personal"
+    assert item_names_by_id[163253] == "Combined (Conference + Tutorials)"
 
 
 @pytest.mark.asyncio
@@ -126,6 +126,25 @@ async def test_get_ticket(pretix_mock):
     assert tickets == [
         Ticket(order="BR7UH", name="Eva Nováková", type="Business", variation="Conference")
     ]
+
+
+async def test_cache(pretix_mock, tmp_path):
+    pretix_connector_1 = PretixConnector(
+        url=pretix_mock.base_url, token=PRETIX_API_TOKEN, cache_file=tmp_path / "pretix_cache.json"
+    )
+    assert not pretix_connector_1.item_names_by_id
+    assert not pretix_connector_1.tickets_by_key
+
+    # fetch data in connector 1
+    await pretix_connector_1.fetch_pretix_data()
+    assert pretix_connector_1.item_names_by_id
+    assert pretix_connector_1.tickets_by_key
+
+    pretix_connector_2 = PretixConnector(
+        url=pretix_mock.base_url, token=PRETIX_API_TOKEN, cache_file=tmp_path / "pretix_cache.json"
+    )
+    assert pretix_connector_1.item_names_by_id == pretix_connector_2.item_names_by_id
+    assert pretix_connector_1.tickets_by_key == pretix_connector_2.tickets_by_key
 
 
 async def test_get_ticket_handles_ticket_ids(pretix_mock):
@@ -272,7 +291,9 @@ async def test_pagination(aiohttp_client, unused_tcp_port_factory):
     pretix_connector = PretixConnector(url=pretix_mock.base_url, token=PRETIX_API_TOKEN)
     await pretix_connector.fetch_pretix_data()
 
-    assert len(pretix_connector.items_by_id) == 5, "Only the first page of '/items' was fetched."
+    assert (
+        len(pretix_connector.item_names_by_id) == 5
+    ), "Only the first page of '/items' was fetched."
 
 
 @pytest.mark.asyncio

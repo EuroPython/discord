@@ -6,27 +6,51 @@ import logging
 import time
 from collections import defaultdict
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 
+import aiofiles
 import aiohttp
+from pydantic import BaseModel
 
-from registration.pretix_api_response_models import PretixItem, PretixItemVariation, PretixOrder
+from registration.pretix_api_response_models import PretixItem, PretixOrder
 from registration.ticket import Ticket, generate_ticket_key
 
 _logger = logging.getLogger(f"bot.{__name__}")
 
 
+class PretixCache(BaseModel):
+    item_names_by_id: dict[int, str]
+    tickets_by_key: dict[str, list[Ticket]]
+
+
 class PretixConnector:
-    def __init__(self, *, url: str, token: str):
+    def __init__(self, *, url: str, token: str, cache_file: Path | None = None):
         self._pretix_api_url = url
 
         # https://docs.pretix.eu/en/latest/api/tokenauth.html#using-an-api-token
         self._http_headers = {"Authorization": f"Token {token}"}
 
         self._fetch_lock = asyncio.Lock()
-
-        self.items_by_id: dict[int, PretixItem | PretixItemVariation] = {}
-        self.tickets_by_key: dict[str, list[Ticket]] = defaultdict(list)
         self._last_fetch: datetime | None = None
+
+        self._cache_file = cache_file
+
+        self.item_names_by_id: dict[int, str] = {}
+        self.tickets_by_key: dict[str, list[Ticket]] = defaultdict(list)
+
+        self._load_cache()
+
+    def _load_cache(self) -> None:
+        if self._cache_file is None or not self._cache_file.exists():
+            return  # no cache configured, or file does not yet exist
+
+        file_content = self._cache_file.read_bytes()
+        if not file_content:
+            return  # file is empty, e.g. `touch`ed by ansible
+
+        cache = PretixCache.model_validate_json(file_content)
+        self.item_names_by_id = cache.item_names_by_id
+        self.tickets_by_key = cache.tickets_by_key
 
     async def fetch_pretix_data(self) -> None:
         """Fetch order and item data from the Pretix API and cache it."""
@@ -40,6 +64,15 @@ class PretixConnector:
 
             await self._fetch_pretix_items()
             await self._fetch_pretix_orders(since=self._last_fetch)
+
+            if self._cache_file is not None:
+                async with aiofiles.open(self._cache_file, "w") as f:
+                    cache = PretixCache(
+                        item_names_by_id=self.item_names_by_id,
+                        tickets_by_key=self.tickets_by_key,
+                    )
+                    await f.write(cache.model_dump_json())
+
             self._last_fetch = now
 
     async def _fetch_pretix_orders(self, since: datetime | None = None) -> None:
@@ -64,12 +97,10 @@ class PretixConnector:
                 if not position.attendee_name:
                     continue
 
-                item = self.items_by_id[position.item_id]
-                item_name = item.names_by_locale["en"]
+                item_name = self.item_names_by_id[position.item_id]
 
                 if position.variation_id is not None:
-                    variation = self.items_by_id[position.variation_id]
-                    variation_name = variation.names_by_locale["en"]
+                    variation_name = self.item_names_by_id[position.variation_id]
                 else:
                     variation_name = None
 
@@ -91,9 +122,9 @@ class PretixConnector:
 
         for item_as_json in items_as_json:
             item = PretixItem(**item_as_json)
-            self.items_by_id[item.id] = item
+            self.item_names_by_id[item.id] = item.names_by_locale["en"]
             for variation in item.variations:
-                self.items_by_id[variation.id] = variation
+                self.item_names_by_id[variation.id] = variation.names_by_locale["en"]
 
     async def _fetch_all_pages(self, url: str, params: dict[str, str] | None = None) -> list[dict]:
         """Fetch all pages from a paginated Pretix API endpoint."""

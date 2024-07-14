@@ -156,7 +156,9 @@ class RegistrationCog(commands.Cog):
         self.bot = bot
 
         self.pretix_connector = PretixConnector(
-            url=config.PRETIX_BASE_URL, token=os.environ["PRETIX_TOKEN"]
+            url=config.PRETIX_BASE_URL,
+            token=os.environ["PRETIX_TOKEN"],
+            cache_file=config.PRETIX_CACHE_FILE,
         )
         self.registration_logger = RegistrationLogger(config.REGISTERED_LOG_FILE)
         _logger.info("Cog 'Registration' has been initialized")

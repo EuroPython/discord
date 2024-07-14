@@ -34,6 +34,7 @@ REGISTERED_LOG_FILE = "registered_log.txt"
 
 [pretix]
 PRETIX_BASE_URL = "https://pretix.eu/api/v1/organizers/europython/events/ep2023-staging2"
+PRETIX_CACHE_FILE = "pretix_cache.json"
 
 [logging]
 LOG_LEVEL = "INFO"
@@ -43,6 +44,7 @@ LOG_LEVEL = "INFO"
 timezone_offset = 2
 api_url = "https://programapi24.europython.eu/2024/schedule.json"
 schedule_cache_file = "schedule.json"
+livestream_url_file = "livestreams.toml"
 
 # optional simulated start time for testing program notifications
 # simulated_start_time = "2024-07-10T07:30:00"

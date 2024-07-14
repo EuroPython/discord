@@ -87,6 +87,13 @@
         owner: bot
         group: bot
 
+    - name: Create pretix_cache.json in bot's home directory
+      file:
+        path: /home/bot/pretix_cache.json
+        state: touch
+        owner: bot
+        group: bot
+
     - name: Create schedule.json in bot's home directory
       file:
         path: /home/bot/schedule.json
