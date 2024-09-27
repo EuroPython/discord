@@ -1,7 +1,7 @@
 [project]
 name = "pycones-discord-bot"
 version = "0.1.0"
-description = "Add your description here"
+description = "An easy to deploy conference bot that manages roles for attendees via registration, notifies about upcoming sessions"
 authors = [
     { name = "Javier Alonso (Javinator9889)", email = "dev@javinator9889.com" }
 ]
@@ -14,7 +14,7 @@ dependencies = [
     "cattrs>=24.1.2",
     "certifi>=2024.8.30",
     "python-dotenv>=1.0.1",
-    "yarl>=1.13.0",
+    "yarl>=1.9.0",
     "pydantic>=2.9.2",
     "unidecode>=1.3.8",
 ]
@@ -41,7 +41,7 @@ dev-dependencies = [
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/pycones_discord_bot"]
+packages = ["EuroPythonBot"]
 
 [tool.isort]
 profile = "black"
