@@ -21,7 +21,7 @@ jobs:
           python-version: '3.11.4'
 
       - name: Install Rye
-        run: curl -sSf https://rye.astral.sh/get | bash
+        run: curl -sSf https://rye.astral.sh/get | RYE_INSTALL_OPTION="--yes" bash
       - run: rye sync
 
       - name: Run Black
@@ -47,7 +47,7 @@ jobs:
           python-version: '3.11.4'
 
       - name: Install pipenv
-        run: curl -sSf https://rye.astral.sh/get | bash
+        run: curl -sSf https://rye.astral.sh/get | RYE_INSTALL_OPTION="--yes" bash
       - run: rye sync
 
       - name: Run pytest
