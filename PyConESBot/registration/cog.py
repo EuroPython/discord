@@ -233,7 +233,7 @@ class RegistrationCog(commands.Cog):
 def create_welcome_message(body: str) -> discord.Embed:
     orange = 0xFF8331
     return discord.Embed(
-        title="Welcome to EuroPython 2024 on Discord! 🎉🐍",
+        title="Welcome to PyConES 2024 on Discord! 🎉🐍",
         description=body,
         color=orange,
     )
