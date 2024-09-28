@@ -151,7 +151,7 @@ class RegistrationForm(discord.ui.Modal, title="PyConES 2024 Registration"):
     @staticmethod
     async def log_error_to_channel(interaction: Interaction, message: str) -> None:
         channel = interaction.client.get_channel(config.REG_LOG_CHANNEL_ID)
-        await channel.send(content=f"❌ : **<@{interaction.user.id}> ERROR**\n{message}")
+        await channel.send(content=f"❌ : **<@{interaction.user.id}> ERROR**\n```\n{message}```")
 
 
 class RegistrationCog(commands.Cog):
