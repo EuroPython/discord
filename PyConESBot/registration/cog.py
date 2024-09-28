@@ -104,7 +104,9 @@ class RegistrationForm(discord.ui.Modal, title="PyConES 2024 Registration"):
         user_is_admin = any(role.name == "Admin" for role in interaction.user.roles)
         if isinstance(error, Forbidden) and user_is_admin:
             _logger.exception("An error occurred (user is admin)")
-            await self.log_error_to_user(interaction, "Los administradores no se pueden registrar usando el bot.")
+            await self.log_error_to_user(
+                interaction, "Los administradores no se pueden registrar usando el bot."
+            )
             await self.log_error_to_channel(
                 interaction,
                 f"Cannot register admins ({error.__class__.__name__}: {error})",
