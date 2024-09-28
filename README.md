@@ -1,4 +1,4 @@
-# Europython Discord Bot
+# PyConESBot Discord Bot
 
 An easy to deploy conference bot that manages roles for attendees via registration, notifies about upcoming sessions.
 Exposes Discord server statistics to organizers.
@@ -8,13 +8,13 @@ We hosted the bot on Hetzner. And deployed with a single click Action from GitHu
 
 ## Overview
 
-The `main` method in `EuroPythonBot/bot.py` is the entry point for the bot.
+The `main` method in `PyConESBot/bot.py` is the entry point for the bot.
 I't a good starting point to start browsing the codebase.
 It requires a `.secrets` file in the root of the repository with `DISCORD_BOT_TOKEN` and `PRETIX_TOKEN` environment variables.
 
 ### Registration
 
-At EuroPython, we use [pretix](https://pretix.eu/about/en/) as our ticketing system.
+At PyConES, we use [pretix](https://pretix.eu/about/en/) as our ticketing system.
 
 The bot utilizes the Pretix API to fetch ticket information and creates an in-memory key-value store to retrieve the ticket type for a given Discord user. The mapping between ticket types and Discord roles is defined in a JSON file, such as ticket_to_roles_prod.json, and is used by the bot to assign roles to users.
 
@@ -29,90 +29,65 @@ Is a service to push the programme notification to Discord. Pretalx API is used 
 A set of commands that are available only for organizers that are allowing to get statistics about the Discord server.
 
 ## Setup
-### Install Python, Pipenv, Pyenv (Ubuntu)
+### Install Rye (Linux systems)
 ```shell
 # dependencies of readline, sqlite3, ctypes
 sudo apt install libreadline-dev libsqlite3-dev lzma libbz2-dev liblzma-dev
 
-# python, pip
-sudo apt install python3 python3-pip
+# rye
+curl -sSf https://rye.astral.sh/get | bash
 
-# pyenv
-curl https://pyenv.run | bash
-pyenv install 3.11.4
-
-echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
-echo '[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
-echo 'eval "$(pyenv init -)"' >> ~/.bashrc
-. ~/.bashrc
-
-# pipenv
-python3 -m pip install pipenv
-echo 'alias pipenv="python3 -m pipenv"' >> ~/.bashrc
-. ~/.bashrc
+# add the required info to the .profile file if your system supports it. Otherwise, consider
+# using .bashrc, .zshrc, etc. More info at: https://rye.astral.sh/guide/installation/#add-shims-to-path
+echo 'source "$HOME/.rye/env"' >> ~/.profile
 ```
 
-### Using pipenv
-This is a summary of useful pipenv commands.
-Please refer to the [pipenv documentation](https://pipenv.pypa.io/en/latest/) for details.
+### Using Rye
+This is a summary of useful `rye` commands.
+Please refer to the [Rye documentation](https://rye.astral.sh/guide/basics/) for details.
 
 ```shell
-# generate venv from Pipfile.lock
-pipenv install
-pipenv install --dev  # include dev dependencies
-
-# activate pipenv-generated venv
-pipenv shell
-
-# reset all packages to versions pinned in Pipfile.lock
-pipenv sync
-pipenv sync --dev  # include dev dependencies
+# generate venv from pyproject.toml
+rye sync
 
 # install package and update all other packages
-pipenv install package
-pipenv install --dev package  # install as dev dependency
+rye add package
+rye add --dev package  # install as dev dependency
 
-# upgrade only specific package without updating all other packages
-pipenv upgrade package
-pipenv upgrade --dev package  # upgrade as dev dependency
-
-# remove package and update all other packages
-pipenv uninstall package
-
-# remove only specific packages without updating all other package
-# [impossible]
+# remove package
+rye remove package
 ```
 
 ### Clone repo, install dependencies, run tests
 ```shell
 # clone repo, install dependencies
-git clone https://github.com/EuroPython/discord europython-discord/
-cd europython-discord
+git clone https://github.com/Javinator9889/pycones-discord-bot.git
+cd pycones-discord-bot
 
 # install dependencies
-pipenv install --dev
+rye sync
 
 # run linting and tests
-pipenv run black --check .
-pipenv run isort --check .
-pipenv run flake8 .
-pipenv run pytest .
+rye run black --check .
+rye run isort --check .
+rye run flake8 .
+rye run pytest .
 ```
 
 ### Configuration
-Create `config.local.toml` file in EuroPythonBot directory, it would be used instead of `config.toml` if exists.
+Create `config.local.toml` file in PyConESBot directory, it would be used instead of `config.toml` if exists.
 
 Add `.secrets` file to the root of the repository with the following content:
 ```shell
-DISCORD_BOT_TOKEN=<EuroPythonTestBotToken_from_1Password>
-PRETIX_TOKEN=<PretixStagingToken_from_1Password>
+DISCORD_BOT_TOKEN=<PyConESBotToken>
+PRETIX_TOKEN=<PretixStagingToken>
 ````
 After you have added the `.secrets` file, you can run the bot with the following command:
 ```shell
-pipenv run python EuroPythonBot/bot.py
+rye run python PyConESBot/bot.py
 ```
 or with docker:
 ```shell
-docker build --tag discord_bot .
-docker run --interactive --tty --env DISCORD_BOT_TOKEN=$DISCORD_BOT_TOKEN --env PRETIX_TOKEN=$PRETIX_TOKEN discord_bot
+docker build --tag pycones-discord_bot .
+docker run --interactive --tty --env DISCORD_BOT_TOKEN=$DISCORD_BOT_TOKEN --env PRETIX_TOKEN=$PRETIX_TOKEN pycones-discord_bot
 ```

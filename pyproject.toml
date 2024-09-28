@@ -41,16 +41,16 @@ dev-dependencies = [
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["EuroPythonBot"]
+packages = ["PyConESBot"]
 
 [tool.isort]
 profile = "black"
 line_length = 100
-src_paths = ["EuroPythonBot"]
+src_paths = ["PyConESBot"]
 
 [tool.black]
 line-length = 100
 
 [tool.pytest.ini_options]
-pythonpath = "EuroPythonBot"
+pythonpath = "PyConESBot"
 asyncio_mode = "auto"
