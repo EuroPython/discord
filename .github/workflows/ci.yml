@@ -18,11 +18,15 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11.4'
+          python-version: '3.12'
 
-      - name: Install Rye
-        run: curl -sSf https://rye.astral.sh/get | RYE_INSTALL_OPTION="--yes" bash
-      - run: rye sync
+      - name: Install the latest version of rye
+        uses: eifinger/setup-rye@v4
+        with:
+          enable-cache: true
+
+      - name: Sync dependencies
+        run: rye sync
 
       - name: Run Black
         run: rye run black --check .
@@ -44,11 +48,15 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11.4'
+          python-version: '3.12'
 
-      - name: Install pipenv
-        run: curl -sSf https://rye.astral.sh/get | RYE_INSTALL_OPTION="--yes" bash
-      - run: rye sync
+      - name: Install the latest version of rye
+        uses: eifinger/setup-rye@v4
+        with:
+          enable-cache: true
+  
+      - name: Sync dependencies
+        run: rye sync
 
       - name: Run pytest
         run: rye run pytest .

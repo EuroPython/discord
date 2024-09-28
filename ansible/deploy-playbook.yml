@@ -2,7 +2,7 @@
 - name: Deploy Discord Bot to the server
   hosts: bot_server
   vars:
-    repository_url: https://github.com/EuroPython/discord.git
+    repository_url: https://github.com/Javinator9889/pycones-discord-bot.git
 
   tasks:
 
@@ -64,13 +64,13 @@
     - name: Ensure 'bot' group exists
       group:
         name: bot
-        gid: 1000
+        gid: 1010
 
     - name: Create 'bot' user
       user:
         name: bot
-        uid: 1000
-        group: 1000
+        uid: 1010
+        group: 1010
         home: /home/bot
 
     - name: Create registration_log.txt in bot's home directory
@@ -101,5 +101,5 @@
         owner: bot
         group: bot
 
-    - name: Start EuroPythonBot
+    - name: Start PyConES Discord Bot
       shell: "cd /root/discord && docker compose down && docker compose up --detach --build"
