@@ -21,7 +21,7 @@ class RegistrationButton(discord.ui.Button["Registration"]):
     def __init__(self, parent_cog: RegistrationCog):
         super().__init__()
         self.parent_cog = parent_cog
-        self.label = "Register here 👈"
+        self.label = "Regístrate aquí 👈"
         self.style = discord.ButtonStyle.green
 
     async def callback(self, interaction: discord.Interaction) -> None:
