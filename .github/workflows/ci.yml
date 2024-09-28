@@ -18,20 +18,24 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11.4'
+          python-version: '3.12'
 
-      - name: Install pipenv
-        run: curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
-      - run: pipenv install --dev
+      - name: Install the latest version of rye
+        uses: eifinger/setup-rye@v4
+        with:
+          enable-cache: true
+
+      - name: Sync dependencies
+        run: rye sync
 
       - name: Run Black
-        run: pipenv run black --check .
+        run: rye run black --check .
 
       - name: Run Flake8
-        run: pipenv run flake8 .
+        run: rye run flake8 .
 
       - name: Run isort
-        run: pipenv run isort --check .
+        run: rye run isort --check .
 
   test:
     name: 🛠️ Test Python code
@@ -44,12 +48,16 @@ jobs:
 
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11.4'
+          python-version: '3.12'
 
-      - name: Install pipenv
-        run: curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
-      - run: pipenv install --dev
+      - name: Install the latest version of rye
+        uses: eifinger/setup-rye@v4
+        with:
+          enable-cache: true
+  
+      - name: Sync dependencies
+        run: rye sync
 
       - name: Run pytest
-        run: pipenv run pytest .
+        run: rye run pytest .
 
