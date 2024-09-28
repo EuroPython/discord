@@ -61,7 +61,8 @@ class RegistrationForm(discord.ui.Modal, title="PyConES 2024 Registration"):
         if not tickets:
             await self.log_error_to_user(
                 interaction,
-                "No podemos encontrar tu ticket. Por favor, verifica que el ID y el nombre sean correctos.",
+                "No podemos encontrar tu ticket. "
+                "Por favor, verifica que el ID y el nombre sean correctos.",
             )
             await self.log_error_to_channel(interaction, f"No ticket found: {order=}, {name=}")
             _logger.info(f"No ticket found: {order=}, {name=}")
@@ -182,7 +183,8 @@ class RegistrationCog(commands.Cog):
 
                 1️⃣ Haz clic en el botón que dice "Regístrate aquí 👈", justo debajo.
 
-                2️⃣ Rellena el formulario con el ID y el nombre que aparecen en el ticket. Puedes encontrarlos:
+                2️⃣ Rellena el formulario con el ID y el nombre que aparecen en el ticket.
+                Puedes encontrarlos:
                 * Impresos en tu ticket
                 * Impresos en tu credencial
                 * En el email "Su pedido: XXXXX" from support@pretix.eu
