@@ -36,6 +36,7 @@ dev-dependencies = [
     "pytest-aiohttp>=1.0.5",
     "pytest-asyncio>=0.24.0",
 ]
+virtual = true
 
 [tool.hatch.metadata]
 allow-direct-references = true
