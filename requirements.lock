@@ -14,7 +14,7 @@ aiofiles==24.1.0
     # via pycones-discord-bot
 aiohappyeyeballs==2.4.2
     # via aiohttp
-aiohttp==3.10.6
+aiohttp==3.10.7
     # via discord-py
     # via pycones-discord-bot
 aiosignal==1.3.1
