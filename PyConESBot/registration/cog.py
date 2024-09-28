@@ -34,7 +34,7 @@ class RegistrationForm(discord.ui.Modal, title="PyConES 2024 Registration"):
         self.parent_cog = parent_cog
 
     order_field = discord.ui.TextInput(
-        label="ID del ticket (como aparece en tu credencial o ticket)",
+        label="ID del ticket (como aparece en tu credencial)",
         required=True,
         min_length=5,
         max_length=9,
@@ -42,7 +42,7 @@ class RegistrationForm(discord.ui.Modal, title="PyConES 2024 Registration"):
     )
 
     name_field = discord.ui.TextInput(
-        label="Nombre (como aparece en tu credencial o ticket)",
+        label="Nombre (como aparece en tu credencial)",
         required=True,
         min_length=1,
         max_length=50,
