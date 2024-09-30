@@ -27,8 +27,10 @@ PARTICIPANTS_REMOTE = 1289586925216206879
 "Educational Ticket" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
 "Individual Supporter Ticket" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
 "Business Supporter Ticket" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
+"Individual Ticket Partners" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
 # remote participants
 "Virtual Only Ticket" = ["PARTICIPANTS", "PARTICIPANTS_REMOTE"]
+"Donation Ticket" = ["PARTICIPANTS", "PARTICIPANTS_REMOTE"]
 # sponsors
 "Sponsors" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE", "SPONSORS"]
 # speakers
