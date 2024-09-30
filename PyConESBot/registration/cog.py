@@ -21,33 +21,33 @@ class RegistrationButton(discord.ui.Button["Registration"]):
     def __init__(self, parent_cog: RegistrationCog):
         super().__init__()
         self.parent_cog = parent_cog
-        self.label = "Register here 👈"
+        self.label = "Regístrate aquí 👈"
         self.style = discord.ButtonStyle.green
 
     async def callback(self, interaction: discord.Interaction) -> None:
         await interaction.response.send_modal(RegistrationForm(parent_cog=self.parent_cog))
 
 
-class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
+class RegistrationForm(discord.ui.Modal, title="PyConES 2024 Registration"):
     def __init__(self, parent_cog: RegistrationCog):
         super().__init__()
         self.parent_cog = parent_cog
 
     order_field = discord.ui.TextInput(
-        label="Order ID (As printed on your badge or ticket)",
+        label="ID del ticket (como aparece en tu credencial)",
         required=True,
         min_length=5,
         max_length=9,
-        placeholder="Like '#XXXXX-X' or 'XXXXX'",
+        placeholder="Algo como '#XXXXX-X' o 'XXXXX'",
     )
 
     name_field = discord.ui.TextInput(
-        label="Name (As printed on your badge or ticket)",
+        label="Nombre (como aparece en tu credencial)",
         required=True,
         min_length=1,
         max_length=50,
         style=discord.TextStyle.short,
-        placeholder="Like 'Jane Doe'",
+        placeholder="Algo como 'Jane Doe'",
     )
 
     async def on_submit(self, interaction: discord.Interaction) -> None:
@@ -61,14 +61,15 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
         if not tickets:
             await self.log_error_to_user(
                 interaction,
-                "We cannot find your ticket. Please double check your input and try again.",
+                "No podemos encontrar tu ticket. "
+                "Por favor, verifica que el ID y el nombre sean correctos.",
             )
             await self.log_error_to_channel(interaction, f"No ticket found: {order=}, {name=}")
             _logger.info(f"No ticket found: {order=}, {name=}")
             return
 
         if any(self.parent_cog.registration_logger.is_registered(ticket) for ticket in tickets):
-            await self.log_error_to_user(interaction, "You have already registered.")
+            await self.log_error_to_user(interaction, "Ya te has registrado.")
             await self.log_error_to_channel(interaction, f"Already registered: {order=}, {name=}")
             _logger.info(f"Already registered: {tickets}")
             return
@@ -81,7 +82,7 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
                 role_ids.update(config.VARIATION_TO_ROLES[ticket.variation])
 
         if not role_ids:
-            await self.log_error_to_user(interaction, "No ticket found.")
+            await self.log_error_to_user(interaction, "No se ha encontrado el ticket.")
             await self.log_error_to_channel(interaction, f"Tickets without roles: {tickets}")
             _logger.info(f"Tickets without role assignments: {tickets}")
             return
@@ -101,10 +102,12 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
         _logger.info(f"Registration successful: {order=}, {name=}")
 
     async def on_error(self, interaction: Interaction, error: Exception) -> None:
-        user_is_admin = any(role.name == "Admin" for role in interaction.user.roles)
+        user_is_admin = any(role.name == "Administrators" for role in interaction.user.roles)
         if isinstance(error, Forbidden) and user_is_admin:
             _logger.exception("An error occurred (user is admin)")
-            await self.log_error_to_user(interaction, "Admins cannot be registered via the bot.")
+            await self.log_error_to_user(
+                interaction, "Los administradores no se pueden registrar usando el bot."
+            )
             await self.log_error_to_channel(
                 interaction,
                 f"Cannot register admins ({error.__class__.__name__}: {error})",
@@ -112,16 +115,16 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
 
         else:
             _logger.exception("An error occurred!")
-            await self.log_error_to_user(interaction, "Something went wrong.")
+            await self.log_error_to_user(interaction, "Algo ha ido mal...")
             await self.log_error_to_channel(interaction, f"{error.__class__.__name__}: {error}")
 
     @staticmethod
     async def log_registration_to_user(interaction: Interaction, *, name: str) -> None:
         await interaction.response.send_message(
-            f"Thank you {name}, you are now registered!\n\n"
-            f"Also, your nickname was changed to the name you used to register your ticket. "
-            f"This is also the name that would be on your conference badge, which means that "
-            f"your nickname can be your 'virtual conference badge'.",
+            f"¡Gracias {name}, ya estás registrado!\n\n"
+            f"Tu nombre de usuario se ha cambiado para encajar con el que aparece en el ticket. "
+            f"Este es también el nombre que aparece en tu credencial, lo que significa que "
+            f"tu nombre de usuario es tu 'credencial de acceso virtual'.",
             ephemeral=True,
             delete_after=None,
         )
@@ -140,7 +143,7 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
     @staticmethod
     async def log_error_to_user(interaction: Interaction, message: str) -> None:
         await interaction.response.send_message(
-            f"{message} If you need help, please contact us in <#{config.REG_HELP_CHANNEL_ID}>.",
+            f"{message} Si necesitas ayuda, escríbenos en <#{config.REG_HELP_CHANNEL_ID}>.",
             ephemeral=True,
             delete_after=None,
         )
@@ -148,7 +151,7 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
     @staticmethod
     async def log_error_to_channel(interaction: Interaction, message: str) -> None:
         channel = interaction.client.get_channel(config.REG_LOG_CHANNEL_ID)
-        await channel.send(content=f"❌ : **<@{interaction.user.id}> ERROR**\n{message}")
+        await channel.send(content=f"❌ : **<@{interaction.user.id}> ERROR**\n```\n{message}```")
 
 
 class RegistrationCog(commands.Cog):
@@ -176,24 +179,25 @@ class RegistrationCog(commands.Cog):
         welcome_message = create_welcome_message(
             textwrap.dedent(
                 f"""
-                Follow these steps to complete your registration:
+                Sigue estos pasos para registrarte en el servidor de la PyConES 2024:
 
-                1️⃣ Click on the green "Register here 👈" button below.
+                1️⃣ Haz clic en el botón que dice "Regístrate aquí 👈", justo debajo.
 
-                2️⃣ Fill in your Order ID and the name on your ticket. You can find them
-                * Printed on your ticket
-                * Printed on your badge
-                * In the email "[EuroPython 2024] Your order: XXXXX" from support@pretix.eu
+                2️⃣ Rellena el formulario con el ID y el nombre que aparecen en el ticket.
+                Puedes encontrarlos:
+                * Impresos en tu ticket
+                * Impresos en tu credencial
+                * En el email "Su pedido: XXXXX" from support@pretix.eu
 
-                3️⃣ Click "Submit".
+                3️⃣ Click "Enviar".
 
-                These steps will assign the correct server permissions and set your server nickname.
+                Estos pasos actualizarán tus permisos en el servidor y tu nombre de usuario.
 
-                Experiencing trouble? Please contact us
-                * In the <#{config.REG_HELP_CHANNEL_ID}> channel
-                * By speaking to a volunteer in a yellow t-shirt
+                ¿Tienes algún problema? Por favor, escríbenos en:
+                * El canal <#{config.REG_HELP_CHANNEL_ID}>
+                * Hablando con algún voluntario que esté en el evento
 
-                Enjoy our EuroPython 2024 Community Server! 🐍💻🎉
+                ¡Disfruta el servidor de la comunidad PyConES 2024! 🐍💻🎉
                 """
             )
         )
@@ -215,8 +219,8 @@ class RegistrationCog(commands.Cog):
         await reg_channel.purge()
         await reg_channel.send(
             embed=create_welcome_message(
-                "The registration bot is currently offline. "
-                "We apologize for the inconvenience and are working hard to fix the issue."
+                "El bot de registro está ahora mismo offline. "
+                "Pedimos disculpas por el inconveniente. Esperamos que esté disponible pronto."
             )
         )
 
@@ -233,7 +237,7 @@ class RegistrationCog(commands.Cog):
 def create_welcome_message(body: str) -> discord.Embed:
     orange = 0xFF8331
     return discord.Embed(
-        title="Welcome to EuroPython 2024 on Discord! 🎉🐍",
+        title="¡Bienvenido a la PyConES 2024 en Discord! 🎉🐍",
         description=body,
         color=orange,
     )

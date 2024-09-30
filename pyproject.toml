@@ -36,21 +36,22 @@ dev-dependencies = [
     "pytest-aiohttp>=1.0.5",
     "pytest-asyncio>=0.24.0",
 ]
+virtual = true
 
 [tool.hatch.metadata]
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["EuroPythonBot"]
+packages = ["PyConESBot"]
 
 [tool.isort]
 profile = "black"
 line_length = 100
-src_paths = ["EuroPythonBot"]
+src_paths = ["PyConESBot"]
 
 [tool.black]
 line-length = 100
 
 [tool.pytest.ini_options]
-pythonpath = "EuroPythonBot"
+pythonpath = "PyConESBot"
 asyncio_mode = "auto"

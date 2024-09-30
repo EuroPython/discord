@@ -1,15 +1,15 @@
 services:
-  EuroPythonBot:
-    image: europythonbot
+  PyConESBot:
+    image: pyconesbot
     build: .
     volumes:
       - type: bind
-        source: /etc/EuroPython/discord/.secrets
+        source: /etc/PyConES/discord/.secrets
         target: /home/bot/.secrets
         read_only: true
 
       - type: bind
-        source: /etc/EuroPython/livestreams/livestreams.toml
+        source: /etc/PyConES/livestreams/livestreams.toml
         target: /home/bot/livestreams.toml
         read_only: true
 
@@ -29,7 +29,7 @@ services:
         read_only: false
 
     # read all container only logs with
-    # journalctl -u docker IMAGE_NAME=europythonbot -f
+    # journalctl -u docker IMAGE_NAME=pyconesbot -f
     logging:
       driver: journald
     restart: unless-stopped
