@@ -102,7 +102,7 @@ class RegistrationForm(discord.ui.Modal, title="PyConES 2024 Registration"):
         _logger.info(f"Registration successful: {order=}, {name=}")
 
     async def on_error(self, interaction: Interaction, error: Exception) -> None:
-        user_is_admin = any(role.name == "Admin" for role in interaction.user.roles)
+        user_is_admin = any(role.name == "Administrators" for role in interaction.user.roles)
         if isinstance(error, Forbidden) and user_is_admin:
             _logger.exception("An error occurred (user is admin)")
             await self.log_error_to_user(
@@ -143,7 +143,7 @@ class RegistrationForm(discord.ui.Modal, title="PyConES 2024 Registration"):
     @staticmethod
     async def log_error_to_user(interaction: Interaction, message: str) -> None:
         await interaction.response.send_message(
-            f"{message} If you need help, please contact us in <#{config.REG_HELP_CHANNEL_ID}>.",
+            f"{message} Si necesitas ayuda, escríbenos en <#{config.REG_HELP_CHANNEL_ID}>.",
             ephemeral=True,
             delete_after=None,
         )
