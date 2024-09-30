@@ -23,7 +23,7 @@ PARTICIPANTS_REMOTE = 1289586925216206879
 "Educational Ticket (Early Bird)" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
 # normal tickets
 "Individual Ticket" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
-"Bussiness Ticket" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
+"Business Ticket" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
 "Educational Ticket" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
 "Individual Supporter Ticket" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
 "Business Supporter Ticket" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
