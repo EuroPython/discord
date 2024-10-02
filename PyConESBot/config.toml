@@ -68,32 +68,24 @@ livestream_url_file = "livestreams.toml"
 
 [program_notifications.rooms.main_channel]
 name = "Main Channel"
-channel_id = "1253767144899084439"
+channel_id = "1234981466690293849"
 
-[program_notifications.rooms.forum_hall]
-name = "Forum Hall"
-channel_id = "1253767145356005407"
+[program_notifications.rooms.treboada]
+name = "Treboada"
+channel_id = "1290374755446292523"
 
-[program_notifications.rooms.south_hall_2a]
-name = "South Hall 2A"
-channel_id = "1253767145356005408"
+[program_notifications.rooms.poalla]
+name = "Poalla"
+channel_id = "1290375008119685161"
 
-[program_notifications.rooms.south_hall_2b]
-name = "South Hall 2B"
-channel_id = "1253767145356005409"
+[program_notifications.rooms.saraiba]
+name = "Saraiba"
+channel_id = "1290375213820936222"
 
-[program_notifications.rooms.north_hall]
-name = "North Hall"
-channel_id = "1253767145356005410"
+[program_notifications.rooms.orballo]
+name = "Orballo"
+channel_id = "1290375406091767808"
 
-[program_notifications.rooms.terrace_2a]
-name = "Terrace 2A"
-channel_id = "1253767145356005411"
-
-[program_notifications.rooms.terrace_2b]
-name = "Terrace 2B"
-channel_id = "1253767145356005412"
-
-[program_notifications.rooms.exhibit_hall]
-name = "Exhibit Hall"
-channel_id = "1257417344221974639"
+[program_notifications.rooms.neboeira]
+name = "Neboeira"
+channel_id = "1290375569531473962"
