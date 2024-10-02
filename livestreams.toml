@@ -17,8 +17,3 @@ name = "Poalla"
 name = "Orballo"
 "2024-10-05" = "https://replay.teltek.es/live/event/iframe/66fce11baf77a700322d9a61"
 "2024-10-06" = "https://replay.teltek.es/live/event/iframe/66fce11baf77a700322d9a61"
-
-[rooms.neboeira]
-name = "Neboeira"
-"2024-10-05" = "https://www.youtube.com/watch?v=b7wIYTCCa2k"
-"2024-10-06" = "https://www.youtube.com/watch?v=b7wIYTCCa2k"
