@@ -90,22 +90,23 @@ async def test_get_sessions_by_date(program_connector, mock_schedule_url):
 
     await program_connector.fetch_schedule()
 
-    # Test for July 10th
+    # Test for Oct 4th
     sessions = await program_connector.get_sessions_by_date(date(2024, 10, 4))
     assert len(sessions) == 4
-    assert sessions[0].title == "Acreditaciones | Accreditations"
-    assert sessions[1].title == "Superando el reto del billón de filas con Python"
+    assert sessions[0].title == "Superando el reto del billón de filas con Python"
     assert (
-        sessions[2].title
+        sessions[1].title
         == "Pattern busters: encontrando patrones significativos con Python en aplicaciones reales"
     )
+    assert sessions[2].title == "Nuestra primera API Restful + auth + OpenAPI"
+    assert sessions[3].title == "DJango Girls (Parte I)"
 
-    # Test for July 11th
+    # Test for Oct 5th
     sessions = await program_connector.get_sessions_by_date(date(2024, 10, 5))
     assert len(sessions) == 3
-    assert sessions[0].title == "Acreditaciones | Accreditations"
-    assert sessions[1].title == "Apertura del evento | Event opening"
-    assert sessions[2].title == "Modelando el efecto de las sombras en un sistema fotovoltaico"
+    assert sessions[0].title == "Apertura del evento | Event opening"
+    assert sessions[1].title == "Modelando el efecto de las sombras en un sistema fotovoltaico"
+    assert sessions[2].title == "Hackatón"
 
     # Test for a day with no sessions
     sessions = await program_connector.get_sessions_by_date(date(2024, 10, 8))
@@ -121,16 +122,13 @@ async def test_get_upcoming_sessions(program_connector, mock_schedule_url):
     # Please make sure all the sessions have UTC+0 timezone
 
     # Test with a simulated time in 5 minutes range before a session
-    program_connector._simulated_start_time = datetime(2024, 10, 5, 7, 58, 0, tzinfo=timezone.utc)
+    program_connector._simulated_start_time = datetime(2024, 10, 5, 9, 28, 0, tzinfo=timezone.utc)
     program_connector._real_start_time = datetime.now(tz=timezone.utc)
     program_connector._time_multiplier = 1
 
     upcoming_sessions = await program_connector.get_upcoming_sessions()
     assert len(upcoming_sessions) == 1
-    assert (
-        upcoming_sessions[0].title
-        == "Acreditaciones | Accreditations"
-    )
+    assert upcoming_sessions[0].title == "Apertura del evento | Event opening"
 
     # Test with a simulated time in 5 minutes range where there are 2 upcoming sessions
     program_connector._simulated_start_time = datetime(2024, 10, 5, 11, 12, 0, tzinfo=timezone.utc)

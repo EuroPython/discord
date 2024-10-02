@@ -16,7 +16,7 @@ _FIELD_VALUE_EMPTY: Final = "—"
 class LevelColors(Enum):
     ADVANCED = 0xD34847
     INTERMEDIATE = 0xFFCD45
-    BEGINNER = 0x63D452
+    BASIC = 0x63D452
 
 
 def create_session_embed(session: Session, livestream_url: str | None) -> Embed:
@@ -28,18 +28,18 @@ def create_session_embed(session: Session, livestream_url: str | None) -> Embed:
     embed = Embed(
         title=_format_title(session.title),
         description=_create_description(session),
-        url=session.website_url,
+        url=session.url,
         color=_get_color(session.level),
     )
 
     embed.add_field(name="Start Time", value=_format_start_time(session.start), inline=True)
-    embed.add_field(name="Room", value=_format_room(session.rooms), inline=True)
+    embed.add_field(name="Room", value=_format_room(session.room), inline=True)
     embed.add_field(name="Track", value=_format_track(session.track), inline=True)
     embed.add_field(name="Duration", value=_format_duration(session.duration), inline=True)
     embed.add_field(name="Livestream", value=_format_live_stream(livestream_url), inline=True)
     embed.add_field(name="Level", value=session.level.capitalize(), inline=True)
 
-    author = _create_author_from_speakers(session.speakers)
+    author = _create_author_from_speakers(session.persons)
     if author:
         embed.set_author(
             name=author["name"], icon_url=author.get("icon_url"), url=author.get("website_url")
@@ -74,10 +74,10 @@ def _create_description(session: Session) -> str | None:
     :param session: The session
     :return: The embed description
     """
-    if not session.tweet:
+    if not session.abstract:
         return None
-    tweet_short = textwrap.shorten(session.tweet, width=_TWEET_WIDTH)
-    return f"{tweet_short}\n\n[Read more about this session]({session.website_url})"
+    tweet_short = textwrap.shorten(session.abstract, width=_TWEET_WIDTH)
+    return f"{tweet_short}\n\n[Lee más información de esta sesión]({session.url})"
 
 
 def _format_title(title: str) -> str:
@@ -109,13 +109,12 @@ def _format_footer(start_time: datetime) -> str:
     return f"This session starts at {formatted_time} (local conference time)"
 
 
-def _format_room(rooms: list[str]) -> str:
+def _format_room(room: str) -> str:
     """Format the room names for a Discord embed.
 
-    :param rooms: The list of rooms
+    :param room: The room
     :return: The name of a room or a placeholder value.
     """
-    room = ", ".join(rooms)
     return room if room else _FIELD_VALUE_EMPTY
 
 

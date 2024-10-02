@@ -12,37 +12,51 @@ from program_notifications.session_to_embed import (
     LevelColors,
 )
 
+_QUESTION_PUBLIC_PROFILE = 3656
+_QUESTION_LEVEL_ID = 3662
+
 
 @pytest.fixture
 def session() -> Session:
     """Create a dummy session object."""
     return Session(
-        code="AAAAAA",
-        duration=60,
-        event_type="session",
-        level="beginner",
-        rooms=["Forum Hall"],
-        session_type="Announcements",
+        id=12345,
+        duration="01:00",
+        type="session",
+        room="Forum Hall",
         slug="example-session",
-        speakers=[
+        persons=[
             Speaker(
                 code="BBBBBB",
-                name="Jane Doe",
+                public_name="Jane Doe",
                 avatar="",
-                website_url="https://example.com/speaker",
+                answers=[
+                    {"question": _QUESTION_PUBLIC_PROFILE, "answer": "https://example.com/speaker"}
+                ],
             ),
             Speaker(
                 code="CCCCCC",
-                name="John Doe",
+                public_name="John Doe",
                 avatar="",
-                website_url="https://example.com/speaker2",
+                answers=[
+                    {"question": _QUESTION_PUBLIC_PROFILE, "answer": "https://example.com/speaker2"}
+                ],
             ),
         ],
-        start="2024-07-10T08:00:00+00:00",
+        date="2024-07-10T08:00:00+00:00",
         title="Example Session",
         track=None,
-        tweet="",
-        website_url="https://example.com/session",
+        abstract="",
+        url="https://example.com/session",
+        answers=[
+            {
+                "question": _QUESTION_LEVEL_ID,
+                "answer": "basic",
+                "options": [
+                    {"en": "Basic (0-2 years)"},
+                ],
+            },
+        ],
     )
 
 
@@ -70,35 +84,34 @@ def test_embed_title_long(session: Session) -> None:
 
 def test_embed_description_short(session: Session) -> None:
     """Test the description (tweet) of the embed with a short description."""
-    session.tweet = "Short tweet."
+    session.abstract = "Short tweet."
     embed = session_to_embed.create_session_embed(session, None)
     assert (
-        embed.description
-        == f"Short tweet.\n\n[Read more about this session]({session.website_url})"
+        embed.description == f"Short tweet.\n\n[Lee más información de esta sesión]({session.url})"
     )
 
 
 def test_embed_description_long(session: Session) -> None:
     """Test the description (tweet) of the embed with a long description."""
-    session.tweet = (
+    session.abstract = (
         "This is a long tweet which exceeds our maximum embed description length, "
         "so we expect it to be shortened by our session-to-embed converter. Adding "
         "more text to make sure it exceeds the limit. And even more text. And more. "
     )
-    assert len(session.tweet) > _TWEET_WIDTH
+    assert len(session.abstract) > _TWEET_WIDTH
 
     embed = session_to_embed.create_session_embed(session, None)
     assert embed.description == (
         "This is a long tweet which exceeds our maximum embed description length, "
         "so we expect it to be shortened by our session-to-embed converter. Adding "
         "more text to make sure it exceeds the limit. [...]"
-        f"\n\n[Read more about this session]({session.website_url})"
+        f"\n\n[Lee más información de esta sesión]({session.url})"
     )
 
 
 def test_embed_description_empty(session: Session) -> None:
     """Test the description (tweet) of the embed when tweet is empty."""
-    session.tweet = ""
+    session.abstract = ""
     embed = session_to_embed.create_session_embed(session, None)
     assert embed.description is None
 
@@ -112,7 +125,7 @@ def test_embed_url(session: Session) -> None:
 @pytest.mark.parametrize(
     "level,expected_color",
     [
-        ("beginner", LevelColors.BEGINNER.value),
+        ("basic", LevelColors.BASIC.value),
         ("intermediate", LevelColors.INTERMEDIATE.value),
         ("advanced", LevelColors.ADVANCED.value),
     ],
@@ -134,18 +147,10 @@ def test_embed_fields_start_time(session: Session) -> None:
 
 def test_embed_fields_room(session: Session) -> None:
     """Test the 'Room' field of the embed."""
-    session.rooms = ["Exhibit Hall"]
+    session.room = "Exhibit Hall"
     embed = session_to_embed.create_session_embed(session, None)
     assert embed.fields[1].name == "Room"
     assert embed.fields[1].value == "Exhibit Hall"
-
-
-def test_embed_fields_room_multiple(session: Session) -> None:
-    """Test the 'Room' field of the embed with multiple rooms."""
-    session.rooms = ["Exhibit Hall", "Forum Hall", "South Hall"]
-    embed = session_to_embed.create_session_embed(session, None)
-    assert embed.fields[1].name == "Room"
-    assert embed.fields[1].value == "Exhibit Hall, Forum Hall, South Hall"
 
 
 def test_embed_fields_track(session: Session) -> None:
@@ -189,7 +194,7 @@ def test_embed_fields_level(session: Session) -> None:
     """Test the 'Level' field of the embed."""
     embed = session_to_embed.create_session_embed(session, None)
     assert embed.fields[5].name == "Level"
-    assert embed.fields[5].value == "Beginner"
+    assert embed.fields[5].value == "Basic"
 
     session.level = "intermediate"
     embed = session_to_embed.create_session_embed(session, None)
@@ -202,8 +207,8 @@ def test_embed_fields_level(session: Session) -> None:
 
 def test_create_author_from_speakers(session: Session) -> None:
     """Test the author creation."""
-    session.speakers[1].avatar = "https://example.com/avatar2.jpg"
-    author = session_to_embed._create_author_from_speakers(session.speakers)
+    session.persons[1].avatar = "https://example.com/avatar2.jpg"
+    author = session_to_embed._create_author_from_speakers(session.persons)
 
     # Should combine the names of all speakers
     assert author["name"] == "Jane Doe, John Doe"
@@ -217,22 +222,22 @@ def test_create_author_from_speakers(session: Session) -> None:
 
 def test_create_author_from_speakers_with_no_avatar(session: Session) -> None:
     """Test the author creation with no avatar."""
-    session.speakers[0].avatar = ""
-    session.speakers[1].avatar = ""
+    session.persons[0].avatar = ""
+    session.persons[1].avatar = ""
 
-    author = session_to_embed._create_author_from_speakers(session.speakers)
+    author = session_to_embed._create_author_from_speakers(session.persons)
     assert author["icon_url"] is None
 
 
 def test_create_author_with_long_name(session: Session) -> None:
     """Test the author creation when the speaker has a long name."""
-    session.speakers[0].name = (
+    session.persons[0].name = (
         "This is a very long speaker name which exceeds our maximum author name length, "
         "so we expect it to be shortened by our session-to-embed converter. "
     )
-    assert len(session.speakers[0].name) > _AUTHOR_WIDTH
+    assert len(session.persons[0].name) > _AUTHOR_WIDTH
 
-    author = session_to_embed._create_author_from_speakers(session.speakers)
+    author = session_to_embed._create_author_from_speakers(session.persons)
     assert author["name"] == (
         "This is a very long speaker name which exceeds our maximum author name length, "
         "so we expect it to be shortened by our [...]"
@@ -241,8 +246,8 @@ def test_create_author_with_long_name(session: Session) -> None:
 
 def test_create_author_without_speakers(session: Session) -> None:
     """Test the author creation when session has no speakers."""
-    session.speakers = []
-    author = session_to_embed._create_author_from_speakers(session.speakers)
+    session.persons = []
+    author = session_to_embed._create_author_from_speakers(session.persons)
     assert author is None
 
 
@@ -287,8 +292,8 @@ def test_format_track_none(session: Session) -> None:
 
 def test_format_room(session: Session) -> None:
     """Test the _format_room function."""
-    formatted_room = session_to_embed._format_room(session.rooms)
-    if session.rooms:
-        assert formatted_room == ", ".join(session.rooms)
+    formatted_room = session_to_embed._format_room(session.room)
+    if session.room:
+        assert formatted_room == session.room
     else:
         assert formatted_room == _FIELD_VALUE_EMPTY
