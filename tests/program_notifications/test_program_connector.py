@@ -55,11 +55,10 @@ async def mock_schedule_url(mock_client):
 async def test_parse_schedule(program_connector, mock_schedule):
     sessions_by_day = await program_connector.parse_schedule(mock_schedule)
 
-    assert len(sessions_by_day) == 3
+    assert len(sessions_by_day) == 2
 
-    assert len(sessions_by_day[date(2024, 7, 10)]) == 4
-    assert len(sessions_by_day[date(2024, 7, 11)]) == 3
-    assert len(sessions_by_day[date(2024, 7, 12)]) == 3
+    assert len(sessions_by_day[date(2024, 10, 4)]) == 4
+    assert len(sessions_by_day[date(2024, 10, 5)]) == 3
 
 
 @pytest.mark.asyncio
@@ -80,10 +79,9 @@ async def test_get_schedule_from_cache(program_connector, mock_schedule, cache_f
 
     sessions_by_day = await program_connector._get_schedule_from_cache()
 
-    assert len(sessions_by_day) == 3
-    assert len(sessions_by_day[date(2024, 7, 10)]) == 4
-    assert len(sessions_by_day[date(2024, 7, 11)]) == 3
-    assert len(sessions_by_day[date(2024, 7, 12)]) == 3
+    assert len(sessions_by_day) == 2
+    assert len(sessions_by_day[date(2024, 10, 4)]) == 4
+    assert len(sessions_by_day[date(2024, 10, 5)]) == 3
 
 
 @pytest.mark.asyncio
@@ -93,31 +91,24 @@ async def test_get_sessions_by_date(program_connector, mock_schedule_url):
     await program_connector.fetch_schedule()
 
     # Test for July 10th
-    sessions = await program_connector.get_sessions_by_date(date(2024, 7, 10))
+    sessions = await program_connector.get_sessions_by_date(date(2024, 10, 4))
     assert len(sessions) == 4
-    assert sessions[0].title == "Wednesday Registration & Welcome @ Forum Hall Foyer 1st Floor"
+    assert sessions[0].title == "Acreditaciones | Accreditations"
+    assert sessions[1].title == "Superando el reto del billón de filas con Python"
     assert (
-        sessions[1].title
-        == "Embracing Python, AI, and Heuristics: Optimal Paths for Impactful Software"
+        sessions[2].title
+        == "Pattern busters: encontrando patrones significativos con Python en aplicaciones reales"
     )
-    assert sessions[2].title == "Learning to code in the age of AI"
 
     # Test for July 11th
-    sessions = await program_connector.get_sessions_by_date(date(2024, 7, 11))
+    sessions = await program_connector.get_sessions_by_date(date(2024, 10, 5))
     assert len(sessions) == 3
-    assert sessions[0].title == "Thursday Registration & Welcome @ Forum Hall Foyer 1st Floor"
-    assert sessions[1].title == "Why should we all be hyped about inclusive leadership?"
-    assert sessions[2].title == "Rapid Prototyping & Proof of Concepts: Django is all we need"
-
-    # Test for July 12th
-    sessions = await program_connector.get_sessions_by_date(date(2024, 7, 12))
-    assert len(sessions) == 3
-    assert sessions[0].title == "Friday Registration & Welcome @ Forum Hall Foyer 1st Floor"
-    assert sessions[1].title == "Healthy code for healthy teams (or the other way around)"
-    assert sessions[2].title == "Insights and Experiences of Packaging Python Binary Extensions"
+    assert sessions[0].title == "Acreditaciones | Accreditations"
+    assert sessions[1].title == "Apertura del evento | Event opening"
+    assert sessions[2].title == "Modelando el efecto de las sombras en un sistema fotovoltaico"
 
     # Test for a day with no sessions
-    sessions = await program_connector.get_sessions_by_date(date(2024, 7, 13))
+    sessions = await program_connector.get_sessions_by_date(date(2024, 10, 8))
     assert len(sessions) == 0
 
 
@@ -130,7 +121,7 @@ async def test_get_upcoming_sessions(program_connector, mock_schedule_url):
     # Please make sure all the sessions have UTC+0 timezone
 
     # Test with a simulated time in 5 minutes range before a session
-    program_connector._simulated_start_time = datetime(2024, 7, 10, 7, 58, 0, tzinfo=timezone.utc)
+    program_connector._simulated_start_time = datetime(2024, 10, 5, 7, 58, 0, tzinfo=timezone.utc)
     program_connector._real_start_time = datetime.now(tz=timezone.utc)
     program_connector._time_multiplier = 1
 
@@ -138,26 +129,26 @@ async def test_get_upcoming_sessions(program_connector, mock_schedule_url):
     assert len(upcoming_sessions) == 1
     assert (
         upcoming_sessions[0].title
-        == "Wednesday Registration & Welcome @ Forum Hall Foyer 1st Floor"
+        == "Acreditaciones | Accreditations"
     )
 
     # Test with a simulated time in 5 minutes range where there are 2 upcoming sessions
-    program_connector._simulated_start_time = datetime(2024, 7, 10, 10, 43, 0, tzinfo=timezone.utc)
+    program_connector._simulated_start_time = datetime(2024, 10, 5, 11, 12, 0, tzinfo=timezone.utc)
     upcoming_sessions = await program_connector.get_upcoming_sessions()
     assert len(upcoming_sessions) == 2
 
     # Test with a simulated time before any session in the mock schedule
-    program_connector._simulated_start_time = datetime(2024, 7, 10, 7, 0, 0, tzinfo=timezone.utc)
+    program_connector._simulated_start_time = datetime(2024, 10, 5, 7, 0, 0, tzinfo=timezone.utc)
     upcoming_sessions = await program_connector.get_upcoming_sessions()
     assert len(upcoming_sessions) == 0
 
     # Test with a simulated time after all sessions in the mock schedule
-    program_connector._simulated_start_time = datetime(2024, 7, 11, 11, 20, 0, tzinfo=timezone.utc)
+    program_connector._simulated_start_time = datetime(2024, 10, 5, 20, 20, 0, tzinfo=timezone.utc)
     upcoming_sessions = await program_connector.get_upcoming_sessions()
     assert len(upcoming_sessions) == 0
 
     # Test with a simulated time in 5 minutes range before a break
-    program_connector._simulated_start_time = datetime(2024, 7, 12, 10, 13, 0, tzinfo=timezone.utc)
+    program_connector._simulated_start_time = datetime(2024, 10, 5, 10, 43, 0, tzinfo=timezone.utc)
     upcoming_sessions = await program_connector.get_upcoming_sessions()
     assert len(upcoming_sessions) == 0
 
