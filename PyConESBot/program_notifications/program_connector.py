@@ -62,6 +62,10 @@ class ProgramConnector:
         async with self._fetch_lock:
             try:
                 async with aiohttp.ClientSession() as session:
+                    session.headers.update({"Accept": "application/json"})
+                    session.headers.update({"User-Agent": "PyConESBot"})
+                    # Force English to avoid issues with the API
+                    session.headers.update({"Accept-Language": "en"})
                     async with session.get(self._api_url) as response:
                         response.raise_for_status()
                         schedule = await response.json()
