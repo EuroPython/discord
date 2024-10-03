@@ -1,4 +1,5 @@
 import logging
+import os
 
 from discord import Client, Embed
 from discord.ext import commands, tasks
@@ -22,6 +23,7 @@ class ProgramNotificationsCog(commands.Cog):
             cache_file=config.SCHEDULE_CACHE_FILE,
             simulated_start_time=config.SIMULATED_START_TIME,
             fast_mode=config.FAST_MODE,
+            token=os.getenv("PRETALX_API_TOKEN"),
         )
 
         self.livestream_connector = LivestreamConnector(config.LIVESTREAM_URL_FILE)
