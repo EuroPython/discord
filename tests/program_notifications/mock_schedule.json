@@ -1,327 +1,1237 @@
 {
-  "days": {
-    "2024-07-10": {
+  "$schema": "https://c3voc.de/schedule/schema.json",
+  "generator": {
+    "name": "pretalx",
+    "version": "2024.3.0.dev0"
+  },
+  "schedule": {
+    "url": "https://pretalx.com/pycones-2024/schedule/",
+    "version": "0.14",
+    "base_url": "https://pretalx.com",
+    "conference": {
+      "acronym": "pycones-2024",
+      "title": "PyConES 2024",
+      "start": "2024-10-04",
+      "end": "2024-10-06",
+      "daysCount": 3,
+      "timeslot_duration": "00:05",
+      "time_zone_name": "Europe/Madrid",
+      "colors": {
+        "primary": "#E1251B"
+      },
       "rooms": [
-        "Exhibit Hall",
-        "Forum Hall",
-        "North Hall",
-        "South Hall 2A",
-        "South Hall 2B",
-        "Terrace 2A",
-        "Terrace 2B"
-      ],
-      "events": [
         {
-          "code": "TZWRJN",
-          "duration": 60,
-          "event_type": "session",
-          "level": "beginner",
-          "rooms": [
-            "Exhibit Hall",
-            "Forum Hall",
-            "North Hall",
-            "South Hall 2A",
-            "South Hall 2B",
-            "Terrace 2A",
-            "Terrace 2B"
-          ],
-          "session_type": "Announcements",
-          "slug": "wednesday-registration-welcome-forum-hall-foyer-1st-floor",
-          "speakers": [],
-          "start": "2024-07-10T08:00:00+00:00",
-          "title": "Wednesday Registration & Welcome @ Forum Hall Foyer 1st Floor",
-          "track": null,
-          "tweet": "",
-          "website_url": "https://ep2024.europython.eu/session/wednesday-registration-welcome-forum-hall-foyer-1st-floor"
+          "name": "Treboada",
+          "guid": "c85423ad-d45f-5af5-806a-cbcb7d93cc92",
+          "description": "Auditorium",
+          "capacity": 800
         },
         {
-          "code": "WQGUTP",
-          "duration": 45,
-          "event_type": "session",
-          "level": "beginner",
-          "rooms": [
-            "Forum Hall"
-          ],
-          "session_type": "Keynote",
-          "slug": "embracing-python-ai-and-heuristics-optimal-paths-for-impactful-software",
-          "speakers": [
-            {
-              "avatar": "https://program.europython.eu/media/avatars/carol_2XdXiWK.webp",
-              "code": "HBHXB3",
-              "name": "Carol Willing",
-              "slug": "carol-willing",
-              "website_url": "https://ep2024.europython.eu/speaker/carol-willing"
-            }
-          ],
-          "start": "2024-07-10T09:30:00+00:00",
-          "title": "Embracing Python, AI, and Heuristics: Optimal Paths for Impactful Software",
-          "track": null,
-          "tweet": "",
-          "website_url": "https://ep2024.europython.eu/session/embracing-python-ai-and-heuristics-optimal-paths-for-impactful-software"
+          "name": "Poalla",
+          "guid": "4a32ac34-5e12-592e-a34d-77a962917773",
+          "description": "AKA Room 2",
+          "capacity": 99
         },
         {
-          "duration": 30,
-          "event_type": "break",
-          "rooms": [
-            "Forum Hall",
-            "North Hall",
-            "South Hall 2A",
-            "South Hall 2B",
-            "Terrace 2A",
-            "Terrace 2B"
-          ],
-          "start": "2024-07-10T10:15:00+00:00",
-          "title": "Coffee Break"
+          "name": "Saraiba",
+          "guid": "afc5f5ef-1b45-5c18-b758-aa7f7ba519bd",
+          "description": "AKA Room 1",
+          "capacity": 99
         },
         {
-          "code": "3XXR79",
-          "duration": 45,
-          "event_type": "session",
-          "level": "beginner",
-          "rooms": [
-            "Terrace 2B"
-          ],
-          "session_type": "Talk (long session)",
-          "slug": "learning-to-code-in-the-age-of-ai",
-          "speakers": [
-            {
-              "avatar": "https://program.europython.eu/media/avatars/PXL_20220202_063143310_vOk18MH.jpg",
-              "code": "GZHPTE",
-              "name": "Sheena O'Connell",
-              "slug": "sheena-o-connell",
-              "website_url": "https://ep2024.europython.eu/speaker/sheena-o-connell"
-            }
-          ],
-          "start": "2024-07-10T10:45:00+00:00",
-          "title": "Learning to code in the age of AI",
-          "track": "Software Engineering & Architecture",
-          "tweet": "Across the industry, programmers of all levels are embracing AI and LLMs. But: it's still worthwhile to learn the foundations of coding. And there's a risk: some learners are using AIs as footguns and limiting their own",
-          "website_url": "https://ep2024.europython.eu/session/learning-to-code-in-the-age-of-ai"
+          "name": "Orballo",
+          "guid": "341a2c5d-665a-5ed5-af24-e2698a90cf92",
+          "description": "AKA Room 6",
+          "capacity": 72
         },
         {
-          "code": "ZWDDAT",
-          "duration": 45,
-          "event_type": "session",
-          "level": "advanced",
-          "rooms": [
-            "Forum Hall"
-          ],
-          "session_type": "Talk (long session)",
-          "slug": "spy-static-python-lang-fast-as-c-pythonic-as-python",
-          "speakers": [
-            {
-              "avatar": "https://program.europython.eu/media/avatars/cdc3cafa377f0e0e93fc69636021ef65_Uf9XcVF.jpg",
-              "code": "QMAPYZ",
-              "name": "Antonio Cuni",
-              "slug": "antonio-cuni",
-              "website_url": "https://ep2024.europython.eu/speaker/antonio-cuni"
-            }
-          ],
-          "start": "2024-07-10T10:45:00+00:00",
-          "title": "SPy (Static Python) lang: fast as C, Pythonic as Python",
-          "track": "Python Internals & Ecosystem",
-          "tweet": "",
-          "website_url": "https://ep2024.europython.eu/session/spy-static-python-lang-fast-as-c-pythonic-as-python"
+          "name": "Neboeira",
+          "guid": "859d02f2-e2d7-5dba-b4e7-8f4adf2c5d23",
+          "description": "Espacio fuera de las salas",
+          "capacity": 32
         }
-      ]
-    },
-    "2024-07-11": {
-      "rooms": [
-        "Exhibit Hall",
-        "Forum Hall",
-        "North Hall",
-        "South Hall 2A",
-        "South Hall 2B",
-        "Terrace 2A",
-        "Terrace 2B"
       ],
-      "events": [
+      "tracks": [
         {
-          "code": "CFTYQ3",
-          "duration": 45,
-          "event_type": "session",
-          "level": "beginner",
-          "rooms": [
-            "Exhibit Hall",
-            "Forum Hall",
-            "North Hall",
-            "South Hall 2A",
-            "South Hall 2B",
-            "Terrace 2A",
-            "Terrace 2B"
-          ],
-          "session_type": "Announcements",
-          "slug": "thursday-registration-welcome-forum-hall-foyer-1st-floor",
-          "speakers": [],
-          "start": "2024-07-11T08:15:00+00:00",
-          "title": "Thursday Registration & Welcome @ Forum Hall Foyer 1st Floor",
-          "track": null,
-          "tweet": "",
-          "website_url": "https://ep2024.europython.eu/session/thursday-registration-welcome-forum-hall-foyer-1st-floor"
+          "name": "Core",
+          "color": "#BF5D5D"
         },
         {
-          "code": "8FY9BC",
-          "duration": 45,
-          "event_type": "session",
-          "level": "beginner",
-          "rooms": [
-            "Forum Hall"
-          ],
-          "session_type": "Keynote",
-          "slug": "why-should-we-all-be-hyped-about-inclusive-leadership",
-          "speakers": [
-            {
-              "avatar": "https://program.europython.eu/media/avatars/DSC01436_XYwYOjf.jpg",
-              "code": "NMACLQ",
-              "name": "Tereza Iofciu",
-              "slug": "tereza-iofciu",
-              "website_url": "https://ep2024.europython.eu/speaker/tereza-iofciu"
-            }
-          ],
-          "start": "2024-07-11T09:15:00+00:00",
-          "title": "Why should we all be hyped about inclusive leadership?",
-          "track": "Education, Community & Diversity",
-          "tweet": "",
-          "website_url": "https://ep2024.europython.eu/session/why-should-we-all-be-hyped-about-inclusive-leadership"
+          "name": "Web",
+          "color": "#0F712E"
         },
         {
-          "duration": 30,
-          "event_type": "break",
-          "rooms": [
-            "Forum Hall",
-            "North Hall",
-            "South Hall 2A",
-            "South Hall 2B",
-            "Terrace 2A",
-            "Terrace 2B"
-          ],
-          "start": "2024-07-11T10:00:00+00:00",
-          "title": "Coffee Break"
+          "name": "Ethics in AI",
+          "color": "#943A3A"
         },
         {
-          "code": "7PEXTK",
-          "duration": 45,
-          "event_type": "session",
-          "level": "intermediate",
-          "rooms": [
-            "Forum Hall"
-          ],
-          "session_type": "Talk (long session)",
-          "slug": "rapid-prototyping-proof-of-concepts-django-is-all-we-need",
-          "speakers": [
-            {
-              "avatar": "https://program.europython.eu/media/avatars/rado_I79wz8p.jpg",
-              "code": "GLMZDC",
-              "name": "Radoslav Georgiev",
-              "slug": "radoslav-georgiev",
-              "website_url": "https://ep2024.europython.eu/speaker/radoslav-georgiev"
-            }
-          ],
-          "start": "2024-07-11T10:30:00+00:00",
-          "title": "Rapid Prototyping & Proof of Concepts: Django is all we need",
-          "track": "Python Libraries & Tooling",
-          "tweet": "We know Django is great for building mature & long-lasting applications.  In this talk, we'll show that Django's actually also great for rapid prototyping & building proof of concepts.",
-          "website_url": "https://ep2024.europython.eu/session/rapid-prototyping-proof-of-concepts-django-is-all-we-need"
+          "name": "Scientific and quantum computing",
+          "color": "#255AB5"
+        },
+        {
+          "name": "Education, teaching & further training",
+          "color": "#3EF556"
+        },
+        {
+          "name": "SW Engineering & Architecture",
+          "color": "#F95EEE"
+        },
+        {
+          "name": "Other",
+          "color": "#1B040A"
+        },
+        {
+          "name": "Microcontrollers and IoT",
+          "color": "#154067"
+        },
+        {
+          "name": "Community, society and culture",
+          "color": "#8800C4"
+        },
+        {
+          "name": "Deep Learning",
+          "color": "#5202C5"
+        },
+        {
+          "name": "Sys / DevOps / Tests / Agile",
+          "color": "#C111C4"
+        },
+        {
+          "name": "Machine learning, stats",
+          "color": "#FF7602"
+        },
+        {
+          "name": "Software packages",
+          "color": "#F9A700"
+        },
+        {
+          "name": "Software packages & jupyter",
+          "color": "#93690E"
+        },
+        {
+          "name": "Infrastructure: cloud & hardware",
+          "color": "#098DA4"
+        },
+        {
+          "name": "Videogames and design",
+          "color": "#24A29E"
+        },
+        {
+          "name": "Desktop applications",
+          "color": "#5F965C"
+        },
+        {
+          "name": "Network and Security",
+          "color": "#AAA300"
+        },
+        {
+          "name": "Data Engineering",
+          "color": "#F991A1"
+        },
+        {
+          "name": "Keynote",
+          "color": "#0351FF"
+        },
+        {
+          "name": "Coffee Break",
+          "color": "#000000"
+        },
+        {
+          "name": "Sponsor",
+          "color": "#5DE200"
         }
-      ]
-    },
-    "2024-07-12": {
-      "rooms": [
-        "Exhibit Hall",
-        "Forum Hall",
-        "North Hall",
-        "South Hall 2A",
-        "South Hall 2B",
-        "Terrace 2A",
-        "Terrace 2B"
       ],
-      "events": [
+      "days": [
         {
-          "code": "JLFDLR",
-          "duration": 30,
-          "event_type": "session",
-          "level": "beginner",
-          "rooms": [
-            "Exhibit Hall",
-            "Forum Hall",
-            "North Hall",
-            "South Hall 2A",
-            "South Hall 2B",
-            "Terrace 2A",
-            "Terrace 2B"
-          ],
-          "session_type": "Announcements",
-          "slug": "friday-registration-welcome-forum-hall-foyer-1st-floor",
-          "speakers": [],
-          "start": "2024-07-12T08:45:00+00:00",
-          "title": "Friday Registration & Welcome @ Forum Hall Foyer 1st Floor",
-          "track": null,
-          "tweet": "",
-          "website_url": "https://ep2024.europython.eu/session/friday-registration-welcome-forum-hall-foyer-1st-floor"
+          "index": 1,
+          "date": "2024-10-04",
+          "day_start": "2024-10-04T04:00:00+00:00",
+          "day_end": "2024-10-05T03:59:00+00:00",
+          "rooms": {
+            "Saraiba": [
+              {
+                "url": "https://pretalx.com/pycones-2024/talk/FUSUDN/",
+                "id": 55675,
+                "guid": "1b16c6dc-cedb-5f2e-93b5-05e8ae7e792b",
+                "date": "2024-10-04T15:30:00+00:00",
+                "start": "15:30",
+                "logo": null,
+                "duration": "00:30",
+                "room": "Saraiba",
+                "slug": "pycones-2024-55675-acreditaciones-accreditations",
+                "title": "Acreditaciones | Accreditations",
+                "subtitle": "",
+                "track": "Other",
+                "type": "Event Opening | Accreditations",
+                "language": "es",
+                "abstract": "Acreditaciones | Accreditations",
+                "description": null,
+                "recording_license": "",
+                "do_not_record": false,
+                "persons": [],
+                "links": [],
+                "attachments": [],
+                "answers": [
+                  {
+                    "question": 3652,
+                    "answer": "Data Engineering",
+                    "options": [
+                      {
+                        "en": "Data Engineering",
+                        "es": "Ingeniería de Datos"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3653,
+                    "answer": "",
+                    "options": []
+                  }
+                ]
+              },
+              {
+                "url": "https://pretalx.com/pycones-2024/talk/EGPA8N/",
+                "id": 51106,
+                "guid": "60211798-7bc8-5910-9dd3-6cf6ee4f6726",
+                "date": "2024-10-04T16:00:00+00:00",
+                "start": "16:00",
+                "logo": null,
+                "duration": "01:30",
+                "room": "Saraiba",
+                "slug": "pycones-2024-51106-superando-el-reto-del-billn-de-filas-con-python",
+                "title": "Superando el reto del billón de filas con Python",
+                "subtitle": "",
+                "track": "Data Engineering",
+                "type": "Workshop (90min)",
+                "language": "es",
+                "abstract": "En el mundo del análisis de datos nos encontramos a menudo con la necesidad de analizar una cantidad masiva de datos con unos recursos muy limitados y en estos casos es importante tener claro qué estrategias y librerías se adaptan mejor a nuestras necesidades. \r\n\r\nEn este tutorial práctico vamos a cargar un fichero con mil millones de filas, inspirándonos en el reto de procesar un billón (en inglés) de filas: https://github.com/gunnarmorling/1brc, y veremos cómo podemos procesarlo y trabajar con él mediante Python.\r\n\r\nEn concreto, para superar este reto trabajaremos con librerías como numpy, pandas, Polars, PyArrow, DuckDB, Dask o Modin y utilizaremos formatos de ficheros tales como CSV, Apache Parquet o Feather y veremos las ventajas y desventajas de cada opción.\r\n\r\nPara poder aprender y disfrutar de este tutorial recomendamos tener al menos 1 año de experiencia en Python, pero no es necesario tener experiencia en procesamiento de grandes cantidades de datos. Y no te preocupes si tienes un portátil con pocos recursos porque podrás adaptar fácilmente el tutorial a tu configuración y completar todos los ejercicios que te plantearemos sin problema.",
+                "description": null,
+                "recording_license": "",
+                "do_not_record": false,
+                "persons": [
+                  {
+                    "guid": "947f2c93-fb19-518f-a200-99679c5fe4b8",
+                    "id": 31627,
+                    "code": "ZJSKBP",
+                    "public_name": "Jordi Contestí",
+                    "avatar": "https://pretalx.com/media/avatars/jcontesti_lzn9bTT.png",
+                    "biography": "Ingenierio en Informática con más 20 años de experiencia. Me encanta programar, la estadística y los datos. Actualmente, trabajo como Ingeniero de Datos en Tinybird.",
+                    "answers": [
+                      {
+                        "question": 3658,
+                        "answer": "Mallorca",
+                        "options": []
+                      },
+                      {
+                        "question": 3654,
+                        "answer": "Hombre",
+                        "options": [
+                          {
+                            "en": "Male",
+                            "es": "Hombre"
+                          }
+                        ]
+                      },
+                      {
+                        "question": 3656,
+                        "answer": "https://www.linkedin.com/in/jcontesti/",
+                        "options": []
+                      },
+                      {
+                        "question": 3659,
+                        "answer": "True",
+                        "options": []
+                      }
+                    ]
+                  },
+                  {
+                    "guid": "f311cda4-3a9a-5409-be0e-5fbc8c1b16dd",
+                    "id": 45234,
+                    "code": "JEMXBD",
+                    "public_name": "Kiko Correoso",
+                    "avatar": null,
+                    "biography": "Biografía.",
+                    "answers": [
+                      {
+                        "question": 3658,
+                        "answer": "..",
+                        "options": []
+                      },
+                      {
+                        "question": 3654,
+                        "answer": "Female",
+                        "options": [
+                          {
+                            "en": "Female",
+                            "es": "Mujer"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "guid": "2d407178-7d22-55e8-8018-762e398b50d8",
+                    "id": 45241,
+                    "code": "YLND9X",
+                    "public_name": "Ernesto Coloma Rotger",
+                    "avatar": "https://pretalx.com/media/avatars/1000005678_d9G8GMd.jpg",
+                    "biography": "Graduado en economía con 7 años de experiencia en el mundo de los datos. Me apasiona aprender de forma autónoma, la informática y el mundo de los datos. He trabajado en múltiples áreas gracias a tener un perfil muy transversal, actualmente trabajo como ingeniero de datos en una empresa de movilidad.",
+                    "answers": [
+                      {
+                        "question": 3658,
+                        "answer": "Mallorca",
+                        "options": []
+                      },
+                      {
+                        "question": 3654,
+                        "answer": "Hombre",
+                        "options": [
+                          {
+                            "en": "Male",
+                            "es": "Hombre"
+                          }
+                        ]
+                      },
+                      {
+                        "question": 3656,
+                        "answer": "www.linkedin.com/in/ernesto-coloma-rotger",
+                        "options": []
+                      },
+                      {
+                        "question": 3660,
+                        "answer": "0",
+                        "options": []
+                      }
+                    ]
+                  }
+                ],
+                "links": [],
+                "attachments": [],
+                "answers": [
+                  {
+                    "question": 3652,
+                    "answer": "Data Engineering",
+                    "options": [
+                      {
+                        "en": "Data Engineering",
+                        "es": "Ingeniería de Datos"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3653,
+                    "answer": "Software packages, SW Engineering & Architecture",
+                    "options": [
+                      {
+                        "en": "Software packages",
+                        "es": "Software packages"
+                      },
+                      {
+                        "en": "SW Engineering & Architecture",
+                        "es": "SW Ingeniería & Arquitectura"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3662,
+                    "answer": "Intermediate (it is necessary to understand the related bases to go into detail)",
+                    "options": [
+                      {
+                        "en": "Intermediate (it is necessary to understand the related bases to go into detail)",
+                        "es": "Intermedia (es necesario entender las bases relacionadas para entrar en detalle)"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3664,
+                    "answer": "Sí, estamos preparando un repositorio público con todo el material del taller.",
+                    "options": []
+                  },
+                  {
+                    "question": 3665,
+                    "answer": "No, nunca la hemos impartido antes.",
+                    "options": []
+                  },
+                  {
+                    "question": 3666,
+                    "answer": "Únicamente conexión a internet.",
+                    "options": []
+                  }
+                ]
+              }
+            ],
+            "Poalla": [
+              {
+                "url": "https://pretalx.com/pycones-2024/talk/HZ7RKX/",
+                "id": 55674,
+                "guid": "119d84cc-8b36-5c96-878f-ad913c7bf77d",
+                "date": "2024-10-04T15:30:00+00:00",
+                "start": "15:30",
+                "logo": null,
+                "duration": "00:30",
+                "room": "Poalla",
+                "slug": "pycones-2024-55674-acreditaciones-accreditations",
+                "title": "Acreditaciones | Accreditations",
+                "subtitle": "",
+                "track": "Other",
+                "type": "Event Opening | Accreditations",
+                "language": "es",
+                "abstract": "Acreditaciones | Accreditations",
+                "description": null,
+                "recording_license": "",
+                "do_not_record": false,
+                "persons": [],
+                "links": [],
+                "attachments": [],
+                "answers": [
+                  {
+                    "question": 3652,
+                    "answer": "Data Engineering",
+                    "options": [
+                      {
+                        "en": "Data Engineering",
+                        "es": "Ingeniería de Datos"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3653,
+                    "answer": "",
+                    "options": []
+                  }
+                ]
+              },
+              {
+                "url": "https://pretalx.com/pycones-2024/talk/8GL3MV/",
+                "id": 50989,
+                "guid": "e8abbf71-b61f-5e4e-97b7-1279067443cb",
+                "date": "2024-10-04T16:00:00+00:00",
+                "start": "16:00",
+                "logo": null,
+                "duration": "01:30",
+                "room": "Poalla",
+                "slug": "pycones-2024-50989-pattern-busters-encontrando-patrones-significativos-con-python-en-aplicaciones-reales",
+                "title": "Pattern busters: encontrando patrones significativos con Python en aplicaciones reales",
+                "subtitle": "",
+                "track": "Machine learning, stats",
+                "type": "Workshop (90min)",
+                "language": "es",
+                "abstract": "La idea de este taller es presentar técnicas de nivel medio/avanzado para detección de patrones y minería de datos y muestra en qué contextos y aplicaciones reales (industria, ciberseguridad, ...) son útiles, qué permiten hacer o qué limitaciones tienen. Con esto, se pretende mostrar que no siempre se necesita conocer los detalles un algoritmo para saber usarlo, interpretar qué entradas necesita y qué resultados o patrones permite detectar para extraer información relevante de un conjunto de datos. \r\n\r\nCuando uno empieza a trabajar en analítica y minería de datos, existen muchas buzzwords (redes neuronales, FFT, autoencoders, t-SNE...), que pueden resultar abrumadoras y muchas veces existe una barrera invisible a la hora de utilizar nuevas técnicas que podrían aportar mucho valor a la hora de obtener insights. \r\n\r\nLa detección de patrones significativos y anomalías constituye una de las labores más relevantes en el análisis de datos. A veces, un simple análisis exploratorio preliminar no aporta la información relevante que pueden contener los datos. En estos casos suele ser necesario recurrir a técnicas más adaptadas al problema. \r\n\r\nEl taller estará dividido en dos partes, una centrada en datos tabulares y otra orientada a análisis de series temporales. En ella exploraremos diferentes opciones para el reconocimiento de patrones repetitivos, técnicas para la detección de anomalías o para la generación de datos. El punto común es la captura de patrones y el estudio de las relaciones presentes en los datos. Las librerías que se van a utilizar incluyen: keras (tensorflow), stumpy, sklearn, tslearn, umap y numpy; siendo el principal objetivo que los asistentes se lleven nuevas herramientas con las que poder atacar problemas de ciencia de datos. \r\n\r\nRequerimientos previos de la charla:\r\nConocimiento bajo-intermedio de python (librerías como Pandas, NumPy, Scikit-Learn)\r\nConocimiento bajo de Jupyter-notebook\r\nConocimientos básicos de análisis de datos. \r\nOrdenador portátil.\r\n\r\nEl enlace al repositorio con el readme para la instalación es el siguiente:\r\nhttps://github.com/Gradiant/PyConEs2024-PatternBusters/tree/main",
+                "description": null,
+                "recording_license": "",
+                "do_not_record": false,
+                "persons": [
+                  {
+                    "guid": "1836625e-63c2-54b8-986c-c3e57796b25e",
+                    "id": 45139,
+                    "code": "LM8JLY",
+                    "public_name": "Pablo García Santaclara",
+                    "avatar": "https://pretalx.com/media/avatars/Multimedia1_033araP.jpeg",
+                    "biography": "Pablo García Santaclara finalizó el Grado en Ingeniería de Tecnologías de Telecomunicación por la Universidad de Vigo, mención en telemática, en Junio de 2021 y los estudios del Máster en Ingeniería de Telecomunicación, especialidad en telemática en Julio de 2023, impartido también por la misma universidad. Simultáneamente al Máster, empezó a trabajar en Gradiant como parte del área de Sistemas Inteligentes en la línea de tecnologías ML&O (Machine Learning & Optimización) participando activamente en proyectos de convocatorias nacionales y europeas relacionados con la industria 4.0 y el diseño e implementación de sistemas avanzados para el control de calidad, mantenimiento predictivo y optimización de procesos de fabricación, entre otros. Actualmente desarrolla sus estudios de doctorado en la Universidade de Vigo con mención Industrial en el área de lifelong learning con aplicaciones industriales. Su actividad principal en Gradiant se centra en la investigación de algoritmos de machine learning e inteligencia artificial relacionados con la detección de anomalías y el mantenimiento predictivo, modelos Deep Learning de clasificación y regresión multivariante, aprendizaje federado (Federated Learning), edge computing, Incremental y Lifelong Learning.",
+                    "answers": [
+                      {
+                        "question": 3658,
+                        "answer": "Vigo",
+                        "options": []
+                      },
+                      {
+                        "question": 3654,
+                        "answer": "Hombre",
+                        "options": [
+                          {
+                            "en": "Male",
+                            "es": "Hombre"
+                          }
+                        ]
+                      },
+                      {
+                        "question": 3656,
+                        "answer": "https://www.linkedin.com/in/pablo-garc%C3%ADa-santaclara/",
+                        "options": []
+                      }
+                    ]
+                  },
+                  {
+                    "guid": "7f9d3fe5-4df2-56a1-b3f2-577cd617a388",
+                    "id": 45144,
+                    "code": "RAFQHZ",
+                    "public_name": "Camilo Piñón Blanco",
+                    "avatar": "https://pretalx.com/media/avatars/Pi%C3%B1%C3%B3n_Blanco_Camilo_rectangular_bn_72ppp_5Hfyh1c.png",
+                    "biography": "Camilo Piñón Blanco es Graduado en Ingeniería de Tecnologías de Telecomunicación (2021) y Máster en Ingeniería de Telecomunicación (2023) por la Universidad de Vigo, con especialización en Ingeniería Telemática. Actualmente desarrolla su actividad como Ingeniero-Investigador en dentro de la línea de Privacy & Security Analytics de GRADIANT (Galician R&D Center in Advanced Telecommunications), donde se enfoca en el desarrollo de soluciones para detección de ciberataques y análisis de comportamiento de usuarios y entidades mediante técnicas de Machine Learning. Además, ha trabajado como investigador en atlanTTic, abordando proyectos relacionados con el procesamiento de lenguaje natural y análisis de datos textuales. Sus principales áreas de interés incluyen la ciencia de datos aplicada y el aprendizaje automático para analítica de ciberseguridad.",
+                    "answers": [
+                      {
+                        "question": 3658,
+                        "answer": "Vigo",
+                        "options": []
+                      },
+                      {
+                        "question": 3654,
+                        "answer": "Hombre",
+                        "options": [
+                          {
+                            "en": "Male",
+                            "es": "Hombre"
+                          }
+                        ]
+                      },
+                      {
+                        "question": 3656,
+                        "answer": "https://es.linkedin.com/in/camilo-pinon-blanco",
+                        "options": []
+                      },
+                      {
+                        "question": 3660,
+                        "answer": "1",
+                        "options": []
+                      },
+                      {
+                        "question": 3661,
+                        "answer": "No dispongo de grabación de la ponencia. Fue la presentación de un paper en el track de investigación para las Jornadas Nacionales de Investigación en Ciberseguridad 2023.",
+                        "options": []
+                      },
+                      {
+                        "question": 3659,
+                        "answer": "True",
+                        "options": []
+                      }
+                    ]
+                  }
+                ],
+                "links": [],
+                "attachments": [],
+                "answers": [
+                  {
+                    "question": 3652,
+                    "answer": "Machine learning, stats",
+                    "options": [
+                      {
+                        "en": "Machine learning, stats",
+                        "es": "Machine learning, stats"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3653,
+                    "answer": "Ingeniería de Datos, Deep Learning",
+                    "options": [
+                      {
+                        "en": "Data Engineering",
+                        "es": "Ingeniería de Datos"
+                      },
+                      {
+                        "en": "Deep Learning",
+                        "es": "Deep Learning"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3662,
+                    "answer": "Básica (no hacen falta conocimientos previos)",
+                    "options": [
+                      {
+                        "en": "Basic (no previous knowledge is necessary)",
+                        "es": "Básica (no hacen falta conocimientos previos)"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3663,
+                    "answer": "Personas con cualquier background, con interés en aprender en análisis de datos.",
+                    "options": []
+                  },
+                  {
+                    "question": 3664,
+                    "answer": "Sí",
+                    "options": []
+                  },
+                  {
+                    "question": 3666,
+                    "answer": "Conexión a Internet, un proyector con conexión HDMI, micrófono.",
+                    "options": []
+                  }
+                ]
+              }
+            ],
+            "Orballo": [
+              {
+                "url": "https://pretalx.com/pycones-2024/talk/RVXPPE/",
+                "id": 55673,
+                "guid": "0e887f44-65a0-5990-979e-e33937703195",
+                "date": "2024-10-04T15:30:00+00:00",
+                "start": "15:30",
+                "logo": null,
+                "duration": "00:30",
+                "room": "Orballo",
+                "slug": "pycones-2024-55673-acreditaciones-accreditations",
+                "title": "Acreditaciones | Accreditations",
+                "subtitle": "",
+                "track": "Other",
+                "type": "Event Opening | Accreditations",
+                "language": "es",
+                "abstract": "Acreditaciones | Accreditations",
+                "description": null,
+                "recording_license": "",
+                "do_not_record": false,
+                "persons": [],
+                "links": [],
+                "attachments": [],
+                "answers": [
+                  {
+                    "question": 3652,
+                    "answer": "Data Engineering",
+                    "options": [
+                      {
+                        "en": "Data Engineering",
+                        "es": "Ingeniería de Datos"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3653,
+                    "answer": "",
+                    "options": []
+                  }
+                ]
+              },
+              {
+                "url": "https://pretalx.com/pycones-2024/talk/TKJPRW/",
+                "id": 51328,
+                "guid": "affc2843-08eb-5117-9616-09664af644f4",
+                "date": "2024-10-04T16:00:00+00:00",
+                "start": "16:00",
+                "logo": null,
+                "duration": "01:30",
+                "room": "Orballo",
+                "slug": "pycones-2024-51328-nuestra-primera-api-restful-auth-openapi",
+                "title": "Nuestra primera API Restful + auth + OpenAPI",
+                "subtitle": "",
+                "track": "Core",
+                "type": "Workshop (90min)",
+                "language": "es",
+                "abstract": "Una vez hemos aprendido las bases de Python, la primera pregunta que nos solemos hacer es ¿Y ahora qué? Tenemos bases de programación pero nos falta conocer librerías capaces de llevar a cabo nuestros desarrollos de una manera rápida y sencilla.\r\n\r\n\r\nEl objetivo de este taller es dar las herramientas necesarias a estas personas para poder crear su primera API RESTful con Python. \r\n\r\n\r\nPara ello, montaremos los endpoints necesarios para realizar la autenticación de cliente por token para securizar nuestra API, también montaremos un par de endpoints priorizando primero la escritura de los tests, hablaremos de las diferencias que hay entre los distintos métodos disponibles GET, POST, PUT, PATCH y DELETE, comentaremos estrategias para conformar la sintaxis de nuestras urls de manera que se genere coherencia entre ellas y finalmente acabaremos planteando un caso de uso en el cual un cliente necesita actualizar uno de los endpoints pero nosotros, como proveedores de un servicio, estemos obligados a guardar retrocompatibilidad con el resto de clientes, de manera que este ejemplo nos permitirá introducir el concepto de versionado de APIs.",
+                "description": null,
+                "recording_license": "",
+                "do_not_record": false,
+                "persons": [
+                  {
+                    "guid": "17c6b626-bbc6-5f34-a905-6801b7e8fdd0",
+                    "id": 19647,
+                    "code": "UBSUEC",
+                    "public_name": "Nayra Tarazon Barbera",
+                    "avatar": "https://pretalx.com/media/avatars/photo_5936183216333505959_y_qaa6vp8_Ql9CSoJ.jpg",
+                    "biography": "*\"Trabajar no es malo, lo malo es tener que trabajar\" (Don Ramón, Chavo del ocho, 1980)*",
+                    "answers": [
+                      {
+                        "question": 3658,
+                        "answer": "Valencia",
+                        "options": []
+                      },
+                      {
+                        "question": 3651,
+                        "answer": "https://t.me/naypycon",
+                        "options": []
+                      },
+                      {
+                        "question": 3654,
+                        "answer": "Mujer",
+                        "options": [
+                          {
+                            "en": "Female",
+                            "es": "Mujer"
+                          }
+                        ]
+                      },
+                      {
+                        "question": 3656,
+                        "answer": "https://www.linkedin.com/in/ntarazon/",
+                        "options": []
+                      },
+                      {
+                        "question": 3660,
+                        "answer": "1",
+                        "options": []
+                      },
+                      {
+                        "question": 3661,
+                        "answer": "Generando un backend en FastAPI, en la PyconES de canarias.\r\nhttps://charlas.2023.es.pycon.org/pycones-2023/talk/FZKJSN/",
+                        "options": []
+                      },
+                      {
+                        "question": 3659,
+                        "answer": "True",
+                        "options": []
+                      }
+                    ]
+                  }
+                ],
+                "links": [],
+                "attachments": [],
+                "answers": [
+                  {
+                    "question": 3652,
+                    "answer": "Core",
+                    "options": [
+                      {
+                        "en": "Core",
+                        "es": "Core"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3653,
+                    "answer": "Web",
+                    "options": [
+                      {
+                        "en": "Web",
+                        "es": "Web"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3662,
+                    "answer": "Intermedia (es necesario entender las bases relacionadas para entrar en detalle)",
+                    "options": [
+                      {
+                        "en": "Intermediate (it is necessary to understand the related bases to go into detail)",
+                        "es": "Intermedia (es necesario entender las bases relacionadas para entrar en detalle)"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3663,
+                    "answer": "Persones que hayan tenido la oportunidad de programar en Python y tengan las bases del lenguaje claras.",
+                    "options": []
+                  },
+                  {
+                    "question": 3664,
+                    "answer": "Repositorio de trabajo: https://github.com/APSL/pycones2024\r\nSe realizarán los distintos capítulos del taller sobre cada una de las ramas creadas.\r\n\r\nCanal de telegram para soporte de asistentes pre y post taller: https://t.me/naypycon",
+                    "options": []
+                  }
+                ]
+              }
+            ],
+            "Neboeira": [
+              {
+                "url": "https://pretalx.com/pycones-2024/talk/YWNLSF/",
+                "id": 55672,
+                "guid": "0d066ac8-a61d-5b21-9bec-7822f80a5c3b",
+                "date": "2024-10-04T15:30:00+00:00",
+                "start": "15:30",
+                "logo": null,
+                "duration": "00:30",
+                "room": "Neboeira",
+                "slug": "pycones-2024-55672-acreditaciones-accreditations",
+                "title": "Acreditaciones | Accreditations",
+                "subtitle": "",
+                "track": "Other",
+                "type": "Event Opening | Accreditations",
+                "language": "es",
+                "abstract": "Acreditaciones | Accreditations",
+                "description": null,
+                "recording_license": "",
+                "do_not_record": false,
+                "persons": [],
+                "links": [],
+                "attachments": [],
+                "answers": [
+                  {
+                    "question": 3652,
+                    "answer": "Data Engineering",
+                    "options": [
+                      {
+                        "en": "Data Engineering",
+                        "es": "Ingeniería de Datos"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3653,
+                    "answer": "",
+                    "options": []
+                  }
+                ]
+              },
+              {
+                "url": "https://pretalx.com/pycones-2024/talk/SACNF3/",
+                "id": 55715,
+                "guid": "253bf436-2de7-5bd2-84a2-8b3068a7ce7c",
+                "date": "2024-10-04T16:00:00+00:00",
+                "start": "16:00",
+                "logo": null,
+                "duration": "01:30",
+                "room": "Neboeira",
+                "slug": "pycones-2024-55715-django-girls-parte-i-",
+                "title": "DJango Girls (Parte I)",
+                "subtitle": "",
+                "track": "Web",
+                "type": "Workshop (90min)",
+                "language": "es",
+                "abstract": "Django Girls\r\n\r\nSi eres mujer o de alguna colectivo subrepresentado en cuanto a género (una persona transgénero, incluyendo no binaria, o una persona intersexual)* y quieres aprender a hacer páginas web, tenemos buenas noticias para ti: ¡vamos a celebrar un taller de un día para principiantes!\r\n\r\nTendrá lugar el 4 de octubre de 2024, como parte de PyConEs Vigo 2024.\r\n\r\nCreemos que la industria de la informática se puede beneficiar enormemente de que incluir a más de vosotras en ella, por lo que queremos darte la oportunidad de aprender a programar y convertirte en una de nosotras, ¡gratis!\r\n*Todas las personas de todas las identidades de género son bienvenidas, pero se dará prioridad a los grupos infrarrepresentados en IT.\r\n\r\n\r\nhttps://djangogirls.org/es/vigo/",
+                "description": null,
+                "recording_license": "",
+                "do_not_record": false,
+                "persons": [],
+                "links": [],
+                "attachments": [],
+                "answers": [
+                  {
+                    "question": 3652,
+                    "answer": "Web",
+                    "options": [
+                      {
+                        "en": "Web",
+                        "es": "Web"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3653,
+                    "answer": "",
+                    "options": []
+                  }
+                ]
+              }
+            ]
+          }
         },
         {
-          "code": "3U9ZVR",
-          "duration": 45,
-          "event_type": "session",
-          "level": "beginner",
-          "rooms": [
-            "Forum Hall"
-          ],
-          "session_type": "Keynote",
-          "slug": "healthy-code-for-healthy-teams-or-the-other-way-around",
-          "speakers": [
-            {
-              "avatar": "https://program.europython.eu/media/avatars/mai_w1K4Oqt.webp",
-              "code": "8L79Y8",
-              "name": "Mai Gim\u00e9nez",
-              "slug": "mai-gimenez",
-              "website_url": "https://ep2024.europython.eu/speaker/mai-gimenez"
-            }
-          ],
-          "start": "2024-07-12T09:30:00+00:00",
-          "title": "Healthy code for healthy teams (or the other way around)",
-          "track": null,
-          "tweet": "",
-          "website_url": "https://ep2024.europython.eu/session/healthy-code-for-healthy-teams-or-the-other-way-around"
-        },
-        {
-          "duration": 30,
-          "event_type": "break",
-          "rooms": [
-            "Forum Hall",
-            "North Hall",
-            "South Hall 2A",
-            "South Hall 2B",
-            "Terrace 2A",
-            "Terrace 2B"
-          ],
-          "start": "2024-07-12T10:15:00+00:00",
-          "title": "Coffee Break"
-        },
-        {
-          "code": "HSZBDG",
-          "duration": 30,
-          "event_type": "session",
-          "level": "intermediate",
-          "rooms": [
-            "South Hall 2B"
-          ],
-          "session_type": "Talk",
-          "slug": "insights-and-experiences-of-packaging-python-binary-extensions",
-          "speakers": [
-            {
-              "avatar": "",
-              "code": "JGU3GX",
-              "name": "Goran Jelic-Cizmek",
-              "slug": "goran-jelic-cizmek",
-              "website_url": "https://ep2024.europython.eu/speaker/goran-jelic-cizmek"
-            }
-          ],
-          "start": "2024-07-12T10:45:00+00:00",
-          "title": "Insights and Experiences of Packaging Python Binary Extensions",
-          "track": "Software Engineering & Architecture",
-          "tweet": "",
-          "website_url": "https://ep2024.europython.eu/session/insights-and-experiences-of-packaging-python-binary-extensions"
+          "index": 2,
+          "date": "2024-10-05",
+          "day_start": "2024-10-05T04:00:00+00:00",
+          "day_end": "2024-10-06T03:59:00+00:00",
+          "rooms": {
+            "Treboada": [
+              {
+                "url": "https://pretalx.com/pycones-2024/talk/ZYUNGD/",
+                "id": 55668,
+                "guid": "6eff9838-1e77-5e7c-b159-18f034028578",
+                "date": "2024-10-05T08:30:00+00:00",
+                "start": "08:30",
+                "logo": null,
+                "duration": "01:00",
+                "room": "Treboada",
+                "slug": "pycones-2024-55668-acreditaciones-accreditations",
+                "title": "Acreditaciones | Accreditations",
+                "subtitle": "",
+                "track": "Other",
+                "type": "Event Opening | Accreditations",
+                "language": "es",
+                "abstract": "Acreditaciones | Accreditations",
+                "description": null,
+                "recording_license": "",
+                "do_not_record": false,
+                "persons": [],
+                "links": [],
+                "attachments": [],
+                "answers": [
+                  {
+                    "question": 3652,
+                    "answer": "Data Engineering",
+                    "options": [
+                      {
+                        "en": "Data Engineering",
+                        "es": "Ingeniería de Datos"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3653,
+                    "answer": "",
+                    "options": []
+                  }
+                ]
+              },
+              {
+                "url": "https://pretalx.com/pycones-2024/talk/TEHLHD/",
+                "id": 55677,
+                "guid": "579a231a-fdeb-5606-96ed-869c7f643999",
+                "date": "2024-10-05T09:30:00+00:00",
+                "start": "09:30",
+                "logo": null,
+                "duration": "00:30",
+                "room": "Treboada",
+                "slug": "pycones-2024-55677-apertura-del-evento-event-opening",
+                "title": "Apertura del evento | Event opening",
+                "subtitle": "",
+                "track": "Other",
+                "type": "Event Opening | Accreditations",
+                "language": "es",
+                "abstract": "Apertura del evento",
+                "description": null,
+                "recording_license": "",
+                "do_not_record": false,
+                "persons": [],
+                "links": [],
+                "attachments": [],
+                "answers": [
+                  {
+                    "question": 3652,
+                    "answer": "Data Engineering",
+                    "options": [
+                      {
+                        "en": "Data Engineering",
+                        "es": "Ingeniería de Datos"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3653,
+                    "answer": "",
+                    "options": []
+                  }
+                ]
+              }
+            ],
+            "Saraiba": [
+              {
+                "url": "https://pretalx.com/pycones-2024/talk/YL3RGA/",
+                "id": 55670,
+                "guid": "8cfb7e0b-07b9-5835-8132-c48c3c7ba4cb",
+                "date": "2024-10-05T08:30:00+00:00",
+                "start": "08:30",
+                "logo": null,
+                "duration": "01:00",
+                "room": "Saraiba",
+                "slug": "pycones-2024-55670-acreditaciones-accreditations",
+                "title": "Acreditaciones | Accreditations",
+                "subtitle": "",
+                "track": "Other",
+                "type": "Event Opening | Accreditations",
+                "language": "es",
+                "abstract": "Acreditaciones | Accreditations",
+                "description": null,
+                "recording_license": "",
+                "do_not_record": false,
+                "persons": [],
+                "links": [],
+                "attachments": [],
+                "answers": [
+                  {
+                    "question": 3652,
+                    "answer": "Data Engineering",
+                    "options": [
+                      {
+                        "en": "Data Engineering",
+                        "es": "Ingeniería de Datos"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3653,
+                    "answer": "",
+                    "options": []
+                  }
+                ]
+              },
+              {
+                "url": "https://pretalx.com/pycones-2024/talk/KN3HSR/",
+                "id": 55631,
+                "guid": "256bdda3-2ce7-554c-8166-a2808e9f1b80",
+                "date": "2024-10-05T10:45:00+00:00",
+                "start": "10:45",
+                "logo": null,
+                "duration": "00:30",
+                "room": "Saraiba",
+                "slug": "pycones-2024-55631-pausa-caf-coffee-break",
+                "title": "Pausa café | Coffee Break",
+                "subtitle": "",
+                "track": "Coffee Break",
+                "type": "Coffee Break",
+                "language": "en",
+                "abstract": "Pausa en las charlas. Se dispondrán mesas con *snacks*, café, bebidas y demás. Un espacio ideal para comentar ponencias, poner conocimiento en común y hacer *networking*.",
+                "description": null,
+                "recording_license": "",
+                "do_not_record": false,
+                "persons": [],
+                "links": [],
+                "attachments": [],
+                "answers": [
+                  {
+                    "question": 3652,
+                    "answer": "Data Engineering",
+                    "options": [
+                      {
+                        "en": "Data Engineering",
+                        "es": "Ingeniería de Datos"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3653,
+                    "answer": "",
+                    "options": []
+                  }
+                ]
+              }
+            ],
+            "Poalla": [
+              {
+                "url": "https://pretalx.com/pycones-2024/talk/LWYPBM/",
+                "id": 55669,
+                "guid": "51661eec-24df-5ca9-ba25-315e287531d9",
+                "date": "2024-10-05T08:30:00+00:00",
+                "start": "08:30",
+                "logo": null,
+                "duration": "01:00",
+                "room": "Poalla",
+                "slug": "pycones-2024-55669-acreditaciones-accreditations",
+                "title": "Acreditaciones | Accreditations",
+                "subtitle": "",
+                "track": "Other",
+                "type": "Event Opening | Accreditations",
+                "language": "es",
+                "abstract": "Acreditaciones | Accreditations",
+                "description": null,
+                "recording_license": "",
+                "do_not_record": false,
+                "persons": [],
+                "links": [],
+                "attachments": [],
+                "answers": [
+                  {
+                    "question": 3652,
+                    "answer": "Data Engineering",
+                    "options": [
+                      {
+                        "en": "Data Engineering",
+                        "es": "Ingeniería de Datos"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3653,
+                    "answer": "",
+                    "options": []
+                  }
+                ]
+              },
+              {
+                "url": "https://pretalx.com/pycones-2024/talk/MUFPN7/",
+                "id": 55628,
+                "guid": "e8a71d49-1396-5e53-be35-360d41ab35be",
+                "date": "2024-10-05T10:45:00+00:00",
+                "start": "10:45",
+                "logo": null,
+                "duration": "00:30",
+                "room": "Poalla",
+                "slug": "pycones-2024-55628-pausa-caf-coffee-break",
+                "title": "Pausa café | Coffee Break",
+                "subtitle": "",
+                "track": "Coffee Break",
+                "type": "Coffee Break",
+                "language": "en",
+                "abstract": "Pausa en las charlas. Se dispondrán mesas con *snacks*, café, bebidas y demás. Un espacio ideal para comentar ponencias, poner conocimiento en común y hacer *networking*.",
+                "description": null,
+                "recording_license": "",
+                "do_not_record": false,
+                "persons": [],
+                "links": [],
+                "attachments": [],
+                "answers": [
+                  {
+                    "question": 3652,
+                    "answer": "Data Engineering",
+                    "options": [
+                      {
+                        "en": "Data Engineering",
+                        "es": "Ingeniería de Datos"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3653,
+                    "answer": "",
+                    "options": []
+                  }
+                ]
+              }
+            ],
+            "Orballo": [
+              {
+                "url": "https://pretalx.com/pycones-2024/talk/TCGPPT/",
+                "id": 51873,
+                "guid": "65eab1e3-a99c-5bff-8a35-eb36f2a4d3f9",
+                "date": "2024-10-05T11:15:00+00:00",
+                "start": "11:15",
+                "logo": null,
+                "duration": "00:35",
+                "room": "Orballo",
+                "slug": "pycones-2024-51873-modelando-el-efecto-de-las-sombras-en-un-sistema-fotovoltaico",
+                "title": "Modelando el efecto de las sombras en un sistema fotovoltaico",
+                "subtitle": "",
+                "track": "Scientific and quantum computing",
+                "type": "Talk (30min + 5min Q&A)",
+                "language": "es",
+                "abstract": "En esta charla, exploraremos un aspecto crucial de la producción de energía fotovoltaica: el impacto de las sombras.\r\n\r\nEn una instalación fotovoltaica, es común que a lo largo del día se produzcan sombras sobre los módulos, ya sea por la propia estructura de montaje o por obstáculos en el entorno cercano. Aunque parezca que son insignificantes, incluso pequeñas sombras en unos pocos módulos pueden causar grandes pérdidas en la producción de energía.\r\n\r\nEl objetivo de la charla es presentar una versión simplificada de este problema y mostrar una implementación en Python que permite modelar el efecto del sombreado. La biblioteca principal que utilizaremos para el modelado de sistemas fotovoltaicos será pvlib, apoyándonos en otras librerías ampliamente utilizadas como Pandas, NumPy y Matplotlib/Plotly.\r\n\r\nCon unos conocimientos básicos de Python, podrás seguir todo el proceso: planteamiento del problema, implementación, validación y visualización de los resultados.",
+                "description": null,
+                "recording_license": "",
+                "do_not_record": false,
+                "persons": [
+                  {
+                    "guid": "dfc45e41-211f-5007-ac9c-08dca126fe1f",
+                    "id": 45721,
+                    "code": "HR7CLX",
+                    "public_name": "Brais González Rodríguez",
+                    "avatar": null,
+                    "biography": "Brais González Rodríguez es Doctor en Estadística e Investigación Operativa por la Universidad de Santiago de Compostela. Antes de obtener su doctorado, realizó el Grado en Matemáticas y posteriormente un Máster en Técnicas Estadísticas por la Universidad de Santiago de Compostela. Tras obtener su doctorado trabajó como Postdoctoral Asociado en Ivey Business School (Canadá) y actualmente trabaja en la empresa IECO, desarrollando modelos de sombras en el ámbito de sistemas fotovoltaicos.",
+                    "answers": [
+                      {
+                        "question": 3658,
+                        "answer": "Santiago de Compostela",
+                        "options": []
+                      },
+                      {
+                        "question": 3654,
+                        "answer": "Male",
+                        "options": [
+                          {
+                            "en": "Male",
+                            "es": "Hombre"
+                          }
+                        ]
+                      },
+                      {
+                        "question": 3656,
+                        "answer": "https://www.linkedin.com/in/brais-gonzález-rodríguez-b10942308/",
+                        "options": []
+                      },
+                      {
+                        "question": 3660,
+                        "answer": "20",
+                        "options": []
+                      },
+                      {
+                        "question": 3659,
+                        "answer": "True",
+                        "options": []
+                      }
+                    ]
+                  }
+                ],
+                "links": [],
+                "attachments": [],
+                "answers": [
+                  {
+                    "question": 3652,
+                    "answer": "Scientific and quantum computing",
+                    "options": [
+                      {
+                        "en": "Scientific and quantum computing",
+                        "es": "Científico y computación cuántica"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3653,
+                    "answer": "Software packages & jupyter",
+                    "options": [
+                      {
+                        "en": "Software packages & jupyter",
+                        "es": "Software packages & jupyter"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3662,
+                    "answer": "Intermediate (it is necessary to understand the related bases to go into detail)",
+                    "options": [
+                      {
+                        "en": "Intermediate (it is necessary to understand the related bases to go into detail)",
+                        "es": "Intermedia (es necesario entender las bases relacionadas para entrar en detalle)"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3663,
+                    "answer": "General public",
+                    "options": []
+                  }
+                ]
+              }
+            ],
+            "Neboeira": [
+              {
+                "url": "https://pretalx.com/pycones-2024/talk/9KWNMB/",
+                "id": 55657,
+                "guid": "f5115ff9-ed8c-5f8f-b515-f819996620bf",
+                "date": "2024-10-05T11:15:00+00:00",
+                "start": "11:15",
+                "logo": null,
+                "duration": "05:10",
+                "room": "Neboeira",
+                "slug": "pycones-2024-55657-hackatn",
+                "title": "Hackatón",
+                "subtitle": "",
+                "track": "Other",
+                "type": "Hackaton",
+                "language": "es",
+                "abstract": "Esta hackatón está patrocinado por [Newtral](https://www.newtral.es/)\r\n\r\n## RAG multimodal\r\n\r\nUna **ClaimReview** es un estándar de metadatos para capturar información relevante sobre una verificación de datos (por ejemplo, título, imagen, calificación, afirmación…). Debido a que el documento de revisión combina texto y recursos multimedia, un buscador o chatbot de asistencia debe tener en cuenta no sólo la información textual, sino también toda la información que se puede extraer de los recursos multimedia (en nuestro caso, restringida a recursos de imagen).\r\n\r\nEn este contexto, el **objetivo del desafío es construir un sistema MultiModal RAG** (Retrieval-Augmented Generation) que, ante una pregunta formulada en texto o imagen:\r\n - Recupere los candidatos más relevantes y\r\n - genere una respuesta, considerando, en ambas fases, que las imágenes adjuntas al documento de claim reviews también pueden proporcionar información relevante.",
+                "description": null,
+                "recording_license": "",
+                "do_not_record": false,
+                "persons": [],
+                "links": [],
+                "attachments": [],
+                "answers": [
+                  {
+                    "question": 3652,
+                    "answer": "Data Engineering",
+                    "options": [
+                      {
+                        "en": "Data Engineering",
+                        "es": "Ingeniería de Datos"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3653,
+                    "answer": "",
+                    "options": []
+                  }
+                ]
+              },
+              {
+                "url": "https://pretalx.com/pycones-2024/talk/VR39MA/",
+                "id": 55661,
+                "guid": "b95166e8-374b-51fb-b861-ba30d3db5d7a",
+                "date": "2024-10-05T18:30:00+00:00",
+                "start": "18:30",
+                "logo": null,
+                "duration": "02:30",
+                "room": "Neboeira",
+                "slug": "pycones-2024-55661-pinchos-snack",
+                "title": "Pinchos | Snack",
+                "subtitle": "",
+                "track": "Other",
+                "type": "Snack",
+                "language": "es",
+                "abstract": "Pinchos | Snack",
+                "description": null,
+                "recording_license": "",
+                "do_not_record": false,
+                "persons": [],
+                "links": [],
+                "attachments": [],
+                "answers": [
+                  {
+                    "question": 3652,
+                    "answer": "Data Engineering",
+                    "options": [
+                      {
+                        "en": "Data Engineering",
+                        "es": "Ingeniería de Datos"
+                      }
+                    ]
+                  },
+                  {
+                    "question": 3653,
+                    "answer": "",
+                    "options": []
+                  }
+                ]
+              }
+            ]
+          }
         }
       ]
     }

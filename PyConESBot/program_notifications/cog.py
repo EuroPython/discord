@@ -1,4 +1,5 @@
 import logging
+import os
 
 from discord import Client, Embed
 from discord.ext import commands, tasks
@@ -22,6 +23,7 @@ class ProgramNotificationsCog(commands.Cog):
             cache_file=config.SCHEDULE_CACHE_FILE,
             simulated_start_time=config.SIMULATED_START_TIME,
             fast_mode=config.FAST_MODE,
+            token=os.getenv("PRETALX_API_TOKEN"),
         )
 
         self.livestream_connector = LivestreamConnector(config.LIVESTREAM_URL_FILE)
@@ -75,11 +77,14 @@ class ProgramNotificationsCog(commands.Cog):
         await self.livestream_connector.fetch_livestreams()
         _logger.info("Finished the periodic livestream update.")
 
-    async def set_room_topic(self, room, topic: str):
+    async def set_room_topic(self, room: str, topic: str):
         """
         Set the topic of a room channel
         """
-        channel_id = config.PROGRAM_CHANNELS[room.lower().replace(" ", "_")]["channel_id"]
+        room = room.lower().replace(" ", "_")
+        if room not in config.PROGRAM_CHANNELS:
+            return _logger.warning(f'Room "{room}" not found in the configuration.')
+        channel_id = config.PROGRAM_CHANNELS[room]["channel_id"]
         channel = self.bot.get_channel(int(channel_id))
         await channel.edit(topic=topic)
 
@@ -87,7 +92,10 @@ class ProgramNotificationsCog(commands.Cog):
         """
         Send the given notification to the room channel
         """
-        channel_id = config.PROGRAM_CHANNELS[room.lower().replace(" ", "_")]["channel_id"]
+        room = room.lower().replace(" ", "_")
+        if room not in config.PROGRAM_CHANNELS:
+            return _logger.warning(f'Room "{room}" not found in the configuration.')
+        channel_id = config.PROGRAM_CHANNELS[room]["channel_id"]
         channel = self.bot.get_channel(int(channel_id))
         await channel.send(content=content, embed=embed)
 
@@ -100,16 +108,16 @@ class ProgramNotificationsCog(commands.Cog):
         first_message = True
 
         for session in sessions_to_notify:
-            if len(session.rooms) > 1:
-                continue  # Don't notify registration sessions
+            if session.is_break:
+                continue  # Don't notify break sessions
 
             livestream_url = await self.livestream_connector.get_livestream_url(
-                session.rooms[0], session.start.date()
+                session.room, session.start.date()
             )
 
             # Set the channel topic
             await self.set_room_topic(
-                session.rooms[0],
+                session.room,
                 f"Livestream: [YouTube]({livestream_url})" if livestream_url else "",
             )
 
@@ -118,13 +126,13 @@ class ProgramNotificationsCog(commands.Cog):
             # # Notify specific rooms
             # for room in session.rooms:
             await self.notify_room(
-                session.rooms[0], embed, content=f"# Starting in 5 minutes @ {session.rooms[0]}"
+                session.room, embed, content=f"# Empieza en 5 minutos @ {session.room}"
             )
 
             # Prefix the first message to the main channel with a header
             if first_message:
                 await self.notify_room(
-                    "Main Channel", embed, content="# Sessions starting in 5 minutes:"
+                    "Main Channel", embed, content="# Sesiones que comienzan en 5 minutos:"
                 )
                 first_message = False
             else:

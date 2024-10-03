@@ -1,35 +1,19 @@
-[rooms.forum_hall]
-name = "Forum Hall"
-"2024-07-10" = "https://www.youtube.com/watch?v=b7wIYTCCa2k"
-"2024-07-11" = "https://www.youtube.com/watch?v=b7wIYTCCa2k"
-"2024-07-12" = "https://www.youtube.com/watch?v=b7wIYTCCa2k"
+[rooms.treboada]
+name = "Treboada"
+"2024-10-05" = "https://replay.teltek.es/live/event/iframe/66fce053af77a7003666a32e"
+"2024-10-06" = "https://replay.teltek.es/live/event/iframe/66fce053af77a7003666a32e"
 
-[rooms.north_hall]
-name = "North Hall"
-"2024-07-10" = "https://www.youtube.com/watch?v=b7wIYTCCa2k"
-"2024-07-11" = "https://www.youtube.com/watch?v=b7wIYTCCa2k"
-"2024-07-12" = "https://www.youtube.com/watch?v=b7wIYTCCa2k"
+[rooms.saraiba]
+name = "Saraiba"
+"2024-10-05" = "https://replay.teltek.es/live/event/iframe/66fcdd0aaf77a7003666a325"
+"2024-10-06" = "https://replay.teltek.es/live/event/iframe/66fcdd0aaf77a7003666a325"
 
-[rooms.south_hall_2a]
-name = "South Hall 2A"
-"2024-07-10" = "https://www.youtube.com/watch?v=b7wIYTCCa2k"
-"2024-07-11" = "https://www.youtube.com/watch?v=b7wIYTCCa2k"
-"2024-07-12" = "https://www.youtube.com/watch?v=b7wIYTCCa2k"
+[rooms.poalla]
+name = "Poalla"
+"2024-10-05" = "https://replay.teltek.es/live/event/iframe/66fcdfeaaf77a700322d9a59"
+"2024-10-06" = "https://replay.teltek.es/live/event/iframe/66fcdfeaaf77a700322d9a59"
 
-[rooms.south_hall_2b]
-name = "South Hall 2B"
-"2024-07-10" = "https://www.youtube.com/watch?v=b7wIYTCCa2k"
-"2024-07-11" = "https://www.youtube.com/watch?v=b7wIYTCCa2k"
-"2024-07-12" = "https://www.youtube.com/watch?v=b7wIYTCCa2k"
-
-[rooms.terrace_2a]
-name = "Terrace 2A"
-"2024-07-10" = "https://www.youtube.com/watch?v=b7wIYTCCa2k"
-"2024-07-11" = "https://www.youtube.com/watch?v=b7wIYTCCa2k"
-"2024-07-12" = "https://www.youtube.com/watch?v=b7wIYTCCa2k"
-
-[rooms.terrace_2b]
-name = "Terrace 2B"
-"2024-07-10" = "https://www.youtube.com/watch?v=b7wIYTCCa2k"
-"2024-07-11" = "https://www.youtube.com/watch?v=b7wIYTCCa2k"
-"2024-07-12" = "https://www.youtube.com/watch?v=b7wIYTCCa2k"
+[rooms.orballo]
+name = "Orballo"
+"2024-10-05" = "https://replay.teltek.es/live/event/iframe/66fce11baf77a700322d9a61"
+"2024-10-06" = "https://replay.teltek.es/live/event/iframe/66fce11baf77a700322d9a61"

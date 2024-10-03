@@ -7,7 +7,7 @@ from pathlib import Path
 import aiofiles
 import aiohttp
 
-from program_notifications.models import Break, Schedule, Session
+from program_notifications.models import Conference, Session
 
 _logger = logging.getLogger(f"bot.{__name__}")
 
@@ -20,10 +20,19 @@ class ProgramConnector:
         cache_file: Path,
         simulated_start_time: datetime | None = None,
         fast_mode: bool = False,
+        token: str | None = None,
     ) -> None:
         self._api_url = api_url
         self._timezone = timezone(timedelta(hours=timezone_offset))
         self._cache_file = cache_file
+        self._http_headers = {
+            "Accept": "application/json",
+            "User-Agent": "PyConESBot",
+            # Force English to avoid issues with the API
+            "Accept-Language": "en",
+        }
+        if token:
+            self._http_headers["Authorization"] = f"Token {token}"
 
         # time travel parameters for testing
         self._simulated_start_time = simulated_start_time
@@ -39,16 +48,18 @@ class ProgramConnector:
         Parse the schedule data and return a dictionary with
         the sessions grouped by date.
         """
-        schedule: Schedule = Schedule.model_validate(schedule)
+        conference: Conference = Conference.model_validate(schedule["schedule"]["conference"])
 
         sessions_by_day = {}
-        for day, day_schedule in schedule.days.items():
-            sessions = []
-            for event in day_schedule.events:
-                if isinstance(event, Break):
-                    continue
-                sessions.append(event)
-            sessions_by_day[day] = sessions
+        for day in conference.days:
+            day_sessions = []
+            for sessions in day.rooms.values():
+                for session in sessions:
+                    if session.is_break:
+                        continue
+                    day_sessions.append(session)
+
+            sessions_by_day[day.date] = day_sessions
 
         return sessions_by_day
 
@@ -59,7 +70,7 @@ class ProgramConnector:
         """
         async with self._fetch_lock:
             try:
-                async with aiohttp.ClientSession() as session:
+                async with aiohttp.ClientSession(headers=self._http_headers) as session:
                     async with session.get(self._api_url) as response:
                         response.raise_for_status()
                         schedule = await response.json()
