@@ -77,11 +77,14 @@ class ProgramNotificationsCog(commands.Cog):
         await self.livestream_connector.fetch_livestreams()
         _logger.info("Finished the periodic livestream update.")
 
-    async def set_room_topic(self, room, topic: str):
+    async def set_room_topic(self, room: str, topic: str):
         """
         Set the topic of a room channel
         """
-        channel_id = config.PROGRAM_CHANNELS[room.lower().replace(" ", "_")]["channel_id"]
+        room = room.lower().replace(" ", "_")
+        if room not in config.PROGRAM_CHANNELS:
+            return _logger.warning(f'Room "{room}" not found in the configuration.')
+        channel_id = config.PROGRAM_CHANNELS[room]["channel_id"]
         channel = self.bot.get_channel(int(channel_id))
         await channel.edit(topic=topic)
 
@@ -89,7 +92,10 @@ class ProgramNotificationsCog(commands.Cog):
         """
         Send the given notification to the room channel
         """
-        channel_id = config.PROGRAM_CHANNELS[room.lower().replace(" ", "_")]["channel_id"]
+        room = room.lower().replace(" ", "_")
+        if room not in config.PROGRAM_CHANNELS:
+            return _logger.warning(f'Room "{room}" not found in the configuration.')
+        channel_id = config.PROGRAM_CHANNELS[room]["channel_id"]
         channel = self.bot.get_channel(int(channel_id))
         await channel.send(content=content, embed=embed)
 
