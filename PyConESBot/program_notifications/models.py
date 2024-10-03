@@ -89,7 +89,7 @@ class Session(BaseModel):
     duration: Annotated[int, BeforeValidator(parse_duration)]
 
     def __hash__(self) -> int:
-        return hash(self.code + str(self.start))
+        return hash(f"{self.id}{self.start}")
 
     @property
     def is_break(self) -> bool:

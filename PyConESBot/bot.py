@@ -22,7 +22,11 @@ _logger = logging.getLogger("bot")
 class Bot(commands.Bot):
     def __init__(self):
         intents = _get_intents()
-        super().__init__(command_prefix=commands.when_mentioned_or("$"), intents=intents)
+        super().__init__(
+            command_prefix=commands.when_mentioned_or("$"),
+            intents=intents,
+            max_ratelimit_timeout=60.0,
+        )
         self.guild = None
         self.channels = dict()
 

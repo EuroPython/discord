@@ -17,6 +17,7 @@ class LevelColors(Enum):
     ADVANCED = 0xD34847
     INTERMEDIATE = 0xFFCD45
     BASIC = 0x63D452
+    NA = 0x808080
 
 
 def create_session_embed(session: Session, livestream_url: str | None) -> Embed:

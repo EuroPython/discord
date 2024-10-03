@@ -59,6 +59,6 @@ class LivestreamConnector:
         """
         if not self.livestreams_by_room:
             await self.fetch_livestreams()
-        if room not in self.livestreams_by_room:
+        if room not in self.livestreams_by_room or date not in self.livestreams_by_room[room]:
             return None
         return self.livestreams_by_room[room][date]
