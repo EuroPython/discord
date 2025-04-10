@@ -8,13 +8,13 @@ We hosted the bot on Hetzner. And deployed with a single click Action from GitHu
 
 ## Overview
 
-The `main` method in `EuroPythonBot/bot.py` is the entry point for the bot.
+The `main` method in `DiscordBot/bot.py` is the entry point for the bot.
 I't a good starting point to start browsing the codebase.
 It requires a `.secrets` file in the root of the repository with `DISCORD_BOT_TOKEN` and `PRETIX_TOKEN` environment variables.
 
 ### Registration
 
-At EuroPython, we use [pretix](https://pretix.eu/about/en/) as our ticketing system.
+At PyCon/PyData, we use [pretix](https://pretix.eu/about/en/) as our ticketing system.
 
 The bot utilizes the Pretix API to fetch ticket information and creates an in-memory key-value store to retrieve the ticket type for a given Discord user. The mapping between ticket types and Discord roles is defined in a JSON file, such as ticket_to_roles_prod.json, and is used by the bot to assign roles to users.
 
@@ -29,16 +29,16 @@ Is a service to push the programme notification to Discord. Pretalx API is used 
 A set of commands that are available only for organizers that are allowing to get statistics about the Discord server.
 
 ## Setup
-Create `config.local.toml` file in EuroPythonBot directory, it would be used instead of `config.toml` if exists.
+Create `config.local.toml` file in DiscordBot directory, it would be used instead of `config.toml` if exists.
 
 Add `.secrets` file to the root of the repository with the following content:
 ```shell
-DISCORD_BOT_TOKEN=<EuroPythonTestBotToken_from_1Password>
+DISCORD_BOT_TOKEN=<TestBotToken_from_1Password>
 PRETIX_TOKEN=<PretixStagingToken_from_1Password>
 ````
 After you have added the `.secrets` file, you can run the bot with the following command:
 ```shell
-pipenv run python EuroPythonBot/bot.py
+pipenv run python DiscordBot/bot.py
 ```
 or with docker:
 ```shell
@@ -61,10 +61,10 @@ touch /home/bot/registered_log.txt
 ```
 
 ```bash
-mkdir -p /etc/EuroPython/discord/
-touch /etc/EuroPython/discord/.secrets
+mkdir -p /etc/DiscordBot/discord/
+touch /etc/DiscordBot/discord/.secrets
 # replace ... with the token :)
-echo "DISCORD_BOT_TOKEN=..." >  /etc/EuroPython/discord/.secrets
+echo "DISCORD_BOT_TOKEN=..." >  /etc/DiscordBot/discord/.secrets
 ```
 
 Also add the Discord webhook rooms URLs to the `.secrets` file.

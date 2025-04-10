@@ -14,9 +14,9 @@ RUN rm -rf /home/bot/.cache
 ENV PATH="/home/bot/.local/bin:$PATH"
 
 COPY --chown=bot:bot Pipfile Pipfile.lock ./
-COPY --chown=bot:bot EuroPythonBot ./EuroPythonBot
+COPY --chown=bot:bot DiscordBot ./DiscordBot
 
 RUN pipenv sync && \
     rm -rf /home/bot/.cache
 
-ENTRYPOINT ["pipenv", "run", "python", "EuroPythonBot/bot.py"]
+ENTRYPOINT ["pipenv", "run", "python", "DiscordBot/bot.py"]

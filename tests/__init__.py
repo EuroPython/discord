@@ -1,1 +1,1 @@
-"""Tests for the EuroPython 2023 Discord bot."""
+"""Tests for the PyCon / PyData Discord bot."""

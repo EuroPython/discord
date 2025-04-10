@@ -1,10 +1,10 @@
 [tool.isort]
 profile = "black"
-src_paths = ["EuroPythonBot"]
+src_paths = ["DiscordBot"]
 
 [tool.black]
 line-length = 100
 
 [tool.pytest.ini_options]
-pythonpath = "EuroPythonBot"
+pythonpath = "DiscordBot"
 asyncio_mode = "auto"
