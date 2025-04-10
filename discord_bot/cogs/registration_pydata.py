@@ -1,5 +1,4 @@
 """Registration for PyData."""
-from discord.ext import commands
 
 from cogs.registration import (
     Registration,
@@ -7,6 +6,8 @@ from cogs.registration import (
     RegistrationForm,
     RegistrationView,
 )
+
+from discord.ext import commands
 
 # from configuration import Config
 # from error import AlreadyRegisteredError, NotFoundError
@@ -39,9 +40,7 @@ class RegistrationFormPyData(RegistrationForm):
 
 class RegistrationViewPyData(RegistrationView):
     def __init__(self):
-        super().__init__(
-            registration_button=RegistrationButtonPyData, registration_form=RegistrationFormPyData
-        )
+        super().__init__(registration_button=RegistrationButtonPyData, registration_form=RegistrationFormPyData)
 
 
 class RegistrationPyData(Registration, commands.Cog):

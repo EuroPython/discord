@@ -1,3 +1,10 @@
+"""Configuration module for the Discord bot.
+
+This module provides:
+- A Singleton metaclass for ensuring a single instance of the configuration.
+- A Config class to load and manage configuration settings from TOML files.
+"""
+
 import logging
 import sys
 from pathlib import Path
@@ -17,15 +24,18 @@ class Singleton(type):
 
 
 class Config(metaclass=Singleton):
+    """Config class."""
+
     _CONFIG_DEFAULT = "config.toml"
     _CONFIG_LOCAL = "config.local.toml"
 
-    def __init__(self, testing: bool = False):
+    def __init__(self, testing: bool = False) -> None:
+        """Init config."""
         # Configuration file
         config = None
         self.BASE_PATH = Path(__file__).resolve().parent
         self.CONFIG_PATH = self._get_config_path(self.BASE_PATH)
-        with open(self.CONFIG_PATH) as f:
+        with open(self.CONFIG_PATH) as f:  # noqa: PTH123
             config = toml.loads(f.read())
 
         if not config:
@@ -46,8 +56,8 @@ class Config(metaclass=Singleton):
                 self.REG_LOG_CHANNEL_ID = int(config["registration"]["REG_LOG_CHANNEL_ID"])
 
                 # Pretix
-                # self.PRETIX_BASE_URL = ""  # config["pretix"]["PRETIX_BASE_URL"]
-                # self.TICKET_TO_ROLES_JSON = ""  # config["pretix"]["TICKET_TO_ROLES_JSON"]
+                # self.PRETIX_BASE_URL = ""  # config["pretix"]["PRETIX_BASE_URL"]  # noqa: ERA001
+                # self.TICKET_TO_ROLES_JSON = ""  # config["pretix"]["TICKET_TO_ROLES_JSON"]  # noqa: ERA001
 
                 # Tito
                 self.TITO_BASE_URL = config["tito"]["TITO_BASE_URL"]

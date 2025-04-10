@@ -8,15 +8,15 @@ USER bot
 WORKDIR /home/bot
 
 RUN pip install --upgrade --user pip && rm -rf /home/bot/.cache
-RUN pip install --user pipenv && rm -rf /home/bot/.cache
+RUN pip install --user poetry && rm -rf /home/bot/.cache
 RUN rm -rf /home/bot/.cache
 
 ENV PATH="/home/bot/.local/bin:$PATH"
 
-COPY --chown=bot:bot Pipfile Pipfile.lock ./
-COPY --chown=bot:bot DiscordBot ./DiscordBot
+COPY --chown=bot:bot pyproject.toml poetry.lock ./
+COPY --chown=bot:bot discord_bot ./discord_bot
 
-RUN pipenv sync && \
+RUN poetry install --no-root && \
     rm -rf /home/bot/.cache
 
-ENTRYPOINT ["pipenv", "run", "python", "DiscordBot/bot.py"]
+ENTRYPOINT ["poetry", "run", "python", "discord_bot/bot.py"]

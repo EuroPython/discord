@@ -1,17 +1,21 @@
+"""Discord bot."""
+
+from __future__ import annotations
+
 import asyncio
 import logging
 import os
 import sys
 from pathlib import Path
 
-import discord
-from discord.ext import commands
-from dotenv import load_dotenv
-
 import configuration
 from cogs.ping import Ping
 from cogs.registration_pydata import RegistrationPyData
+from discord.ext import commands
+from dotenv import load_dotenv
 from helpers.tito_connector import TitoOrder
+
+import discord_bot
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".secrets")
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
@@ -20,13 +24,17 @@ _logger = logging.getLogger("bot")
 
 
 class Bot(commands.Bot):
-    def __init__(self):
+    """Discord bot class that extends commands.Bot."""
+
+    def __init__(self) -> None:
+        """Initialize the bot with specific intents and command prefix."""
         intents = _get_intents()
         super().__init__(command_prefix=commands.when_mentioned_or("$"), intents=intents)
         self.guild = None
-        self.channels = dict()
+        self.channels = {}
 
-    async def on_ready(self):
+    async def on_ready(self) -> None:
+        """Event handler for when the bot is ready."""
         _logger.info("Logged in as user %r (ID=%r)", self.user.name, self.user.id)
 
     async def load_extension(self, name: str, *, package: str | None = None) -> None:
@@ -59,9 +67,9 @@ def _setup_logging() -> None:
     root_logger.setLevel(config.LOG_LEVEL)
 
 
-def _get_intents() -> discord.Intents:
+def _get_intents() -> discord_bot.Intents:
     """Get the desired intents for the bot."""
-    intents = discord.Intents.all()
+    intents = discord_bot.Intents.all()
     intents.presences = False
     intents.dm_typing = False
     intents.dm_reactions = False
@@ -70,14 +78,15 @@ def _get_intents() -> discord.Intents:
     return intents
 
 
-async def main():
+async def main() -> None:
+    """Main function to run the bot."""
     _setup_logging()
     async with bot:
         await bot.add_cog(Ping(bot))
         await bot.add_cog(RegistrationPyData(bot))
         await bot.load_extension("extensions.programme_notifications")
         await bot.load_extension("extensions.organisers")
-        # await bot.load_extension("extensions.job_board")
+        # await bot.load_extension("extensions.job_board")  # noqa: ERA001
         await bot.start(DISCORD_BOT_TOKEN)
 
 

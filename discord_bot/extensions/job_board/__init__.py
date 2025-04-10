@@ -1,4 +1,5 @@
 """Extension for posting in job board forum."""
+
 import csv
 import logging
 import random
@@ -6,10 +7,10 @@ from pathlib import Path
 
 import aiofiles
 import attrs
-import discord
+import configuration
 from discord.ext import commands
 
-import configuration
+import discord_bot
 
 _logger = logging.getLogger(f"bot.{__name__}")
 
@@ -83,13 +84,13 @@ class JobBoard(commands.Cog):
 
     def load_posted_jobs(self) -> set:
         """Load already posted jobs from txt file."""
-        with open(self.posted_jobs_file, "r") as f:
+        with open(self.posted_jobs_file) as f:
             return set([reg.strip() for reg in f.readlines()])
 
     def get_job_positions_from_csv(self, filename: str) -> list:
         """Read csv file from google forms export."""
         path = Path(__file__).resolve().parent
-        with open(file=path / filename, mode="r") as f:
+        with open(file=path / filename) as f:
             csv_reader = csv.reader(f)
             next(csv_reader)  # skip header row
             return [row for row in csv_reader]
@@ -98,17 +99,14 @@ class JobBoard(commands.Cog):
         """Split thread messages that are too long for discord to handle into multiple messages."""
         MESSAGE_LIMIT = 2000
         if len(title) + len(message) + 10 > MESSAGE_LIMIT:
-            split_message = [
-                message[i : i + MESSAGE_LIMIT]  # noqa: E203
-                for i in range(0, len(message), MESSAGE_LIMIT)
-            ]
+            split_message = [message[i : i + MESSAGE_LIMIT] for i in range(0, len(message), MESSAGE_LIMIT)]
             return [f"**{title}:**\n", *split_message]
         return [f"**{title}:**\n{message}"]
 
     def prepare_job_post(
         self,
         job: list,
-    ) -> tuple[str, str, str, list, discord.File | None]:
+    ) -> tuple[str, str, str, list, discord_bot.File | None]:
         """Prepare the job post."""
         # get values from job columns
         timestamp = job[0]
@@ -169,6 +167,6 @@ class JobBoard(commands.Cog):
                 job_title_r = job_title.replace("/", "_")
                 job_title_r = job_title_r.replace(":", "_")
                 filename = f"{company_name}-{job_title_r}.jpg"
-            file = discord.File(path / "pictures" / filename, filename=filename)
+            file = discord_bot.File(path / "pictures" / filename, filename=filename)
 
         return key, name, content, thread_messages, file

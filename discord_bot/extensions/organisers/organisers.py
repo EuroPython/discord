@@ -1,11 +1,12 @@
 """Commands for organisers."""
+
 import logging
 
 import attrs
-import discord
 from discord.ext import commands
-
 from extensions.organisers import roles
+
+import discord_bot
 
 _logger = logging.getLogger(f"bot.{__name__}")
 
@@ -20,7 +21,7 @@ class Organisers(commands.Cog):
     @commands.command(name="participants")
     async def participants(self, ctx: commands.Context) -> None:
         """Get statistics about registered participants."""
-        embed = discord.Embed(
+        embed = discord_bot.Embed(
             title="Participant Statistics 2024",
             colour=16747421,
         )
@@ -38,7 +39,7 @@ class Organisers(commands.Cog):
 
         await ctx.send(embed=embed)
 
-    def _get_counts(self, guild: discord.Guild) -> "_RoleCount":
+    def _get_counts(self, guild: discord_bot.Guild) -> "_RoleCount":
         """Get counts of member types.
 
         :param guild: The guild instance providing the information
@@ -47,10 +48,7 @@ class Organisers(commands.Cog):
         return _RoleCount(
             everyone=guild.member_count,
             # not_registered=sum(len(m.roles) == 1 for m in guild.members),
-            **{
-                role: len(guild.get_role(role_id).members)
-                for role, role_id in attrs.asdict(self._roles).items()
-            },
+            **{role: len(guild.get_role(role_id).members) for role, role_id in attrs.asdict(self._roles).items()},
         )
 
     async def cog_check(self, ctx: commands.Context) -> bool:
@@ -67,9 +65,7 @@ class Organisers(commands.Cog):
                 ctx.command.name,
             )
             return
-        _logger.error(
-            "An error occurred while running command %r:", ctx.command.name, exc_info=error
-        )
+        _logger.error("An error occurred while running command %r:", ctx.command.name, exc_info=error)
 
     def __hash__(self) -> int:
         """Return the hash of this Cog."""
