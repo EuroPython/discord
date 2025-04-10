@@ -1,4 +1,4 @@
-name: EuroPython Discord Bot CI
+name: PyCon / PyData Discord Bot CI
 run-name: "🛠️ CI: ${{ github.event.head_commit.message }} (${{ github.sha }})"
 
 on:
