@@ -1,4 +1,4 @@
-# Europython 2023 Discord Bot
+# Discord Bot for PyCon / PyData Conferences
 
 An easy to deploy conference bot that manages roles for attendees via registration, notifies about upcoming sessions.
 Exposes Discord server statistics to organizers.
@@ -68,3 +68,6 @@ echo "DISCORD_BOT_TOKEN=..." >  /etc/EuroPython/discord/.secrets
 ```
 
 Also add the Discord webhook rooms URLs to the `.secrets` file.
+
+# Credits
+Intial fork from [EuroPython Discord Bot](https://github.com/EuroPython/discord).
