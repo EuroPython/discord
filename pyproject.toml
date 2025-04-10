@@ -5,6 +5,9 @@ description = "PyCon / PyData Discord Bot"
 authors = ["Daniel Ringler <curtisringelpeter@gmail.com>"]
 license = "MIT"
 readme = "README.md"
+packages = [
+    { include = "discord_bot" },
+]
 
 [tool.poetry.dependencies]
 python = "3.11.4"
