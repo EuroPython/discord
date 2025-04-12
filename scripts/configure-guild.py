@@ -13,7 +13,7 @@ from typing import Annotated, Any, Literal
 
 import discord
 from discord.ext.commands import Bot
-from pydantic import AfterValidator, BaseModel, Field
+from pydantic import AfterValidator, BaseModel, BeforeValidator, Field, PlainSerializer
 
 if sys.version_info >= (3, 11):
     from typing import assert_never
@@ -29,14 +29,24 @@ Requires the environment variable 'BOT_TOKEN' to be set.
 Requires bot privileges for receiving 'GUILD_MEMBER' events.
 
 It will:
-- Create enable 'Community Server' features
+- Enable 'Community Server' features
+- Configure system channels
+- Create missing roles
+    - Update colors
+    - Update 'hoist' status
+    - Update 'mentionable' status
+    - Update role permissions
 - Create missing categories, text channels, forums
     - Update positions
     - Update topics
     - Add missing forum tags
     - Update 'mandatory/optional' state of forum tags
 
+To do manually:
+- Configure role order
+
 It will not:
+- Delete roles
 - Delete categories
 - Delete channels
 - Delete forum tags
@@ -46,6 +56,52 @@ MultilineString = Annotated[
     str,
     AfterValidator(lambda text: textwrap.dedent(text.strip("\r\n").rstrip())),
 ]
+Color = Annotated[
+    discord.Color,
+    BeforeValidator(discord.Colour.from_str),
+    PlainSerializer(lambda color: f"#{color:06X}"),
+]
+
+BLUE = "#0096C7"
+LIGHT_BLUE = "#8FD3E0"
+DARK_ORANGE = "#E6412C"
+ORANGE = "#E85D04"
+YELLOW = "#FFD700"
+PURPLE = "#D34EA5"
+GREY = "#99AAB5"
+
+
+Permission = Literal[
+    "view_channel",
+    "change_nickname",
+    "send_messages",
+    "send_messages_in_threads",
+    "embed_links",
+    "add_reactions",
+    "use_external_emojis",
+    "use_external_stickers",
+    "read_message_history",
+    "create_polls",
+    "use_application_commands",
+    "use_external_apps",
+    "attach_files",
+    "mention_everyone",
+    "manage_messages",
+    "manage_threads",
+    "moderate_members",
+    "manage_nicknames",
+    "kick_members",
+    "ban_members",
+    "administrator",
+]
+
+
+class Role(BaseModel):
+    name: str
+    color: str = Field(default=GREY, pattern="#[0-9A-F]{6}")
+    hoist: bool = False
+    mentionable: bool = False
+    permissions: list[Permission] = Field(default_factory=list)
 
 
 class ForumChannel(BaseModel):
@@ -70,14 +126,90 @@ class Category(BaseModel):
 
 
 class GuildConfig(BaseModel):
+    roles: list[Role]
     rules_channel_name: str
-    discord_updates_channel_name: str
+    system_channel_name: str
+    public_updates_channel_name: str
     categories: list[Category]
 
 
 config = GuildConfig(
+    roles=[
+        Role(
+            name="Admin",
+            color=GREY,
+            permissions=["administrator"],
+        ),
+        Role(
+            name="Code of Conduct Committee",
+            color=DARK_ORANGE,
+            hoist=True,
+            mentionable=True,
+            permissions=["kick_members", "ban_members"],
+        ),
+        Role(
+            name="Moderators",
+            color=ORANGE,
+            hoist=True,
+            mentionable=True,
+            permissions=[
+                "manage_nicknames",
+                "moderate_members",
+                "manage_messages",
+                "manage_threads",
+            ],
+        ),
+        Role(
+            name="Organizers", color=ORANGE, permissions=["mention_everyone", "use_external_apps"]
+        ),
+        Role(
+            name="Volunteers",
+            color=YELLOW,
+            hoist=True,
+            mentionable=True,
+        ),
+        Role(name="Onsite Volunteers"),
+        Role(name="Remote Volunteers"),
+        Role(
+            name="Speakers",
+            color=BLUE,
+            hoist=True,
+            mentionable=True,
+        ),
+        Role(
+            name="Sponsors",
+            color=LIGHT_BLUE,
+            hoist=True,
+            mentionable=True,
+        ),
+        Role(name="OSS"),
+        Role(
+            name="Participants",
+            color=PURPLE,
+            hoist=True,
+            mentionable=True,
+            permissions=["use_external_emojis", "use_external_stickers", "create_polls"],
+        ),
+        Role(name="Onsite Participants"),
+        Role(name="Remote Participants"),
+        Role(name="Programme Team"),
+        Role(
+            name="@everyone",
+            permissions=[
+                "view_channel",
+                "change_nickname",
+                "send_messages",
+                "send_messages_in_threads",
+                "embed_links",
+                "add_reactions",
+                "read_message_history",
+                "use_application_commands",
+            ],
+        ),
+    ],
     rules_channel_name="rules",
-    discord_updates_channel_name="discord-updates",
+    system_channel_name="system-events",
+    public_updates_channel_name="discord-updates",
     categories=[
         Category(
             name="Information",
@@ -399,18 +531,56 @@ async def configure_forum_channel(
     return channel
 
 
-async def configure_guild(guild: discord.Guild, configuration: GuildConfig) -> None:
+def create_permissions(permissions: list[Permission]) -> discord.Permissions:
+    return discord.Permissions(**{perm: True for perm in permissions})
+
+
+async def configure_role(guild: discord.Guild, template: Role) -> discord.Role:
+    logger.info("Configure role %s", template.name)
+    for role in guild.roles:
+        if role.name == template.name:
+            logger.debug("Found role")
+            if role.colour != template.color:
+                logger.debug("Update color")
+                await role.edit(colour=discord.Color.from_str(template.color))
+            if role.hoist != template.hoist:
+                logger.debug("Update hoist")
+                await role.edit(hoist=template.hoist)
+            if role.mentionable != template.mentionable:
+                logger.debug("Update mentionable")
+                await role.edit(mentionable=template.mentionable)
+            permissions = create_permissions(template.permissions)
+            if role.permissions != permissions:
+                logger.debug("Update permissions")
+                await role.edit(permissions=permissions)
+            return role
+
+    logger.debug("Create role %s", template.name)
+    return await guild.create_role(
+        name=template.name,
+        colour=discord.Color.from_str(template.color),
+        hoist=template.hoist,
+        mentionable=template.mentionable,
+        permissions=create_permissions(template.permissions),
+    )
+
+
+async def configure_guild(guild: discord.Guild, template: GuildConfig) -> None:
+    logger.info("Configuring roles")
+    for role_template in template.roles:
+        await configure_role(guild, role_template)
+
     # turn guild into community server
     if "COMMUNITY" not in guild.features:
         logger.info("Enabling community server features")
 
         # create required channels (will be positioned later)
         channels_by_name = {}
-        for category in configuration.categories:
+        for category in template.categories:
             for channel_template in category.channels:
                 if channel_template.name in [
-                    configuration.rules_channel_name,
-                    configuration.discord_updates_channel_name,
+                    template.rules_channel_name,
+                    template.public_updates_channel_name,
                 ]:
                     logger.debug("Creating required channel %s", channel_template.name)
                     text_channel = await configure_text_channel(
@@ -422,11 +592,11 @@ async def configure_guild(guild: discord.Guild, configuration: GuildConfig) -> N
         if guild.verification_level < discord.VerificationLevel.medium:
             await guild.edit(verification_level=discord.VerificationLevel.medium)
 
-        logger.debug("Enabling guild feature")
+        logger.debug("Enabling guild 'COMMUNITY' feature")
         await guild.edit(
             community=True,
-            rules_channel=channels_by_name[configuration.rules_channel_name],
-            public_updates_channel=channels_by_name[configuration.discord_updates_channel_name],
+            rules_channel=channels_by_name[template.rules_channel_name],
+            public_updates_channel=channels_by_name[template.public_updates_channel_name],
             explicit_content_filter=discord.ContentFilter.all_members,
         )
 
@@ -434,24 +604,51 @@ async def configure_guild(guild: discord.Guild, configuration: GuildConfig) -> N
     logger.info("Creating channels")
     channel_position = 0
     category_position = 0
-    for category in configuration.categories:
+    channels_by_name = {}
+    for category in template.categories:
         d_category = await configure_category(guild, category.name, category_position)
         for channel_template in category.channels:
             if isinstance(channel_template, TextChannel):
-                await configure_text_channel(guild, d_category, channel_template, channel_position)
+                channel = await configure_text_channel(
+                    guild, d_category, channel_template, channel_position
+                )
             elif isinstance(channel_template, ForumChannel):
-                await configure_forum_channel(guild, d_category, channel_template, channel_position)
+                channel = await configure_forum_channel(
+                    guild, d_category, channel_template, channel_position
+                )
             else:
                 assert_never(channel_template)
+            channels_by_name[channel_template.name] = channel
             channel_position += 1
         category_position += 1
 
+    # Configure system channels and events
+    logger.info("Configuring system channels and events")
+    if guild.system_channel is None or guild.system_channel.name != template.system_channel_name:
+        logger.debug("Update system channel")
+        await guild.edit(system_channel=channels_by_name[template.system_channel_name])
+    if guild.public_updates_channel.name != template.public_updates_channel_name:
+        logger.debug("Update public updates channel")
+        await guild.edit(
+            public_updates_channel=channels_by_name[template.public_updates_channel_name]
+        )
+    if guild.system_channel.name != template.rules_channel_name:
+        logger.debug("Update rules channel")
+        await guild.edit(rules_channel=channels_by_name[template.rules_channel_name])
+    logger.debug("Set system channel flags")
+    await guild.edit(
+        system_channel_flags=discord.SystemChannelFlags(
+            join_notifications=True,
+            join_notification_replies=False,
+            guild_reminder_notifications=False,
+        )
+    )
 
 class GuildConfigurationBot(Bot):
     def __init__(self) -> None:
         """Discord bot which exports all guild members to .csv files and then stops itself."""
         super().__init__(
-            intents=discord.Intents(guilds=True),
+            intents=discord.Intents.all(),
             command_prefix="$",
         )
 
