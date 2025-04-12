@@ -29,10 +29,12 @@ Requires the environment variable 'BOT_TOKEN' to be set.
 Requires bot privileges for receiving 'GUILD_MEMBER' events.
 
 It will:
-- Create categories, text channels, forums
-- Update positions of categories, text channels, forums
-- Update topics of text channels, forums
-- Add tags to forums
+- Create enable 'Community Server' features
+- Create missing categories, text channels, forums
+    - Update positions
+    - Update topics
+    - Add missing forum tags
+    - Update 'mandatory/optional' state of forum tags
 
 It will not:
 - Delete categories
@@ -347,6 +349,25 @@ async def configure_text_channel(
     )
 
 
+async def configure_tags(
+    channel: discord.ForumChannel, expected_tags: list[str], *, required: bool
+) -> None:
+    logger.info("Configure tags %s for channel %s", channel.name, channel.name)
+    existing_tags = {tag.name: tag for tag in channel.available_tags}
+    tags_to_create = set(expected_tags) - set(existing_tags)
+
+    if tags_to_create:
+        for tag_name in tags_to_create:
+            logger.debug("Create tag %s", tag_name)
+            existing_tags[tag_name] = await channel.create_tag(name=tag_name)
+
+        logger.debug("Update available tags for channel %s", channel.name)
+        await channel.edit(available_tags=(list(existing_tags.values())))
+
+    if required and not channel.flags.require_tag:
+        await channel.edit(require_tag=required)
+
+
 async def configure_forum_channel(
     guild: discord.Guild,
     category: discord.CategoryChannel,
@@ -356,43 +377,24 @@ async def configure_forum_channel(
     logger.info("Configure forum channel %s at position %d", template.name, position)
     for channel in guild.forums:
         if channel.name == template.name:
-            if channel.category is None or channel.category.id != category.id:
+            if channel.category is None or channel.category != category:
                 logger.debug("Update category")
                 await channel.edit(category=category)
-
             if channel.position != position:
                 logger.debug("Update position")
                 await channel.edit(position=position)
-
             if channel.topic != template.topic:
                 logger.debug("Update topic")
                 await channel.edit(topic=template.topic)
 
-            known_tags_by_name = {tag.name: tag for tag in channel.available_tags}
-            if set(known_tags_by_name.keys()) != set(template.tags):
-                tags_to_set: list[discord.ForumTag] = []
-                for tag_name in template.tags:
-                    if tag_name in known_tags_by_name:
-                        logger.debug("Found tag %s", tag_name)
-                        tags_to_set.append(known_tags_by_name[tag_name])
-                    else:
-                        logger.debug("Create tag %s", tag_name)
-                        tags_to_set.append(await channel.create_tag(name=tag_name))
-                logger.debug("Update tags")
-                await channel.edit(available_tags=tags_to_set)
+            await configure_tags(channel, template.tags, required=template.require_tags)
             return channel
 
     logger.debug("Create forum channel %s", template.name)
     channel = await guild.create_forum(
         template.name, category=category, topic=template.topic, position=position
     )
-    if template.tags is not None:
-        new_tags: list[discord.ForumTag] = []
-        for tag_name in template.tags:
-            logger.debug("Create tag %s", tag_name)
-            new_tags.append(await channel.create_tag(name=tag_name))
-        logger.debug("Update tags")
-        await channel.edit(available_tags=new_tags)
+    await configure_tags(channel, template.tags, required=template.require_tags)
 
     return channel
 
@@ -416,19 +418,23 @@ async def configure_guild(guild: discord.Guild, configuration: GuildConfig) -> N
                     )
                     channels_by_name[channel_template.name] = text_channel
 
-        logger.debug("Enabling guild features")
+        logger.debug("Raising verification level to medium")
+        if guild.verification_level < discord.VerificationLevel.medium:
+            await guild.edit(verification_level=discord.VerificationLevel.medium)
+
+        logger.debug("Enabling guild feature")
         await guild.edit(
             community=True,
             rules_channel=channels_by_name[configuration.rules_channel_name],
             public_updates_channel=channels_by_name[configuration.discord_updates_channel_name],
-            verification_level=discord.VerificationLevel.medium,
             explicit_content_filter=discord.ContentFilter.all_members,
         )
 
     # create channels
     logger.info("Creating channels")
     channel_position = 0
-    for category_position, category in enumerate(configuration.categories):
+    category_position = 0
+    for category in configuration.categories:
         d_category = await configure_category(guild, category.name, category_position)
         for channel_template in category.channels:
             if isinstance(channel_template, TextChannel):
@@ -438,6 +444,7 @@ async def configure_guild(guild: discord.Guild, configuration: GuildConfig) -> N
             else:
                 assert_never(channel_template)
             channel_position += 1
+        category_position += 1
 
 
 class GuildConfigurationBot(Bot):
