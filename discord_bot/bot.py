@@ -8,13 +8,12 @@ import os
 import sys
 from pathlib import Path
 
+import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
-import discord_bot
 from discord_bot import configuration
 from discord_bot.cogs.ping import Ping
-from discord_bot.cogs.registration_pydata import RegistrationPyData
 from discord_bot.helpers.tito_connector import TitoOrder
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".secrets")
@@ -67,9 +66,9 @@ def _setup_logging() -> None:
     root_logger.setLevel(config.LOG_LEVEL)
 
 
-def _get_intents() -> discord_bot.Intents:
+def _get_intents() -> discord.Intents:
     """Get the desired intents for the bot."""
-    intents = discord_bot.Intents.all()
+    intents = discord.Intents.all()
     intents.presences = False
     intents.dm_typing = False
     intents.dm_reactions = False
@@ -83,9 +82,9 @@ async def main() -> None:
     _setup_logging()
     async with bot:
         await bot.add_cog(Ping(bot))
-        await bot.add_cog(RegistrationPyData(bot))
-        await bot.load_extension("extensions.programme_notifications")
-        await bot.load_extension("extensions.organisers")
+        # await bot.add_cog(RegistrationPyData(bot))
+        # await bot.load_extension("extensions.programme_notifications")
+        # await bot.load_extension("extensions.organisers")
         # await bot.load_extension("extensions.job_board")  # noqa: ERA001
         await bot.start(DISCORD_BOT_TOKEN)
 

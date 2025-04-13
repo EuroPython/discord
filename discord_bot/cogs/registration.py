@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import logging
 
+import discord
 from discord.ext import commands
 
-import discord_bot
 from discord_bot.configuration import Config
 from discord_bot.error import AlreadyRegisteredError, NotFoundError
 from discord_bot.helpers.channel_logging import log_to_channel
@@ -24,31 +24,31 @@ REGISTERED_LIST = {}
 _logger = logging.getLogger(f"bot.{__name__}")
 
 
-class RegistrationButton(discord_bot.ui.Button["Registration"]):
+class RegistrationButton(discord.ui.Button["Registration"]):
     def __init__(
         self,
         registration_form: RegistrationForm,
         x: int = 0,
         y: int = 0,
         label: str = f"Register here {EMOJI_POINT}",
-        style: discord_bot.ButtonStyle = discord_bot.ButtonStyle.green,
+        style: discord.ButtonStyle = discord.ButtonStyle.green,
     ):
-        super().__init__(style=discord_bot.ButtonStyle.secondary, label=ZERO_WIDTH_SPACE, row=y)
+        super().__init__(style=discord.ButtonStyle.secondary, label=ZERO_WIDTH_SPACE, row=y)
         self.x = x
         self.y = y
         self.label = label
         self.style = style
         self.registration_form = registration_form
 
-    async def callback(self, interaction: discord_bot.Interaction) -> None:
+    async def callback(self, interaction: discord.Interaction) -> None:
         assert self.view is not None
 
         # Launch the modal form
         await interaction.response.send_modal(self.registration_form())
 
 
-class RegistrationForm(discord_bot.ui.Modal, title="Europython 2023 Registration"):
-    order = discord_bot.ui.TextInput(
+class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
+    order = discord.ui.TextInput(
         label="Order/Reference Number (e.g. 'XXXX-X')",
         required=True,
         min_length=6,
@@ -56,16 +56,16 @@ class RegistrationForm(discord_bot.ui.Modal, title="Europython 2023 Registration
         placeholder="6- or 7-character combination of capital letters and numbers with a dash '-'.",
     )
 
-    name = discord_bot.ui.TextInput(
+    name = discord.ui.TextInput(
         label="Full Name (first and last name)",
         required=True,
         min_length=3,
         # max_length=50,
-        style=discord_bot.TextStyle.short,
+        style=discord.TextStyle.short,
         placeholder="Your full name as printed on your ticket/badge.",
     )
 
-    async def on_submit(self, interaction: discord_bot.Interaction) -> None:
+    async def on_submit(self, interaction: discord.Interaction) -> None:
         """Assign the role to the user and send a confirmation message."""
         roles = await order_ins.get_roles(
             name=self.name.value,
@@ -73,7 +73,7 @@ class RegistrationForm(discord_bot.ui.Modal, title="Europython 2023 Registration
         )
         _logger.info("Assigning %r roles=%r", self.name.value, roles)
         for role in roles:
-            role = discord_bot.utils.get(interaction.guild.roles, id=role)
+            role = discord.utils.get(interaction.guild.roles, id=role)
             await interaction.user.add_roles(role)
         changed_nickname = True
         if CHANGE_NICKNAME:
@@ -81,7 +81,7 @@ class RegistrationForm(discord_bot.ui.Modal, title="Europython 2023 Registration
                 # TODO(dan): change nickname not working, because no admin permission?
                 nickname = self.name.value[:32]  # Limit to the max length
                 await interaction.user.edit(nick=nickname)
-            except discord_bot.errors.Forbidden as ex:
+            except discord.errors.Forbidden as ex:
                 msg = f"Changing nickname for {self.name} did not work: {ex}"
                 _logger.error(msg)
                 await log_to_channel(
@@ -108,7 +108,7 @@ class RegistrationForm(discord_bot.ui.Modal, title="Europython 2023 Registration
 
         await interaction.response.send_message(msg, ephemeral=True, delete_after=20)
 
-    async def on_error(self, interaction: discord_bot.Interaction, error: Exception) -> None:
+    async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
         # Make sure we know what the error actually is
         _logger.error("An error occurred!", exc_info=error)
 
@@ -132,7 +132,7 @@ class RegistrationForm(discord_bot.ui.Modal, title="Europython 2023 Registration
         await interaction.response.send_message(_msg, ephemeral=True, delete_after=180)
 
 
-class RegistrationView(discord_bot.ui.View):
+class RegistrationView(discord.ui.View):
     def __init__(
         self,
         registration_button: RegistrationButton = RegistrationButton,
@@ -177,7 +177,7 @@ class Registration(commands.Cog):
         order_ins.fetch_data.start()
         order_ins.load_registered()
 
-        embed = discord_bot.Embed(
+        embed = discord.Embed(
             title=self._title,
             description=self._desc,
             colour=0xFF8331,
