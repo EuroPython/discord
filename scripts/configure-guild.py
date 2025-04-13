@@ -13,6 +13,7 @@ from typing import Annotated, Any, Literal
 
 import discord
 from discord.ext.commands import Bot
+from discord.utils import get as discord_get
 from pydantic import AfterValidator, BaseModel, Field, model_validator
 
 if sys.version_info >= (3, 11):
@@ -111,7 +112,7 @@ class ForumChannel(BaseModel):
     name: str
     topic: MultilineString
     tags: list[str] = Field(default_factory=list)
-    require_tags: bool = False
+    require_tag: bool = False
     permission_overwrites: list[PermissionOverwrite] = Field(default_factory=list)
 
 
@@ -133,10 +134,10 @@ class GuildConfig(BaseModel):
     roles: list[Role]
     rules_channel_name: str
     system_channel_name: str
-    public_updates_channel_name: str
+    updates_channel_name: str
     categories: list[Category]
 
-    @model_validator(mode='after')
+    @model_validator(mode="after")
     def verify_system_channel_names(self) -> Self:
         channel_names = []
         for category in self.categories:
@@ -144,7 +145,11 @@ class GuildConfig(BaseModel):
                 channel_names.append(channel.name)
 
         missing_channels = []
-        for name in [self.rules_channel_name, self.system_channel_name, self.public_updates_channel_name]:
+        for name in [
+            self.rules_channel_name,
+            self.system_channel_name,
+            self.updates_channel_name,
+        ]:
             if name not in channel_names:
                 missing_channels.append(name)
 
@@ -230,7 +235,7 @@ config = GuildConfig(
     ],
     rules_channel_name="rules",
     system_channel_name="system-events",
-    public_updates_channel_name="discord-updates",
+    updates_channel_name="discord-updates",
     categories=[
         Category(
             name="Information",
@@ -249,7 +254,7 @@ config = GuildConfig(
                     role="@everyone",
                     deny=["send_messages"],
                 )
-            ]
+            ],
         ),
         Category(
             name="EuroPython 2025",
@@ -270,7 +275,7 @@ config = GuildConfig(
                         If you to make a report to the Code of Conduct Committee, please use coc@europython.eu or contact an organizer at the conference.
                         """,
                     tags=["Remote Support", "On-Site Support"],
-                    require_tags=True,
+                    require_tag=True,
                 ),
                 TextChannel(
                     name="introduction",
@@ -298,7 +303,7 @@ config = GuildConfig(
                         - Indicate if your activity is **in-person** or **remote** by selecting the appropriate tag
                         """,
                     tags=["In Person", "Remote"],
-                    require_tags=True,
+                    require_tag=True,
                 ),
                 TextChannel(
                     name="lost-and-found",
@@ -424,7 +429,7 @@ config = GuildConfig(
                         "Professional",
                         "Senior",
                     ],
-                    require_tags=True,
+                    require_tag=True,
                 ),
                 TextChannel(
                     name="example-sponsor", topic="This is how a sponsor channel could look like"
@@ -452,7 +457,7 @@ config = GuildConfig(
                 ),
                 TextChannel(
                     name="system-events",
-                    topic='This channel will show "raw" joins to keep track of who joins and who registered without hdiving into the audit log.',
+                    topic='This channel will show "raw" joins to keep track of who joins and who registered without diving into the audit log.',
                 ),
             ],
         ),
@@ -465,53 +470,54 @@ def report_error(message: str) -> None:
     print("ERROR:", message, file=sys.stderr)
 
 
-async def configure_category(
-    guild: discord.Guild, template: Category, position: int
+async def ensure_category(
+    guild: discord.Guild, *, name: str, position: int
 ) -> discord.CategoryChannel:
-    logger.info("Configure category %s at position %d", template.name, position)
-    for category in guild.categories:
-        if category.name == template.name:
-            logger.debug("Found category")
-            if category.position != position:
-                logger.debug("Update position")
-                await category.edit(position=position)
-            return category
+    """Ensure the category exists at the expected position."""
+    logger.info("Ensure category %s at position %d", name, position)
+    category = discord_get(guild.categories, name=name)
+    if category is None:
+        logger.debug("Create category")
+        return await guild.create_category(name, position=position)
 
-    logger.debug("Create category")
-    return await guild.create_category(template.name, position=position)
+    logger.debug("Found category")
+    if category.position != position:
+        logger.debug("Update position")
+        await category.edit(position=position)
+    return category
 
 
-async def configure_text_channel(
+async def ensure_text_channel(
     guild: discord.Guild,
+    name: str,
+    *,
     category: discord.CategoryChannel | None,
-    template: TextChannel,
     position: int,
 ) -> discord.TextChannel:
-    logger.info("Configure text channel %s at position %d", template.name, position)
-    for channel in guild.text_channels:
-        if channel.name == template.name:
-            logger.debug("Found text channel")
-            if channel.category != category:
-                logger.debug("Update category")
-                await channel.edit(category=category)
-            if channel.position != position:
-                logger.debug("Update position")
-                await channel.edit(position=position)
-            if channel.topic != template.topic:
-                logger.debug("Update topic")
-                await channel.edit(topic=template.topic)
-            return channel
-
-    logger.debug("Create text channel", template.name)
-    return await guild.create_text_channel(
-        template.name, category=category, topic=template.topic, position=position
+    """Ensure the text channel exists at the expected position."""
+    logger.info(
+        "Ensure text channel %s in category %s at position %d", name, category.name, position
     )
+    channel = discord_get(guild.text_channels, name=name)
+    if channel is None:
+        logger.debug("Create text channel", name)
+        return await guild.create_text_channel(name=name, category=category, position=position)
+
+    logger.debug("Found text channel")
+    if channel.category != category:
+        logger.debug("Update category")
+        await channel.edit(category=category)
+    if channel.position != position:
+        logger.debug("Update position")
+        await channel.edit(position=position)
+    return channel
 
 
-async def configure_tags(
-    channel: discord.ForumChannel, expected_tags: list[str], *, required: bool
+async def ensure_tags(
+    channel: discord.ForumChannel, expected_tags: list[str], *, require_tag: bool
 ) -> None:
-    logger.info("Configure tags %s for channel %s", channel.name, channel.name)
+    """Ensure the expected tag configuration for a forum channel."""
+    logger.info("Ensure tags %s for channel %s", expected_tags, channel.name)
     existing_tags = {tag.name: tag for tag in channel.available_tags}
     tags_to_create = set(expected_tags) - set(existing_tags)
 
@@ -523,146 +529,126 @@ async def configure_tags(
         logger.debug("Update available tags for channel %s", channel.name)
         await channel.edit(available_tags=(list(existing_tags.values())))
 
-    if required and not channel.flags.require_tag:
-        await channel.edit(require_tag=required)
+    if require_tag and not channel.flags.require_tag:
+        logger.debug("Update 'require_tag' flag")
+        await channel.edit(require_tag=require_tag)
 
 
-async def configure_forum_channel(
+async def ensure_forum_channel(
     guild: discord.Guild,
+    name: str,
+    *,
     category: discord.CategoryChannel,
-    template: ForumChannel,
     position: int,
-) -> discord.ForumChannel:
-    logger.info("Configure forum channel %s at position %d", template.name, position)
-    for channel in guild.forums:
-        if channel.name == template.name:
-            if channel.category is None or channel.category != category:
-                logger.debug("Update category")
-                await channel.edit(category=category)
-            if channel.position != position:
-                logger.debug("Update position")
-                await channel.edit(position=position)
-            if channel.topic != template.topic:
-                logger.debug("Update topic")
-                await channel.edit(topic=template.topic)
+    expected_tags: list[str] | None,
+    require_tag: bool,
+) -> None:
+    """Ensure the text channel exists at the expected position with the expected tags."""
+    logger.info("Configure forum channel %s at position %d", name, position)
+    channel = discord_get(guild.forums, name=name)
+    if channel is None:
+        logger.debug("Create forum channel %s", name)
+        channel = await guild.create_forum(name, category=category, position=position)
+    else:
+        logger.debug("Found forum channel")
+        if channel.category is None or channel.category != category:
+            logger.debug("Update category")
+            await channel.edit(category=category)
+        if channel.position != position:
+            logger.debug("Update position")
+            await channel.edit(position=position)
 
-            await configure_tags(channel, template.tags, required=template.require_tags)
-            return channel
-
-    logger.debug("Create forum channel %s", template.name)
-    channel = await guild.create_forum(
-        template.name, category=category, topic=template.topic, position=position
-    )
-    await configure_tags(channel, template.tags, required=template.require_tags)
-
-    return channel
+    await ensure_tags(channel, expected_tags, require_tag=require_tag)
 
 
 def create_permissions(permissions: list[Permission]) -> discord.Permissions:
     return discord.Permissions(**{perm: True for perm in permissions})
 
 
-async def configure_role(guild: discord.Guild, template: Role) -> discord.Role:
-    logger.info("Configure role %s", template.name)
-    for role in guild.roles:
-        if role.name == template.name:
-            logger.debug("Found role")
-            if role.colour != template.color:
-                logger.debug("Update color")
-                await role.edit(colour=discord.Color.from_str(template.color))
-            if role.hoist != template.hoist:
-                logger.debug("Update hoist")
-                await role.edit(hoist=template.hoist)
-            if role.mentionable != template.mentionable:
-                logger.debug("Update mentionable")
-                await role.edit(mentionable=template.mentionable)
-            permissions = create_permissions(template.permissions)
-            if role.permissions != permissions:
-                logger.debug("Update permissions")
-                await role.edit(permissions=permissions)
-            return role
+async def ensure_role(guild: discord.Guild, template: Role) -> None:
+    """Ensure the role exists with the expected configuration."""
+    logger.info("Ensure role %s", template.name)
+    permissions = create_permissions(template.permissions)
 
-    logger.debug("Create role %s", template.name)
-    return await guild.create_role(
-        name=template.name,
-        colour=discord.Color.from_str(template.color),
-        hoist=template.hoist,
-        mentionable=template.mentionable,
-        permissions=create_permissions(template.permissions),
-    )
+    role = discord_get(guild.roles, name=template.name)
+    if role is None:
+        logger.debug("Create role %s", template.name)
+        await guild.create_role(
+            name=template.name,
+            colour=discord.Color.from_str(template.color),
+            hoist=template.hoist,
+            mentionable=template.mentionable,
+            permissions=permissions,
+        )
+    else:
+        logger.debug("Found role")
+        if role.colour != template.color:
+            logger.debug("Update color")
+            await role.edit(colour=discord.Color.from_str(template.color))
+        if role.hoist != template.hoist:
+            logger.debug("Update hoist")
+            await role.edit(hoist=template.hoist)
+        if role.mentionable != template.mentionable:
+            logger.debug("Update mentionable")
+            await role.edit(mentionable=template.mentionable)
+        permissions = permissions
+        if role.permissions != permissions:
+            logger.debug("Update permissions")
+            await role.edit(permissions=permissions)
 
 
 async def configure_guild(guild: discord.Guild, template: GuildConfig) -> None:
     logger.info("Configuring roles")
     for role_template in template.roles:
-        await configure_role(guild, role_template)
+        await ensure_role(guild, role_template)
 
-    # turn guild into community server
-    if "COMMUNITY" not in guild.features:
-        logger.info("Enabling community server features")
+    logger.info("Configuring 'COMMUNITY' features")
+    await ensure_community_feature(
+        guild,
+        rules_channel_name=template.rules_channel_name,
+        updates_channel_name=template.updates_channel_name,
+    )
 
-        # create required channels (will be positioned later)
-        channels_by_name = {}
-        for category_template in template.categories:
-            for channel_template in category_template.channels:
-                if channel_template.name in [
-                    template.rules_channel_name,
-                    template.public_updates_channel_name,
-                ]:
-                    logger.debug("Creating required channel %s", channel_template.name)
-                    text_channel = await configure_text_channel(
-                        guild, category=None, template=channel_template, position=0
-                    )
-                    channels_by_name[channel_template.name] = text_channel
-
-        logger.debug("Raising verification level to medium")
-        if guild.verification_level < discord.VerificationLevel.medium:
-            await guild.edit(verification_level=discord.VerificationLevel.medium)
-
-        logger.debug("Enabling guild 'COMMUNITY' feature")
-        await guild.edit(
-            community=True,
-            rules_channel=channels_by_name[template.rules_channel_name],
-            public_updates_channel=channels_by_name[template.public_updates_channel_name],
-            explicit_content_filter=discord.ContentFilter.all_members,
-        )
-
-    # create channels
-    logger.info("Creating channels")
-    channel_position = 0
-    category_position = 0
-    channels_by_name = {}
-    for category_template in template.categories:
-        d_category = await configure_category(guild, category_template, category_position)
-        for channel_template in category_template.channels:
-            if isinstance(channel_template, TextChannel):
-                channel = await configure_text_channel(
-                    guild, d_category, channel_template, channel_position
-                )
-            elif isinstance(channel_template, ForumChannel):
-                channel = await configure_forum_channel(
-                    guild, d_category, channel_template, channel_position
-                )
-            else:
-                assert_never(channel_template)
-            channels_by_name[channel_template.name] = channel
-            channel_position += 1
-        category_position += 1
+    logger.info("Configuring categories and channels")
+    await ensure_categories_and_channels(guild, template.categories)
 
     # Configure system channels and events
     logger.info("Configuring system channels and events")
-    if guild.system_channel is None or guild.system_channel.name != template.system_channel_name:
+    await ensure_system_channel_configuration(
+        guild,
+        system_channel_name=template.system_channel_name,
+        updates_channel_name=template.updates_channel_name,
+        rules_channel_name=template.rules_channel_name,
+    )
+
+
+async def ensure_system_channel_configuration(
+    guild: discord.Guild,
+    *,
+    system_channel_name: str,
+    updates_channel_name: str,
+    rules_channel_name: str,
+):
+    logger.info("Ensure system channel configuration")
+    current_system_channel = guild.system_channel
+    if current_system_channel is None or current_system_channel.name != system_channel_name:
         logger.debug("Update system channel")
-        await guild.edit(system_channel=channels_by_name[template.system_channel_name])
-    if guild.public_updates_channel.name != template.public_updates_channel_name:
+        new_system_channel = discord_get(guild.text_channels, name=system_channel_name)
+        await guild.edit(system_channel=new_system_channel)
+
+    current_updates_channel = guild.public_updates_channel
+    if current_updates_channel is None or current_updates_channel.name != updates_channel_name:
         logger.debug("Update public updates channel")
-        await guild.edit(
-            public_updates_channel=channels_by_name[template.public_updates_channel_name]
-        )
-    if guild.system_channel.name != template.rules_channel_name:
+        new_updates_channel = discord_get(guild.text_channels, name=updates_channel_name)
+        await guild.edit(public_updates_channel=new_updates_channel)
+
+    rules_channel = guild.rules_channel
+    if rules_channel is None or rules_channel.name != rules_channel_name:
         logger.debug("Update rules channel")
-        await guild.edit(rules_channel=channels_by_name[template.rules_channel_name])
-    logger.debug("Set system channel flags")
+        new_rules_channel = discord_get(guild.text_channels, name=rules_channel_name)
+        await guild.edit(rules_channel=new_rules_channel)
+
+    logger.debug("Ensure system channel flags")
     await guild.edit(
         system_channel_flags=discord.SystemChannelFlags(
             join_notifications=True,
@@ -670,6 +656,68 @@ async def configure_guild(guild: discord.Guild, template: GuildConfig) -> None:
             guild_reminder_notifications=False,
         )
     )
+
+
+async def ensure_categories_and_channels(
+    guild: discord.Guild, category_templates: list[Category]
+) -> None:
+    # channel positions are global, not per-category
+    channel_position = 0
+    for category_position, category_template in enumerate(category_templates):
+        category = await ensure_category(
+            guild, name=category_template.name, position=category_position
+        )
+
+        for channel_template in category_template.channels:
+            if isinstance(channel_template, TextChannel):
+                await ensure_text_channel(
+                    guild, channel_template.name, category=category, position=channel_position
+                )
+            elif isinstance(channel_template, ForumChannel):
+                await ensure_forum_channel(
+                    guild,
+                    channel_template.name,
+                    category=category,
+                    position=channel_position,
+                    expected_tags=channel_template.tags,
+                    require_tag=channel_template.require_tag,
+                )
+            else:
+                # hint for the type checker: report error if there can be more channel types
+                assert_never(channel_template)
+
+            channel_position += 1
+
+
+async def ensure_community_feature(
+    guild: discord.Guild, *, rules_channel_name: str, updates_channel_name: str
+) -> None:
+    logger.info("Ensure 'COMMUNITY' feature configuration")
+
+    logger.debug("Ensure rules and public updates channels")
+    rules_channel = discord_get(guild.text_channels, name=rules_channel_name)
+    if rules_channel is None:
+        rules_channel = await ensure_text_channel(
+            guild, category=None, name=rules_channel_name, position=0
+        )
+    public_updates_channel = discord_get(guild.text_channels, name=updates_channel_name)
+    if public_updates_channel is None:
+        public_updates_channel = await ensure_text_channel(
+            guild, category=None, name=updates_channel_name, position=0
+        )
+
+    if guild.verification_level < discord.VerificationLevel.medium:
+        logger.debug("Raise verification level at medium")
+        await guild.edit(verification_level=discord.VerificationLevel.medium)
+
+    if "COMMUNITY" not in guild.features:
+        logger.debug("Enable guild 'COMMUNITY' feature")
+        await guild.edit(
+            community=True,
+            rules_channel=rules_channel,
+            public_updates_channel=public_updates_channel,
+            explicit_content_filter=discord.ContentFilter.all_members,
+        )
 
 
 class GuildConfigurationBot(Bot):
