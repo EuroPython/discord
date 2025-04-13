@@ -556,12 +556,8 @@ config = GuildConfig(
                     topic="Welcome to our server, please register.",
                     permission_overwrites=[
                         PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["send_messages"]),
-                        PermissionOverwrite(
-                            roles=ROLES_REGISTERED, deny=["view_channel"]
-                        ),
-                        PermissionOverwrite(
-                            roles=ROLES_ORGANIZERS, allow=["view_channel"]
-                        ),
+                        PermissionOverwrite(roles=ROLES_REGISTERED, deny=["view_channel"]),
+                        PermissionOverwrite(roles=ROLES_ORGANIZERS, allow=["view_channel"]),
                     ],
                 ),
                 TextChannel(
@@ -569,12 +565,8 @@ config = GuildConfig(
                     topic="Please follow the registration instructions.",
                     permission_overwrites=[
                         PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["send_messages"]),
-                        PermissionOverwrite(
-                            roles=ROLES_REGISTERED, deny=["view_channel"]
-                        ),
-                        PermissionOverwrite(
-                            roles=ROLES_ORGANIZERS, allow=["view_channel"]
-                        ),
+                        PermissionOverwrite(roles=ROLES_REGISTERED, deny=["view_channel"]),
+                        PermissionOverwrite(roles=ROLES_ORGANIZERS, allow=["view_channel"]),
                     ],
                 ),
                 ForumChannel(
@@ -585,12 +577,8 @@ config = GuildConfig(
                         As this community is only intended for EuroPython participants, there are no public discussion channels.
                         """,
                     permission_overwrites=[
-                        PermissionOverwrite(
-                            roles=ROLES_REGISTERED, deny=["view_channel"]
-                        ),
-                        PermissionOverwrite(
-                            roles=ROLES_ORGANIZERS, allow=["view_channel"]
-                        ),
+                        PermissionOverwrite(roles=ROLES_REGISTERED, deny=["view_channel"]),
+                        PermissionOverwrite(roles=ROLES_ORGANIZERS, allow=["view_channel"]),
                     ],
                 ),
                 TextChannel(
@@ -637,35 +625,38 @@ async def ensure_channel_permissions(
 ) -> None:
     logger.info("Ensure permissions for channel %s", channel.name)
 
-    logger.debug("Accumulating permission overwrites")
-    overwrites_by_role: dict[str, dict[str, bool]] = defaultdict(dict)
+    logger.debug("Accumulating expected permission overwrites")
+    expected_overwrites_by_role: dict[str, dict[str, bool]] = defaultdict(dict)
     for overwrite_template in permission_overwrite_templates:
         for role_name in overwrite_template.roles:
             for permission in overwrite_template.allow:
-                overwrites_by_role[role_name][permission] = True
+                expected_overwrites_by_role[role_name][permission] = True
             for permission in overwrite_template.deny:
-                overwrites_by_role[role_name][permission] = False
+                expected_overwrites_by_role[role_name][permission] = False
 
-    logger.debug("Executing permission updates")
-    for role_name, expected_overwrites in overwrites_by_role.items():
+    logger.debug("Determine if update is required")
+    # Enabling some settings for some roles sometimes enables it also for @everyone.
+    # Workaround: If any update is required, do a full update
+    update_required = False
+    updates_by_role: dict[discord.Role, discord.PermissionOverwrite] = {}
+    for role_name, expected_overwrites in expected_overwrites_by_role.items():
         role = discord_get(guild.roles, name=role_name)
         current_permissions = channel.permissions_for(role)
-        required_updates: dict[str, bool] = {}
         for permission, expected_value in expected_overwrites.items():
             current_value = getattr(current_permissions, permission)
             if current_value != expected_value:
-                logger.debug("Setting %s for role %s to %s (was %s)", permission, role_name, expected_value, current_value)
-                required_updates[permission] = expected_value
-        if required_updates:
-            await channel.set_permissions(role, **required_updates)
+                update_required = True
+        updates_by_role[role] = discord.PermissionOverwrite(**expected_overwrites)
+
+    if update_required:
+        logger.debug("Update permissions")
+        await channel.edit(overwrites=updates_by_role)
 
 
 async def ensure_category_and_channel_permissions(
     guild: discord.Guild, category_templates: list[Category]
 ) -> None:
     for category_template in category_templates:
-        category = discord.utils.get(guild.categories, name=category_template.name)
-        await ensure_channel_permissions(guild, category, category_template.permission_overwrites)
         for channel_template in category_template.channels:
             channel = discord.utils.get(guild.channels, name=channel_template.name)
             await ensure_channel_permissions(
