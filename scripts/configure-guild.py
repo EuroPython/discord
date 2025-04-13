@@ -9,6 +9,7 @@ import logging
 import os
 import sys
 import textwrap
+from collections import defaultdict
 from typing import Annotated, Any, Literal
 
 import discord
@@ -32,16 +33,19 @@ Requires bot privileges for receiving 'GUILD_MEMBER' events.
 It will:
 - Enable 'Community Server' features
 - Configure system channels
-- Create missing roles
+- Update roles
+    - Add missing roles
     - Update colors
-    - Update 'hoist' status
-    - Update 'mentionable' status
+    - Update 'hoist' flag
+    - Update 'mentionable' flag
     - Update role permissions
-- Create missing categories, text channels, forums
+- Update categories, text channels, and forums
+    - Add missing categories, text channels, and forums
     - Update positions
-    - Update topics
     - Add missing forum tags
     - Update 'mandatory/optional' state of forum tags
+    - Update category, text channel, and forum permission overwrites
+- Update category and channel permission overwrites
 
 To do manually:
 - Configure role order
@@ -66,10 +70,11 @@ YELLOW = "#FFD700"
 PURPLE = "#D34EA5"
 GREY = "#99AAB5"
 
-
 Permission = Literal[
     "view_channel",
+    "connect",
     "change_nickname",
+    "create_public_threads",
     "send_messages",
     "send_messages_in_threads",
     "embed_links",
@@ -84,6 +89,7 @@ Permission = Literal[
     "mention_everyone",
     "manage_messages",
     "manage_threads",
+    "manage_channels",
     "moderate_members",
     "manage_nicknames",
     "kick_members",
@@ -93,7 +99,7 @@ Permission = Literal[
 
 
 class PermissionOverwrite(BaseModel):
-    role: str
+    roles: list[str]
     allow: list[Permission] = Field(default_factory=list)
     deny: list[Permission] = Field(default_factory=list)
 
@@ -158,6 +164,44 @@ class GuildConfig(BaseModel):
 
         return self
 
+    @model_validator(mode="after")
+    def verify_permission_roles(self) -> Self:
+        roles = [role.name for role in self.roles]
+
+        missing_roles = set()
+        for category in self.categories:
+            for overwrite in category.permission_overwrites:
+                for role in overwrite.roles:
+                    if role not in roles:
+                        missing_roles.add(role)
+            for channel in category.channels:
+                for overwrite in channel.permission_overwrites:
+                    for role in overwrite.roles:
+                        if role not in roles:
+                            missing_roles.add(role)
+
+        if missing_roles:
+            raise ValueError(f"Missing roles: {missing_roles}")
+
+        return self
+
+
+ROLE_COC = "Code of Conduct Committee"
+ROLE_MODERATORS = "Moderators"
+ROLE_ORGANIZERS = "Organizers"
+ROLE_VOLUNTEERS = "Volunteers"
+ROLE_SPEAKERS = "Speakers"
+ROLE_SPONSORS = "Sponsors"
+ROLE_PARTICIPANTS = "Participants"
+ROLE_EVERYONE = "@everyone"
+
+ROLES_COC = [ROLE_COC]
+ROLES_MODERATORS = [ROLE_MODERATORS, *ROLES_COC]
+ROLES_ORGANIZERS = [ROLE_ORGANIZERS, *ROLES_MODERATORS]
+ROLES_VOLUNTEERS = [ROLE_VOLUNTEERS, *ROLES_ORGANIZERS]
+ROLES_SPEAKERS = [ROLE_SPEAKERS, *ROLES_ORGANIZERS]
+ROLES_SPONSORS = [ROLE_SPONSORS, *ROLES_ORGANIZERS]
+ROLES_REGISTERED = [ROLE_PARTICIPANTS, ROLE_SPONSORS, ROLE_SPEAKERS, *ROLES_VOLUNTEERS]
 
 config = GuildConfig(
     roles=[
@@ -167,14 +211,14 @@ config = GuildConfig(
             permissions=["administrator"],
         ),
         Role(
-            name="Code of Conduct Committee",
+            name=ROLE_COC,
             color=DARK_ORANGE,
             hoist=True,
             mentionable=True,
             permissions=["kick_members", "ban_members"],
         ),
         Role(
-            name="Moderators",
+            name=ROLE_MODERATORS,
             color=ORANGE,
             hoist=True,
             mentionable=True,
@@ -186,10 +230,12 @@ config = GuildConfig(
             ],
         ),
         Role(
-            name="Organizers", color=ORANGE, permissions=["mention_everyone", "use_external_apps"]
+            name=ROLE_ORGANIZERS,
+            color=ORANGE,
+            permissions=["mention_everyone", "use_external_apps"],
         ),
         Role(
-            name="Volunteers",
+            name=ROLE_VOLUNTEERS,
             color=YELLOW,
             hoist=True,
             mentionable=True,
@@ -197,18 +243,17 @@ config = GuildConfig(
         Role(name="Onsite Volunteers"),
         Role(name="Remote Volunteers"),
         Role(
-            name="Speakers",
+            name=ROLE_SPEAKERS,
             color=BLUE,
             hoist=True,
             mentionable=True,
         ),
         Role(
-            name="Sponsors",
+            name=ROLE_SPONSORS,
             color=LIGHT_BLUE,
             hoist=True,
             mentionable=True,
         ),
-        Role(name="OSS"),
         Role(
             name="Participants",
             color=PURPLE,
@@ -223,9 +268,11 @@ config = GuildConfig(
             name="@everyone",
             permissions=[
                 "view_channel",
+                "connect",
                 "change_nickname",
                 "send_messages",
                 "send_messages_in_threads",
+                "create_public_threads",
                 "embed_links",
                 "add_reactions",
                 "read_message_history",
@@ -250,10 +297,7 @@ config = GuildConfig(
                 ),
             ],
             permission_overwrites=[
-                PermissionOverwrite(
-                    role="@everyone",
-                    deny=["send_messages"],
-                )
+                PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["send_messages"])
             ],
         ),
         Category(
@@ -284,7 +328,7 @@ config = GuildConfig(
                 ForumChannel(
                     name="topics-and-interests",
                     topic="""
-                        You can use this forum channel to start conversations focused around specific topics and interests, including topics unrelated to EuroPython 2024 or Python. Think of it like a virtual hallway track where you can discuss topics with the people you meet while participating in a conference.
+                        You can use this forum channel to start conversations focused around specific topics and interests, including topics unrelated to EuroPython or Python. Think of it like a virtual hallway track where you can discuss topics with the people you meet while participating in a conference.
 
                         **Use a descriptive title** that clearly highlights the topic you intend to discuss within this channel. However, do **keep in mind that conversations tend to meander away from their initial topic over time**. While it's okay to nudge the conversation back onto its original topic, do **be patient and civil** with each other, even if you perceive someone as going "off-topic".
 
@@ -310,6 +354,10 @@ config = GuildConfig(
                     topic="Channel for the coordination of lost and found items. Please bring found items to the registration desk.",
                 ),
             ],
+            permission_overwrites=[
+                PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["view_channel", "connect"]),
+                PermissionOverwrite(roles=ROLES_REGISTERED, allow=["view_channel", "connect"]),
+            ],
         ),
         Category(
             name="Rooms",
@@ -317,6 +365,9 @@ config = GuildConfig(
                 TextChannel(
                     name="programme-notifications",
                     topic="Find the latest information about starting sessions here!",
+                    permission_overwrites=[
+                        PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["send_messages"])
+                    ],
                 ),
                 TextChannel(name="forum-hall", topic="Livestream: [TBA]"),
                 TextChannel(name="south-hall-2a", topic="Livestream: [TBA]"),
@@ -340,6 +391,16 @@ config = GuildConfig(
                         - On desktop, you can open a forum thread in "full window mode" using the `...` option menu in the top bar.
                         - If you select to "follow" a thread, it will appear directly in your channel list.
                         """,
+                    permission_overwrites=[
+                        PermissionOverwrite(
+                            roles=ROLES_REGISTERED,
+                            deny=["create_public_threads"],
+                        ),
+                        PermissionOverwrite(
+                            roles=ROLES_SPEAKERS,
+                            allow=["create_public_threads"],
+                        ),
+                    ],
                 ),
                 ForumChannel(
                     name="sprints",
@@ -354,7 +415,21 @@ config = GuildConfig(
                         - Only create a single post per talk!
                         - Participants can't send messages in the thread.
                         """,
+                    permission_overwrites=[
+                        PermissionOverwrite(
+                            roles=ROLES_REGISTERED,
+                            deny=["create_public_threads"],
+                        ),
+                        PermissionOverwrite(
+                            roles=ROLES_SPEAKERS,
+                            allow=["create_public_threads"],
+                        ),
+                    ],
                 ),
+            ],
+            permission_overwrites=[
+                PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["view_channel", "connect"]),
+                PermissionOverwrite(roles=ROLES_REGISTERED, allow=["view_channel", "connect"]),
             ],
         ),
         Category(
@@ -363,35 +438,70 @@ config = GuildConfig(
                 TextChannel(
                     name="announcements-volunteers",
                     topic="Announcements for conference volunteers",
+                    permission_overwrites=[
+                        PermissionOverwrite(
+                            roles=ROLES_VOLUNTEERS,
+                            allow=["view_channel", "connect"],
+                        ),
+                    ],
                 ),
                 TextChannel(
                     name="conference-discussion",
-                    topic="For on-topic conversations related to organizing EuroPython 2024. Please use #volunteers-lounge for off-topic conversations!",
+                    topic="For on-topic conversations related to organizing EuroPython. Please use #volunteers-lounge for off-topic conversations!",
+                    permission_overwrites=[
+                        PermissionOverwrite(
+                            roles=ROLES_VOLUNTEERS,
+                            allow=["view_channel", "connect"],
+                        ),
+                    ],
                 ),
                 TextChannel(
                     name="volunteers-lounge",
                     topic="Social chat for volunteers. Please follow the #rules and #code-of-conduct!",
+                    permission_overwrites=[
+                        PermissionOverwrite(
+                            roles=ROLES_VOLUNTEERS,
+                            allow=["view_channel", "connect"],
+                        ),
+                    ],
                 ),
                 TextChannel(
                     name="sponsors-lounge",
                     topic="Social chat for sponsors. Please follow the #rules and #code-of-conduct!",
+                    permission_overwrites=[
+                        PermissionOverwrite(
+                            roles=ROLES_SPONSORS,
+                            allow=["view_channel", "connect"],
+                        ),
+                    ],
                 ),
                 TextChannel(
                     name="speakers-lounge",
-                    topic="SChannel open to all speakers & conference volunteers. Please follow the #rules and #code-of-conduct!",
-                ),
-                TextChannel(
-                    name="oss-lounge",
-                    topic="Please follow the #rules and #code-of-conduct!",
+                    topic="Channel open to all speakers & conference volunteers. Please follow the #rules and #code-of-conduct!",
+                    permission_overwrites=[
+                        PermissionOverwrite(
+                            roles=ROLES_SPEAKERS,
+                            allow=["view_channel", "connect"],
+                        ),
+                    ],
                 ),
                 TextChannel(
                     name="moderators",
                     topic="For discussions related to ongoing moderation activities, moderation policy, and other moderation-related topic.",
+                    permission_overwrites=[
+                        PermissionOverwrite(
+                            roles=ROLES_MODERATORS,
+                            allow=["view_channel", "connect"],
+                        ),
+                    ],
                 ),
                 TextChannel(
                     name="discord-updates",
                     topic="Discord will send community server notifications here.",
                 ),
+            ],
+            permission_overwrites=[
+                PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["view_channel", "connect"]),
             ],
         ),
         Category(
@@ -430,6 +540,10 @@ config = GuildConfig(
                         "Senior",
                     ],
                     require_tag=True,
+                    permission_overwrites=[
+                        PermissionOverwrite(roles=ROLES_REGISTERED, deny=["create_public_threads"]),
+                        PermissionOverwrite(roles=ROLES_SPONSORS, allow=["create_public_threads"]),
+                    ],
                 ),
                 TextChannel(
                     name="example-sponsor", topic="This is how a sponsor channel could look like"
@@ -439,9 +553,31 @@ config = GuildConfig(
         Category(
             name="Registration",
             channels=[
-                TextChannel(name="welcome", topic="Welcome to our server, please register."),
                 TextChannel(
-                    name="registration", topic="Please follow the registration instructions."
+                    name="welcome",
+                    topic="Welcome to our server, please register.",
+                    permission_overwrites=[
+                        PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["send_messages"]),
+                        PermissionOverwrite(
+                            roles=ROLES_REGISTERED, deny=["view_channel", "connect"]
+                        ),
+                        PermissionOverwrite(
+                            roles=ROLES_ORGANIZERS, allow=["view_channel", "connect"]
+                        ),
+                    ],
+                ),
+                TextChannel(
+                    name="registration",
+                    topic="Please follow the registration instructions.",
+                    permission_overwrites=[
+                        PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["send_messages"]),
+                        PermissionOverwrite(
+                            roles=ROLES_REGISTERED, deny=["view_channel", "connect"]
+                        ),
+                        PermissionOverwrite(
+                            roles=ROLES_ORGANIZERS, allow=["view_channel", "connect"]
+                        ),
+                    ],
                 ),
                 ForumChannel(
                     name="registration-help",
@@ -450,14 +586,34 @@ config = GuildConfig(
 
                         As this community is only intended for EuroPython participants, there are no public discussion channels.
                         """,
+                    permission_overwrites=[
+                        PermissionOverwrite(
+                            roles=ROLES_REGISTERED, deny=["view_channel", "connect"]
+                        ),
+                        PermissionOverwrite(
+                            roles=ROLES_ORGANIZERS, allow=["view_channel", "connect"]
+                        ),
+                    ],
                 ),
                 TextChannel(
                     name="registration-log",
                     topic="The EuroPython bot will log registration actions here to help us with debugging.",
+                    permission_overwrites=[
+                        PermissionOverwrite(
+                            roles=[ROLE_EVERYONE],
+                            deny=["view_channel", "connect"],
+                        )
+                    ],
                 ),
                 TextChannel(
                     name="system-events",
                     topic='This channel will show "raw" joins to keep track of who joins and who registered without diving into the audit log.',
+                    permission_overwrites=[
+                        PermissionOverwrite(
+                            roles=[ROLE_EVERYONE],
+                            deny=["view_channel", "connect"],
+                        )
+                    ],
                 ),
             ],
         ),
@@ -468,6 +624,56 @@ config = GuildConfig(
 def report_error(message: str) -> None:
     """Print an error message to stderr."""
     print("ERROR:", message, file=sys.stderr)
+
+
+def create_permissions(permissions: list[Permission]) -> discord.Permissions:
+    return discord.Permissions(
+        **{perm: True for perm in permissions},
+    )
+
+
+async def ensure_channel_permissions(
+    guild: discord.Guild,
+    channel: discord.CategoryChannel | discord.TextChannel | discord.ForumChannel,
+    permission_overwrite_templates: list[PermissionOverwrite],
+) -> None:
+    logger.info("Ensure permissions for channel %s", channel.name)
+
+    logger.debug("Accumulating permission overwrites for channel %s", channel.name)
+    overwrites_by_role: dict[str, dict[str, bool]] = defaultdict(dict)
+    for overwrite_template in permission_overwrite_templates:
+        for role_name in overwrite_template.roles:
+            for permission in overwrite_template.allow:
+                overwrites_by_role[role_name][permission] = True
+            for permission in overwrite_template.deny:
+                overwrites_by_role[role_name][permission] = False
+
+    logger.debug("Executing permission updates")
+    for role_name, expected_overwrites in overwrites_by_role.items():
+        role = discord_get(guild.roles, name=role_name)
+        current_permissions = channel.permissions_for(role)
+        required_updates: dict[str, bool] = {}
+        for permission, value in expected_overwrites.items():
+            if getattr(current_permissions, permission) != value:
+                logger.debug("Setting %s for role %s to %s", permission, role_name, value)
+                required_updates[permission] = value
+        if required_updates:
+            await channel.set_permissions(role, **required_updates)
+
+
+async def ensure_category_and_channel_permissions(
+    guild: discord.Guild, category_templates: list[Category]
+) -> None:
+    for category_template in category_templates:
+        category = discord.utils.get(guild.categories, name=category_template.name)
+        await ensure_channel_permissions(guild, category, category_template.permission_overwrites)
+        for channel_template in category_template.channels:
+            channel = discord.utils.get(guild.channels, name=channel_template.name)
+            await ensure_channel_permissions(
+                guild,
+                channel,
+                category_template.permission_overwrites + channel_template.permission_overwrites,
+            )
 
 
 async def ensure_category(
@@ -495,12 +701,10 @@ async def ensure_text_channel(
     position: int,
 ) -> discord.TextChannel:
     """Ensure the text channel exists at the expected position."""
-    logger.info(
-        "Ensure text channel %s in category %s at position %d", name, category.name, position
-    )
+    logger.info("Ensure text channel %s at position %d", name, position)
     channel = discord_get(guild.text_channels, name=name)
     if channel is None:
-        logger.debug("Create text channel", name)
+        logger.debug("Create text channel %s", name)
         return await guild.create_text_channel(name=name, category=category, position=position)
 
     logger.debug("Found text channel")
@@ -561,30 +765,27 @@ async def ensure_forum_channel(
     await ensure_tags(channel, expected_tags, require_tag=require_tag)
 
 
-def create_permissions(permissions: list[Permission]) -> discord.Permissions:
-    return discord.Permissions(**{perm: True for perm in permissions})
-
-
 async def ensure_role(guild: discord.Guild, template: Role) -> None:
     """Ensure the role exists with the expected configuration."""
     logger.info("Ensure role %s", template.name)
     permissions = create_permissions(template.permissions)
+    expected_color = discord.Color.from_str(template.color)
 
     role = discord_get(guild.roles, name=template.name)
     if role is None:
         logger.debug("Create role %s", template.name)
         await guild.create_role(
             name=template.name,
-            colour=discord.Color.from_str(template.color),
+            colour=expected_color,
             hoist=template.hoist,
             mentionable=template.mentionable,
             permissions=permissions,
         )
     else:
         logger.debug("Found role")
-        if role.colour != template.color:
+        if role.name != "@everyone" and role.colour != expected_color:
             logger.debug("Update color")
-            await role.edit(colour=discord.Color.from_str(template.color))
+            await role.edit(colour=expected_color)
         if role.hoist != template.hoist:
             logger.debug("Update hoist")
             await role.edit(hoist=template.hoist)
@@ -612,7 +813,6 @@ async def configure_guild(guild: discord.Guild, template: GuildConfig) -> None:
     logger.info("Configuring categories and channels")
     await ensure_categories_and_channels(guild, template.categories)
 
-    # Configure system channels and events
     logger.info("Configuring system channels and events")
     await ensure_system_channel_configuration(
         guild,
@@ -620,6 +820,9 @@ async def configure_guild(guild: discord.Guild, template: GuildConfig) -> None:
         updates_channel_name=template.updates_channel_name,
         rules_channel_name=template.rules_channel_name,
     )
+
+    logger.info("Configuring permissions")
+    await ensure_category_and_channel_permissions(guild, template.categories)
 
 
 async def ensure_system_channel_configuration(
@@ -649,13 +852,19 @@ async def ensure_system_channel_configuration(
         await guild.edit(rules_channel=new_rules_channel)
 
     logger.debug("Ensure system channel flags")
-    await guild.edit(
-        system_channel_flags=discord.SystemChannelFlags(
-            join_notifications=True,
-            join_notification_replies=False,
-            guild_reminder_notifications=False,
+    if not guild.system_channel_flags.join_notifications:
+        logger.debug("Enable member join notifications to the system channel")
+        await guild.edit(system_channel_flags=discord.SystemChannelFlags(join_notifications=True))
+    if guild.system_channel_flags.join_notification_replies:
+        logger.debug("Disable 'Wave to say Hi!' suggestion on member join events")
+        await guild.edit(
+            system_channel_flags=discord.SystemChannelFlags(join_notification_replies=False)
         )
-    )
+    if guild.system_channel_flags.guild_reminder_notifications:
+        logger.debug("Disable server setup suggestions and reminders")
+        await guild.edit(
+            system_channel_flags=discord.SystemChannelFlags(guild_reminder_notifications=False)
+        )
 
 
 async def ensure_categories_and_channels(
