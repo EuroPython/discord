@@ -13,12 +13,12 @@ from typing import Annotated, Any, Literal
 
 import discord
 from discord.ext.commands import Bot
-from pydantic import AfterValidator, BaseModel, BeforeValidator, Field, PlainSerializer
+from pydantic import AfterValidator, BaseModel, Field, model_validator
 
 if sys.version_info >= (3, 11):
-    from typing import assert_never
+    from typing import Self, assert_never
 else:
-    from typing_extensions import assert_never
+    from typing_extensions import Self, assert_never
 
 logger = logging.getLogger(__name__)
 
@@ -55,11 +55,6 @@ It will not:
 MultilineString = Annotated[
     str,
     AfterValidator(lambda text: textwrap.dedent(text.strip("\r\n").rstrip())),
-]
-Color = Annotated[
-    discord.Color,
-    BeforeValidator(discord.Colour.from_str),
-    PlainSerializer(lambda color: f"#{color:06X}"),
 ]
 
 BLUE = "#0096C7"
@@ -131,6 +126,23 @@ class GuildConfig(BaseModel):
     system_channel_name: str
     public_updates_channel_name: str
     categories: list[Category]
+
+    @model_validator(mode='after')
+    def verify_system_channel_names(self) -> Self:
+        channel_names = []
+        for category in self.categories:
+            for channel in category.channels:
+                channel_names.append(channel.name)
+
+        missing_channels = []
+        for name in [self.rules_channel_name, self.system_channel_name, self.public_updates_channel_name]:
+            if name not in channel_names:
+                missing_channels.append(name)
+
+        if missing_channels:
+            raise ValueError(f"Missing system channels: {missing_channels}")
+
+        return self
 
 
 config = GuildConfig(
@@ -363,31 +375,6 @@ config = GuildConfig(
             ],
         ),
         Category(
-            name="Registration",
-            channels=[
-                TextChannel(name="welcome", topic="Welcome to our server, please register."),
-                TextChannel(
-                    name="registration", topic="Please follow the registration instructions."
-                ),
-                ForumChannel(
-                    name="registration-help",
-                    topic="""
-                        # This channel is only for asking for help with registration, not for general discussion.
-
-                        As this community is only intended for EuroPython participants, there are no public discussion channels.
-                        """,
-                ),
-                TextChannel(
-                    name="registration-log",
-                    topic="The EuroPython bot will log registration actions here to help us with debugging.",
-                ),
-                TextChannel(
-                    name="system-events",
-                    topic='This channel will show "raw" joins to keep track of who joins and who registered without hdiving into the audit log.',
-                ),
-            ],
-        ),
-        Category(
             name="Sponsors",
             channels=[
                 ForumChannel(
@@ -429,6 +416,31 @@ config = GuildConfig(
                 ),
             ],
         ),
+        Category(
+            name="Registration",
+            channels=[
+                TextChannel(name="welcome", topic="Welcome to our server, please register."),
+                TextChannel(
+                    name="registration", topic="Please follow the registration instructions."
+                ),
+                ForumChannel(
+                    name="registration-help",
+                    topic="""
+                        # This channel is only for asking for help with registration, not for general discussion.
+
+                        As this community is only intended for EuroPython participants, there are no public discussion channels.
+                        """,
+                ),
+                TextChannel(
+                    name="registration-log",
+                    topic="The EuroPython bot will log registration actions here to help us with debugging.",
+                ),
+                TextChannel(
+                    name="system-events",
+                    topic='This channel will show "raw" joins to keep track of who joins and who registered without hdiving into the audit log.',
+                ),
+            ],
+        ),
     ],
 )
 
@@ -439,19 +451,19 @@ def report_error(message: str) -> None:
 
 
 async def configure_category(
-    guild: discord.Guild, name: str, position: int
+    guild: discord.Guild, template: Category, position: int
 ) -> discord.CategoryChannel:
-    logger.info("Configure category %s at position %d", name, position)
+    logger.info("Configure category %s at position %d", template.name, position)
     for category in guild.categories:
-        if category.name == name:
+        if category.name == template.name:
             logger.debug("Found category")
             if category.position != position:
                 logger.debug("Update position")
                 await category.edit(position=position)
             return category
 
-    logger.debug("Create category %s", name)
-    return await guild.create_category(name, position=position)
+    logger.debug("Create category")
+    return await guild.create_category(template.name, position=position)
 
 
 async def configure_text_channel(
@@ -576,8 +588,8 @@ async def configure_guild(guild: discord.Guild, template: GuildConfig) -> None:
 
         # create required channels (will be positioned later)
         channels_by_name = {}
-        for category in template.categories:
-            for channel_template in category.channels:
+        for category_template in template.categories:
+            for channel_template in category_template.channels:
                 if channel_template.name in [
                     template.rules_channel_name,
                     template.public_updates_channel_name,
@@ -605,9 +617,9 @@ async def configure_guild(guild: discord.Guild, template: GuildConfig) -> None:
     channel_position = 0
     category_position = 0
     channels_by_name = {}
-    for category in template.categories:
-        d_category = await configure_category(guild, category.name, category_position)
-        for channel_template in category.channels:
+    for category_template in template.categories:
+        d_category = await configure_category(guild, category_template, category_position)
+        for channel_template in category_template.channels:
             if isinstance(channel_template, TextChannel):
                 channel = await configure_text_channel(
                     guild, d_category, channel_template, channel_position
@@ -643,6 +655,7 @@ async def configure_guild(guild: discord.Guild, template: GuildConfig) -> None:
             guild_reminder_notifications=False,
         )
     )
+
 
 class GuildConfigurationBot(Bot):
     def __init__(self) -> None:
