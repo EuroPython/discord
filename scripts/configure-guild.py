@@ -7,6 +7,7 @@ import argparse
 import asyncio
 import logging
 import os
+import re
 import sys
 import textwrap
 from collections import defaultdict
@@ -46,6 +47,7 @@ It will:
     - Update 'mandatory/optional' state of forum tags
     - Update category, text channel, and forum permission overwrites
 - Update category and channel permission overwrites
+- Update channel's default messages
 
 To do manually:
 - Configure role order
@@ -55,6 +57,7 @@ It will not:
 - Delete categories
 - Delete channels
 - Delete forum tags
+- Delete human-authored messages
 """
 
 MultilineString = Annotated[
@@ -129,7 +132,7 @@ class TextChannel(BaseModel):
     topic: MultilineString
     permission_overwrites: list[PermissionOverwrite] = Field(default_factory=list)
 
-    default_messages: list[MultilineString] = Field(default_factory=list)
+    channel_messages: list[MultilineString] = Field(default_factory=list)
 
 
 class Category(BaseModel):
@@ -291,7 +294,7 @@ config = GuildConfig(
                 TextChannel(
                     name="rules",
                     topic="Please read the rules carefully!",
-                    default_messages=[
+                    channel_messages=[
                         """
                         ## Community Rules
 
@@ -303,16 +306,16 @@ config = GuildConfig(
                         Use the name on your ticket as your display name. This will be done automatically during the #registration-form process.
                         
                         **Reporting Incidents**
-                        If you notice something that needs the attention of a moderator of the community, please ping the <@&Moderators> role.
+                        If you notice something that needs the attention of a moderator of the community, please ping the <<@&Moderators>> role.
                         
-                        Note that not all moderators are a member of the EuroPython Code of Conduct team. See the <#code-of-conduct> channel to read how you can report Code of Conduct incidents.
+                        Note that not all moderators are a member of the EuroPython Code of Conduct team. See the <<#code-of-conduct>> channel to read how you can report Code of Conduct incidents.
                         """
                     ],
                 ),
                 TextChannel(
                     name="code-of-conduct",
                     topic="https://www.europython-society.org/coc/",
-                    default_messages=[
+                    channel_messages=[
                         """
                         ## EuroPython Society Code of Conduct
                         EuroPython is a community conference intended for networking and collaboration in the developer community.
@@ -350,7 +353,7 @@ config = GuildConfig(
                           - Email: ...@europython.eu
                           - Discord: <@...>
                         
-                        Committee members have the role <@&Code of Conduct Committee> in this community.
+                        Committee members have the role <<@&Code of Conduct Committee>> in this community.
                         """,
                         """
                         ## Links
@@ -621,11 +624,11 @@ config = GuildConfig(
                 TextChannel(
                     name="welcome",
                     topic="Welcome to our server, please register.",
-                    default_messages=[
+                    channel_messages=[
                         """
-                        **Welcome to our Discord server! Please register using the <#registration-form>**
+                        **Welcome to our Discord server! Please register using the <<#registration-form>>**
 
-                        If you encounter any problems with registration, please ask in <#registration-help>.
+                        If you encounter any problems with registration, please ask in <<#registration-help>>.
                         """,
                     ],
                     permission_overwrites=[
@@ -901,10 +904,37 @@ async def ensure_default_messages(guild: discord.Guild, categories: list[Categor
         for channel_template in category_template.channels:
             if not isinstance(channel_template, TextChannel):
                 continue
-            if not channel_template.default_messages:
+            if not channel_template.channel_messages:
                 continue
             channel = discord_get(guild.channels, name=channel_template.name)
-            await ensure_channel_messages(channel, channel_template.default_messages)
+            messages = await insert_mentions_into_messages(guild, channel_template.channel_messages)
+            await ensure_channel_messages(channel, messages)
+
+
+async def insert_mentions_into_messages(guild: discord.Guild, messages: list[str]) -> list[str]:
+    logger.info("Insert mentions in messages")
+    fixed_messages = []
+    for message in messages:
+        fixed_message = message
+        for match in re.finditer("<<#([a-zA-Z0-9 _-]+)>>", message):
+            channel = discord_get(guild.channels, name=match.group(1))
+            if channel is None:
+                logger.warning("Could not find channel %s", match.group(1))
+            else:
+                logger.debug("Found mentioned channel %s", channel.name)
+                fixed_message = fixed_message.replace(match.group(0), channel.mention)
+
+        for match in re.finditer("<<@&([a-zA-Z0-9 _-]+)>>", message):
+            role = discord_get(guild.roles, name=match.group(1))
+            if role is None:
+                logger.warning("Could not find role %s", match.group(1))
+            else:
+                logger.debug("Found mentioned role %s", role.name)
+                fixed_message = fixed_message.replace(match.group(0), role.mention)
+
+        fixed_messages.append(fixed_message)
+
+    return fixed_messages
 
 
 async def ensure_channel_messages(channel: discord.TextChannel, messages: list[str]) -> None:
