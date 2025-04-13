@@ -58,6 +58,8 @@ It will not:
 - Delete channels
 - Delete forum tags
 - Delete human-authored messages
+
+All operations are idempotent. Applying the same configuration twice will perform no changes.
 """
 
 MultilineString = Annotated[
