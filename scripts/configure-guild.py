@@ -72,7 +72,6 @@ GREY = "#99AAB5"
 
 Permission = Literal[
     "view_channel",
-    "connect",
     "change_nickname",
     "create_public_threads",
     "send_messages",
@@ -268,7 +267,6 @@ config = GuildConfig(
             name="@everyone",
             permissions=[
                 "view_channel",
-                "connect",
                 "change_nickname",
                 "send_messages",
                 "send_messages_in_threads",
@@ -355,8 +353,8 @@ config = GuildConfig(
                 ),
             ],
             permission_overwrites=[
-                PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["view_channel", "connect"]),
-                PermissionOverwrite(roles=ROLES_REGISTERED, allow=["view_channel", "connect"]),
+                PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["view_channel"]),
+                PermissionOverwrite(roles=ROLES_REGISTERED, allow=["view_channel"]),
             ],
         ),
         Category(
@@ -428,8 +426,8 @@ config = GuildConfig(
                 ),
             ],
             permission_overwrites=[
-                PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["view_channel", "connect"]),
-                PermissionOverwrite(roles=ROLES_REGISTERED, allow=["view_channel", "connect"]),
+                PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["view_channel"]),
+                PermissionOverwrite(roles=ROLES_REGISTERED, allow=["view_channel"]),
             ],
         ),
         Category(
@@ -441,7 +439,7 @@ config = GuildConfig(
                     permission_overwrites=[
                         PermissionOverwrite(
                             roles=ROLES_VOLUNTEERS,
-                            allow=["view_channel", "connect"],
+                            allow=["view_channel"],
                         ),
                     ],
                 ),
@@ -451,7 +449,7 @@ config = GuildConfig(
                     permission_overwrites=[
                         PermissionOverwrite(
                             roles=ROLES_VOLUNTEERS,
-                            allow=["view_channel", "connect"],
+                            allow=["view_channel"],
                         ),
                     ],
                 ),
@@ -461,7 +459,7 @@ config = GuildConfig(
                     permission_overwrites=[
                         PermissionOverwrite(
                             roles=ROLES_VOLUNTEERS,
-                            allow=["view_channel", "connect"],
+                            allow=["view_channel"],
                         ),
                     ],
                 ),
@@ -471,7 +469,7 @@ config = GuildConfig(
                     permission_overwrites=[
                         PermissionOverwrite(
                             roles=ROLES_SPONSORS,
-                            allow=["view_channel", "connect"],
+                            allow=["view_channel"],
                         ),
                     ],
                 ),
@@ -481,7 +479,7 @@ config = GuildConfig(
                     permission_overwrites=[
                         PermissionOverwrite(
                             roles=ROLES_SPEAKERS,
-                            allow=["view_channel", "connect"],
+                            allow=["view_channel"],
                         ),
                     ],
                 ),
@@ -491,7 +489,7 @@ config = GuildConfig(
                     permission_overwrites=[
                         PermissionOverwrite(
                             roles=ROLES_MODERATORS,
-                            allow=["view_channel", "connect"],
+                            allow=["view_channel"],
                         ),
                     ],
                 ),
@@ -501,7 +499,7 @@ config = GuildConfig(
                 ),
             ],
             permission_overwrites=[
-                PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["view_channel", "connect"]),
+                PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["view_channel"]),
             ],
         ),
         Category(
@@ -559,10 +557,10 @@ config = GuildConfig(
                     permission_overwrites=[
                         PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["send_messages"]),
                         PermissionOverwrite(
-                            roles=ROLES_REGISTERED, deny=["view_channel", "connect"]
+                            roles=ROLES_REGISTERED, deny=["view_channel"]
                         ),
                         PermissionOverwrite(
-                            roles=ROLES_ORGANIZERS, allow=["view_channel", "connect"]
+                            roles=ROLES_ORGANIZERS, allow=["view_channel"]
                         ),
                     ],
                 ),
@@ -572,10 +570,10 @@ config = GuildConfig(
                     permission_overwrites=[
                         PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["send_messages"]),
                         PermissionOverwrite(
-                            roles=ROLES_REGISTERED, deny=["view_channel", "connect"]
+                            roles=ROLES_REGISTERED, deny=["view_channel"]
                         ),
                         PermissionOverwrite(
-                            roles=ROLES_ORGANIZERS, allow=["view_channel", "connect"]
+                            roles=ROLES_ORGANIZERS, allow=["view_channel"]
                         ),
                     ],
                 ),
@@ -588,10 +586,10 @@ config = GuildConfig(
                         """,
                     permission_overwrites=[
                         PermissionOverwrite(
-                            roles=ROLES_REGISTERED, deny=["view_channel", "connect"]
+                            roles=ROLES_REGISTERED, deny=["view_channel"]
                         ),
                         PermissionOverwrite(
-                            roles=ROLES_ORGANIZERS, allow=["view_channel", "connect"]
+                            roles=ROLES_ORGANIZERS, allow=["view_channel"]
                         ),
                     ],
                 ),
@@ -601,7 +599,7 @@ config = GuildConfig(
                     permission_overwrites=[
                         PermissionOverwrite(
                             roles=[ROLE_EVERYONE],
-                            deny=["view_channel", "connect"],
+                            deny=["view_channel"],
                         )
                     ],
                 ),
@@ -611,7 +609,7 @@ config = GuildConfig(
                     permission_overwrites=[
                         PermissionOverwrite(
                             roles=[ROLE_EVERYONE],
-                            deny=["view_channel", "connect"],
+                            deny=["view_channel"],
                         )
                     ],
                 ),
@@ -639,7 +637,7 @@ async def ensure_channel_permissions(
 ) -> None:
     logger.info("Ensure permissions for channel %s", channel.name)
 
-    logger.debug("Accumulating permission overwrites for channel %s", channel.name)
+    logger.debug("Accumulating permission overwrites")
     overwrites_by_role: dict[str, dict[str, bool]] = defaultdict(dict)
     for overwrite_template in permission_overwrite_templates:
         for role_name in overwrite_template.roles:
@@ -653,10 +651,11 @@ async def ensure_channel_permissions(
         role = discord_get(guild.roles, name=role_name)
         current_permissions = channel.permissions_for(role)
         required_updates: dict[str, bool] = {}
-        for permission, value in expected_overwrites.items():
-            if getattr(current_permissions, permission) != value:
-                logger.debug("Setting %s for role %s to %s", permission, role_name, value)
-                required_updates[permission] = value
+        for permission, expected_value in expected_overwrites.items():
+            current_value = getattr(current_permissions, permission)
+            if current_value != expected_value:
+                logger.debug("Setting %s for role %s to %s (was %s)", permission, role_name, expected_value, current_value)
+                required_updates[permission] = expected_value
         if required_updates:
             await channel.set_permissions(role, **required_updates)
 
@@ -823,6 +822,20 @@ async def configure_guild(guild: discord.Guild, template: GuildConfig) -> None:
 
     logger.info("Configuring permissions")
     await ensure_category_and_channel_permissions(guild, template.categories)
+
+    logger.info("Configure channel topics")
+    await ensure_channel_topics(guild, template.categories)
+
+
+async def ensure_channel_topics(guild: discord.Guild, category_templates: list[Category]) -> None:
+    logger.info("Ensure channel topics")
+    for category_template in category_templates:
+        for channel_template in category_template.channels:
+            channel = discord_get(guild.channels, name=channel_template.name)
+            expected_topic = channel_template.topic
+            if channel.topic != expected_topic:
+                logger.debug("Update topic of channel %s", channel_template.name)
+                await channel.edit(topic=expected_topic)
 
 
 async def ensure_system_channel_configuration(
