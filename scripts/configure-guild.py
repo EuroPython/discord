@@ -1116,6 +1116,21 @@ async def run_bot(bot: Bot, token: str) -> None:
             report_error("Insufficient privileges. Required events: 'GUILD_MEMBERS'")
 
 
+def configure_logging(*, verbose: bool = False, debug: bool = False) -> None:
+    log_level = logging.WARNING
+    if verbose:
+        log_level = logging.INFO
+    if debug:
+        log_level = logging.DEBUG
+    log_handler = logging.StreamHandler(stream=sys.stderr)
+    log_handler.addFilter(
+        # silence irrelevant warning
+        lambda record: record.msg
+        != "PyNaCl is not installed, voice will NOT be supported"
+    )
+    logging.basicConfig(level=log_level, handlers=[log_handler])
+
+
 def main() -> None:
     """Run this application."""
     parser = argparse.ArgumentParser(
@@ -1130,10 +1145,7 @@ def main() -> None:
     if bot_token is None:
         raise RuntimeError("'BOT_TOKEN' environment variable is not set")
 
-    if args.verbose:
-        logging.basicConfig(level=logging.INFO, stream=sys.stderr)
-    if args.debug:
-        logging.basicConfig(level=logging.DEBUG, stream=sys.stderr)
+    configure_logging(debug=args.debug, verbose=args.verbose)
 
     bot = GuildConfigurationBot()
     asyncio.run(run_bot(bot, bot_token))
