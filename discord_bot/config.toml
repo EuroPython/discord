@@ -1,3 +1,6 @@
+[conference]
+CONFERENCE_NAME = "PyCon DE & PyData 2025"
+
 [server]
 GUILD=955933777706762280
 

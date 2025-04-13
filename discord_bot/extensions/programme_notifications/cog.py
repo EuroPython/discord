@@ -13,7 +13,7 @@ _logger = logging.getLogger(f"bot.{__name__}")
 
 @attrs.define
 class ProgrammeNotifications(commands.Cog):
-    """Programme Notifier Cog"""
+    """Programme Notifier Cog."""
 
     _bot: commands.Bot
     _aiohttp_session: aiohttp.ClientSession
@@ -25,7 +25,7 @@ class ProgrammeNotifications(commands.Cog):
         self._update_schedule.start()
 
     async def cog_unload(self) -> None:
-        """Unload the cog in the callback style of discord.py"""
+        """Unload the cog in the callback style of discord.py."""
         _logger.debug("Stopping update schedule task")
         self._update_schedule.cancel()
         _logger.debug("Closing aiohttp session")

@@ -43,10 +43,10 @@ class Config(metaclass=Singleton):
             sys.exit(-1)
 
         try:
-            # Logging
             self.LOG_LEVEL = config.get("logging", {}).get("LOG_LEVEL", "INFO")
 
-            # Server
+            self.CONFERENCE_NAME = config["conference"]["CONFERENCE_NAME"]
+
             self.GUILD = int(config["server"]["GUILD"])
 
             if not testing:

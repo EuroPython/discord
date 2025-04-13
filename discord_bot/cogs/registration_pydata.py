@@ -8,14 +8,14 @@ from discord_bot.cogs.registration import (
     RegistrationForm,
     RegistrationView,
 )
+from discord_bot.configuration import Config
 
-# from discord_bot.configuration import Config
 # from discord_bot.error import AlreadyRegisteredError, NotFoundError
 # from discord_bot.channel_logging import log_to_channel
 # from discord_bot.tito_connector import TitoOrder
 
 
-# config = Config()
+config = Config()
 # order_ins = TitoOrder()
 
 # CHANGE_NICKNAME = False
@@ -35,7 +35,8 @@ class RegistrationButtonPyData(RegistrationButton):
 
 class RegistrationFormPyData(RegistrationForm):
     def __init__(self):
-        super().__init__(title="PyConDE/PyData Berlin 2024 Registration")
+        title = f"{config.CONFERENCE_NAME} Registration"
+        super().__init__(title=title)
 
 
 class RegistrationViewPyData(RegistrationView):
@@ -46,7 +47,7 @@ class RegistrationViewPyData(RegistrationView):
 class RegistrationPyData(Registration, commands.Cog):
     def __init__(self, bot):
         super().__init__(bot, registration_view=RegistrationViewPyData)
-        self._title = "Welcome to PyConDE / PyData Berlin 2024 on Discord! 🎉🐍"
+        self._title = f"Welcome to {config.CONFERENCE_NAME} on Discord! 🎉🐍"
         # TODO(dan): update text
         self._desc = (
             "Follow these steps to complete your registration:\n\n"
@@ -55,7 +56,7 @@ class RegistrationPyData(Registration, commands.Cog):
             'your "Full Name" (first and last name as printed on your ticket/badge under ticket '
             "holder). "
             "You can find the information also in your confirmation email from "
-            'support@tito.io with the subject: "Your PyCon.DE & PyData Berlin 2024 Ticket".\n\n'
+            f'support@tito.io with the subject: "Your {config.CONFERENCE_NAME} Ticket".\n\n'
             '3️⃣ Click "Submit". We\'ll verify your ticket and give you your role(s) based on '
             "your ticket type.\n\n"
             "Experiencing trouble? Ask for help in the registration-help channel or from a "
