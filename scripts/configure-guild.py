@@ -116,9 +116,10 @@ class ForumChannel(BaseModel):
 
     name: str
     topic: MultilineString
+    permission_overwrites: list[PermissionOverwrite] = Field(default_factory=list)
+
     tags: list[str] = Field(default_factory=list)
     require_tag: bool = False
-    permission_overwrites: list[PermissionOverwrite] = Field(default_factory=list)
 
 
 class TextChannel(BaseModel):
@@ -127,6 +128,8 @@ class TextChannel(BaseModel):
     name: str
     topic: MultilineString
     permission_overwrites: list[PermissionOverwrite] = Field(default_factory=list)
+
+    default_messages: list[MultilineString] = Field(default_factory=list)
 
 
 class Category(BaseModel):
@@ -288,10 +291,74 @@ config = GuildConfig(
                 TextChannel(
                     name="rules",
                     topic="Please read the rules carefully!",
+                    default_messages=[
+                        """
+                        ## Community Rules
+
+                        **Rule 1**
+                        Follow the [EuroPython Society Code of Conduct](https://www.europython-society.org/coc/).
+                        **Rule 2**
+                        Use English to the best of your ability. Be polite if someone speaks English imperfectly.
+                        **Rule 3**
+                        Use the name on your ticket as your display name. This will be done automatically during the #registration-form process.
+                        
+                        **Reporting Incidents**
+                        If you notice something that needs the attention of a moderator of the community, please ping the <@&Moderators> role.
+                        
+                        Note that not all moderators are a member of the EuroPython Code of Conduct team. See the <#code-of-conduct> channel to read how you can report Code of Conduct incidents.
+                        """
+                    ],
                 ),
                 TextChannel(
                     name="code-of-conduct",
                     topic="https://www.europython-society.org/coc/",
+                    default_messages=[
+                        """
+                        ## EuroPython Society Code of Conduct
+                        EuroPython is a community conference intended for networking and collaboration in the developer community.
+                        
+                        We value the participation of each member of the Python community and want all participants to have an enjoyable and fulfilling experience. Accordingly, all attendees are expected to show respect and courtesy to other attendees throughout the conference and at all conference events.
+                        
+                        To make clear what is expected, all staff, attendees, speakers, exhibitors, organisers, and volunteers at any EuroPython event are required to conform to the [Code of Conduct](https://www.europython-society.org/coc/), as set forth by the [EuroPython Society](https://www.europython-society.org/about/). Organisers will enforce this code throughout the event.
+                        
+                        **Please read the Code of Conduct:** https://www.europython-society.org/coc/
+                        """,
+                        """
+                        ## Reporting Incidents
+                        **If you believe someone is in physical danger, including from themselves**, the most important thing is to get that person help. Please contact the appropriate crisis number, non-emergency number, or police number. If you are a EuroPython attendee, you can consult with a volunteer or organiser to help find an appropriate number.
+                        
+                        If you believe a [Code of Conduct](https://www.europython-society.org/coc/) incident has occurred, we encourage you to report it. If you are unsure whether the incident is a violation, or whether the space where it happened is covered by the Code of Conduct, we encourage you to still report it. We are fine with receiving reports where we decide to take no action for the sake of creating a safer space.
+                        """
+                        """
+                        ## General Reporting Procedure
+                        If you are being harassed, notice that someone else is being harassed, or have any other concerns, please contact a member of the Code of Conduct committee immediately. They can be reached by emailing **coc@europython.eu**.
+                        
+                        If you prefer, you can also directly contact:
+                        
+                        - Person 1
+                          - Email: ...@europython.eu
+                          - Telegram: @...
+                          - Discord: <@...>
+                        - Person 2
+                          - Email: ...@europython.eu
+                          - Telegram: @...
+                          - Discord: <@...>
+                        - Person 3
+                          - Email: ...@europython.eu
+                          - Discord: <@...>
+                        - Person 4
+                          - Email: ...@europython.eu
+                          - Discord: <@...>
+                        
+                        Committee members have the role <@&Code of Conduct Committee> in this community.
+                        """,
+                        """
+                        ## Links
+                        - [EuroPython Society Code of Conduct](https://www.europython-society.org/coc/)
+                        - [Incident Reporting Procedure](https://www.europython-society.org/coc-incident-reporting/)
+                        - [Procedure for Incident Response](https://www.europython-society.org/coc-enforcement-procedure/)
+                        """,
+                    ],
                 ),
             ],
             permission_overwrites=[
@@ -554,6 +621,13 @@ config = GuildConfig(
                 TextChannel(
                     name="welcome",
                     topic="Welcome to our server, please register.",
+                    default_messages=[
+                        """
+                        **Welcome to our Discord server! Please register using the <#registration-form>**
+
+                        If you encounter any problems with registration, please ask in <#registration-help>.
+                        """,
+                    ],
                     permission_overwrites=[
                         PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["send_messages"]),
                         PermissionOverwrite(roles=ROLES_REGISTERED, deny=["view_channel"]),
@@ -816,6 +890,42 @@ async def configure_guild(guild: discord.Guild, template: GuildConfig) -> None:
 
     logger.info("Configure channel topics")
     await ensure_channel_topics(guild, template.categories)
+
+    logger.info("Configure channel default messages")
+    await ensure_default_messages(guild, template.categories)
+
+
+async def ensure_default_messages(guild: discord.Guild, categories: list[Category]) -> None:
+    logger.info("Ensure default messages")
+    for category_template in categories:
+        for channel_template in category_template.channels:
+            if not isinstance(channel_template, TextChannel):
+                continue
+            if not channel_template.default_messages:
+                continue
+            channel = discord_get(guild.channels, name=channel_template.name)
+            await ensure_channel_messages(channel, channel_template.default_messages)
+
+
+async def ensure_channel_messages(channel: discord.TextChannel, messages: list[str]) -> None:
+    logger.info("Ensure channel messages for channel %s")
+    existing_messages = []
+    async for server_message in channel.history(limit=None, oldest_first=True):
+        if not server_message.author.bot:
+            logger.warning("Channel has messages from non-bot users, skipping message creation")
+            return
+        existing_messages.append(server_message)
+
+    if [msg.content for msg in existing_messages] == messages:
+        logger.debug("No update required")
+        return
+
+    for server_message in existing_messages:
+        logger.debug("Deleting existing message")
+        await server_message.delete()
+    for new_message in messages:
+        logger.debug("Send new message")
+        await channel.send(content=new_message, suppress_embeds=True)
 
 
 async def ensure_channel_topics(guild: discord.Guild, category_templates: list[Category]) -> None:
