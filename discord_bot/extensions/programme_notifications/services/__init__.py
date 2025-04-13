@@ -1,8 +1,9 @@
 """Application and infrastructure services."""
-from .api import ApiClient
-from .clock import Clock
-from .notifier import Notifier
-from .session_information import SessionInformation
-from .task_scheduler import Scheduler
+
+from discord_bot.extensions.programme_notifications.services.api import ApiClient
+from discord_bot.extensions.programme_notifications.services.clock import Clock
+from discord_bot.extensions.programme_notifications.services.notifier import Notifier
+from discord_bot.extensions.programme_notifications.services.session_information import SessionInformation
+from discord_bot.extensions.programme_notifications.services.task_scheduler import Scheduler
 
 __all__ = ["ApiClient", "Clock", "Notifier", "Scheduler", "SessionInformation"]

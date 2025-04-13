@@ -1,4 +1,5 @@
 """Programme Notifications extension for the EuroPython 2023 bot."""
+
 import functools
 import logging
 import ssl
@@ -8,10 +9,9 @@ import arrow
 import certifi
 from discord.ext import commands
 
-import configuration as root_configuration
-
-from . import cog, configuration, services
-from .domain import repositories
+from discord_bot.extensions.programme_notifications import cog, configuration, services
+from discord_bot.extensions.programme_notifications import configuration as root_configuration
+from discord_bot.extensions.programme_notifications.domain import repositories
 
 _logger = logging.getLogger(f"bot.{__name__}")
 

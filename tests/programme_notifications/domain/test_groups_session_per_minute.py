@@ -1,8 +1,8 @@
 import arrow
 import pytest
-from tests.programme_notifications import factories
 
-from extensions.programme_notifications.domain import europython, services
+from discord_bot.extensions.programme_notifications.domain import europython, services
+from tests.programme_notifications import factories
 
 
 @pytest.mark.parametrize(

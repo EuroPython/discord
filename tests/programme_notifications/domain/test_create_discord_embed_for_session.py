@@ -8,12 +8,13 @@ As we're sending embeds to webhooks in other Discord communities, the
 Discord channel information is optional: Members of other communities
 do not have access to the room channel in the EuroPython 2023 server.
 """
+
 import arrow
 import pytest
 import yarl
-from tests.programme_notifications import factories
 
-from extensions.programme_notifications.domain import discord, europython, services
+from discord_bot.extensions.programme_notifications.domain import discord, europython, services
+from tests.programme_notifications import factories
 
 
 def test_create_embed_from_session_information() -> None:
@@ -35,9 +36,7 @@ def test_create_embed_from_session_information() -> None:
             room=europython.TranslatedString("The Broom Closet"),
             start=arrow.Arrow(2023, 7, 19, 9, 55, 0, tzinfo="Europe/Prague"),
         ),
-        speakers=[
-            europython.Speaker(code="123456", name="Ada Lovelace", avatar="https://ada.avatar")
-        ],
+        speakers=[europython.Speaker(code="123456", name="Ada Lovelace", avatar="https://ada.avatar")],
         url=yarl.URL("https://ep.session/a-tale-of-two-pythons-subinterpreters-in-action"),
         livestream_url=yarl.URL("https://livestreams.com/best-conference-sessions-of-2023"),
         survey_url=yarl.URL("https://survey.com"),
@@ -46,9 +45,7 @@ def test_create_embed_from_session_information() -> None:
     slido_url = "https://app.sli.do/event/test"
 
     # WHEN an embed is created with that information
-    embed = services.create_session_embed(
-        europython_session, slido_url, include_discord_channel=True
-    )
+    embed = services.create_session_embed(europython_session, slido_url, include_discord_channel=True)
 
     # THEN the embed is equal to the expected embed
     session_url = "https://ep.session/a-tale-of-two-pythons-subinterpreters-in-action"
@@ -134,10 +131,7 @@ def test_title_gets_formatted_according_to_maximum_width(
         pytest.param(
             "",
             yarl.URL("https://foo.session"),
-            (
-                "*This session does not have an abstract.*\n\n[Read more about this session]"
-                "(https://foo.session)"
-            ),
+            ("*This session does not have an abstract.*\n\n[Read more about this session]" "(https://foo.session)"),
             id="Empty abstract but with session url",
         ),
         pytest.param(
@@ -243,9 +237,7 @@ def test_abstract_gets_formatted_including_width_and_session_url(
                 {"code": "123456", "name": "Ada Lovelace", "avatar": "https://ada.avatar"},
                 {"code": "654321", "name": "Alan Turing", "avatar": "https://turing.png"},
             ],
-            discord.Author(
-                name="Barbara Liskov, Ada Lovelace, & Alan Turing", icon_url="https://barbara.jpg"
-            ),
+            discord.Author(name="Barbara Liskov, Ada Lovelace, & Alan Turing", icon_url="https://barbara.jpg"),
             id="More than two speakers",
         ),
         pytest.param(
@@ -254,9 +246,7 @@ def test_abstract_gets_formatted_including_width_and_session_url(
                 {"code": "123456", "name": "Ada Lovelace", "avatar": "https://ada.avatar"},
                 {"code": "654321", "name": "Alan Turing", "avatar": "https://turing.png"},
             ],
-            discord.Author(
-                name="Barbara Liskov, Ada Lovelace, & Alan Turing", icon_url="https://ada.avatar"
-            ),
+            discord.Author(name="Barbara Liskov, Ada Lovelace, & Alan Turing", icon_url="https://ada.avatar"),
             id="Fetch avatar url from non-first speaker",
         ),
         pytest.param(

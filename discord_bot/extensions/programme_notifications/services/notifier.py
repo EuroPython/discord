@@ -6,9 +6,9 @@ from typing import Any, Final
 import arrow
 import attrs
 
-from .. import configuration
-from ..domain import discord, europython, services
-from . import api, session_information, task_scheduler
+from discord_bot.extensions.programme_notifications import configuration
+from discord_bot.extensions.programme_notifications.domain import discord, europython, services
+from discord_bot.extensions.programme_notifications.services import api, session_information, task_scheduler
 
 _logger = logging.getLogger(f"bot.{__name__}")
 _SCHEDULE_NOTIFICATION_MESSAGE: Final = "# Sessions starting in 5 minutes:"
@@ -187,9 +187,7 @@ class Notifier:
     ) -> None:
         """Send a notification with sessions to a webhook."""
         embeds = [
-            services.create_session_embed(
-                session, slido_url, include_discord_channel=include_discord_channel
-            )
+            services.create_session_embed(session, slido_url, include_discord_channel=include_discord_channel)
             for session in sessions
         ]
         if not embeds:

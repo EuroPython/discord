@@ -7,10 +7,10 @@ from pathlib import Path
 
 import aiofiles
 import attrs
-import configuration
 from discord.ext import commands
 
 import discord_bot
+from discord_bot import configuration
 
 _logger = logging.getLogger(f"bot.{__name__}")
 

@@ -4,9 +4,9 @@ from unittest import mock
 
 import pytest
 import yarl
-from tests.programme_notifications import factories
 
-from extensions.programme_notifications.services import api
+from discord_bot.extensions.programme_notifications.services import api
+from tests.programme_notifications import factories
 
 
 @pytest.mark.parametrize(

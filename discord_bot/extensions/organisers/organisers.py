@@ -4,9 +4,9 @@ import logging
 
 import attrs
 from discord.ext import commands
-from extensions.organisers import roles
 
 import discord_bot
+from discord_bot.extensions.organisers import roles
 
 _logger = logging.getLogger(f"bot.{__name__}")
 

@@ -23,9 +23,10 @@ yarl = "^1.19.0"
 aiofiles = "^24.1.0"
 
 [tool.poetry.dev-dependencies]
-pytest = "^7.4.0"
 ruff = "^0.5.3"
 pre-commit = "^4.2.0"
+pytest = "^8.3.5"
+pytest-asyncio = "^0.26.0"
 
 [tool.poetry.group.deploy.dependencies]
 ansible = "^11.4.0"
@@ -48,8 +49,8 @@ ignore = [
 convention = "google"
 
 [tool.pytest.ini_options]
-pythonpath = "discord"
-asyncio_mode = "auto"
+# pythonpath = "discord_bot"
+# asyncio_mode = "auto"
 
 [build-system]
 requires = ["poetry-core"]

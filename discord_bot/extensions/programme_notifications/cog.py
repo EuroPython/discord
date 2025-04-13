@@ -1,11 +1,12 @@
 """Cog that handles programme notifications for EuroPython 2023."""
+
 import logging
 
 import aiohttp
 import attrs
 from discord.ext import commands, tasks
 
-from . import services
+from discord_bot.extensions.programme_notifications import services
 
 _logger = logging.getLogger(f"bot.{__name__}")
 

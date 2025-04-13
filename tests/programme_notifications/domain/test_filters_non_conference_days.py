@@ -1,6 +1,5 @@
+from discord_bot.extensions.programme_notifications.domain import services
 from tests.programme_notifications import factories
-
-from extensions.programme_notifications.domain import services
 
 
 def test_filters_non_conference_days(

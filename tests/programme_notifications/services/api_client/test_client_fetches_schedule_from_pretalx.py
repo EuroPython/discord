@@ -5,10 +5,10 @@ from unittest import mock
 
 import arrow
 import pytest
-from tests.programme_notifications import factories
 
-from extensions.programme_notifications.domain import europython
-from extensions.programme_notifications.services import api
+from discord_bot.extensions.programme_notifications.domain import europython
+from discord_bot.extensions.programme_notifications.services import api
+from tests.programme_notifications import factories
 
 
 @pytest.mark.parametrize(
@@ -109,9 +109,7 @@ from extensions.programme_notifications.services import api
                     europython.Session(
                         code="ALPLOA",
                         title="The scientific journey",
-                        speakers=[
-                            europython.Speaker(code="STEVEB", name="Steve Bytheway", avatar=None)
-                        ],
+                        speakers=[europython.Speaker(code="STEVEB", name="Steve Bytheway", avatar=None)],
                         abstract="Around the world in 1.5 days.",
                         track=None,
                         duration=None,
@@ -148,13 +146,9 @@ async def test_api_client_returns_schedule_instance(
 ) -> None:
     """Getting the same response again results in the same hash."""
     # GIVEN a session that returns a fixed, stubbed get response
-    client_session.get.return_value.__aenter__.return_value.read = mock.AsyncMock(
-        return_value=bytes_from_data_file
-    )
+    client_session.get.return_value.__aenter__.return_value.read = mock.AsyncMock(return_value=bytes_from_data_file)
     # AND a configuration repository with a pretalx schedule url
-    config = configuration_factory(
-        {"pretalx_schedule_url": "https://europython.api/schedule/latest"}
-    )
+    config = configuration_factory({"pretalx_schedule_url": "https://europython.api/schedule/latest"})
 
     # AND an api client with that session and configuration repository
     client = api.ApiClient(session=client_session, config=config)
@@ -167,10 +161,10 @@ async def test_api_client_returns_schedule_instance(
 
 
 @pytest.mark.parametrize(
-    ("bytes_from_data_file",),
+    "bytes_from_data_file",
     [
-        ("pretalx_schedule_response_20230701.testdata.json",),
-        ("pretalx_schedule_response_20230714.testdata.json",),
+        "pretalx_schedule_response_20230701.testdata.json",
+        "pretalx_schedule_response_20230714.testdata.json",
     ],
     indirect=["bytes_from_data_file"],
 )
@@ -181,9 +175,7 @@ async def test_api_client_handles_actual_response(
 ) -> None:
     """The API client handles a cached version of an actual response."""
     # GIVEN a session that returns a cached realistic response
-    client_session.get.return_value.__aenter__.return_value.read = mock.AsyncMock(
-        return_value=bytes_from_data_file
-    )
+    client_session.get.return_value.__aenter__.return_value.read = mock.AsyncMock(return_value=bytes_from_data_file)
     # AND a configuration repository with a pretalx schedule url
     config = configuration_factory({"pretalx_schedule_url": "https://schedule.pretalx"})
     # AND an api client with that session and configuration repository
@@ -210,9 +202,7 @@ async def test_schedule_hash_is_identical_if_pretalx_response_is_identical(
 ) -> None:
     """Getting the same response again results in the same hash."""
     # GIVEN a session that returns a fixed, stubbed get response
-    client_session.get.return_value.__aenter__.return_value.read = mock.AsyncMock(
-        return_value=pretalx_response_stub
-    )
+    client_session.get.return_value.__aenter__.return_value.read = mock.AsyncMock(return_value=pretalx_response_stub)
     # AND a configuration repository with a pretalx schedule url
     config = configuration_factory({"pretalx_schedule_url": "https://schedule.pretalx"})
     # AND an api client with that session and configuration repository
@@ -256,9 +246,7 @@ async def test_fetch_schedule_returns_cached_schedule_on_api_error(
 ) -> None:
     """If the call to Pretalx fails, return a cached schedule."""
     # GIVEN a session that fails on a get response
-    client_session.get.return_value.__aenter__.return_value.read = mock.AsyncMock(
-        side_effect=Exception
-    )
+    client_session.get.return_value.__aenter__.return_value.read = mock.AsyncMock(side_effect=Exception)
     # AND a configuration repository with a pretalx schedule url
     config = configuration_factory({"pretalx_schedule_url": "https://schedule.pretalx"})
     # AND an api client with a known schedule cache path

@@ -8,14 +8,14 @@ import os
 import sys
 from pathlib import Path
 
-import configuration
-from cogs.ping import Ping
-from cogs.registration_pydata import RegistrationPyData
 from discord.ext import commands
 from dotenv import load_dotenv
-from helpers.tito_connector import TitoOrder
 
 import discord_bot
+from discord_bot import configuration
+from discord_bot.cogs.ping import Ping
+from discord_bot.cogs.registration_pydata import RegistrationPyData
+from discord_bot.helpers.tito_connector import TitoOrder
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".secrets")
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")

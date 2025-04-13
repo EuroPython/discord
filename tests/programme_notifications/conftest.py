@@ -8,27 +8,27 @@ import cattrs
 import pytest
 import yarl
 from _pytest import pathlib
+
+from discord_bot.extensions.programme_notifications import configuration
+from discord_bot.extensions.programme_notifications.domain import europython
 from tests.programme_notifications import factories
 
-from extensions.programme_notifications import configuration
-from extensions.programme_notifications.domain import europython
-
-_DATA_DIR = pathlib.Path(__file__).parent / "_data"
+_DATA_DIR = pathlib.Path(__file__).parent.joinpath("_data")
 
 
-@pytest.fixture
+@pytest.fixture()
 def bytes_from_data_file(request: pytest.FixtureRequest) -> bytes:
     """Return bytes from a test _data file for a parameterized test."""
-    return _get_data_file(getattr(request, "param"))
+    return _get_data_file(request.param)
 
 
-@pytest.fixture
+@pytest.fixture()
 def get_bytes_from_data_file() -> Callable[[str], bytes]:
     """Allow tests to retrieve bytes from test _data files."""
     return _get_data_file
 
 
-@pytest.fixture
+@pytest.fixture()
 def get_data_file_path() -> Callable[[str], pathlib.Path]:
     """Get the path to a datafile."""
     return _get_data_file_path
@@ -41,23 +41,23 @@ def _get_data_file(filename: str) -> bytes:
 
 def _get_data_file_path(filename: str) -> pathlib.Path:
     """Get the path to a datafile."""
-    return _DATA_DIR / filename
+    return _DATA_DIR.joinpath(filename)
 
 
-@pytest.fixture
+@pytest.fixture()
 def pretalx_response_stub() -> bytes:
     """Get a pretalx response stub with an actual cached response."""
     return _get_data_file("pretalx_schedule_response_20230701.testdata.json")
 
 
-@pytest.fixture
+@pytest.fixture()
 def europython_response_stub(request: pytest.FixtureRequest) -> bytes:
     """Get a pretalx response stub with an actual cached response."""
     identifier = getattr(request, "param", "session_response_20230702")
     return _get_data_file(f"europython_{identifier}.testdata.json")
 
 
-@pytest.fixture
+@pytest.fixture()
 def client_session() -> mock.Mock:
     """Return a client session mock factory.
 
@@ -67,7 +67,7 @@ def client_session() -> mock.Mock:
     return session_cls()
 
 
-@pytest.fixture
+@pytest.fixture()
 def configuration_factory() -> factories.ConfigurationFactory:
     """Return a configuration factory with default values.
 
@@ -88,9 +88,7 @@ def _configuration_factory(config: dict[str, Any]) -> configuration.NotifierConf
         "conference_days_last": "2024-04-24",
         "conference_website_session_base_url": "https://2024.pycon.de/program/{slug}",
         "conference_website_api_session_url": "https://2024.pycon.de/program/{code}",
-        "pretalx_schedule_url": (
-            "https://pretalx.com/api/events/pyconde-pydata-2024/schedules/latest/"
-        ),
+        "pretalx_schedule_url": ("https://pretalx.com/api/events/pyconde-pydata-2024/schedules/latest/"),
         "slido_url": "https://app.sli.do/event/test",
         "notification_channels": [
             {"webhook_id": "PROGRAMME_NOTIFICATIONS", "include_channel_in_embeds": True},
@@ -172,13 +170,13 @@ def _configuration_factory(config: dict[str, Any]) -> configuration.NotifierConf
     return converter.structure(kwargs, configuration.NotifierConfiguration)
 
 
-@pytest.fixture
+@pytest.fixture()
 def session_factory() -> factories.SessionFactory:
     """Return a session factory."""
     return _session_factory
 
 
-@pytest.fixture
+@pytest.fixture()
 def sessions(request: pytest.FixtureRequest) -> list[europython.Session]:
     """Return a session factory that takes a list of dicts."""
     session_dicts = getattr(request, "param", [])

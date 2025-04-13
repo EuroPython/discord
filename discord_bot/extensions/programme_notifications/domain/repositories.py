@@ -1,11 +1,12 @@
 """A repository for EuroPython sessions."""
+
 import logging
 from collections.abc import Sized
 from typing import Protocol
 
 import attrs
 
-from . import europython
+from discord_bot.extensions.programme_notifications.domain import europython
 
 _log = logging.getLogger(f"bot.{__name__}")
 

@@ -3,12 +3,12 @@ from unittest import mock
 
 import arrow
 import yarl
+
+from discord_bot.extensions.programme_notifications import services
+from discord_bot.extensions.programme_notifications.domain import discord, europython, repositories
+from discord_bot.extensions.programme_notifications.services import api, clock, task_scheduler
 from tests.programme_notifications import factories
 from tests.programme_notifications.services import helpers
-
-from extensions.programme_notifications import services
-from extensions.programme_notifications.domain import discord, europython, repositories
-from extensions.programme_notifications.services import api, clock, task_scheduler
 
 
 async def test_does_not_schedule_tasks_for_schedule_without_session(
@@ -54,21 +54,17 @@ async def test_scheduling_notifications_delivers_to_webhooks(
     # GIVEN a single session session
     sessions = {
         "ABCDEF": session_factory(
-            **{
-                "code": "ABCDEF",
-                "title": "Feeding Your Pet Python",
-                "abstract": "Pythons need to eat, too!",
-                "track": {"en": "Pet Pythons"},
-                "duration": 37,
-                "slot": {
-                    "room_id": 1234,
-                    "room": {"en": "The Main Terrarium"},
-                    "start": "2024-04-22T09:55:00+02:00",
-                },
-                "speakers": [
-                    {"code": "BBCDEE", "name": "Monty the Python", "avatar": "https://snek.com"}
-                ],
-            }
+            code="ABCDEF",
+            title="Feeding Your Pet Python",
+            abstract="Pythons need to eat, too!",
+            track={"en": "Pet Pythons"},
+            duration=37,
+            slot={
+                "room_id": 1234,
+                "room": {"en": "The Main Terrarium"},
+                "start": "2024-04-22T09:55:00+02:00",
+            },
+            speakers=[{"code": "BBCDEE", "name": "Monty the Python", "avatar": "https://snek.com"}],
         )
     }
     # AND a schedule with only that session
@@ -122,9 +118,7 @@ async def test_scheduling_notifications_delivers_to_webhooks(
         config=config,
     )
     # AND a clock with a fixed `now` and fake sleeper
-    clock_obj = clock.Clock(
-        sleeper=mock.AsyncMock(), now=lambda: arrow.get("2024-04-22T09:00:00+02:00")
-    )
+    clock_obj = clock.Clock(sleeper=mock.AsyncMock(), now=lambda: arrow.get("2024-04-22T09:00:00+02:00"))
     # AND a scheduler that uses that clock
     scheduler = helpers.AwaitableScheduler(clock=clock_obj)
     # AND a notifier that uses that client
@@ -175,9 +169,7 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                         ),
                         discord.Field(name="Discord Channel", value="<#1234567890>", inline=True),
                     ],
-                    footer=discord.Footer(
-                        text="This session starts at 09:55:00 (local conference time)"
-                    ),
+                    footer=discord.Footer(text="This session starts at 09:55:00 (local conference time)"),
                     url="https://europythoon/hungry-snakes",
                     color=16764229,
                 )
@@ -220,9 +212,7 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                         ),
                         discord.Field(name="Python Level", value="Intermediate", inline=True),
                     ],
-                    footer=discord.Footer(
-                        text="This session starts at 09:55:00 (local conference time)"
-                    ),
+                    footer=discord.Footer(text="This session starts at 09:55:00 (local conference time)"),
                     url="https://europythoon/hungry-snakes",
                     color=16764229,
                 )
@@ -265,9 +255,7 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                         ),
                         discord.Field(name="Python Level", value="Intermediate", inline=True),
                     ],
-                    footer=discord.Footer(
-                        text="This session starts at 09:55:00 (local conference time)"
-                    ),
+                    footer=discord.Footer(text="This session starts at 09:55:00 (local conference time)"),
                     url="https://europythoon/hungry-snakes",
                     color=16764229,
                 )
@@ -393,38 +381,30 @@ async def test_excludes_non_conference_days_sessions(
     # GIVEN two sessions that fall outside the conference days
     sessions = {
         "ABCDEF": session_factory(
-            **{
-                "code": "ABCDEF",
-                "title": "Feeding Your Pet Python",
-                "abstract": "Pythons need to eat, too!",
-                "track": {"en": "Pet Pythons"},
-                "duration": 37,
-                "slot": {
-                    "room_id": 1234,
-                    "room": {"en": "The Main Terrarium"},
-                    "start": "2024-04-18T23:59:59+02:00",
-                },
-                "speakers": [
-                    {"code": "BBCDEE", "name": "Monty the Python", "avatar": "https://snek.com"}
-                ],
-            }
+            code="ABCDEF",
+            title="Feeding Your Pet Python",
+            abstract="Pythons need to eat, too!",
+            track={"en": "Pet Pythons"},
+            duration=37,
+            slot={
+                "room_id": 1234,
+                "room": {"en": "The Main Terrarium"},
+                "start": "2024-04-18T23:59:59+02:00",
+            },
+            speakers=[{"code": "BBCDEE", "name": "Monty the Python", "avatar": "https://snek.com"}],
         ),
         "GHIJKL": session_factory(
-            **{
-                "code": "GHIJKL",
-                "title": "The Airspeed of an Unladen Swallow",
-                "abstract": "It's 50 – 65 km/h",
-                "track": {"en": "Birds"},
-                "duration": 11,
-                "slot": {
-                    "room_id": 1234,
-                    "room": {"en": "The Main Terrarium"},
-                    "start": "2024-04-25T00:00:00+02:00",
-                },
-                "speakers": [
-                    {"code": "BBCDEE", "name": "Monty the Python", "avatar": "https://snek.com"}
-                ],
-            }
+            code="GHIJKL",
+            title="The Airspeed of an Unladen Swallow",
+            abstract="It's 50 – 65 km/h",
+            track={"en": "Birds"},
+            duration=11,
+            slot={
+                "room_id": 1234,
+                "room": {"en": "The Main Terrarium"},
+                "start": "2024-04-25T00:00:00+02:00",
+            },
+            speakers=[{"code": "BBCDEE", "name": "Monty the Python", "avatar": "https://snek.com"}],
         ),
     }
     # AND a schedule with only those sessions

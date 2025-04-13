@@ -4,13 +4,13 @@ from __future__ import annotations
 
 import logging
 
-from configuration import Config
 from discord.ext import commands
-from error import AlreadyRegisteredError, NotFoundError
-from helpers.channel_logging import log_to_channel
-from helpers.tito_connector import TitoOrder
 
 import discord_bot
+from discord_bot.configuration import Config
+from discord_bot.error import AlreadyRegisteredError, NotFoundError
+from discord_bot.helpers.channel_logging import log_to_channel
+from discord_bot.helpers.tito_connector import TitoOrder
 
 config = Config()
 order_ins = TitoOrder()

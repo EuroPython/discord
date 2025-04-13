@@ -1,8 +1,9 @@
 """Translate EuroPython sessions to Discord embeds."""
+
 import textwrap
 from typing import Final
 
-from extensions.programme_notifications.domain import discord, europython
+from discord_bot.extensions.programme_notifications.domain import discord, europython
 
 _AUTHOR_WIDTH: Final = 128
 _ABSTRACT_WIDTH: Final = 200
@@ -31,9 +32,7 @@ def create_session_embed(
       linked in the embed
     :return: A Discord embed for this session
     """
-    livestream_value = (
-        f"[Vimeo]({session.livestream_url})" if session.livestream_url else _FIELD_VALUE_EMTPY
-    )
+    livestream_value = f"[Vimeo]({session.livestream_url})" if session.livestream_url else _FIELD_VALUE_EMTPY
     slido_value = f"[Slido]({slido_url})" if slido_url else _FIELD_VALUE_EMTPY
     survey_value = f"[sci-an]({session.survey_url})" if session.survey_url else _FIELD_VALUE_EMTPY
     fields = [
@@ -103,11 +102,7 @@ def _create_description(session: europython.Session) -> str:
     :return: The embed description
     """
     url = session.url
-    abstract = (
-        _ABSTRACT_EMPTY
-        if not session.abstract
-        else textwrap.shorten(session.abstract, width=_ABSTRACT_WIDTH)
-    )
+    abstract = _ABSTRACT_EMPTY if not session.abstract else textwrap.shorten(session.abstract, width=_ABSTRACT_WIDTH)
     return f"{abstract}\n\n[Read more about this session]({url})" if url else abstract
 
 

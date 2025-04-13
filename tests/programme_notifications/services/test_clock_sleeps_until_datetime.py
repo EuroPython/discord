@@ -4,7 +4,7 @@ from unittest import mock
 import arrow
 import pytest
 
-from extensions.programme_notifications.services import clock
+from discord_bot.extensions.programme_notifications.services import clock
 
 
 @pytest.mark.parametrize(
@@ -16,9 +16,7 @@ from extensions.programme_notifications.services import clock
         (arrow.Arrow(1999, 1, 2, 3, 18, 0), 0.0),
     ],
 )
-async def test_clock_sleeps_until_specified_datetime(
-    until: arrow.Arrow, expected_seconds: float
-) -> None:
+async def test_clock_sleeps_until_specified_datetime(until: arrow.Arrow, expected_seconds: float) -> None:
     """The clock calculates the seconds and sleeps."""
     # GIVEN a value for `now`
     now = arrow.Arrow(2023, 7, 19, 10, 15, 0)

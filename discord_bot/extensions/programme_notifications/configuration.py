@@ -9,7 +9,7 @@ import toml
 import yarl
 from attrs import validators
 
-import configuration
+from discord_bot import configuration
 
 _WEBHOOK_ENVVAR_PREFIX: Final = "DISCORD_WEBHOOK_"
 

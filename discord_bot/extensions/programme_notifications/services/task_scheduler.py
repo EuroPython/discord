@@ -7,7 +7,7 @@ from typing import Protocol
 import arrow
 import attrs
 
-from . import clock
+from discord_bot.extensions.programme_notifications.services import clock
 
 _logger = logging.getLogger(f"bot.{__name__}")
 

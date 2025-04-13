@@ -8,8 +8,8 @@ import aiohttp
 from discord.ext import tasks
 from dotenv import load_dotenv
 
-from configuration import Config, Singleton
-from error import AlreadyRegisteredError, NotFoundError
+from discord_bot.configuration import Config, Singleton
+from discord_bot.error import AlreadyRegisteredError, NotFoundError
 
 _logger = logging.getLogger(f"bot.{__name__}")
 
@@ -34,7 +34,7 @@ class TitoOrder(metaclass=Singleton):
 
     def load_registered(self):
         try:
-            f = open(self.registered_file, "r")
+            f = open(self.registered_file)
             registered = [reg.strip() for reg in f.readlines()]
             self.REGISTERED_SET = set(registered)
             f.close()

@@ -4,9 +4,9 @@ import os
 import attrs
 import yarl
 
-from .. import configuration, exceptions
-from ..domain import europython, repositories
-from . import api
+from discord_bot.extensions.programme_notifications import configuration, exceptions
+from discord_bot.extensions.programme_notifications.domain import europython, repositories
+from discord_bot.extensions.programme_notifications.services import api
 
 _logger = logging.getLogger(f"bot.{__name__}")
 
@@ -71,7 +71,7 @@ class SessionInformation:
                 return yarl.URL(livestream_url)
             return None
         except (KeyError, AttributeError):
-            return
+            return None
 
     def _get_discord_channel_id(self, session: europython.Session) -> str | None:
         """Get the discord channel id for this session
@@ -82,7 +82,7 @@ class SessionInformation:
         try:
             return self._config.rooms[str(session.slot.room_id)].discord_channel_id
         except (KeyError, AttributeError):
-            return
+            return None
 
     def _get_survey_url(self, session: europython.Session) -> str | None:
         """Get the survey url for this session.
@@ -93,7 +93,7 @@ class SessionInformation:
         try:
             return self._config.rooms[str(session.slot.room_id)].survey_url
         except (KeyError, AttributeError):
-            return
+            return None
 
     def refresh_from_sessions(self, sessions: list[europython.Session]) -> None:
         """Refresh from a list of sessions

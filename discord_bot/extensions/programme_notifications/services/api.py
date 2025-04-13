@@ -5,6 +5,7 @@ Pretalx API and the EuroPython API. This API-client provides an
 abstraction layer in which the caller does not have to care about the
 actual endpoint that gets polled.
 """
+
 import functools
 import hashlib
 import json
@@ -20,12 +21,10 @@ import cattrs
 import yarl
 from attrs import validators
 
-from extensions.programme_notifications import configuration, exceptions
-from extensions.programme_notifications.domain import discord, europython
+from discord_bot.extensions.programme_notifications import configuration, exceptions
+from discord_bot.extensions.programme_notifications.domain import discord, europython
 
-_DEFAULT_SCHEDULE_CACHE_PATH: pathlib.Path = (
-    pathlib.Path(__file__).resolve().parent / "_cached" / "schedule.json"
-)
+_DEFAULT_SCHEDULE_CACHE_PATH: pathlib.Path = pathlib.Path(__file__).resolve().parent / "_cached" / "schedule.json"
 _logger = logging.getLogger(f"bot.{__name__}")
 _T = TypeVar("_T")
 
@@ -169,9 +168,7 @@ class ApiClient:
             # Raise a new exception that does not contain the request
             # URL, as it contains a secret token that should never be
             # logged (without trusting the caller).
-            raise exceptions.WebhookDeliveryError(
-                webhook=webhook, status=exc.status, message=exc.message
-            ) from None
+            raise exceptions.WebhookDeliveryError(webhook=webhook, status=exc.status, message=exc.message) from None
         _logger.info("Delivered webhook message to webhook %r", webhook)
 
 

@@ -1,12 +1,13 @@
 """Manipulate iterables of EuroPython sessions."""
+
 import collections
 from collections.abc import Iterator
 from typing import Iterable, TypeAlias
 
 import arrow
 
-from ... import configuration
-from .. import europython
+from discord_bot.extensions.programme_notifications import configuration
+from discord_bot.extensions.programme_notifications.domain import europython
 
 GroupedSessions: TypeAlias = collections.defaultdict[arrow.Arrow, list[europython.Session]]
 

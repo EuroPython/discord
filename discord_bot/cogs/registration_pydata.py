@@ -1,18 +1,18 @@
 """Registration for PyData."""
 
-from cogs.registration import (
+from discord.ext import commands
+
+from discord_bot.cogs.registration import (
     Registration,
     RegistrationButton,
     RegistrationForm,
     RegistrationView,
 )
 
-from discord.ext import commands
-
-# from configuration import Config
-# from error import AlreadyRegisteredError, NotFoundError
-# from helpers.channel_logging import log_to_channel
-# from helpers.tito_connector import TitoOrder
+# from discord_bot.configuration import Config
+# from discord_bot.error import AlreadyRegisteredError, NotFoundError
+# from discord_bot.channel_logging import log_to_channel
+# from discord_bot.tito_connector import TitoOrder
 
 
 # config = Config()
