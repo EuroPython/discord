@@ -565,7 +565,7 @@ config = GuildConfig(
                     ],
                 ),
                 TextChannel(
-                    name="registration",
+                    name="registration-form",
                     topic="Please follow the registration instructions.",
                     permission_overwrites=[
                         PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["send_messages"]),
