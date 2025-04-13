@@ -91,6 +91,12 @@ Permission = Literal[
 ]
 
 
+class PermissionOverwrite(BaseModel):
+    role: str
+    allow: list[Permission] = Field(default_factory=list)
+    deny: list[Permission] = Field(default_factory=list)
+
+
 class Role(BaseModel):
     name: str
     color: str = Field(default=GREY, pattern="#[0-9A-F]{6}")
@@ -106,6 +112,7 @@ class ForumChannel(BaseModel):
     topic: MultilineString
     tags: list[str] = Field(default_factory=list)
     require_tags: bool = False
+    permission_overwrites: list[PermissionOverwrite] = Field(default_factory=list)
 
 
 class TextChannel(BaseModel):
@@ -113,11 +120,13 @@ class TextChannel(BaseModel):
 
     name: str
     topic: MultilineString
+    permission_overwrites: list[PermissionOverwrite] = Field(default_factory=list)
 
 
 class Category(BaseModel):
     name: str
     channels: list[TextChannel | ForumChannel] = Field(discriminator="type")
+    permission_overwrites: list[PermissionOverwrite] = Field(default_factory=list)
 
 
 class GuildConfig(BaseModel):
@@ -235,6 +244,12 @@ config = GuildConfig(
                     topic="https://www.europython-society.org/coc/",
                 ),
             ],
+            permission_overwrites=[
+                PermissionOverwrite(
+                    role="@everyone",
+                    deny=["send_messages"],
+                )
+            ]
         ),
         Category(
             name="EuroPython 2025",
