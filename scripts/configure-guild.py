@@ -72,6 +72,7 @@ BLUE = "#0096C7"
 LIGHT_BLUE = "#8FD3E0"
 DARK_ORANGE = "#E6412C"
 ORANGE = "#E85D04"
+DARK_YELLOW = "#BC8C15"
 YELLOW = "#FFD700"
 PURPLE = "#D34EA5"
 GREY = "#99AAB5"
@@ -239,7 +240,7 @@ SERVER_CONFIG = GuildConfig(
         ),
         Role(
             name=ROLE_ORGANIZERS,
-            color=ORANGE,
+            color=DARK_YELLOW,
             permissions=["mention_everyone", "use_external_apps"],
         ),
         Role(
