@@ -22,7 +22,7 @@ jobs:
           sudo apt install -y ansible
       
       - name: Set up SSH agent
-        uses: webfactory/ssh-agent@v0.9.0
+        uses: webfactory/ssh-agent@v0.9.1
         with:
           ssh-private-key: ${{ secrets.DISCORD_BOT_DEPLOY_KEY }}
 
