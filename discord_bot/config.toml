@@ -1,5 +1,6 @@
 [conference]
 CONFERENCE_NAME = "PyCon DE & PyData 2025"
+CONFERENCE_SETUP = true
 
 [server]
 GUILD=955933777706762280
@@ -23,12 +24,11 @@ REG_LOG_CHANNEL_ID=1216373483114598491
 JOB_BOARD_CHANNEL_ID=1228683389888892980
 JOB_BOARD_TESTING = false
 
-# [pretix]
-# PRETIX_BASE_URL = "https://pretix.eu/api/v1/organizers/europython/events/ep2023"
-# TICKET_TO_ROLES_JSON = "ticket_to_roles_prod.json"
-
 [tito]
 TITO_BASE_URL="https://val.pycon.de"
+
+[pytanis]
+PRETALX_EVENT_NAME = "pyconde-pydata-2025"
 
 [logging]
 LOG_LEVEL = "INFO"

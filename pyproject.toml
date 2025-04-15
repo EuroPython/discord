@@ -21,6 +21,7 @@ python-dotenv = "^1.1.0"
 toml = "^0.10.2"
 yarl = "^1.19.0"
 aiofiles = "^24.1.0"
+pytanis = "^0.8"
 
 [tool.poetry.dev-dependencies]
 ruff = "^0.5.3"

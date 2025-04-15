@@ -46,6 +46,7 @@ class Config(metaclass=Singleton):
             self.LOG_LEVEL = config.get("logging", {}).get("LOG_LEVEL", "INFO")
 
             self.CONFERENCE_NAME = config["conference"]["CONFERENCE_NAME"]
+            self.CONFERENCE_SETUP = config["conference"].get("CONFERENCE_SETUP", False)
 
             self.GUILD = int(config["server"]["GUILD"])
 
@@ -55,12 +56,11 @@ class Config(metaclass=Singleton):
                 self.REG_HELP_CHANNEL_ID = int(config["registration"]["REG_HELP_CHANNEL_ID"])
                 self.REG_LOG_CHANNEL_ID = int(config["registration"]["REG_LOG_CHANNEL_ID"])
 
-                # Pretix
-                # self.PRETIX_BASE_URL = ""  # config["pretix"]["PRETIX_BASE_URL"]  # noqa: ERA001
-                # self.TICKET_TO_ROLES_JSON = ""  # config["pretix"]["TICKET_TO_ROLES_JSON"]  # noqa: ERA001
-
                 # Tito
                 self.TITO_BASE_URL = config["tito"]["TITO_BASE_URL"]
+
+                # Pytanis
+                self.PRETALX_EVENT_NAME = config["pytanis"]["PRETALX_EVENT_NAME"]
 
                 # Job Board
                 self.JOB_BOARD_CHANNEL_ID = config["job_board"]["JOB_BOARD_CHANNEL_ID"]

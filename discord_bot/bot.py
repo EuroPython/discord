@@ -14,6 +14,7 @@ from dotenv import load_dotenv
 
 from discord_bot import configuration
 from discord_bot.cogs.ping import Ping
+from discord_bot.conference_setup import ConferenceSetup
 from discord_bot.helpers.tito_connector import TitoOrder
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".secrets")
@@ -66,6 +67,16 @@ def _setup_logging() -> None:
     root_logger.setLevel(config.LOG_LEVEL)
 
 
+def _conference_setup() -> None:
+    """Set up the conference rooms and channels."""
+    config = configuration.Config(testing=False)
+    cs = ConferenceSetup(event_name=config.PRETALX_EVENT_NAME)
+    if config.CONFERENCE_SETUP:
+        _logger.info("Starting conference setup..")
+        cs.setup()
+        _logger.info("Conference setup completed.")
+
+
 def _get_intents() -> discord.Intents:
     """Get the desired intents for the bot."""
     intents = discord.Intents.all()
@@ -80,6 +91,7 @@ def _get_intents() -> discord.Intents:
 async def main() -> None:
     """Main function to run the bot."""
     _setup_logging()
+    _conference_setup()
     async with bot:
         await bot.add_cog(Ping(bot))
         # await bot.add_cog(RegistrationPyData(bot))
