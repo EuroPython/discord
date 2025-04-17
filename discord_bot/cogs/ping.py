@@ -1,4 +1,7 @@
-"""Ping command for the bot."""
+"""Ping command for the bot.
+
+Message the bot with '@PyConDE/PyData Bot ping' and get a response ('Pong!').
+"""
 
 import logging
 

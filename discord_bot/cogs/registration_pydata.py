@@ -60,6 +60,6 @@ class RegistrationPyData(Registration, commands.Cog):
             '3️⃣ Click "Submit". We\'ll verify your ticket and give you your role(s) based on '
             "your ticket type.\n\n"
             "Experiencing trouble? Ask for help in the registration-help channel or from a "
-            "volunteer (purple shirts) at the conference.\n\n"
+            f"volunteer ({config.VOLUNTEER_SHIRT_COLOR} shirts) at the conference.\n\n"
             "See you on the server! 🐍💻🎉"
         )

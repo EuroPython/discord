@@ -1,45 +1,43 @@
-"""Commands for organisers."""
+"""Commands for admins."""
 
 import logging
 
 import attrs
+import discord
 from discord.ext import commands
 
-import discord_bot
-from discord_bot.extensions.organisers import roles
+from discord_bot.extensions.admin import roles
 
 _logger = logging.getLogger(f"bot.{__name__}")
 
 
 @attrs.define
-class Organisers(commands.Cog):
-    """A cog with commands for organisers."""
+class Admin(commands.Cog):
+    """A cog with commands for admins."""
 
     _bot: commands.Bot
     _roles: roles.Roles
 
-    @commands.command(name="participants")
+    @commands.command(name="count")
     async def participants(self, ctx: commands.Context) -> None:
         """Get statistics about registered participants."""
-        embed = discord_bot.Embed(
+        embed = discord.Embed(
             title="Participant Statistics 2024",
             colour=16747421,
         )
         counts = self._get_counts(ctx.guild)
-        embed.add_field(name="Members (total)", value=counts.everyone, inline=False)
-        # embed.add_field(name="Unregistered", value=counts.not_registered, inline=False)
-        embed.add_field(name="Attendee", value=counts.attendee, inline=False)
-        embed.add_field(name="Sponsors", value=counts.sponsors, inline=False)
-        embed.add_field(name="Speakers", value=counts.speakers, inline=False)
-        embed.add_field(name="Organisers", value=counts.organisers, inline=False)
-        embed.add_field(name="Volunteers", value=counts.volunteers, inline=False)
-        embed.add_field(name="Remote Volunteers", value=counts.volunteers_remote, inline=False)
+        embed.add_field(name="Server member (total)", value=counts.everyone, inline=False)
+        embed.add_field(name="Attendees", value=counts.attendee, inline=False)
+        embed.add_field(name="Organisers", value=counts.organiser, inline=False)
+        embed.add_field(name="Volunteers", value=counts.volunteer, inline=False)
+        embed.add_field(name="Sponsors", value=counts.sponsor, inline=False)
+        embed.add_field(name="Speakers", value=counts.speaker, inline=False)
         embed.add_field(name="Onsite", value=counts.onsite, inline=False)
         embed.add_field(name="Remote", value=counts.remote, inline=False)
 
         await ctx.send(embed=embed)
 
-    def _get_counts(self, guild: discord_bot.Guild) -> "_RoleCount":
+    def _get_counts(self, guild: discord.Guild) -> "_RoleCount":
         """Get counts of member types.
 
         :param guild: The guild instance providing the information
@@ -52,8 +50,13 @@ class Organisers(commands.Cog):
         )
 
     async def cog_check(self, ctx: commands.Context) -> bool:
-        """Check if the message author has the organisers role."""
-        return any(role.id == self._roles.organisers for role in ctx.author.roles)
+        """Check if the message author has the admin role."""
+        try:
+            return any(role.name == "Admin" for role in ctx.author.roles)
+        except Exception as error:
+            msg = "An error occurred while checking the command context: %r", error
+            _logger.exception(msg)
+            return False
 
     async def cog_command_error(self, ctx: commands.Context, error: Exception) -> None:
         """Handle a command error raised in this class."""
@@ -77,12 +80,10 @@ class _RoleCount:
     """Counts of members."""
 
     everyone: int
-    # not_registered: int
-    organisers: int
-    volunteers: int
-    volunteers_remote: int
-    speakers: int
-    sponsors: int
+    organiser: int
+    volunteer: int
     attendee: int
+    speaker: int
+    sponsor: int
     onsite: int
     remote: int

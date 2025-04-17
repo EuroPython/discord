@@ -46,9 +46,14 @@ class Config(metaclass=Singleton):
             self.LOG_LEVEL = config.get("logging", {}).get("LOG_LEVEL", "INFO")
 
             self.CONFERENCE_NAME = config["conference"]["CONFERENCE_NAME"]
-            self.CONFERENCE_SETUP = config["conference"].get("CONFERENCE_SETUP", False)
+            self.VOLUNTEER_SHIRT_COLOR = config["conference"].get("VOLUNTEER_SHIRT_COLOR", "look for the volunteer")
 
             self.GUILD = int(config["server"]["GUILD"])
+
+            # from the config.toml get all keys and values from the [roles] and [cole_colors] section
+            self.ROLES = config["roles"]
+            self.ROLE_COLORS = config["role_colors"]
+            # self.ROLE_IDS = {role: int(role_id) for role, role_id in self.ROLES.items()}
 
             if not testing:
                 # Registration

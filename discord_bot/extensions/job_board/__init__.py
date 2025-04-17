@@ -16,7 +16,7 @@ _logger = logging.getLogger(f"bot.{__name__}")
 
 
 async def setup(bot: commands.Bot) -> None:
-    """Set up the organisers extension."""
+    """Set up the job_board extension."""
     config = configuration.Config()
     await bot.add_cog(JobBoard(bot=bot, config=config))
 

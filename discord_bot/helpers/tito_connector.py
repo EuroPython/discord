@@ -93,6 +93,7 @@ class TitoOrder(metaclass=Singleton):
         roles: list[int] = []
         data = await self.get_ticket_type(full_name=name, order=order)
 
+        # TODO(dan): get role IDs from config
         if data:
             if data.get("is_attendee"):
                 roles.append(1164258218655096884)  # Attendee
@@ -106,8 +107,6 @@ class TitoOrder(metaclass=Singleton):
                 roles.append(1164258157833490512)  # Volunteer
             if data.get("is_remote"):
                 roles.append(1164258270605754428)  # Remote
-            if data.get("is_volunteer") and data.get("is_remote"):
-                roles.append(1227325517900943513)  # OnlineVolunteer
             if data.get("is_onsite"):
                 roles.append(1229516503951347825)  # OnSite
 
