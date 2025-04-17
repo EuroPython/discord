@@ -9,7 +9,7 @@ We hosted the bot on Hetzner. And deployed with a single click Action from GitHu
 ## Overview
 
 The `main` method in `discord_bot/bot.py` is the entry point for the bot.
-I't a good starting point to start browsing the codebase.
+It's a good starting point to start browsing the codebase.
 It requires a `.secrets` file in the root of the repository with `DISCORD_BOT_TOKEN` and `PRETIX_TOKEN` environment variables.
 
 ### Registration
@@ -24,11 +24,25 @@ There are safeguard methods in place to prevent users from registering multiple 
 
 Is a service to push the programme notification to Discord. Pretalx API is used to fetch the programme information, and `config.toml` holds information about livestream URLs.
 
-### Organizers extension
+### Admin extension
 
 A set of commands that are available only for organizers that are allowing to get statistics about the Discord server.
 
 ## Setup
+
+### Discord Conference Setup
+
+For automating the conference setup, run the `conference_setup.py` script once to create:
+
+1. discord roles (Organiser, Volunteer, Attendee, Speaker, Sponsor, Onsite, and Remote)
+2. discord category channels
+3. discord channels
+
+```shell
+poetry run python discord_bot/conference_setup.py
+```
+
+### Discord Bot
 
 Create `config.local.toml` file in discord directory, it would be used instead of `config.toml` if exists.
 
