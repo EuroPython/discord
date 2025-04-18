@@ -74,9 +74,12 @@ uv sync --dev  # include dev dependencies
 uv sync
 uv sync --dev  # include dev dependencies
 
-# install/update package
+# add package
 uv add package
 uv add --dev package  # install as dev dependency
+
+# upgrade packages
+uv lock --upgrade
 
 # remove package
 uv remove package
