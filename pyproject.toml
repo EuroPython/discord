@@ -39,6 +39,7 @@ run-bot = "EuroPythonBot.bot:main"
 [tool.isort]
 profile = "black"
 line_length = 100
+src_paths = ["src"]
 
 [tool.black]
 line-length = 100
