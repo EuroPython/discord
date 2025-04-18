@@ -9,3 +9,4 @@ __pycache__
 registered_log.txt
 schedule.json
 pretix_cache.json
+*.egg-info/

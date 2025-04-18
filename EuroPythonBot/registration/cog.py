@@ -8,9 +8,9 @@ import discord
 from discord import Client, Forbidden, Interaction, Role
 from discord.ext import commands, tasks
 
-from configuration import Config
-from registration.pretix_connector import PretixConnector
-from registration.registration_logger import RegistrationLogger
+from EuroPythonBot.configuration import Config
+from EuroPythonBot.registration.pretix_connector import PretixConnector
+from EuroPythonBot.registration.registration_logger import RegistrationLogger
 
 config = Config()
 

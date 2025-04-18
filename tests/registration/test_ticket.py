@@ -1,6 +1,6 @@
 import pytest
 
-from registration.ticket import generate_ticket_key
+from EuroPythonBot.registration.ticket import generate_ticket_key
 
 
 @pytest.mark.parametrize(
