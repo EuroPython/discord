@@ -7,7 +7,7 @@ from pathlib import Path
 import aiofiles
 import aiohttp
 
-from program_notifications.models import Break, Schedule, Session
+from EuroPythonBot.program_notifications.models import Break, Schedule, Session
 
 _logger = logging.getLogger(f"bot.{__name__}")
 

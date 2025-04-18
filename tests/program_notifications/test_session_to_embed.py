@@ -2,9 +2,9 @@ from datetime import datetime, timezone
 
 import pytest
 
-from program_notifications import session_to_embed
-from program_notifications.models import Session, Speaker
-from program_notifications.session_to_embed import (
+from EuroPythonBot.program_notifications import session_to_embed
+from EuroPythonBot.program_notifications.models import Session, Speaker
+from EuroPythonBot.program_notifications.session_to_embed import (
     _AUTHOR_WIDTH,
     _FIELD_VALUE_EMPTY,
     _TITLE_WIDTH,

@@ -1,4 +1,5 @@
-FROM python:3.11.4-slim
+FROM python:3.11.12-slim
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/
 
 RUN groupadd --gid 1000 bot && \
     useradd --uid 1000 --gid bot bot --create-home && \
@@ -7,16 +8,9 @@ RUN groupadd --gid 1000 bot && \
 USER bot
 WORKDIR /home/bot
 
-RUN pip install --upgrade --user pip && rm -rf /home/bot/.cache
-RUN pip install --user pipenv && rm -rf /home/bot/.cache
-RUN rm -rf /home/bot/.cache
-
 ENV PATH="/home/bot/.local/bin:$PATH"
 
-COPY --chown=bot:bot Pipfile Pipfile.lock ./
-COPY --chown=bot:bot EuroPythonBot ./EuroPythonBot
+COPY --chown=bot:bot pyproject.toml uv.lock ./
+COPY --chown=bot:bot src ./src
 
-RUN pipenv sync && \
-    rm -rf /home/bot/.cache
-
-ENTRYPOINT ["pipenv", "run", "python", "EuroPythonBot/bot.py"]
+ENTRYPOINT ["uv", "run", "run-bot"]
