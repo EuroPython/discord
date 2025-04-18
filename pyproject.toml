@@ -39,11 +39,9 @@ run-bot = "EuroPythonBot.bot:main"
 [tool.isort]
 profile = "black"
 line_length = 100
-src_paths = ["EuroPythonBot"]
 
 [tool.black]
 line-length = 100
 
 [tool.pytest.ini_options]
-pythonpath = "EuroPythonBot"
 asyncio_mode = "auto"
