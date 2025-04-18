@@ -509,17 +509,7 @@ SERVER_CONFIG = GuildConfig(
             channels=[
                 TextChannel(
                     name="announcements-volunteers",
-                    topic="Announcements for conference volunteers",
-                    permission_overwrites=[
-                        PermissionOverwrite(
-                            roles=ROLES_VOLUNTEERS,
-                            allow=["view_channel"],
-                        ),
-                    ],
-                ),
-                TextChannel(
-                    name="conference-discussion",
-                    topic="For on-topic conversations related to organizing EuroPython. Please use #volunteers-lounge for off-topic conversations!",
+                    topic="Announcements and requests for conference volunteers. Please use <<#volunteers-lounge>> for all other volunteer-related conversations.",
                     permission_overwrites=[
                         PermissionOverwrite(
                             roles=ROLES_VOLUNTEERS,
