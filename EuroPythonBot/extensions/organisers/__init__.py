@@ -4,8 +4,8 @@ import tomllib
 
 from discord.ext import commands
 
-import configuration
-from extensions.organisers import organisers, roles
+from EuroPythonBot import configuration
+from EuroPythonBot.extensions.organisers import organisers, roles
 
 
 async def setup(bot: commands.Bot) -> None:
