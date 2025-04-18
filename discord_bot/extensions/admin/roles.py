@@ -11,6 +11,7 @@ class Roles:
     volunteer: int
     attendee: int
     speaker: int
+    session_chair: int
     sponsor: int
-    onsite: int
+    on_site: int
     remote: int

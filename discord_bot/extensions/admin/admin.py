@@ -27,12 +27,13 @@ class Admin(commands.Cog):
         )
         counts = self._get_counts(ctx.guild)
         embed.add_field(name="Server member (total)", value=counts.everyone, inline=False)
-        embed.add_field(name="Attendees", value=counts.attendee, inline=False)
-        embed.add_field(name="Organisers", value=counts.organiser, inline=False)
-        embed.add_field(name="Volunteers", value=counts.volunteer, inline=False)
-        embed.add_field(name="Sponsors", value=counts.sponsor, inline=False)
-        embed.add_field(name="Speakers", value=counts.speaker, inline=False)
-        embed.add_field(name="Onsite", value=counts.onsite, inline=False)
+        embed.add_field(name="Organiser", value=counts.organiser, inline=False)
+        embed.add_field(name="Volunteer", value=counts.volunteer, inline=False)
+        embed.add_field(name="Attendee", value=counts.attendee, inline=False)
+        embed.add_field(name="Speaker", value=counts.speaker, inline=False)
+        embed.add_field(name="Session-Chair", value=counts.session_chair, inline=False)
+        embed.add_field(name="Sponsor", value=counts.sponsor, inline=False)
+        embed.add_field(name="On-Site", value=counts.on_site, inline=False)
         embed.add_field(name="Remote", value=counts.remote, inline=False)
 
         await ctx.send(embed=embed)
@@ -84,6 +85,7 @@ class _RoleCount:
     volunteer: int
     attendee: int
     speaker: int
+    session_chair: int
     sponsor: int
-    onsite: int
+    on_site: int
     remote: int

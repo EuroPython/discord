@@ -34,7 +34,7 @@ A set of commands that are available only for organizers that are allowing to ge
 
 For automating the conference setup, run the `conference_setup.py` script once to create:
 
-1. discord roles (Organiser, Volunteer, Attendee, Speaker, Sponsor, Onsite, and Remote)
+1. discord roles (Organiser, Volunteer, Attendee, Speaker, Session-Chair, Sponsor, On-Site, and Remote)
 2. discord category channels
 3. discord channels
 

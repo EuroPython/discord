@@ -46,6 +46,7 @@ class Config(metaclass=Singleton):
             self.LOG_LEVEL = config.get("logging", {}).get("LOG_LEVEL", "INFO")
 
             self.CONFERENCE_NAME = config["conference"]["CONFERENCE_NAME"]
+            self.CONFERENCE_YEAR = config["conference"]["CONFERENCE_YEAR"]
             self.VOLUNTEER_SHIRT_COLOR = config["conference"].get("VOLUNTEER_SHIRT_COLOR", "look for the volunteer")
 
             self.GUILD = int(config["server"]["GUILD"])

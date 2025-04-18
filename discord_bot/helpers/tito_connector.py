@@ -108,7 +108,7 @@ class TitoOrder(metaclass=Singleton):
             if data.get("is_remote"):
                 roles.append(1164258270605754428)  # Remote
             if data.get("is_onsite"):
-                roles.append(1229516503951347825)  # OnSite
+                roles.append(1229516503951347825)  # On-Site
 
         return roles
 
