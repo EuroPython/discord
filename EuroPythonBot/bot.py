@@ -70,7 +70,7 @@ def _get_intents() -> discord.Intents:
     return intents
 
 
-async def main():
+async def run_bot(bot):
     _setup_logging()
     async with bot:
         await bot.add_cog(Ping(bot))
@@ -80,10 +80,14 @@ async def main():
         await bot.start(DISCORD_BOT_TOKEN)
 
 
-if __name__ == "__main__":
+def main():
     bot = Bot()
 
     try:
-        asyncio.run(main())
+        asyncio.run(run_bot(bot))
     except KeyboardInterrupt:
         _logger.info("Received KeyboardInterrupt, exiting...")
+
+
+if __name__ == "__main__":
+    main()
