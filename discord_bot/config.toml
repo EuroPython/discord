@@ -1,37 +1,49 @@
 [conference]
 CONFERENCE_NAME = "PyCon DE & PyData 2025"
-VOLUNTEER_SHIRT_COLOR = ""
+CONFERENCE_YEAR = 2025
+VOLUNTEER_SHIRT_COLOR = "cream"
 
 [server]
-GUILD=955933777706762280
+GUILD = 955933777706762280
+TESTING = true
 
-[roles]
-ORGANISER=""
-VOLUNTEER=""
-ATTENDEE=""
-SPEAKER=""
-SPONSOR=""
-ONSITE=""
-REMOTE=""
+[logging]
+LOG_LEVEL = "INFO"
 
-# used by discord_bot/conference_setup.py script
+# =====
+# used by discord_bot/conference_setup.py script. [role_colors] must match the values in [roles]
 [role_colors]
-ORGANISER="#00AA41"  # green
-VOLUNTEER="#96DC00"  # green-light
-ATTENDEE="#00C8E1"  # blue-light
-SPEAKER="#D14190"  # pink
-SPONSOR="#FAC800"  # yellow
-ONSITE="#00AA41"  # green
-REMOTE="#D5F199"  # green-lighter
+Organiser = "#ff9b00"  # orange
+Volunteer = "#fac800"  # yellow
+Attendee = "#3778be"  # blue
+Speaker = "#00c8e1"  # mid blue
+Session-Chair = "#a2d9ef"  # light blue
+Sponsor = "#e199c3"  # light pink
+On-Site = "#00aa41"  # green
+Remote = "#96dc00"  # light green
 
 [pytanis]
 PRETALX_EVENT_NAME = "pyconde-pydata-2025"
 
+# =====
+# fill by running discord_bot/conference_setup.py
+[roles]
+Organiser = ""
+Volunteer = ""
+Attendee = ""
+Speaker = ""
+Session-Chair = ""
+Sponsor = ""
+On-Site = ""
+Remote = ""
 
 [registration]
-REG_CHANNEL_ID=1216372858993901708
-REG_HELP_CHANNEL_ID=1216373397681078342
-REG_LOG_CHANNEL_ID=1216373483114598491
+REG_CHANNEL_ID = ""
+REG_HELP_CHANNEL_ID = ""
+REG_LOG_CHANNEL_ID = ""
+
+# =====
+
 
 [job_board]
 JOB_BOARD_CHANNEL_ID=1228683389888892980
@@ -40,9 +52,6 @@ JOB_BOARD_TESTING = false
 [tito]
 TITO_BASE_URL="https://val.pycon.de"
 
-
-[logging]
-LOG_LEVEL = "INFO"
 
 [programme_notifications]
 timezone = "Europe/Berlin"

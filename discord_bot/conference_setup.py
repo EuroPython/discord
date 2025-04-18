@@ -155,7 +155,7 @@ async def on_ready() -> None:
     _logger.info(msg)
 
     _logger.info("Starting conference setup...")
-    cs = ConferenceSetup(config=configuration.Config(testing=False))
+    cs = ConferenceSetup(config=configuration.Config())
     await cs.start()
     _logger.info("Conference setup completed.")
 

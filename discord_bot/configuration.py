@@ -29,7 +29,7 @@ class Config(metaclass=Singleton):
     _CONFIG_DEFAULT = "config.toml"
     _CONFIG_LOCAL = "config.local.toml"
 
-    def __init__(self, testing: bool = False) -> None:
+    def __init__(self) -> None:
         """Init config."""
         # Configuration file
         config = None
@@ -56,7 +56,7 @@ class Config(metaclass=Singleton):
             self.ROLE_COLORS = config["role_colors"]
             # self.ROLE_IDS = {role: int(role_id) for role, role_id in self.ROLES.items()}
 
-            if not testing:
+            if not config["server"]["TESTING"]:
                 # Registration
                 self.REG_CHANNEL_ID = int(config["registration"]["REG_CHANNEL_ID"])
                 self.REG_HELP_CHANNEL_ID = int(config["registration"]["REG_HELP_CHANNEL_ID"])

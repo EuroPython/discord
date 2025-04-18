@@ -52,7 +52,7 @@ class Bot(commands.Bot):
 
 def _setup_logging() -> None:
     """Set up a basic logging configuration."""
-    config = configuration.Config(testing=False)
+    config = configuration.Config()
 
     # Create a stream handler that logs to stdout (12-factor app)
     stream_handler = logging.StreamHandler(stream=sys.stdout)

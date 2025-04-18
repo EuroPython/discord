@@ -13,5 +13,5 @@ async def setup(bot: commands.Bot) -> None:
     with config.CONFIG_PATH.open(encoding="utf-8") as config_file:
         raw_roles = toml.load(config_file)["roles"]
 
-    roles_instance = roles.Roles(**{name.lower(): role_id for name, role_id in raw_roles.items()})
+    roles_instance = roles.Roles(**{name.replace("-", "_").lower(): role_id for name, role_id in raw_roles.items()})
     await bot.add_cog(admin.Admin(bot=bot, roles=roles_instance))

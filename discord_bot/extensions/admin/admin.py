@@ -1,4 +1,8 @@
-"""Commands for admins."""
+"""Commands for admins.
+
+Run these commands in a channel on the server and tag the bot:
+e.g. `@botname count`.
+"""
 
 import logging
 
@@ -53,7 +57,13 @@ class Admin(commands.Cog):
     async def cog_check(self, ctx: commands.Context) -> bool:
         """Check if the message author has the admin role."""
         try:
-            return any(role.name == "Admin" for role in ctx.author.roles)
+            author = ctx.author
+            if type(author) is not discord.Member:
+                msg = "The 'count' command can only be run in a guild channel."
+                _logger.warning(msg)
+                await ctx.send(msg)
+                return False
+            return any(role.name == "Admin" for role in author.roles)
         except Exception as error:
             msg = "An error occurred while checking the command context: %r", error
             _logger.exception(msg)
