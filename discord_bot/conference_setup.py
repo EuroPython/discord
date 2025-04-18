@@ -30,22 +30,29 @@ class ConferenceSetup:
     def __init__(self, config: configuration.Config) -> None:
         """Initialize the ConferenceSetup class."""
         self.pretalx_client = PretalxClient()
-
         self.guild = client.get_guild(config.GUILD)
-
         self.pretalx_event_name = config.PRETALX_EVENT_NAME
+        self.conference_name = config.CONFERENCE_NAME
         self.conference_year = config.CONFERENCE_YEAR
         self.roles = config.ROLES
         self.role_colors = config.ROLE_COLORS
 
+        self.category_names = {
+            "REGISTRATION": f"{self.conference_year}_REGISTRATION",
+            "CONFERENCE": f"{self.conference_year}_CONFERENCE",
+            "ROOMS": f"{self.conference_year}_ROOMS",
+            "SPONSORS": f"{self.conference_year}_SPONSORS",
+        }
+
         self.role_names_to_ids = {}
-        self.rooms = None
+        self.channels_to_ids = {}
 
     async def _setup_categories(self) -> None:
         """YYYY__REGISTRATION, YYYY_CONFERENCE, YYYY_ROOMS, and YYYY_SPONSORS categories."""
         _logger.info("Creating categories for the conference.")
         # Check if the categories already exist
-        existing_categories = {category.name for category in self.guild.categories}
+        existing_categories = self.guild.categories
+        existing_category_names = {category.name for category in existing_categories}
 
         # discord permissions after registration: one of the following roles
         conference_permission_overwrites = {
@@ -58,15 +65,21 @@ class ConferenceSetup:
         }
         categories_to_permissions = {
             # 1. REGISTRATION - Open to everyone
-            f"{self.conference_year}_REGISTRATION": discord.PermissionOverwrite(view_channel=True),
+            self.category_names["REGISTRATION"]: {
+                self.guild.default_role: discord.PermissionOverwrite(
+                    view_channel=True,
+                    send_messages=False,
+                    add_reactions=False,
+                )
+            },
             # 2., 3., 4. CONFERENCE, ROOMS, SPONSORS - Visible only to registered roles
-            f"{self.conference_year}_CONFERENCE": conference_permission_overwrites,
-            f"{self.conference_year}_ROOMS": conference_permission_overwrites,
-            f"{self.conference_year}_SPONSORS": conference_permission_overwrites,
+            self.category_names["CONFERENCE"]: conference_permission_overwrites,
+            self.category_names["ROOMS"]: conference_permission_overwrites,
+            self.category_names["SPONSORS"]: conference_permission_overwrites,
         }
 
-        for i, (category, permissions) in enumerate(categories_to_permissions):
-            if category in existing_categories:
+        for category, permissions in categories_to_permissions.items():
+            if category in existing_category_names:
                 msg = f"Category '{category}' already exists."
                 _logger.info(msg)
             else:
@@ -74,12 +87,76 @@ class ConferenceSetup:
                 _logger.info(msg)
                 await self.guild.create_category(
                     name=category,
-                    position=i + 1,  # create after GENERAL category
+                    # create all channels at position 1. This creates the channels in the order they are created after
+                    # the given position (1).
+                    position=1,
                     overwrites=permissions,
                 )
 
     async def _setup_conference_channels(self) -> None:
-        pass
+        # 1. Create registration channels: registration and registration-help
+        await self.guild.create_text_channel(
+            name="registration",
+            category=discord.utils.get(self.guild.categories, name=self.category_names["REGISTRATION"]),
+            position=1,
+            topic=(
+                "Register here with your ticket ID to access the conference's discord channels. "
+                "Registration worked when you can see the conference's discord channels, e.g. #lobby in the "
+                f"{self.category_names['CONFERENCE']} category."
+            ),
+        )
+        await self.guild.create_text_channel(
+            name="registration-help",
+            category=discord.utils.get(self.guild.categories, name=self.category_names["REGISTRATION"]),
+            position=1,
+            topic="Trouble with registering? Ask for help here if something went wrong.",
+            overwrites={
+                self.guild.default_role: discord.PermissionOverwrite(
+                    send_messages=True, read_message_history=True, add_reactions=True
+                )
+            },
+        )
+        # 2. conference channels
+        channel_names_and_topics = {
+            "lobby": (
+                f"""Welcome to the {self.conference_name} conference!
+                This is the virtual lobby for all attendees.
+
+                Please respect the code of conduct (see #code-of-conduct channel).
+
+                General guidelines:
+                OK to post Open Source Projects
+                OK to post about communities
+                OK to share talk slides
+
+                No spamming.
+                No random message to people you don't know.
+                No recruiting messages, sponsors only.
+                No product placement.
+                """
+            ),
+            "announcements": "Conference announcements will be posted here.",
+            "program-notifications": "Automated program notifications will be posted here.",
+            "help": "You need help with something? This is the channel for you.",
+            "lost-and-found": "Lost something? Found something? Post it here.",
+            "slides": "Slides from the conference can be posted here. Please also add your slides to pretalx.",
+            "feedback": "Do you have feedback for the conference? Post it here!",
+            "social": "off-topic discussions, plan dinner meetings, and other fun stuff.",
+            "pyladies": "Pyladies channel for all Pyladies attendees.",
+            "remote-attendees": "Remote attendees can use this channel to connect with each other.",
+            "remote-attendees-voice": "",
+            # special channels
+            "speaker-lounge": (
+                "This is the speaker lounge. Only speakers, volunteers, and organisers can see this channel."
+            ),
+            "voltuneers": ("This is the volunteer lounge. Only volunteers and organisers can see this channel."),
+            "sponsor-lounge": (
+                "This is the sponsor lounge. Only sponsors, volunteers, and organisers can see this channel."
+            ),
+            "session-chairs": (
+                "This is the session chair lounge. Only session chairs, volunteers, and organisers can see this channel."
+            ),
+        }
 
     async def _setup_rooms_channels(self) -> None:
         """Set up conference rooms."""
@@ -89,9 +166,9 @@ class ConferenceSetup:
             _logger.info(msg)
 
     async def _setup_categories_and_channels(self) -> None:
-        categories = self.guild.categories
-        _logger.info(categories)
-
+        """Set up categories and channels for the conference."""
+        _logger.info("Setting up categories and channels for the conference.")
+        # Check if the roles already exist
         if not self.role_names_to_ids:
             _logger.info("No roles set. Get roles and IDs from the server.")
             for role in self.guild.roles:
@@ -105,8 +182,8 @@ class ConferenceSetup:
                 msg = f"{role} role not found."
                 raise ValueError(msg)
 
-        # await self._setup_categories()
-        # await self._setup_conference_channels()
+        await self._setup_categories()
+        await self._setup_conference_channels()
         # await self._setup_rooms_channels()
 
     def _format_role_name(self, role_name: str) -> str:
