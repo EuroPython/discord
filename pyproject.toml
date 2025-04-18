@@ -36,9 +36,6 @@ dev = [
 [project.scripts]
 run-bot = "EuroPythonBot.bot:main"
 
-[tool.setuptools]
-packages = ["EuroPythonBot"]
-
 [tool.isort]
 profile = "black"
 line_length = 100
