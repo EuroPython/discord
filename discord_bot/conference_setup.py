@@ -91,6 +91,20 @@ class ConferenceSetup:
     async def _setup_categories_and_channels(self) -> None:
         categories = self.guild.categories
         _logger.info(categories)
+
+        if not self.role_names_to_ids:
+            _logger.info("No roles set. Get roles and IDs from the server.")
+            for role in self.guild.roles:
+                self.role_names_to_ids[role.name] = role.id
+
+        # make sure the Organiser and Attendee roles are in the role_names_to_ids dict
+        for role in ["Organiser", "Volunteer", "Attendee", "Speaker", "Sponsor"]:
+            if role not in self.role_names_to_ids:
+                msg = f"{role} role not found. Check the server or run the conference_setup script."
+                _logger.error(msg)
+                msg = f"{role} role not found."
+                raise ValueError(msg)
+
         # await self._setup_categories()
         # await self._setup_conference_channels()
         # await self._setup_rooms_channels()
@@ -144,8 +158,8 @@ class ConferenceSetup:
 
     async def start(self) -> None:
         """Set up the conference roles, categories and channels."""
-        await self._create_roles()
-        # await self._setup_categories_and_channels()
+        # await self._create_roles()  # DONE
+        await self._setup_categories_and_channels()
 
 
 @client.event

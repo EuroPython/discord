@@ -56,6 +56,9 @@ class Config(metaclass=Singleton):
             self.ROLE_COLORS = config["role_colors"]
             # self.ROLE_IDS = {role: int(role_id) for role, role_id in self.ROLES.items()}
 
+            # Pytanis
+            self.PRETALX_EVENT_NAME = config["pytanis"]["PRETALX_EVENT_NAME"]
+
             if not config["server"]["TESTING"]:
                 # Registration
                 self.REG_CHANNEL_ID = int(config["registration"]["REG_CHANNEL_ID"])
@@ -64,9 +67,6 @@ class Config(metaclass=Singleton):
 
                 # Tito
                 self.TITO_BASE_URL = config["tito"]["TITO_BASE_URL"]
-
-                # Pytanis
-                self.PRETALX_EVENT_NAME = config["pytanis"]["PRETALX_EVENT_NAME"]
 
                 # Job Board
                 self.JOB_BOARD_CHANNEL_ID = config["job_board"]["JOB_BOARD_CHANNEL_ID"]
