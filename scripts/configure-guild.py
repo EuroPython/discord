@@ -922,16 +922,17 @@ class GuildConfigurator:
                 await role.edit(permissions=permissions)
 
     async def ensure_default_messages(self, categories: list[Category]) -> None:
-        logger.info("Ensure default messages")
+        logger.info("Ensure default expected_messages")
         for category_template in categories:
             for channel_template in category_template.channels:
                 if not isinstance(channel_template, TextChannel):
                     continue
                 channel = self.get_text_channel(channel_template.name)
-                messages = await self.insert_mentions_into_messages(
+                expected_messages = await self.insert_mentions_into_messages(
                     channel_template.channel_messages
                 )
-                await self.ensure_channel_messages(channel, messages)
+                if expected_messages:
+                    await self.ensure_channel_messages(channel, expected_messages)
 
     async def insert_mentions_into_messages(self, messages: list[str]) -> list[str]:
         logger.info("Insert mentions in messages")
