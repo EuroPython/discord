@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 from http import HTTPStatus
 from pathlib import Path
@@ -20,11 +22,14 @@ def sanitize_string(input_string: str) -> str:
 
 
 class TitoOrder(metaclass=Singleton):
-    def __init__(self):
+    """Tito API connector for ticket validation."""
+
+    def __init__(self) -> None:
+        """Initialize the TitoOrder class."""
         self.config = Config()
         load_dotenv(Path(__file__).resolve().parent.parent.parent / ".secrets")
         # PRETIX_TOKEN = os.getenv("PRETIX_TOKEN")
-        self.HEADERS = {}  # {"Authorization": f"Token {PRETIX_TOKEN}"}
+        self.HEADERS = {"Content-Type": "application/json"}  # {"Authorization": f"Token {PRETIX_TOKEN}"}
 
         self.id_to_name = None
         self.orders = {}
@@ -32,12 +37,12 @@ class TitoOrder(metaclass=Singleton):
         self.registered_file = getattr(self.config, "REGISTERED_LOG_FILE", "./registered_log.txt")
         self.REGISTERED_SET = set()
 
-    def load_registered(self):
+    def load_registered(self) -> None:
+        """Load list of registered users from file."""
         try:
-            f = open(self.registered_file)
-            registered = [reg.strip() for reg in f.readlines()]
-            self.REGISTERED_SET = set(registered)
-            f.close()
+            with Path(self.registered_file).open() as f:
+                registered = [reg.strip() for reg in f]
+                self.REGISTERED_SET = set(registered)
         except Exception:
             _logger.exception("Cannot load registered data, starting from scratch. Error:")
 
@@ -49,70 +54,75 @@ class TitoOrder(metaclass=Singleton):
         await self._update_tito(f"{self.config.TITO_BASE_URL}/tickets/refresh_all")
         _logger.info("Updated tickets from Tito in %r seconds", time() - time_start)
 
-    async def _update_tito(self, url) -> bool:
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url, headers=self.HEADERS) as response:
-                if response.status == HTTPStatus.OK:
-                    return True
+    async def _update_tito(self, url: str) -> bool:
+        async with aiohttp.ClientSession() as session, session.get(url, headers=self.HEADERS) as response:
+            if response.status == HTTPStatus.OK:
+                return True
         _logger.error("Error occurred while updating Tito API: Status %r", response.status)
         return False
 
     async def get_ticket_type(self, order: str, full_name: str) -> dict | None:
-        """With user input `order` and `full_name`, check for their ticket type"""
+        """With user input `order` and `full_name`, check for their ticket type."""
         key = f"{order}-{sanitize_string(input_string=full_name)}"
         self.validate_key(key)
         data = None
 
-        async with aiohttp.ClientSession() as session:
-            async with session.post(
-                f"{self.config.TITO_BASE_URL}/tickets/validate_name",
-                # headers=self.HEADERS,
-                json={
-                    "ticket_id": order,
-                    "name": full_name,
-                },
-            ) as request:
-                if request.status == HTTPStatus.OK:
-                    data = await request.json()
-                    if data.get("is_attendee"):
-                        self.REGISTERED_SET.add(key)
-                        async with aiofiles.open(self.registered_file, mode="a") as f:
-                            await f.write(f"{key}\n")
-                    else:
-                        hint = data.get("hint")
-                        raise NotFoundError(
-                            f"No ticket found - inputs: {order=}, {full_name=}. {hint=}",
-                            hint,
-                        )
+        async with aiohttp.ClientSession() as session, session.post(
+            f"{self.config.TITO_BASE_URL}/tickets/validate_name/",
+            headers=self.HEADERS,
+            json={"ticket_id": order, "name": full_name},
+        ) as request:
+            if request.status == HTTPStatus.OK:
+                data = await request.json()
+                if data.get("is_attendee"):
+                    self.REGISTERED_SET.add(key)
+                    async with aiofiles.open(self.registered_file, mode="a") as f:
+                        await f.write(f"{key}\n")
                 else:
-                    _logger.error("Error occurred: Status %r", request.status)
+                    hint = data.get("hint")
+                    msg = f"No ticket found - inputs: {order=}, {full_name=}. {hint=}"
+                    raise NotFoundError(
+                        msg,
+                        hint,
+                    )
+            elif request.status == HTTPStatus.NOT_FOUND:
+                _logger.error("Ticket not found - inputs: %r, %r", order, full_name)
+            elif request.status == HTTPStatus.UNPROCESSABLE_ENTITY:
+                _logger.error("Invalid input - inputs: %r, %r", order, full_name)
+            else:
+                _logger.error("Error occurred: Status %r", request.status)
 
         return data
 
     async def get_roles(self, name: str, order: str) -> list[int]:
+        """Get the roles IDs for the user based on their ticket type."""
         roles: list[int] = []
         data = await self.get_ticket_type(full_name=name, order=order)
 
-        # TODO(dan): get role IDs from config
         if data:
             if data.get("is_attendee"):
-                roles.append(1164258218655096884)  # Attendee
+                roles.append(self.config.ROLES["Attendee"])  # Attendee
             if data.get("is_speaker"):
-                roles.append(1164258330567516200)  # Speaker
+                roles.append(self.config.ROLES["Speaker"])  # Speaker
             if data.get("is_sponsor"):
-                roles.append(1164258080477945886)  # Sponsor
+                roles.append(self.config.ROLES["Sponsor"])  # Sponsor
             if data.get("is_organizer"):
-                roles.append(1229442731227484188)  # Organizer
+                roles.append(self.config.ROLES["Organiser"])  # Organiser
             if data.get("is_volunteer"):
-                roles.append(1164258157833490512)  # Volunteer
+                roles.append(self.config.ROLES["Volunteer"])  # Volunteer
             if data.get("is_remote"):
-                roles.append(1164258270605754428)  # Remote
+                roles.append(self.config.ROLES["Remote"])  # Remote
             if data.get("is_onsite"):
-                roles.append(1229516503951347825)  # On-Site
+                roles.append(self.config.ROLES["On-Site"])  # On-Site
+            # TODO: what about these?
+            # "is_guest"
+            # "online_access"
 
         return roles
 
     def validate_key(self, key: str) -> bool:
+        """Validate the key for uniqueness."""
         if key in self.REGISTERED_SET:
-            raise AlreadyRegisteredError(f"Ticket already registered - id: {key}")
+            msg = f"Ticket already registered - id: {key}"
+            raise AlreadyRegisteredError(msg)
         return True

@@ -52,14 +52,13 @@ class RegistrationPyData(Registration, commands.Cog):
         self._desc = (
             "Follow these steps to complete your registration:\n\n"
             f'1️⃣ Click on the green "Register Here {EMOJI_POINT}" button.\n\n'
-            '2️⃣ Fill in the "Order/Reference Number" in the format "XXXX-X" or "XXXX-XX") and '
-            'your "Full Name" (first and last name as printed on your ticket/badge under ticket '
-            "holder). "
+            '2️⃣ Fill in the "Ticket ID" in the format "XXXX-X") and your "Full Name" '
+            "(first and last name as printed on your ticket/badge under ticket holder). "
             "You can find the information also in your confirmation email from "
             f'support@tito.io with the subject: "Your {config.CONFERENCE_NAME} Ticket".\n\n'
             '3️⃣ Click "Submit". We\'ll verify your ticket and give you your role(s) based on '
             "your ticket type.\n\n"
-            "Experiencing trouble? Ask for help in the registration-help channel or from a "
-            f"volunteer ({config.VOLUNTEER_SHIRT_COLOR} shirts) at the conference.\n\n"
+            "Experiencing trouble? Ask for help in the #registration-help channel or from a "
+            f"volunteer (look for the {config.VOLUNTEER_SHIRT_COLOR} t-shirts) at the conference.\n\n"
             "See you on the server! 🐍💻🎉"
         )

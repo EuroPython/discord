@@ -52,8 +52,8 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         label="Order/Reference Number (e.g. 'XXXX-X')",
         required=True,
         min_length=6,
-        max_length=7,
-        placeholder="6- or 7-character combination of capital letters and numbers with a dash '-'.",
+        max_length=6,
+        placeholder="Character combination of 4 capital letters and one numbers with a dash '-', e.g. 'ABCD-1'.",
     )
 
     name = discord.ui.TextInput(
@@ -71,40 +71,44 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
             name=self.name.value,
             order=self.order.value,
         )
-        _logger.info("Assigning %r roles=%r", self.name.value, roles)
-        for role in roles:
-            role = discord.utils.get(interaction.guild.roles, id=role)
-            await interaction.user.add_roles(role)
-        changed_nickname = True
-        if CHANGE_NICKNAME:
-            try:
-                # TODO(dan): change nickname not working, because no admin permission?
-                nickname = self.name.value[:32]  # Limit to the max length
-                await interaction.user.edit(nick=nickname)
-            except discord.errors.Forbidden as ex:
-                msg = f"Changing nickname for {self.name} did not work: {ex}"
-                _logger.error(msg)
-                await log_to_channel(
-                    channel=interaction.client.get_channel(config.REG_LOG_CHANNEL_ID),
-                    interaction=interaction,
-                    error=ex,
-                )
-                changed_nickname = False
-        await log_to_channel(
-            channel=interaction.client.get_channel(config.REG_LOG_CHANNEL_ID),
-            interaction=interaction,
-            name=self.name.value,
-            order=self.order.value,
-            roles=roles,
-        )
-        msg = f"Thank you {self.name.value}, you are now registered!"
-
-        if CHANGE_NICKNAME and changed_nickname:
-            msg += (
-                "\n\nAlso, your nickname was changed to the name you used to register your ticket. "
-                "This is also the name that would be on your conference badge, which means that "
-                "your nickname can be your 'virtual conference badge'."
+        if roles:
+            _logger.info("Assigning %r roles=%r", self.name.value, roles)
+            for role in roles:
+                await interaction.user.add_roles(discord.utils.get(interaction.guild.roles, id=role))
+            changed_nickname = True
+            if CHANGE_NICKNAME:
+                try:
+                    # TODO(dan): change nickname not working, because no admin permission?
+                    nickname = self.name.value[:32]  # Limit to the max length
+                    await interaction.user.edit(nick=nickname)
+                except discord.errors.Forbidden as ex:
+                    msg = f"Changing nickname for {self.name} did not work: {ex}"
+                    _logger.exception(msg)
+                    await log_to_channel(
+                        channel=interaction.client.get_channel(config.REG_LOG_CHANNEL_ID),
+                        interaction=interaction,
+                        error=ex,
+                    )
+                    changed_nickname = False
+            await log_to_channel(
+                channel=interaction.client.get_channel(config.REG_LOG_CHANNEL_ID),
+                interaction=interaction,
+                name=self.name.value,
+                order=self.order.value,
+                roles=roles,
             )
+            msg = f"Thank you {self.name.value}, you are now registered!"
+
+            if CHANGE_NICKNAME and changed_nickname:
+                msg += (
+                    "\n\nAlso, your nickname was changed to the name you used to register your ticket. "
+                    "This is also the name that would be on your conference badge, which means that "
+                    "your nickname can be your 'virtual conference badge'."
+                )
+        else:
+            error_msg = f"No roles found for name='{self.name.value}' and order='{self.order.value}'."
+            _logger.error(error_msg)
+            msg = "Something went wrong, please check your input and try again."
 
         await interaction.response.send_message(msg, ephemeral=True, delete_after=20)
 

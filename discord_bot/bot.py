@@ -14,6 +14,7 @@ from dotenv import load_dotenv
 
 from discord_bot import configuration
 from discord_bot.cogs.ping import Ping
+from discord_bot.cogs.registration_pydata import RegistrationPyData
 from discord_bot.helpers.tito_connector import TitoOrder
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".secrets")
@@ -82,7 +83,7 @@ async def main() -> None:
     _setup_logging()
     async with bot:
         await bot.add_cog(Ping(bot))
-        # await bot.add_cog(RegistrationPyData(bot))
+        await bot.add_cog(RegistrationPyData(bot))
         # await bot.load_extension("extensions.programme_notifications")
         await bot.load_extension("extensions.admin")
         # await bot.load_extension("extensions.job_board")  # noqa: ERA001
