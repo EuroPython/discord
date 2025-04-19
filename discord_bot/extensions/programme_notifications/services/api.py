@@ -137,12 +137,12 @@ class ApiClient:
         :return: A tuple with the session slug and audience experience level
         """
         slug = code  # session_information["session"].get("slug")
-        website_base_url = self.config.conference_website_session_base_url
+        website_base_url = self.config.pretalx_talk_url  # conference_website_session_base_url
         session_url = yarl.URL(website_base_url.format(slug=slug)) if slug else None
 
         # there is no API so we crawl the website and search for the
         # 'Python Skill Level' text
-        api_base_url = self.config.conference_website_api_session_url
+        api_base_url = self.config.pretalx_talk_url  # conference_website_api_session_url
         url = api_base_url.format(code=code)
         async with self.session.get(url=url, raise_for_status=True) as response:
             # session_information = await response.json()

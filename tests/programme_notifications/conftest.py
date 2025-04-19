@@ -86,8 +86,9 @@ def _configuration_factory(config: dict[str, Any]) -> configuration.NotifierConf
         "timezone": "Europe/Berlin",
         "conference_days_first": "2024-04-22",
         "conference_days_last": "2024-04-24",
-        "conference_website_session_base_url": "https://2024.pycon.de/program/{slug}",
-        "conference_website_api_session_url": "https://2024.pycon.de/program/{code}",
+        "pretalx_talk_url": "https://2024.pycon.de/program/{code}",
+        # "conference_website_session_base_url": "https://2024.pycon.de/program/{slug}",
+        # "conference_website_api_session_url": "https://2024.pycon.de/program/{code}",
         "pretalx_schedule_url": ("https://pretalx.com/api/events/pyconde-pydata-2024/schedules/latest/"),
         "slido_url": "https://app.sli.do/event/test",
         "notification_channels": [
