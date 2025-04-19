@@ -141,7 +141,7 @@ class TextChannel(BaseModel):
 
 class Category(BaseModel):
     name: str
-    channels: list[TextChannel | ForumChannel] = Field(discriminator="type")
+    channels: list[Annotated[TextChannel | ForumChannel, Field(discriminator="type")]]
     permission_overwrites: list[PermissionOverwrite] = Field(default_factory=list)
 
 
