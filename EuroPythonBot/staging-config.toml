@@ -1,39 +1,42 @@
 [roles]
-ORGANISERS = 1249772565887582301
-VOLUNTEERS = 1249772565887582300
-VOLUNTEERS_ONSITE = 1249772565887582299
-VOLUNTEERS_REMOTE = 1249772565866483721
-SPEAKERS = 1249772565866483720
-SPONSORS = 1249772565866483719
-PARTICIPANTS = 1249772565866483717
-PARTICIPANTS_ONSITE = 1249772565866483716
-PARTICIPANTS_REMOTE = 1249772565866483715
+ORGANISERS = 1360676366244384878
+VOLUNTEERS = 1360676367561265335
+VOLUNTEERS_ONSITE = 1360676369159291060
+VOLUNTEERS_REMOTE = 1360676369725653158
+SPEAKERS = 1360676371356975124
+SPONSORS = 1360676372263080090
+PARTICIPANTS = 1360676375182180596
+PARTICIPANTS_ONSITE = 1360676376197468231
+PARTICIPANTS_REMOTE = 1360676377338183840
 
 [ticket_to_role]
 # onsite participants
 "Business" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
 "Community Contributors" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
 "Education" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
-"Grant ticket" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
 "Personal" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
+"Grant ticket" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
 # remote participants
+"Remote Community Organiser" = ["PARTICIPANTS", "PARTICIPANTS_REMOTE"]
 "Remote Grant ticket" = ["PARTICIPANTS", "PARTICIPANTS_REMOTE"]
+"Remote Participation Ticket" = ["PARTICIPANTS", "PARTICIPANTS_REMOTE"]
+# sponsors
+"Gold Sponsorship Package" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE", "SPONSORS"]
+"Sponsor Conference Pass" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE", "SPONSORS"]
 # speakers
 "Presenter" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE", "SPEAKERS"]
-# sponsors
-"Sponsor Conference Ticket" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE", "SPONSORS"]
 
 [additional_roles_by_variation]
 "Volunteer" = ["VOLUNTEERS"]
 
 [registration]
-REG_CHANNEL_ID = 1249772566957265045
-REG_HELP_CHANNEL_ID = 1251249570722218135
-REG_LOG_CHANNEL_ID = 1249772566957265046
+REG_CHANNEL_ID = 1361000861106700510
+REG_HELP_CHANNEL_ID = 1360981983462686925
+REG_LOG_CHANNEL_ID = 1360981984972636438
 REGISTERED_LOG_FILE = "registered_log.txt"
 
 [pretix]
-PRETIX_BASE_URL = "https://pretix.eu/api/v1/organizers/europython/events/ep2023-staging2"
+PRETIX_BASE_URL = "https://pretix.eu/api/v1/organizers/europython/events/ep2025-staging"
 PRETIX_CACHE_FILE = "pretix_cache.json"
 
 [logging]
@@ -55,32 +58,32 @@ livestream_url_file = "livestreams.toml"
 
 [program_notifications.rooms.main_channel]
 name = "Main Channel"
-channel_id = "1249772566210674754"
+channel_id = "1360981875421610084"
 
 [program_notifications.rooms.forum_hall]
 name = "Forum Hall"
-channel_id = "1249772566210674755"
+channel_id = "1360981877522956369"
 
 [program_notifications.rooms.south_hall_2a]
 name = "South Hall 2A"
-channel_id = "1249772566210674756"
+channel_id = "1360981879196487730"
 
 [program_notifications.rooms.south_hall_2b]
 name = "South Hall 2B"
-channel_id = "1249772566210674757"
+channel_id = "1360981880584929363"
 
 [program_notifications.rooms.north_hall]
 name = "North Hall"
-channel_id = "1249772566445297714"
+channel_id = "1360981881851478257"
 
 [program_notifications.rooms.terrace_2a]
 name = "Terrace 2A"
-channel_id = "1249772566445297715"
+channel_id = "1360981883411759235"
 
 [program_notifications.rooms.terrace_2b]
 name = "Terrace 2B"
-channel_id = "1249772566445297716"
+channel_id = "1360981884556808382"
 
 [program_notifications.rooms.exhibit_hall]
 name = "Exhibit Hall"
-channel_id = "1255221820060336208"
+channel_id = "1360981885798322288"
