@@ -63,13 +63,13 @@ class ConferenceSetup:
             discord.Object(id=self.role_names_to_ids["Speaker"]): discord.PermissionOverwrite(view_channel=True),
             discord.Object(id=self.role_names_to_ids["Sponsor"]): discord.PermissionOverwrite(view_channel=True),
         }
+        # category permissions must allow as much as the channel permissions, restrict the channels further if needed
         categories_to_permissions = {
             # 1. REGISTRATION - Open to everyone
             self.category_names["REGISTRATION"]: {
                 self.guild.default_role: discord.PermissionOverwrite(
                     view_channel=True,
-                    send_messages=False,
-                    add_reactions=False,
+                    send_messages=True,
                 )
             },
             # 2., 3., 4. CONFERENCE, ROOMS, SPONSORS - Visible only to registered roles
@@ -95,7 +95,7 @@ class ConferenceSetup:
 
     async def _setup_conference_channels(self) -> None:
         # 1. Create registration channels: registration and registration-help
-        await self.guild.create_text_channel(
+        registration_channel = await self.guild.create_text_channel(
             name="registration",
             category=discord.utils.get(self.guild.categories, name=self.category_names["REGISTRATION"]),
             position=1,
@@ -104,18 +104,27 @@ class ConferenceSetup:
                 "Registration worked when you can see the conference's discord channels, e.g. #lobby in the "
                 f"{self.category_names['CONFERENCE']} category."
             ),
+            overwrites={
+                self.guild.me: discord.PermissionOverwrite(
+                    send_messages=True, manage_messages=True, read_message_history=True
+                ),
+                self.guild.default_role: discord.PermissionOverwrite(send_messages=False),
+            },
         )
-        await self.guild.create_text_channel(
+        registration_help_channel = await self.guild.create_text_channel(
             name="registration-help",
             category=discord.utils.get(self.guild.categories, name=self.category_names["REGISTRATION"]),
             position=1,
             topic="Trouble with registering? Ask for help here if something went wrong.",
-            overwrites={
-                self.guild.default_role: discord.PermissionOverwrite(
-                    send_messages=True, read_message_history=True, add_reactions=True
-                )
-            },
         )
+
+        _logger.info("Registration channels created successfully.")
+        _logger.info("=========================================")
+        _logger.info("!!MANUAL WORK REQUIRED!! Update config.toml with the new registration channel IDs:")
+        msg = f"\nREG_CHANNEL_ID = {registration_channel.id}\nREG_HELP_CHANNEL_ID = {registration_help_channel.id}"
+        _logger.info(msg)
+        _logger.info("=========================================")
+
         # 2. conference channels
         channel_names_and_topics = {
             "lobby": (

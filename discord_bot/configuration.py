@@ -47,7 +47,7 @@ class Config(metaclass=Singleton):
 
             self.CONFERENCE_NAME = config["conference"]["CONFERENCE_NAME"]
             self.CONFERENCE_YEAR = config["conference"]["CONFERENCE_YEAR"]
-            self.VOLUNTEER_SHIRT_COLOR = config["conference"].get("VOLUNTEER_SHIRT_COLOR", "look for the volunteer")
+            self.VOLUNTEER_SHIRT_COLOR = config["conference"].get("VOLUNTEER_SHIRT_COLOR", "volunteer")
 
             self.GUILD = int(config["server"]["GUILD"])
 
@@ -59,7 +59,7 @@ class Config(metaclass=Singleton):
             # Pytanis
             self.PRETALX_EVENT_NAME = config["pytanis"]["PRETALX_EVENT_NAME"]
 
-            if not config["server"]["TESTING"]:
+            if config["server"]["CONFERENCE_SETUP_DONE"]:
                 # Registration
                 self.REG_CHANNEL_ID = int(config["registration"]["REG_CHANNEL_ID"])
                 self.REG_HELP_CHANNEL_ID = int(config["registration"]["REG_HELP_CHANNEL_ID"])
