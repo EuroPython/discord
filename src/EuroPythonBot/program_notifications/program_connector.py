@@ -54,10 +54,12 @@ class ProgramConnector:
         """Fetch schedule data from the Program API and write it to a file as backup."""
         async with self._fetch_lock:
             try:
-                async with aiohttp.ClientSession() as session:
-                    async with session.get(self._api_url) as response:
-                        response.raise_for_status()
-                        schedule = await response.json()
+                async with (
+                    aiohttp.ClientSession() as session,
+                    session.get(self._api_url) as response,
+                ):
+                    response.raise_for_status()
+                    schedule = await response.json()
 
             except aiohttp.ClientError as e:
                 _logger.warning(f"Error fetching schedule: {e}.")
