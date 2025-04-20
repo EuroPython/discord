@@ -77,7 +77,7 @@ class ProgramNotificationsCog(commands.Cog):
         channel = self.bot.get_channel(int(channel_id))
         await channel.edit(topic=topic)
 
-    async def notify_room(self, room: str, embed: Embed, content: str = None):
+    async def notify_room(self, room: str, embed: Embed, content: str | None = None):
         """Send the given notification to the room channel."""
         channel_id = config.PROGRAM_CHANNELS[room.lower().replace(" ", "_")]["channel_id"]
         channel = self.bot.get_channel(int(channel_id))
