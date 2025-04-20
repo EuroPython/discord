@@ -1,7 +1,7 @@
 import json
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from http import HTTPStatus
 from pathlib import Path
 
@@ -320,7 +320,7 @@ async def test_consecutive_fetches_after_some_time_fetch_updates(pretix_mock):
     pretix_connector = PretixConnector(url=pretix_mock.base_url, token=PRETIX_API_TOKEN)
     requests = pretix_mock.requests
 
-    initial_time = datetime.now(tz=timezone.utc)
+    initial_time = datetime.now(tz=UTC)
 
     # initial fetch should fetch everything
     await pretix_connector.fetch_pretix_data()

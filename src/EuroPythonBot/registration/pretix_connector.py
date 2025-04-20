@@ -5,7 +5,7 @@ import itertools
 import logging
 import time
 from collections import defaultdict
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 import aiofiles
@@ -57,7 +57,7 @@ class PretixConnector:
         # if called during an ongoing fetch, the caller waits until the fetch is done...
         async with self._fetch_lock:
             # ... but does not trigger a second fetch
-            now = datetime.now(tz=timezone.utc)
+            now = datetime.now(tz=UTC)
             if self._last_fetch and now - self._last_fetch < timedelta(minutes=2):
                 _logger.info(f"Skipping pretix fetch (last fetch was at {self._last_fetch})")
                 return

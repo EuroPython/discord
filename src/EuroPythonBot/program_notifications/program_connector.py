@@ -93,7 +93,7 @@ class ProgramConnector:
         """
         try:
             _logger.info(f"Getting schedule from cache file {self._cache_file}...")
-            async with aiofiles.open(self._cache_file, "r") as f:
+            async with aiofiles.open(self._cache_file) as f:
                 schedule = json.loads(await f.read())
 
             return await self.parse_schedule(schedule)

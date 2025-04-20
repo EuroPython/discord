@@ -10,18 +10,13 @@ import re
 import sys
 import textwrap
 from collections import defaultdict
-from typing import Annotated, Any, Literal
+from typing import Annotated, Any, Literal, Self, assert_never
 
 import discord
 from discord import VerificationLevel
 from discord.ext.commands import Bot
 from discord.utils import get as discord_get
 from pydantic import AfterValidator, BaseModel, Field, model_validator
-
-if sys.version_info >= (3, 11):
-    from typing import Self, assert_never
-else:
-    from typing_extensions import Self, assert_never
 
 logger = logging.getLogger(__name__)
 

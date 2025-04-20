@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import pytest
 
@@ -260,7 +260,7 @@ def test_format_start_time(session: Session) -> None:
 
     # The following code assumes that the start time in the mock data is in UTC.
     datetime_obj = datetime.fromtimestamp(
-        int(formatted_start_time.replace("<t:", "").replace(":f>", "")), tz=timezone.utc
+        int(formatted_start_time.replace("<t:", "").replace(":f>", "")), tz=UTC
     )
     assert datetime_obj == session.start
 
