@@ -291,9 +291,9 @@ async def test_pagination(aiohttp_client, unused_tcp_port_factory):
     pretix_connector = PretixConnector(url=pretix_mock.base_url, token=PRETIX_API_TOKEN)
     await pretix_connector.fetch_pretix_data()
 
-    assert (
-        len(pretix_connector.item_names_by_id) == 5
-    ), "Only the first page of '/items' was fetched."
+    assert len(pretix_connector.item_names_by_id) == 5, (
+        "Only the first page of '/items' was fetched."
+    )
 
 
 @pytest.mark.asyncio

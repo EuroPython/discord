@@ -1,4 +1,4 @@
-# flake8: noqa: E501 (line too long, conflicts with black on long multiline strings)
+# flake8: noqa: E501 (line too long)
 """Script to export all guild members and their roles to per-guild .csv files."""
 
 from __future__ import annotations
@@ -1116,8 +1116,7 @@ def configure_logging(*, verbose: bool = False, debug: bool = False) -> None:
     log_handler = logging.StreamHandler(stream=sys.stderr)
     log_handler.addFilter(
         # silence irrelevant warning
-        lambda record: record.msg
-        != "PyNaCl is not installed, voice will NOT be supported"
+        lambda record: record.msg != "PyNaCl is not installed, voice will NOT be supported"
     )
     logging.basicConfig(level=log_level, handlers=[log_handler])
 

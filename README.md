@@ -87,8 +87,8 @@ uv remove package
 
 ### Development tools
 
-* Format code: `uv run --dev black .`
-* Check code format: `uv run --dev black --check .`
+* Format code: `uv run --dev ruff format`
+* Check code format: `uv run --dev ruff format --check`
 * Sort imports: `uv run --dev ruff check --select I001 --fix`
 * Check import order: `uv run --dev ruff check --select I001`
 * Check code style: `uv run --dev flake8 .`
