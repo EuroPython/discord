@@ -35,10 +35,7 @@ class ProgramConnector:
         self.sessions_by_day: dict[date, list[Session]] | None = None
 
     async def parse_schedule(self, schedule: dict) -> dict[date, list[Session]]:
-        """
-        Parse the schedule data and return a dictionary with
-        the sessions grouped by date.
-        """
+        """Parse the schedule data and return a dictionary with the sessions grouped by date."""
         schedule: Schedule = Schedule.model_validate(schedule)
 
         sessions_by_day = {}
@@ -53,10 +50,7 @@ class ProgramConnector:
         return sessions_by_day
 
     async def fetch_schedule(self) -> None:
-        """
-        Fetch schedule data from the Program API and
-        write it to a file in case the API goes down.
-        """
+        """Fetch schedule data from the Program API and write it to a file as backup."""
         async with self._fetch_lock:
             try:
                 async with aiohttp.ClientSession() as session:
@@ -88,9 +82,7 @@ class ProgramConnector:
             _logger.info("Schedule parsed and loaded.")
 
     async def _get_schedule_from_cache(self) -> dict[date, list[Session]]:
-        """
-        Get the schedule data from the cache file.
-        """
+        """Get the schedule data from the cache file."""
         try:
             _logger.info(f"Getting schedule from cache file {self._cache_file}...")
             async with aiofiles.open(self._cache_file) as f:

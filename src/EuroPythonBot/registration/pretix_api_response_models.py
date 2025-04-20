@@ -35,7 +35,7 @@ class PretixOrder(pydantic.BaseModel):
 
 
 class PretixOrderPosition(pydantic.BaseModel):
-    """Ordered position, e.g. a ticket or a T-shirt"""
+    """Ordered position, e.g. a ticket or a T-shirt."""
 
     # https://docs.pretix.eu/en/latest/api/resources/orders.html#order-position-resource
     order_id: str = pydantic.Field(alias="order")

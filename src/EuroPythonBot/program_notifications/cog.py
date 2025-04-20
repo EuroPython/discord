@@ -42,9 +42,7 @@ class ProgramNotificationsCog(commands.Cog):
         _logger.info("Cog 'Program Notifications' is ready")
 
     async def cog_load(self) -> None:
-        """
-        Start schedule updater task
-        """
+        """Start schedule updater task."""
         _logger.info(
             "Starting the schedule updater and setting the interval for the session notifier..."
         )
@@ -56,9 +54,7 @@ class ProgramNotificationsCog(commands.Cog):
         _logger.info("Schedule updater started and interval set for the session notifier")
 
     async def cog_unload(self) -> None:
-        """
-        Stop all tasks
-        """
+        """Stop all tasks."""
         _logger.info("Stopping the schedule updater and the session notifier...")
         self.fetch_schedule.stop()
         self.notify_sessions.stop()
@@ -76,17 +72,13 @@ class ProgramNotificationsCog(commands.Cog):
         _logger.info("Finished the periodic livestream update.")
 
     async def set_room_topic(self, room, topic: str):
-        """
-        Set the topic of a room channel
-        """
+        """Set the topic of a room channel."""
         channel_id = config.PROGRAM_CHANNELS[room.lower().replace(" ", "_")]["channel_id"]
         channel = self.bot.get_channel(int(channel_id))
         await channel.edit(topic=topic)
 
     async def notify_room(self, room: str, embed: Embed, content: str = None):
-        """
-        Send the given notification to the room channel
-        """
+        """Send the given notification to the room channel."""
         channel_id = config.PROGRAM_CHANNELS[room.lower().replace(" ", "_")]["channel_id"]
         channel = self.bot.get_channel(int(channel_id))
         await channel.send(content=content, embed=embed)

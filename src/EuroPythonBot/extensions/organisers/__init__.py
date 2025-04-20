@@ -10,7 +10,6 @@ from EuroPythonBot.extensions.organisers import organisers, roles
 
 async def setup(bot: commands.Bot) -> None:
     """Set up the organisers extension."""
-
     config = configuration.Config()
     with config.CONFIG_PATH.open("rb") as config_file:
         raw_roles = tomllib.load(config_file)["roles"]

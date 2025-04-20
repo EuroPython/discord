@@ -6,20 +6,20 @@ from pydantic import BaseModel
 
 
 class DaySchedule(BaseModel):
-    """Schedule of a single day of EuroPython"""
+    """Schedule of a single day of EuroPython."""
 
     rooms: list[str]
     events: list[Session | Break]
 
 
 class Schedule(BaseModel):
-    """Complete schedule of EuroPython"""
+    """Complete schedule of EuroPython."""
 
     days: dict[date, DaySchedule]
 
 
 class Break(BaseModel):
-    """Break in the EuroPython schedule"""
+    """Break in the EuroPython schedule."""
 
     event_type: str
     title: str
@@ -29,7 +29,7 @@ class Break(BaseModel):
 
 
 class Session(BaseModel):
-    """Session in the EuroPython schedule"""
+    """Session in the EuroPython schedule."""
 
     event_type: str
     code: str
@@ -50,7 +50,7 @@ class Session(BaseModel):
 
 
 class Speaker(BaseModel):
-    """Speaker of a Session"""
+    """Speaker of a Session."""
 
     code: str
     name: str

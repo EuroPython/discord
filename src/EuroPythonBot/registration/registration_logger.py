@@ -26,7 +26,7 @@ class RegistrationLogger:
             _logger.info("File not found, starting with a fresh registration log (%s)", log_file)
 
     def is_registered(self, ticket: Ticket) -> bool:
-        """Check if a ticket is already registered"""
+        """Check if a ticket is already registered."""
         return ticket.key in self._registered_ticket_keys
 
     async def mark_as_registered(self, ticket: Ticket) -> None:
