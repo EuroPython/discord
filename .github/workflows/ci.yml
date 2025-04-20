@@ -31,11 +31,8 @@ jobs:
       - name: Check code format
         run: uv run --dev ruff format --check
 
-      - name: Run Flake8
-        run: uv run --dev flake8 .
-
-      - name: Check import order
-        run: uv run --dev ruff check --select I001
+      - name: Check code style
+        run: uv run --dev ruff check
 
   test:
     name: 🛠️ Test Python code

@@ -90,8 +90,7 @@ uv remove package
 * Format code: `uv run --dev ruff format`
 * Check code format: `uv run --dev ruff format --check`
 * Sort imports: `uv run --dev ruff check --select I001 --fix`
-* Check import order: `uv run --dev ruff check --select I001`
-* Check code style: `uv run --dev flake8 .`
+* Check code style: `uv run --dev ruff check .`
 * Run tests: `uv run --dev pytest .`
 
 ### Configuration
