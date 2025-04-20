@@ -105,7 +105,6 @@ def _configuration_factory(config: dict[str, Any]) -> configuration.NotifierConf
             "1234": {
                 "discord_channel_id": "1120780288755253338",
                 "webhook_id": "ROOM_1234",
-                "survey_url": "https://survey.com/1234",
                 "livestreams": {
                     "2024-04-22": "https://2024.pycon.de/live",
                     "2024-04-23": "https://2024.pycon.de/live",
@@ -115,7 +114,6 @@ def _configuration_factory(config: dict[str, Any]) -> configuration.NotifierConf
             "4567": {
                 "discord_channel_id": "1120780345575477421",
                 "webhook_id": "ROOM_4567",
-                "survey_url": "https://survey.com/4567",
                 "livestreams": {
                     "2024-04-22": "https://2024.pycon.de/live",
                     "2024-04-23": "https://2024.pycon.de/live",
@@ -125,7 +123,6 @@ def _configuration_factory(config: dict[str, Any]) -> configuration.NotifierConf
             "8901": {
                 "discord_channel_id": "1120780371622121612",
                 "webhook_id": "ROOM_8901",
-                "survey_url": "https://survey.com/8901",
                 "livestreams": {
                     "2024-04-22": "https://2024.pycon.de/live",
                     "2024-04-23": "https://2024.pycon.de/live",
@@ -135,7 +132,6 @@ def _configuration_factory(config: dict[str, Any]) -> configuration.NotifierConf
             "2345": {
                 "discord_channel_id": "1120780401791750315",
                 "webhook_id": "ROOM_2345",
-                "survey_url": "https://survey.com/2345",
                 "livestreams": {
                     "2024-04-22": "https://2024.pycon.de/live",
                     "2024-04-23": "https://2024.pycon.de/live",
@@ -145,7 +141,6 @@ def _configuration_factory(config: dict[str, Any]) -> configuration.NotifierConf
             "6789": {
                 "discord_channel_id": "1120780461195657387",
                 "webhook_id": "ROOM_6789",
-                "survey_url": "https://survey.com/6789",
                 "livestreams": {
                     "2024-04-22": "https://2024.pycon.de/live",
                     "2024-04-23": "https://2024.pycon.de/live",
@@ -155,7 +150,6 @@ def _configuration_factory(config: dict[str, Any]) -> configuration.NotifierConf
             "1111": {
                 "discord_channel_id": "1120780490576777287",
                 "webhook_id": "ROOM_111",
-                "survey_url": "https://survey.com/111",
                 "livestreams": {
                     "2024-04-22": "https://2024.pycon.de/live",
                     "2024-04-23": "https://2024.pycon.de/live",

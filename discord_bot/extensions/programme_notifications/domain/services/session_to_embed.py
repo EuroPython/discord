@@ -1,4 +1,4 @@
-"""Translate EuroPython sessions to Discord embeds."""
+"""Translate PyCon / PyData sessions to Discord embeds."""
 
 import textwrap
 from typing import Final
@@ -15,8 +15,9 @@ _EXPERIENCE_COLORS: Final = {
     "intermediate": 16764229,
     "novice": 6542417,
 }
+# TODO(dan): move to config
 _CONFERENCE_NAME = "PyCon/PyData"
-_CONFERENCE_WEBSITE: Final = "[2024.pycon.de](https://2024.pycon.de)"
+_CONFERENCE_WEBSITE: Final = "[2025.pycon.de](https://2025.pycon.de)"
 
 
 def create_session_embed(
@@ -34,7 +35,6 @@ def create_session_embed(
     """
     livestream_value = f"[Vimeo]({session.livestream_url})" if session.livestream_url else _FIELD_VALUE_EMTPY
     slido_value = f"[Slido]({slido_url})" if slido_url else _FIELD_VALUE_EMTPY
-    survey_value = f"[sci-an]({session.survey_url})" if session.survey_url else _FIELD_VALUE_EMTPY
     fields = [
         discord.Field(name="Start Time", value=_format_start_time(session), inline=True),
         discord.Field(name="Room", value=_format_room(session), inline=True),
@@ -42,7 +42,6 @@ def create_session_embed(
         discord.Field(name="Duration", value=_format_duration(session.duration), inline=True),
         discord.Field(name="Livestream", value=livestream_value, inline=True),
         discord.Field(name="Live Q&A", value=slido_value, inline=True),
-        discord.Field(name="Feedback", value=survey_value, inline=True),
     ]
     if include_discord_channel and session.discord_channel_id:
         channel_value = f"<#{session.discord_channel_id}>"

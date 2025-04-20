@@ -9,8 +9,8 @@ import arrow
 import certifi
 from discord.ext import commands
 
+from discord_bot import configuration as root_configuration
 from discord_bot.extensions.programme_notifications import cog, configuration, services
-from discord_bot.extensions.programme_notifications import configuration as root_configuration
 from discord_bot.extensions.programme_notifications.domain import repositories
 
 _logger = logging.getLogger(f"bot.{__name__}")
@@ -18,7 +18,7 @@ _logger = logging.getLogger(f"bot.{__name__}")
 # timestamp during the conference used for testing (see timewarm in config)
 # general programme notifications are send 5 minutes before the session, and
 # room notifications are send 2 minutes before the session
-TIME_DURING_CONFERENCE = "2024-04-23T15:54:45+02:00"  # programme notification
+TIME_DURING_CONFERENCE = "2025-04-23T10:24:50+02:00"  # programme notification
 # TIME_DURING_CONFERENCE = "2024-04-23T15:57:45+02:00"  # room notification
 
 

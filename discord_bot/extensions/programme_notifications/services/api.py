@@ -6,6 +6,8 @@ abstraction layer in which the caller does not have to care about the
 actual endpoint that gets polled.
 """
 
+from __future__ import annotations
+
 import functools
 import hashlib
 import json
@@ -32,7 +34,7 @@ _T = TypeVar("_T")
 class IApiClient(Protocol):
     """Protocol for an API client."""
 
-    async def fetch_schedule(self) -> "ScheduleResponse":
+    async def fetch_schedule(self) -> ScheduleResponse:
         """Fetch the latest schedule."""
 
     async def fetch_session_details(self, session_id: str) -> tuple[yarl.URL, str]:
@@ -61,7 +63,7 @@ class ApiClient:
         if not value.exists():
             raise ValueError("The path '%s' does not exist!")
 
-    async def fetch_schedule(self) -> "ScheduleResponse":
+    async def fetch_schedule(self) -> ScheduleResponse:
         """Fetch the schedule from the Pretalx API.
 
         :return: A `europython.Schedule` instance,
@@ -130,15 +132,14 @@ class ApiClient:
         converter.register_structure_hook(arrow.Arrow, lambda raw_dt, _: arrow.get(raw_dt))
         return converter
 
-    async def fetch_session_details(self, code: str) -> tuple[yarl.URL, yarl.URL, str]:
+    async def fetch_session_details(self, code: str) -> tuple[yarl.URL, str]:
         """Fetch session information from the PyCon/PyData website.
 
         :param code: The session identifier code, as used by pretalx
         :return: A tuple with the session slug and audience experience level
         """
-        slug = code  # session_information["session"].get("slug")
         website_base_url = self.config.pretalx_talk_url  # conference_website_session_base_url
-        session_url = yarl.URL(website_base_url.format(slug=slug)) if slug else None
+        session_url = yarl.URL(website_base_url.format(code=code)) if code else None
 
         # there is no API so we crawl the website and search for the
         # 'Python Skill Level' text
@@ -148,9 +149,25 @@ class ApiClient:
             # session_information = await response.json()
             html = await response.text()
 
-        # experience = session_information["session"].get("experience")
-        python_skill_level = html.find("Python Skill Level") + 19
-        experience = html[python_skill_level:].split("</a>")[0].lower()
+        # Find the first occurrence of 'Expected audience expertise: Python:' and then locate the first <p> tag after it
+        keyword = "Expected audience expertise: Python:"
+
+        keyword_index = html.find(keyword)
+        if keyword_index == -1:
+            msg = f"The keyword '{keyword}' was not found in the HTML content."
+            raise ValueError(msg)
+
+        # Extract the portion of the HTML after 'Python'
+        html_after_keyword = html[keyword_index:]
+
+        # Find the first <p> tag and extract the value between <p> and </p>
+        start_p = html_after_keyword.find("<p>")
+        end_p = html_after_keyword.find("</p>", start_p)
+        if start_p == -1 or end_p == -1:
+            msg = f"Could not find a <p> tag after '{keyword}' in the HTML content."
+            raise ValueError(msg)
+
+        experience = html_after_keyword[start_p + 3 : end_p].strip()
 
         return session_url, experience
 

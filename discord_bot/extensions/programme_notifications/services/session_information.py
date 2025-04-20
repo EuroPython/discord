@@ -39,7 +39,6 @@ class SessionInformation:
 
         session.livestream_url = self._get_livestream_url(session)
         session.discord_channel_id = self._get_discord_channel_id(session)
-        session.survey_url = self._get_survey_url(session)
         return session
 
     async def _fetch_session_details(self, code: str) -> tuple[yarl.URL | None, str | None]:
@@ -63,6 +62,7 @@ class SessionInformation:
         :param session: The session
         :return: The livestream URL or None
         """
+        # TODO(dan): get livestream URLs directly from .secrets
         date = session.slot.start.strftime("%Y-%m-%d")
         try:
             env_var_name = self._config.rooms[str(session.slot.room_id)].livestreams[date]
@@ -81,17 +81,6 @@ class SessionInformation:
         """
         try:
             return self._config.rooms[str(session.slot.room_id)].discord_channel_id
-        except (KeyError, AttributeError):
-            return None
-
-    def _get_survey_url(self, session: europython.Session) -> str | None:
-        """Get the survey url for this session.
-
-        :param session: The session
-        :return: The livestream URL or None
-        """
-        try:
-            return self._config.rooms[str(session.slot.room_id)].survey_url
         except (KeyError, AttributeError):
             return None
 

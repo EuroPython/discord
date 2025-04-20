@@ -59,6 +59,8 @@ class Config(metaclass=Singleton):
             # Pytanis
             self.PRETALX_EVENT_NAME = config["pytanis"]["PRETALX_EVENT_NAME"]
 
+            self.SLIDO_URL = config["programme_notifications"]["slido_url"]
+
             if config["server"]["CONFERENCE_SETUP_DONE"]:
                 # Registration
                 self.REG_CHANNEL_ID = int(config["registration"]["REG_CHANNEL_ID"])
@@ -71,14 +73,6 @@ class Config(metaclass=Singleton):
                 # Job Board
                 self.JOB_BOARD_CHANNEL_ID = config["job_board"]["JOB_BOARD_CHANNEL_ID"]
                 self.JOB_BOARD_TESTING = config["job_board"]["JOB_BOARD_TESTING"]
-
-                # Mapping
-                # with self.BASE_PATH.joinpath(
-                #     self.TICKET_TO_ROLES_JSON
-                # ).open() as ticket_to_roles_file:
-                #     ticket_to_roles = json.load(ticket_to_roles_file)
-
-                self.TICKET_TO_ROLE = {}  # ticket_to_roles
 
         except KeyError:
             _logger.critical(

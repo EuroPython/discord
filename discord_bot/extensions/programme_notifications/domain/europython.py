@@ -1,4 +1,5 @@
 """Models to represent EuroPython sessions."""
+
 import arrow
 import attrs
 import yarl
@@ -19,9 +20,7 @@ class Speaker:
     avatar: str | None = attrs.field(validator=_optional_string, default=None)
 
 
-_list_of_speakers = validators.deep_iterable(
-    validators.instance_of(Speaker), validators.instance_of(list)
-)
+_list_of_speakers = validators.deep_iterable(validators.instance_of(Speaker), validators.instance_of(list))
 
 
 @attrs.define(frozen=True)
@@ -57,7 +56,6 @@ class Session:
     url: yarl.URL | None = attrs.field(validator=_optional_url, default=None)
     experience: str | None = attrs.field(validator=_optional_string, default=None)
     livestream_url: yarl.URL | None = attrs.field(validator=_optional_url, default=None)
-    survey_url: yarl.URL | None = attrs.field(validator=_optional_url, default=None)
     discord_channel_id: str | None = attrs.field(validator=_optional_string, default=None)
 
 
@@ -77,14 +75,10 @@ class Schedule:
     """A conference schedule, as fetched from Pretalx."""
 
     sessions: list[Session] = attrs.field(
-        validator=validators.deep_iterable(
-            validators.instance_of(Session), validators.instance_of(list)
-        ),
+        validator=validators.deep_iterable(validators.instance_of(Session), validators.instance_of(list)),
     )
     version: str = attrs.field(validator=validators.instance_of(str))
     schedule_hash: str = attrs.field(validator=validators.matches_re(r"[0-9a-f]{40}"))
     breaks: list[Break] = attrs.field(
-        validator=validators.deep_iterable(
-            validators.instance_of(Break), validators.instance_of(list)
-        ),
+        validator=validators.deep_iterable(validators.instance_of(Break), validators.instance_of(list)),
     )

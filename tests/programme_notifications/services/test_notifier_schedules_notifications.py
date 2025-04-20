@@ -88,7 +88,6 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                 "1234": {
                     "discord_channel_id": "1234567890",
                     "webhook_id": "room_1234",
-                    "survey_url": "https://survey.com",
                     "livestreams": {
                         "2024-04-22": "LIVESTREAM_URL_TEST_DAY_1",
                         "2024-04-23": "LIVESTREAM_URL_TEST_DAY_2",

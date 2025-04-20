@@ -31,7 +31,6 @@ class RoomConfiguration:
 
     discord_channel_id: str = attrs.field(validator=validators.matches_re(r"\d+"))
     webhook_id: str
-    survey_url: yarl.URL
     livestreams: Mapping[str, str]
 
 

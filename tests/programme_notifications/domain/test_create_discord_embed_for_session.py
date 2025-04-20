@@ -39,7 +39,6 @@ def test_create_embed_from_session_information() -> None:
         speakers=[europython.Speaker(code="123456", name="Ada Lovelace", avatar="https://ada.avatar")],
         url=yarl.URL("https://ep.session/a-tale-of-two-pythons-subinterpreters-in-action"),
         livestream_url=yarl.URL("https://livestreams.com/best-conference-sessions-of-2023"),
-        survey_url=yarl.URL("https://survey.com"),
         discord_channel_id="123456789123456",
     )
     slido_url = "https://app.sli.do/event/test"
@@ -73,7 +72,6 @@ def test_create_embed_from_session_information() -> None:
                 value="[Slido](https://app.sli.do/event/test)",
                 inline=True,
             ),
-            discord.Field(name="Feedback", value="[sci-an](https://survey.com)", inline=True),
             discord.Field(name="Discord Channel", value="<#123456789123456>", inline=True),
         ],
         footer=discord.Footer(text="This session starts at 09:55:00 (local conference time)"),
@@ -514,37 +512,6 @@ def test_slido_url_is_displayed_if_available(
     assert embed.fields[5].value == expected_slido_value
 
 
-@pytest.mark.parametrize(
-    ("survey_url", "expected_survey_value"),
-    [
-        pytest.param(
-            None,
-            "—",
-            id="No survey URL available",
-        ),
-        pytest.param(
-            yarl.URL("https://survey.com"),
-            "[sci-an](https://survey.com)",
-            id="Survey URL is available",
-        ),
-    ],
-)
-def test_survey_url_is_displayed_if_available(
-    survey_url: yarl.URL | None,
-    expected_survey_value: str,
-    session_factory: factories.SessionFactory,
-) -> None:
-    """Show a survey url, if available."""
-    # GIVEN a session with a survey url
-    session = session_factory(survey_url=survey_url)
-
-    # WHEN the embed is created
-    embed = services.create_session_embed(session)
-
-    # THEN the embed url is as expected
-    assert embed.fields[6].value == expected_survey_value
-
-
 def test_discord_channel_is_linked_if_available(
     session_factory: factories.SessionFactory,
 ) -> None:
@@ -556,7 +523,7 @@ def test_discord_channel_is_linked_if_available(
     embed = services.create_session_embed(session, include_discord_channel=True)
 
     # THEN the embed shows the Discord channel
-    assert embed.fields[7].value == "<#123456789123456>"
+    assert embed.fields[6].value == "<#123456789123456>"
 
 
 @pytest.mark.parametrize(
@@ -582,8 +549,8 @@ def test_show_experience_if_discord_channel_is_unavailable(
     # THEN the embed does not the discord channel
     assert not any(field.name == "Discord Channel" for field in embed.fields)
     # BUT it does show the experience level
-    assert embed.fields[7].name == "Python Level"
-    assert embed.fields[7].value == "Intermediate"
+    assert embed.fields[6].name == "Python Level"
+    assert embed.fields[6].value == "Intermediate"
 
 
 def test_show_website_url_if_discord_channel_and_experience_are_unavailable(
@@ -598,8 +565,8 @@ def test_show_website_url_if_discord_channel_and_experience_are_unavailable(
     # THEN the embed does not the discord channel or experience
     assert not any(f.name == "Python Level" or f.name == "Discord Channel" for f in embed.fields)
     # BUT it does show a link to the europython website
-    assert embed.fields[7].name == "PyCon/PyData Website"
-    assert embed.fields[7].value == "[2024.pycon.de](https://2024.pycon.de)"
+    assert embed.fields[6].name == "PyCon/PyData Website"
+    assert embed.fields[6].value == "[2025.pycon.de](https://2025.pycon.de)"
 
 
 @pytest.mark.parametrize(
