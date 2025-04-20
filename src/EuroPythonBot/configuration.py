@@ -8,7 +8,7 @@ _logger = logging.getLogger(f"bot.{__name__}")
 
 
 class Singleton(type):
-    _instances = {}
+    _instances = {}  # noqa: RUF012 (missing type annotation as typing.ClassVar)
 
     def __call__(cls, *args, **kwargs):
         if cls not in cls._instances:

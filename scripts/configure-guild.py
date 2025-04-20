@@ -352,7 +352,7 @@ SERVER_CONFIG = GuildConfig(
                         - [EuroPython Society Code of Conduct](https://www.europython-society.org/coc/)
                         - [Incident Reporting Procedure](https://www.europython-society.org/coc-incident-reporting/)
                         - [Procedure for Incident Response](https://www.europython-society.org/coc-enforcement-procedure/)
-                        """,  # noqa: E501 (line too long)
+                        """,
                     ],
                 ),
             ],
