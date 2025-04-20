@@ -1096,7 +1096,11 @@ async def run_bot(bot: Bot, token: str) -> None:
         except discord.LoginFailure:
             report_error("Invalid Discord bot token")
         except discord.PrivilegedIntentsRequired:
-            report_error("Insufficient privileges. Required events: 'GUILD_MEMBERS'")
+            report_error(
+                "Insufficient privileges! "
+                "Make sure the bot is allowed to receive 'GUILD_MEMBERS' events, "
+                "and that its role is directly below the 'Admin' role."
+            )
 
 
 def configure_logging(*, verbose: bool = False, debug: bool = False) -> None:
