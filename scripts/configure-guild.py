@@ -297,10 +297,10 @@ SERVER_CONFIG = GuildConfig(
                         Use English to the best of your ability. Be polite if someone speaks English imperfectly.
                         **Rule 3**
                         Use the name on your ticket as your display name. This will be done automatically during the #registration-form process.
-                        
+
                         **Reporting Incidents**
                         If you notice something that needs the attention of a moderator of the community, please ping the <<@&Moderators>> role.
-                        
+
                         Note that not all moderators are a member of the EuroPython Code of Conduct team. See the <<#code-of-conduct>> channel to read how you can report Code of Conduct incidents.
                         """  # noqa: E501 (line too long)
                     ],
@@ -312,25 +312,25 @@ SERVER_CONFIG = GuildConfig(
                         """
                         ## EuroPython Society Code of Conduct
                         EuroPython is a community conference intended for networking and collaboration in the developer community.
-                        
+
                         We value the participation of each member of the Python community and want all participants to have an enjoyable and fulfilling experience. Accordingly, all attendees are expected to show respect and courtesy to other attendees throughout the conference and at all conference events.
-                        
+
                         To make clear what is expected, all staff, attendees, speakers, exhibitors, organisers, and volunteers at any EuroPython event are required to conform to the [Code of Conduct](https://www.europython-society.org/coc/), as set forth by the [EuroPython Society](https://www.europython-society.org/about/). Organisers will enforce this code throughout the event.
-                        
+
                         **Please read the Code of Conduct:** https://www.europython-society.org/coc/
                         """,  # noqa: E501 (line too long)
                         """
                         ## Reporting Incidents
                         **If you believe someone is in physical danger, including from themselves**, the most important thing is to get that person help. Please contact the appropriate crisis number, non-emergency number, or police number. If you are a EuroPython attendee, you can consult with a volunteer or organiser to help find an appropriate number.
-                        
+
                         If you believe a [Code of Conduct](https://www.europython-society.org/coc/) incident has occurred, we encourage you to report it. If you are unsure whether the incident is a violation, or whether the space where it happened is covered by the Code of Conduct, we encourage you to still report it. We are fine with receiving reports where we decide to take no action for the sake of creating a safer space.
                         """,  # noqa: E501 (line too long)
                         """
                         ## General Reporting Procedure
                         If you are being harassed, notice that someone else is being harassed, or have any other concerns, please contact a member of the Code of Conduct committee immediately. They can be reached by emailing **coc@europython.eu**.
-                        
+
                         If you prefer, you can also directly contact:
-                        
+
                         - Person 1
                           - Email: ...@europython.eu
                           - Telegram: @...
@@ -345,7 +345,7 @@ SERVER_CONFIG = GuildConfig(
                         - Person 4
                           - Email: ...@europython.eu
                           - Discord: <@...>
-                        
+
                         Committee members have the role <<@&Code of Conduct Committee>> in this community.
                         """,  # noqa: E501 (line too long)
                         """
