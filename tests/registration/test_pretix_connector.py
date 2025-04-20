@@ -18,7 +18,7 @@ from EuroPythonBot.registration.ticket import Ticket
 mock_items_file = Path(__file__).parent / "mock_pretix_items.json"
 mock_orders_file = Path(__file__).parent / "mock_pretix_orders.json"
 
-PRETIX_API_TOKEN = "MY_PRETIX_API_TOKEN"
+PRETIX_API_TOKEN = "MY_PRETIX_API_TOKEN"  # noqa: S105 (hardcoded password)
 
 
 @dataclass
