@@ -64,7 +64,7 @@ async def create_pretix_app_mock(
     return PretixMock(base_url=str(client.make_url("")), requests=requests)
 
 
-@pytest.fixture()
+@pytest.fixture
 async def pretix_mock(aiohttp_client, unused_tcp_port_factory) -> PretixMock:
     return await create_pretix_app_mock(
         response_factories={

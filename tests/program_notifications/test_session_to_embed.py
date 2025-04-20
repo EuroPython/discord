@@ -110,7 +110,7 @@ def test_embed_url(session: Session) -> None:
 
 
 @pytest.mark.parametrize(
-    "level,expected_color",
+    ("level", "expected_color"),
     [
         ("beginner", LevelColors.BEGINNER.value),
         ("intermediate", LevelColors.INTERMEDIATE.value),
