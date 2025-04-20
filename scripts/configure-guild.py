@@ -302,7 +302,7 @@ SERVER_CONFIG = GuildConfig(
                         If you notice something that needs the attention of a moderator of the community, please ping the <<@&Moderators>> role.
                         
                         Note that not all moderators are a member of the EuroPython Code of Conduct team. See the <<#code-of-conduct>> channel to read how you can report Code of Conduct incidents.
-                        """
+                        """  # noqa: E501 (line too long)
                     ],
                 ),
                 TextChannel(
@@ -318,13 +318,13 @@ SERVER_CONFIG = GuildConfig(
                         To make clear what is expected, all staff, attendees, speakers, exhibitors, organisers, and volunteers at any EuroPython event are required to conform to the [Code of Conduct](https://www.europython-society.org/coc/), as set forth by the [EuroPython Society](https://www.europython-society.org/about/). Organisers will enforce this code throughout the event.
                         
                         **Please read the Code of Conduct:** https://www.europython-society.org/coc/
-                        """,
+                        """,  # noqa: E501 (line too long)
                         """
                         ## Reporting Incidents
                         **If you believe someone is in physical danger, including from themselves**, the most important thing is to get that person help. Please contact the appropriate crisis number, non-emergency number, or police number. If you are a EuroPython attendee, you can consult with a volunteer or organiser to help find an appropriate number.
                         
                         If you believe a [Code of Conduct](https://www.europython-society.org/coc/) incident has occurred, we encourage you to report it. If you are unsure whether the incident is a violation, or whether the space where it happened is covered by the Code of Conduct, we encourage you to still report it. We are fine with receiving reports where we decide to take no action for the sake of creating a safer space.
-                        """
+                        """,  # noqa: E501 (line too long)
                         """
                         ## General Reporting Procedure
                         If you are being harassed, notice that someone else is being harassed, or have any other concerns, please contact a member of the Code of Conduct committee immediately. They can be reached by emailing **coc@europython.eu**.
@@ -347,13 +347,13 @@ SERVER_CONFIG = GuildConfig(
                           - Discord: <@...>
                         
                         Committee members have the role <<@&Code of Conduct Committee>> in this community.
-                        """,
+                        """,  # noqa: E501 (line too long)
                         """
                         ## Links
                         - [EuroPython Society Code of Conduct](https://www.europython-society.org/coc/)
                         - [Incident Reporting Procedure](https://www.europython-society.org/coc-incident-reporting/)
                         - [Procedure for Incident Response](https://www.europython-society.org/coc-enforcement-procedure/)
-                        """,
+                        """,  # noqa: E501 (line too long)
                     ],
                 ),
             ],
@@ -370,7 +370,10 @@ SERVER_CONFIG = GuildConfig(
                 ),
                 TextChannel(
                     name="general-chat",
-                    topic="Social chat for conference participants. Please follow the Rules and Code of Conduct.",
+                    topic=(
+                        "Social chat for conference participants. "
+                        "Please follow the Rules and Code of Conduct."
+                    ),
                 ),
                 ForumChannel(
                     name="support",
@@ -378,7 +381,7 @@ SERVER_CONFIG = GuildConfig(
                         Use this forum channel to create support tickets if you **need support from the conference organization**. Please don't open forum threads related to other topics, as that makes it difficult for the organizers to keep track of support tickets that need their attention.
 
                         If you to make a report to the Code of Conduct Committee, please use coc@europython.eu or contact an organizer at the conference.
-                        """,
+                        """,  # noqa: E501 (line too long)
                     tags=["Remote Support", "On-Site Support"],
                     require_tag=True,
                 ),
@@ -394,7 +397,7 @@ SERVER_CONFIG = GuildConfig(
                         **Use a descriptive title** that clearly highlights the topic you intend to discuss within this channel. However, do **keep in mind that conversations tend to meander away from their initial topic over time**. While it's okay to nudge the conversation back onto its original topic, do **be patient and civil** with each other, even if you perceive someone as going "off-topic".
 
                         Thank you for your cooperation in maintaining an open and welcoming environment for everyone!
-                        """,
+                        """,  # noqa: E501 (line too long)
                 ),
                 ForumChannel(
                     name="social-activities",
@@ -406,13 +409,16 @@ SERVER_CONFIG = GuildConfig(
                         - Use a **descriptive title** that captures the core of your activity
                         - If relevant, **include the date and time in your title**
                         - Indicate if your activity is **in-person** or **remote** by selecting the appropriate tag
-                        """,
+                        """,  # noqa: E501 (line too long)
                     tags=["In Person", "Remote"],
                     require_tag=True,
                 ),
                 TextChannel(
                     name="lost-and-found",
-                    topic="Channel for the coordination of lost and found items. Please bring found items to the registration desk.",
+                    topic=(
+                        "Channel for the coordination of lost and found items. "
+                        "Please bring found items to the registration desk."
+                    ),
                 ),
             ],
             permission_overwrites=[
@@ -441,7 +447,10 @@ SERVER_CONFIG = GuildConfig(
                 ),
                 TextChannel(
                     name="open-space",
-                    topic="For conversations related to the open spaces. We'll also post photos of the open space session board here!",
+                    topic=(
+                        "For conversations related to the open spaces. "
+                        "We'll also post photos of the open space session board here!"
+                    ),
                 ),
                 ForumChannel(
                     name="tutorials",
@@ -451,7 +460,7 @@ SERVER_CONFIG = GuildConfig(
                         **Tips:**
                         - On desktop, you can open a forum thread in "full window mode" using the `...` option menu in the top bar.
                         - If you select to "follow" a thread, it will appear directly in your channel list.
-                        """,
+                        """,  # noqa: E501 (line too long)
                     permission_overwrites=[
                         PermissionOverwrite(
                             roles=ROLES_REGISTERED,
@@ -465,7 +474,11 @@ SERVER_CONFIG = GuildConfig(
                 ),
                 ForumChannel(
                     name="sprints",
-                    topic="To keep things manageable, I think one post/thread per sprint would be the best. If there are reasons to create multiple threads/posts (e.g., for groups working on a sub-project), that should be fine, too.",
+                    topic=(
+                        "To keep things manageable, one post/thread per sprint would be the best."
+                        "If there are reasons to create multiple threads/posts "
+                        "(e.g., for groups working on a sub-project), that should be fine, too."
+                    ),
                 ),
                 ForumChannel(
                     name="slides-and-artefacts",
@@ -475,7 +488,7 @@ SERVER_CONFIG = GuildConfig(
                         - Please add the **title of your talk **and the **names of the speakers** in the title. This makes it easy for participants to find your talk.
                         - Only create a single post per talk!
                         - Participants can't send messages in the thread.
-                        """,
+                        """,  # noqa: E501 (line too long)
                     permission_overwrites=[
                         PermissionOverwrite(
                             roles=ROLES_REGISTERED,
@@ -498,7 +511,11 @@ SERVER_CONFIG = GuildConfig(
             channels=[
                 TextChannel(
                     name="announcements-volunteers",
-                    topic="Announcements and requests for conference volunteers. Please use <<#volunteers-lounge>> for all other volunteer-related conversations.",
+                    topic=(
+                        "Announcements and requests for conference volunteers. "
+                        "Please use <<#volunteers-lounge>> for all other "
+                        "volunteer-related conversations."
+                    ),
                     permission_overwrites=[
                         PermissionOverwrite(
                             roles=ROLES_VOLUNTEERS,
@@ -508,7 +525,9 @@ SERVER_CONFIG = GuildConfig(
                 ),
                 TextChannel(
                     name="volunteers-lounge",
-                    topic="Social chat for volunteers. Please follow the #rules and #code-of-conduct!",
+                    topic=(
+                        "Social chat for volunteers. Please follow the #rules and #code-of-conduct!"
+                    ),
                     permission_overwrites=[
                         PermissionOverwrite(
                             roles=ROLES_VOLUNTEERS,
@@ -518,7 +537,9 @@ SERVER_CONFIG = GuildConfig(
                 ),
                 TextChannel(
                     name="sponsors-lounge",
-                    topic="Social chat for sponsors. Please follow the #rules and #code-of-conduct!",
+                    topic=(
+                        "Social chat for sponsors. Please follow the #rules and #code-of-conduct!"
+                    ),
                     permission_overwrites=[
                         PermissionOverwrite(
                             roles=ROLES_SPONSORS,
@@ -528,7 +549,10 @@ SERVER_CONFIG = GuildConfig(
                 ),
                 TextChannel(
                     name="speakers-lounge",
-                    topic="Channel open to all speakers & conference volunteers. Please follow the #rules and #code-of-conduct!",
+                    topic=(
+                        "Channel open to all speakers & conference volunteers. "
+                        "Please follow the #rules and #code-of-conduct!"
+                    ),
                     permission_overwrites=[
                         PermissionOverwrite(
                             roles=ROLES_SPEAKERS,
@@ -538,7 +562,10 @@ SERVER_CONFIG = GuildConfig(
                 ),
                 TextChannel(
                     name="moderators",
-                    topic="For discussions related to ongoing moderation activities, moderation policy, and other moderation-related topic.",
+                    topic=(
+                        "For discussions related to ongoing moderation activities, "
+                        "moderation policy, and other moderation-related topic."
+                    ),
                     permission_overwrites=[
                         PermissionOverwrite(
                             roles=ROLES_MODERATORS,
@@ -572,7 +599,7 @@ SERVER_CONFIG = GuildConfig(
                         7. Relevant Tags: Use relevant tags or keywords to categorize the job post. Please let us know if important tags are missing.
                         8. No Discrimination: Ensure that the job post does not include any discriminatory language or requirements.
                         9. Updates and Removal: If the job position is filled or no longer available, update or remove the post to avoid confusion for job seekers.
-                        """,
+                        """,  # noqa: E501 (line too long)
                     tags=[
                         "Remote",
                         "Hybrid",
@@ -616,7 +643,7 @@ SERVER_CONFIG = GuildConfig(
                         **Welcome to our Discord server! Please register using the <<#registration-form>>**
 
                         If you encounter any problems with registration, please ask in <<#registration-help>>.
-                        """,
+                        """,  # noqa: E501 (line too long)
                     ],
                     permission_overwrites=[
                         PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["send_messages"]),
@@ -639,7 +666,7 @@ SERVER_CONFIG = GuildConfig(
                         # This channel is only for asking for help with registration, not for general discussion.
 
                         As this community is only intended for EuroPython participants, there are no public discussion channels.
-                        """,
+                        """,  # noqa: E501 (line too long)
                     permission_overwrites=[
                         PermissionOverwrite(roles=ROLES_REGISTERED, deny=["view_channel"]),
                         PermissionOverwrite(roles=ROLES_ORGANIZERS, allow=["view_channel"]),
@@ -647,7 +674,10 @@ SERVER_CONFIG = GuildConfig(
                 ),
                 TextChannel(
                     name="registration-log",
-                    topic="The EuroPython bot will log registration actions here to help us with debugging.",
+                    topic=(
+                        "The EuroPython bot will log registration actions here "
+                        "to help us with debugging."
+                    ),
                     permission_overwrites=[
                         PermissionOverwrite(
                             roles=[ROLE_EVERYONE],
@@ -657,7 +687,10 @@ SERVER_CONFIG = GuildConfig(
                 ),
                 TextChannel(
                     name="system-events",
-                    topic='This channel will show "raw" joins to keep track of who joins and who registered without diving into the audit log.',
+                    topic=(
+                        'This channel will show "raw" joins to keep track of who joins '
+                        "and who registered without diving into the audit log."
+                    ),
                     permission_overwrites=[
                         PermissionOverwrite(
                             roles=[ROLE_EVERYONE],
