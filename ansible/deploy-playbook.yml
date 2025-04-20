@@ -1,6 +1,6 @@
 ---
 - name: Deploy Discord Bot to the server
-  hosts: bot_server
+  hosts: all
   vars:
     repository_url: https://github.com/EuroPython/discord.git
 

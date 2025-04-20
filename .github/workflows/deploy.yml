@@ -27,6 +27,6 @@ jobs:
           ssh-private-key: ${{ secrets.DISCORD_BOT_DEPLOY_KEY }}
 
       - name: Deploy Discord Bot with ansible
-        run: ansible-playbook -i ansible/inventory.ini ansible/deploy-playbook.yml --private-key="/home/runner/.ssh/id_rsa" --user=root
+        run: ansible-playbook -i ${{ secrets.DISCORD_BOT_SERVER_HOST }}, ansible/deploy-playbook.yml --private-key="/home/runner/.ssh/id_rsa" --user=root
         env:
           ANSIBLE_HOST_KEY_CHECKING: "false"
