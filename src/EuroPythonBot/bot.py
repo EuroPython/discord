@@ -13,7 +13,7 @@ from EuroPythonBot.cogs.ping import Ping
 from EuroPythonBot.program_notifications.cog import ProgramNotificationsCog
 from EuroPythonBot.registration.cog import RegistrationCog
 
-load_dotenv(Path(__file__).resolve().parent.parent / ".secrets")
+load_dotenv(Path(__file__).resolve().parent.parent.parent / ".secrets")
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
 
 _logger = logging.getLogger("bot")
