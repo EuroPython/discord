@@ -1059,8 +1059,10 @@ def report_error(message: str) -> None:
 class GuildConfigurationBot(Bot):
     def __init__(self) -> None:
         """Discord bot which exports all guild members to .csv files and then stops itself."""
+        intents = discord.Intents.all()
+        intents.presences = False
         super().__init__(
-            intents=discord.Intents.all(),
+            intents=intents,
             command_prefix="$",
         )
 
