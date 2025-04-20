@@ -608,6 +608,7 @@ SERVER_CONFIG = GuildConfig(
             ],
             permission_overwrites=[
                 PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["view_channel"]),
+                PermissionOverwrite(roles=ROLES_REGISTERED, allow=["view_channel"]),
             ],
         ),
         Category(
