@@ -884,7 +884,7 @@ class GuildConfigurator:
     async def ensure_role(self, template: Role) -> None:
         logger.info("Ensure role %s", template.name)
         permissions = discord.Permissions(  # type: ignore[misc]
-            **{perm: True for perm in template.permissions},
+            **dict.fromkeys(template.permissions, True),
         )
         expected_color = discord.Color.from_str(template.color)
 

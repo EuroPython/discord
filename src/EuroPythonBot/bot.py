@@ -24,7 +24,7 @@ class Bot(commands.Bot):
         intents = _get_intents()
         super().__init__(command_prefix=commands.when_mentioned_or("$"), intents=intents)
         self.guild = None
-        self.channels = dict()
+        self.channels = {}
 
     async def on_ready(self):
         _logger.info("Logged in as user %r (ID=%r)", self.user.name, self.user.id)
