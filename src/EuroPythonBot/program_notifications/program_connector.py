@@ -92,7 +92,7 @@ class ProgramConnector:
             return await self.parse_schedule(schedule)
 
         except FileNotFoundError:
-            _logger.error("Schedule cache file not found and no schedule is already loaded.")
+            _logger.exception("Schedule cache file not found and no schedule is already loaded.")
 
     async def _get_now(self) -> datetime:
         """Get the current time in the conference timezone."""
@@ -116,7 +116,7 @@ class ProgramConnector:
             # because this is expected on non-conference days
             _logger.debug(f"No sessions found on {date_now}")
         except TypeError:
-            _logger.error("Schedule data is not loaded.")
+            _logger.exception("Schedule data is not loaded.")
 
         return sessions_on_day
 
