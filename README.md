@@ -89,8 +89,8 @@ uv remove package
 
 * Format code: `uv run --dev black .`
 * Check code format: `uv run --dev black --check .`
-* Sort imports: `uv run --dev isort .`
-* Check import order: `uv run --dev isort --check .`
+* Sort imports: `uv run --dev ruff check --select I001 --fix`
+* Check import order: `uv run --dev ruff check --select I001`
 * Check code style: `uv run --dev flake8 .`
 * Run tests: `uv run --dev pytest .`
 

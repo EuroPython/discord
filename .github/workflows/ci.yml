@@ -34,8 +34,8 @@ jobs:
       - name: Run Flake8
         run: uv run --dev flake8 .
 
-      - name: Run isort
-        run: uv run --dev isort --check .
+      - name: Check import order
+        run: uv run --dev ruff check --select I001
 
   test:
     name: 🛠️ Test Python code

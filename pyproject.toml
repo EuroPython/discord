@@ -29,7 +29,6 @@ dev = [
     "ansible>=10.2.0",
     "black>=25.1.0",
     "flake8>=7.2.0",
-    "isort>=6.0.1",
     "pytest>=8.3.5",
     "pytest-aiohttp>=1.1.0",
     "pytest-asyncio>=0.26.0",
@@ -39,13 +38,11 @@ dev = [
 [project.scripts]
 run-bot = "EuroPythonBot.bot:main"
 
-[tool.isort]
-profile = "black"
-line_length = 100
-src_paths = ["src"]
-
 [tool.black]
 line-length = 100
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+
+[tool.ruff]
+line-length = 100
