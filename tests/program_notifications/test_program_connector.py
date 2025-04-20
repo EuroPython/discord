@@ -41,9 +41,7 @@ async def mock_client(aiohttp_client, unused_tcp_port_factory, mock_schedule):
     app.router.add_get("/schedule", mock_api_handler)
 
     server = TestServer(app, port=unused_tcp_port_factory())
-    client = await aiohttp_client(server)
-
-    return client
+    return await aiohttp_client(server)
 
 
 @pytest.fixture

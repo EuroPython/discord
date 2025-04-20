@@ -107,8 +107,8 @@ class ProgramConnector:
             elapsed = datetime.now(tz=self._timezone) - self._real_start_time
             simulated_now = self._simulated_start_time + elapsed * self._time_multiplier
             return simulated_now.astimezone(self._timezone)
-        else:
-            return datetime.now(tz=self._timezone)
+
+        return datetime.now(tz=self._timezone)
 
     async def get_sessions_by_date(self, date_now: date) -> list[Session]:
         if self.sessions_by_day is None:

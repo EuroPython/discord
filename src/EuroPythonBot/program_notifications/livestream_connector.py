@@ -19,9 +19,7 @@ class LivestreamConnector:
         Open the livestreams file and return its content.
         """
         async with aiofiles.open(self._livestreams_file) as f:
-            livestreams = await f.read()
-            livestreams = tomllib.loads(livestreams)
-        return livestreams
+            return tomllib.loads(await f.read())
 
     async def _parse_livestreams(
         self, livestreams_raw: dict[str, dict[str, dict[str, str]]]
