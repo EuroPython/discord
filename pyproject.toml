@@ -41,3 +41,32 @@ asyncio_mode = "auto"
 
 [tool.ruff]
 line-length = 100
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    # don't require docstrings
+    "D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107",
+    # don't require trailing commas everywhere (incompatible with `ruff format`)
+    "COM812",
+    # deprecated rules
+    "UP038",
+    # string formatting in exception messages and logging
+    "EM101", "EM102", "TRY003", "G004",
+    # require TYPE_CHECKING blocks for typing-only imports
+    "TC",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "S101",  # allow `assert` in tests
+    "ANN",  # don't require type annotations in tests
+    "PLR2004",  # allow magic values in tests
+    "SLF001",  # allow accessing private members in tests
+]
+"scripts/*" = [
+    "INP001"  # don't require __init__.py file
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
