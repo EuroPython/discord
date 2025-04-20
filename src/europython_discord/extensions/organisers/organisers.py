@@ -6,7 +6,7 @@ import attrs
 import discord
 from discord.ext import commands
 
-from EuroPythonBot.extensions.organisers import roles
+from europython_discord.extensions.organisers import roles
 
 _logger = logging.getLogger(f"bot.{__name__}")
 

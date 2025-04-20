@@ -4,7 +4,7 @@ from pathlib import Path
 
 import aiofiles
 
-from EuroPythonBot.registration.ticket import Ticket
+from europython_discord.registration.ticket import Ticket
 
 _logger = logging.getLogger(f"bot.{__name__}")
 

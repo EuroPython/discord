@@ -34,7 +34,7 @@ dev = [
 ]
 
 [project.scripts]
-run-bot = "EuroPythonBot.bot:main"
+run-bot = "europython_discord.bot:main"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
