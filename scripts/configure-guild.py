@@ -1049,11 +1049,6 @@ class GuildConfigurator:
             )
 
 
-def report_error(message: str) -> None:
-    """Print an error message to stderr."""
-    print("ERROR:", message, file=sys.stderr)
-
-
 class GuildConfigurationBot(Bot):
     def __init__(self) -> None:
         """Discord bot which exports all guild members to .csv files and then stops itself."""
@@ -1075,9 +1070,9 @@ class GuildConfigurationBot(Bot):
         """Event handler for uncaught exceptions."""
         exc_type, exc_value, _exc_traceback = sys.exc_info()
         if exc_type is None:
-            report_error(f"Unknown error during {event}(*{args}, **{kwargs})")
+            logger.error(f"Unknown error during {event}(*{args}, **{kwargs})")
         else:
-            report_error(f"{exc_type.__name__} {exc_value}")
+            logger.error(f"{exc_type.__name__} {exc_value}")
 
         # let discord.py log the exception
         await super().on_error(event, *args, **kwargs)
@@ -1092,9 +1087,9 @@ async def run_bot(bot: Bot, token: str) -> None:
             await _bot.login(token)
             await _bot.connect()
         except discord.LoginFailure:
-            report_error("Invalid Discord bot token")
+            logger.exception("Invalid Discord bot token")
         except discord.PrivilegedIntentsRequired:
-            report_error(
+            logger.exception(
                 "Insufficient privileges! "
                 "Make sure the bot is allowed to receive 'GUILD_MEMBERS' events, "
                 "and that its role is directly below the 'Admin' role."
