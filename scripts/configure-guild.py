@@ -606,6 +606,9 @@ SERVER_CONFIG = GuildConfig(
                     name="example-sponsor", topic="This is how a sponsor channel could look like"
                 ),
             ],
+            permission_overwrites=[
+                PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["view_channel"]),
+            ],
         ),
         Category(
             name="Registration",
