@@ -13,4 +13,6 @@ ENV PATH="/home/bot/.local/bin:$PATH"
 COPY --chown=bot:bot pyproject.toml uv.lock ./
 COPY --chown=bot:bot src ./src
 
+RUN uv sync
+
 ENTRYPOINT ["uv", "run", "run-bot"]
