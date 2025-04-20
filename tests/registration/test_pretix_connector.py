@@ -12,8 +12,8 @@ from aiohttp.test_utils import TestClient, TestServer
 from aiohttp.web_request import Request
 from aiohttp.web_response import Response
 
-from registration.pretix_connector import PretixConnector
-from registration.ticket import Ticket
+from EuroPythonBot.registration.pretix_connector import PretixConnector
+from EuroPythonBot.registration.ticket import Ticket
 
 mock_items_file = Path(__file__).parent / "mock_pretix_items.json"
 mock_orders_file = Path(__file__).parent / "mock_pretix_orders.json"

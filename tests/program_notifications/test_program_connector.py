@@ -9,7 +9,7 @@ import pytest
 from aiohttp import web
 from aiohttp.test_utils import TestServer
 
-from program_notifications.program_connector import ProgramConnector
+from EuroPythonBot.program_notifications.program_connector import ProgramConnector
 
 mock_schedule_file = Path(__file__).parent / "mock_schedule.json"
 

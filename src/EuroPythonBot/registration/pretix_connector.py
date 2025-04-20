@@ -12,8 +12,8 @@ import aiofiles
 import aiohttp
 from pydantic import BaseModel
 
-from registration.pretix_api_response_models import PretixItem, PretixOrder
-from registration.ticket import Ticket, generate_ticket_key
+from EuroPythonBot.registration.pretix_api_response_models import PretixItem, PretixOrder
+from EuroPythonBot.registration.ticket import Ticket, generate_ticket_key
 
 _logger = logging.getLogger(f"bot.{__name__}")
 

@@ -3,11 +3,11 @@ import logging
 from discord import Client, Embed
 from discord.ext import commands, tasks
 
-from configuration import Config
-from program_notifications import session_to_embed
-from program_notifications.livestream_connector import LivestreamConnector
-from program_notifications.models import Session
-from program_notifications.program_connector import ProgramConnector
+from EuroPythonBot.configuration import Config
+from EuroPythonBot.program_notifications import session_to_embed
+from EuroPythonBot.program_notifications.livestream_connector import LivestreamConnector
+from EuroPythonBot.program_notifications.models import Session
+from EuroPythonBot.program_notifications.program_connector import ProgramConnector
 
 config = Config()
 _logger = logging.getLogger(f"bot.{__name__}")

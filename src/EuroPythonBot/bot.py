@@ -8,10 +8,10 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
-import configuration
-from cogs.ping import Ping
-from program_notifications.cog import ProgramNotificationsCog
-from registration.cog import RegistrationCog
+from EuroPythonBot import configuration
+from EuroPythonBot.cogs.ping import Ping
+from EuroPythonBot.program_notifications.cog import ProgramNotificationsCog
+from EuroPythonBot.registration.cog import RegistrationCog
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".secrets")
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
@@ -70,20 +70,24 @@ def _get_intents() -> discord.Intents:
     return intents
 
 
-async def main():
+async def run_bot(bot):
     _setup_logging()
     async with bot:
         await bot.add_cog(Ping(bot))
         await bot.add_cog(RegistrationCog(bot))
         await bot.add_cog(ProgramNotificationsCog(bot))
-        await bot.load_extension("extensions.organisers")
+        await bot.load_extension("EuroPythonBot.extensions.organisers")
         await bot.start(DISCORD_BOT_TOKEN)
 
 
-if __name__ == "__main__":
+def main():
     bot = Bot()
 
     try:
-        asyncio.run(main())
+        asyncio.run(run_bot(bot))
     except KeyboardInterrupt:
         _logger.info("Received KeyboardInterrupt, exiting...")
+
+
+if __name__ == "__main__":
+    main()
