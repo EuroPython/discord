@@ -19,6 +19,7 @@ class ProgramConnector:
         timezone_offset: int,
         cache_file: Path,
         simulated_start_time: datetime | None = None,
+        *,
         fast_mode: bool = False,
     ) -> None:
         self._api_url = api_url
