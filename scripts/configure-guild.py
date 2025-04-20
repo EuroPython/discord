@@ -909,7 +909,6 @@ class GuildConfigurator:
             if role.mentionable != template.mentionable:
                 logger.debug("Update mentionable")
                 await role.edit(mentionable=template.mentionable)
-            permissions = permissions
             if role.permissions != permissions:
                 logger.debug("Update permissions")
                 await role.edit(permissions=permissions)
