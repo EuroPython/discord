@@ -34,7 +34,7 @@ async def program_connector(cache_file):
 
 @pytest.fixture
 async def mock_client(aiohttp_client, unused_tcp_port_factory, mock_schedule):
-    async def mock_api_handler(request):
+    async def mock_api_handler(request):  # noqa: ARG001 (unused argument)
         return web.json_response(mock_schedule)
 
     app = web.Application()
@@ -166,7 +166,7 @@ async def test_get_upcoming_sessions(program_connector, mock_schedule_url):
 async def test_fetch_schedule_error_handling(
     program_connector, unused_tcp_port_factory, aiohttp_client
 ):
-    async def mock_api_handler(request):
+    async def mock_api_handler(request):  # noqa: ARG001 (unused argument)
         return web.Response(status=HTTPStatus.INTERNAL_SERVER_ERROR)
 
     app = web.Application()
