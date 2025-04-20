@@ -150,17 +150,16 @@ class GuildConfig(BaseModel):
     def verify_system_channel_names(self) -> Self:
         channel_names = []
         for category in self.categories:
-            for channel in category.channels:
-                channel_names.append(channel.name)
+            channel_names.extend(channel.name for channel in category.channels)
 
-        missing_channels = []
-        for name in [
+        required_channels = [
             self.rules_channel_name,
             self.system_channel_name,
             self.updates_channel_name,
-        ]:
-            if name not in channel_names:
-                missing_channels.append(name)
+        ]
+        missing_channels = [
+            channel for channel in required_channels if channel not in channel_names
+        ]
 
         if missing_channels:
             raise ValueError(f"Missing system channels: {missing_channels}")
