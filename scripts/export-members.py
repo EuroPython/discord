@@ -64,7 +64,7 @@ class MemberExportBot(Bot):
 
         await self.close()
 
-    async def on_error(self, event: str, *args, **kwargs) -> None:
+    async def on_error(self, event: str, *args, **kwargs) -> None:  # noqa: ANN002,ANN003 (types)
         """Event handler for uncaught exceptions."""
         exc_type, exc_value, _exc_traceback = sys.exc_info()
         logger.error(f"{exc_type.__name__} {exc_value}")
@@ -87,7 +87,7 @@ async def run_bot(bot: Bot, token: str) -> None:
             logger.exception("Insufficient privileges. Required events: 'GUILD_MEMBERS'")
 
 
-def main():
+def main() -> None:
     """Run this application."""
     parser = argparse.ArgumentParser(
         description=DESCRIPTION,

@@ -14,8 +14,8 @@ _logger = logging.getLogger(f"bot.{__name__}")
 
 
 class ProgramNotificationsCog(commands.Cog):
-    def __init__(self, bot):
-        self.bot: Client = bot
+    def __init__(self, bot: Client) -> None:
+        self.bot = bot
         self.program_connector = ProgramConnector(
             api_url=config.PROGRAM_API_URL,
             timezone_offset=config.TIMEZONE_OFFSET,
@@ -30,7 +30,7 @@ class ProgramNotificationsCog(commands.Cog):
         _logger.info("Cog 'Program Notifications' has been initialized")
 
     @commands.Cog.listener()
-    async def on_ready(self):
+    async def on_ready(self) -> None:
         if config.SIMULATED_START_TIME:
             _logger.info("Running in simulated time mode.")
             _logger.info("Will purge all room channels to avoid pile-up of test notifications.")
@@ -61,30 +61,30 @@ class ProgramNotificationsCog(commands.Cog):
         _logger.info("Stopped the schedule updater and the session notifier")
 
     @tasks.loop(minutes=5)
-    async def fetch_schedule(self):
+    async def fetch_schedule(self) -> None:
         _logger.info("Starting the periodic schedule update...")
         await self.program_connector.fetch_schedule()
 
     @tasks.loop(minutes=5)
-    async def fetch_livestreams(self):
+    async def fetch_livestreams(self) -> None:
         _logger.info("Starting the periodic livestream update...")
         await self.livestream_connector.fetch_livestreams()
         _logger.info("Finished the periodic livestream update.")
 
-    async def set_room_topic(self, room, topic: str):
+    async def set_room_topic(self, room: str, topic: str) -> None:
         """Set the topic of a room channel."""
         channel_id = config.PROGRAM_CHANNELS[room.lower().replace(" ", "_")]["channel_id"]
         channel = self.bot.get_channel(int(channel_id))
         await channel.edit(topic=topic)
 
-    async def notify_room(self, room: str, embed: Embed, content: str | None = None):
+    async def notify_room(self, room: str, embed: Embed, content: str | None = None) -> None:
         """Send the given notification to the room channel."""
         channel_id = config.PROGRAM_CHANNELS[room.lower().replace(" ", "_")]["channel_id"]
         channel = self.bot.get_channel(int(channel_id))
         await channel.send(content=content, embed=embed)
 
     @tasks.loop()
-    async def notify_sessions(self):
+    async def notify_sessions(self) -> None:
         sessions: list[Session] = await self.program_connector.get_upcoming_sessions()
         sessions_to_notify = [
             session for session in sessions if session not in self.notified_sessions
@@ -124,7 +124,7 @@ class ProgramNotificationsCog(commands.Cog):
 
             self.notified_sessions.add(session)
 
-    async def purge_all_room_channels(self):
+    async def purge_all_room_channels(self) -> None:
         _logger.info("Purging all room channels...")
         for room in config.PROGRAM_CHANNELS.values():
             channel = self.bot.get_channel(int(room["channel_id"]))

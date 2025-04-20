@@ -10,7 +10,7 @@ import re
 import sys
 import textwrap
 from collections import defaultdict
-from typing import Annotated, Any, Literal, Self, assert_never
+from typing import Annotated, Literal, Self, assert_never
 
 import discord
 from discord import VerificationLevel
@@ -704,7 +704,7 @@ SERVER_CONFIG = GuildConfig(
 
 
 class GuildConfigurator:
-    def __init__(self, guild: discord.Guild):
+    def __init__(self, guild: discord.Guild) -> None:
         self.guild = guild
 
     async def apply_configuration(self, template: GuildConfig) -> None:
@@ -1097,7 +1097,7 @@ class GuildConfigurationBot(Bot):
 
         await self.close()
 
-    async def on_error(self, event: str, /, *args: Any, **kwargs: Any) -> None:
+    async def on_error(self, event: str, /, *args, **kwargs) -> None:  # noqa: ANN002,ANN003 (types)
         """Event handler for uncaught exceptions."""
         exc_type, exc_value, _exc_traceback = sys.exc_info()
         if exc_type is None:

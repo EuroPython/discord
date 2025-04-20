@@ -20,13 +20,13 @@ _logger = logging.getLogger("bot")
 
 
 class Bot(commands.Bot):
-    def __init__(self):
+    def __init__(self) -> None:
         intents = _get_intents()
         super().__init__(command_prefix=commands.when_mentioned_or("$"), intents=intents)
         self.guild = None
         self.channels = {}
 
-    async def on_ready(self):
+    async def on_ready(self) -> None:
         _logger.info("Logged in as user %r (ID=%r)", self.user.name, self.user.id)
 
     async def load_extension(self, name: str, *, package: str | None = None) -> None:
@@ -70,7 +70,7 @@ def _get_intents() -> discord.Intents:
     return intents
 
 
-async def run_bot(bot):
+async def run_bot(bot: Bot) -> None:
     _setup_logging()
     async with bot:
         await bot.add_cog(Ping(bot))
@@ -80,7 +80,7 @@ async def run_bot(bot):
         await bot.start(DISCORD_BOT_TOKEN)
 
 
-def main():
+def main() -> None:
     bot = Bot()
 
     try:

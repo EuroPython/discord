@@ -24,7 +24,7 @@ class PretixCache(BaseModel):
 
 
 class PretixConnector:
-    def __init__(self, *, url: str, token: str, cache_file: Path | None = None):
+    def __init__(self, *, url: str, token: str, cache_file: Path | None = None) -> None:
         self._pretix_api_url = url
 
         # https://docs.pretix.eu/en/latest/api/tokenauth.html#using-an-api-token
