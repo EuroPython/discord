@@ -1,5 +1,5 @@
+import asyncio
 import json
-import time
 from datetime import UTC, date, datetime
 from http import HTTPStatus
 from pathlib import Path
@@ -196,7 +196,7 @@ async def test_get_now_with_simulation(program_connector):
     program_connector._time_multiplier = 60
 
     # ensure time is ticking between start and finish of this test
-    time.sleep(0.001)
+    await asyncio.sleep(0.001)
 
     assert await program_connector._get_now() > simulated_start_time
 
@@ -206,6 +206,6 @@ async def test_get_now_without_simulation(program_connector):
     now = await program_connector._get_now()
 
     # ensure time is ticking between start and finish of this test
-    time.sleep(0.001)
+    await asyncio.sleep(0.001)
 
     assert datetime.now(tz=UTC) > now
