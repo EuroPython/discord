@@ -215,11 +215,6 @@ ROLES_REGISTERED = [ROLE_PARTICIPANTS, ROLE_SPONSORS, ROLE_SPEAKERS, *ROLES_VOLU
 SERVER_CONFIG = GuildConfig(
     roles=[
         Role(
-            name="Admin",
-            color=GREY,
-            permissions=["administrator"],
-        ),
-        Role(
             name=ROLE_COC,
             color=DARK_ORANGE,
             hoist=True,
