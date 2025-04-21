@@ -8,6 +8,7 @@ USER bot
 WORKDIR /home/bot
 
 ENV PATH="/home/bot/.local/bin:/home/bot/.venv/bin:$PATH"
+ENV PYTHONPATH="/home/bot:$PYTHONPATH"
 ENV POETRY_VIRTUALENVS_IN_PROJECT=true
 
 RUN pip install --upgrade --user pip && rm -rf /home/bot/.cache
