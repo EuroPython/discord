@@ -1,7 +1,10 @@
 services:
   DiscordBot:
     image: discordbot
-    build: .
+    build:
+      context: .
+      args:
+        - --no-cache
     volumes:
       - type: bind
         source: /etc/discord/discord_bot/.secrets

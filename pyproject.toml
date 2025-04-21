@@ -23,7 +23,7 @@ yarl = "^1.19.0"
 aiofiles = "^24.1.0"
 pytanis = "^0.8"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 ruff = "^0.5.3"
 pre-commit = "^4.2.0"
 pytest = "^8.3.5"
