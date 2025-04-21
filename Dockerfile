@@ -7,7 +7,8 @@ RUN groupadd --gid 1000 bot && \
 USER bot
 WORKDIR /home/bot
 
-ENV PATH="/home/bot/.local/bin:$PATH"
+ENV PATH="/home/bot/.local/bin:/home/bot/.venv/bin:$PATH"
+ENV POETRY_VIRTUALENVS_IN_PROJECT=true
 
 RUN pip install --upgrade --user pip && rm -rf /home/bot/.cache
 RUN pip install poetry && rm -rf /home/bot/.cache
