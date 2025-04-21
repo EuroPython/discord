@@ -11,13 +11,10 @@ RUN pip install --upgrade --user pip && rm -rf /home/bot/.cache
 RUN pip install --user poetry && rm -rf /home/bot/.cache
 RUN rm -rf /home/bot/.cache
 
-ENV PATH="/home/bot/.local/bin:$PATH"
-ENV POETRY_VIRTUALENVS_CREATE=false
-
 COPY --chown=bot:bot pyproject.toml poetry.lock ./
 COPY --chown=bot:bot discord_bot ./discord_bot
 
 RUN poetry install --no-root && \
     rm -rf /home/bot/.cache
 
-ENTRYPOINT ["python", "discord_bot/bot.py"]
+ENTRYPOINT ["poetry", "run", "python", "discord_bot/bot.py"]
