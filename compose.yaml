@@ -4,7 +4,7 @@ services:
     build: .
     volumes:
       - type: bind
-        source: /etc/discord_bot/discord/.secrets
+        source: /etc/discord/discord_bot/.secrets
         target: /home/bot/.secrets
         read_only: true
       - type: bind
