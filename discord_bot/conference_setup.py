@@ -376,6 +376,7 @@ class ConferenceSetup:
         """Set up the conference roles, categories and channels."""
         # await self._create_roles()  # DONE
         await self._setup_categories_and_channels()
+        # await self._setup_livestreams()  # TODO(dan): implement
 
 
 @client.event

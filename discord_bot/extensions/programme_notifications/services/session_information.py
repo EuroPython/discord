@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import logging
 import os
 
@@ -37,7 +39,7 @@ class SessionInformation:
             except Exception:
                 _logger.exception("Fetching addition session details failed!")
 
-        session.livestream_url = self._get_livestream_url(session)
+        session.livestream_url = None  # self._get_livestream_url(session)
         session.discord_channel_id = self._get_discord_channel_id(session)
         return session
 
@@ -56,8 +58,9 @@ class SessionInformation:
         return url, experience
 
     def _get_livestream_url(self, session: europython.Session) -> yarl.URL | None:
-        """Get the livestream env var name for this session from the config and then get the
-        livestream url from the env var.
+        """Get the livestream url.
+
+        Get env var name for this session from the config and then get the livestream url from the env var.
 
         :param session: The session
         :return: The livestream URL or None
@@ -69,12 +72,13 @@ class SessionInformation:
             livestream_url = os.getenv(env_var_name)
             if livestream_url:
                 return yarl.URL(livestream_url)
-            return None
         except (KeyError, AttributeError):
+            return None
+        else:
             return None
 
     def _get_discord_channel_id(self, session: europython.Session) -> str | None:
-        """Get the discord channel id for this session
+        """Get the discord channel id for this session.
 
         :param session: The session
         :return: The discord channel id for the room or None
@@ -85,7 +89,7 @@ class SessionInformation:
             return None
 
     def refresh_from_sessions(self, sessions: list[europython.Session]) -> None:
-        """Refresh from a list of sessions
+        """Refresh from a list of sessions.
 
         :param sessions: The schedule to use
         """
