@@ -28,12 +28,20 @@ def create_session_embed(
     """Create a Discord embed for a conference session.
 
     :param session: The session information as provided by Pretalx
-    :param slido_url: The url to slido
+    :param slido_url: The url to slido (general)
     :param include_discord_channel: If the discord channel should be
       linked in the embed
     :return: A Discord embed for this session
     """
-    livestream_value = f"[Vimeo]({session.livestream_url})" if session.livestream_url else _FIELD_VALUE_EMTPY
+    if session.livestream_url and "talks.pycon.de" in str(session.livestream_url):
+        livestream_value = f"[talks.pycon.de]({session.livestream_url})"
+    elif session.livestream_url and "vimeo" in str(session.livestream_url):
+        livestream_value = f"[Vimeo]({session.livestream_url})"
+    else:
+        livestream_value = f"[Video]({session.livestream_url})" if session.livestream_url else _FIELD_VALUE_EMTPY
+    # use slido room url if available, otherwise use the general slido url
+    if session.slido_room_url:
+        slido_url = session.slido_room_url
     slido_value = f"[Slido]({slido_url})" if slido_url else _FIELD_VALUE_EMTPY
     fields = [
         discord.Field(name="Start Time", value=_format_start_time(session), inline=True),

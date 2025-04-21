@@ -277,6 +277,7 @@ class ConferenceSetup:
             room_id_to_webook_url[room.id] = webhook.url
         _logger.info("=========================================")
         _logger.info("!!MANUAL WORK REQUIRED!! Add/change the following lines to config.toml:")
+        # TODO(dan): add slido room URL
         msg = "\n".join(
             [
                 (
@@ -284,6 +285,7 @@ class ConferenceSetup:
                     f"[programme_notifications.rooms.{room_id}]\n"
                     f'webhook_id = "ROOM_{room_id}"\n'
                     f'discord_channel_id = "{channel_id}"'
+                    'slido_room_url = ""'
                 )
                 for room_id, channel_id in room_id_to_channel_id.items()
             ]
@@ -300,7 +302,17 @@ class ConferenceSetup:
 
     async def _setup_sponsors_channels(self) -> None:
         """Set up sponsors channels."""
-        # TODO(dan): implement
+        forum_channel = await self.guild.create_forum(
+            name="job-board-sponsors",
+            topic="Automatic job postings from our sponsors.",
+            category=discord.utils.get(self.guild.categories, name=self.category_names["SPONSORS"]),
+        )
+        _logger.info("=========================================")
+        _logger.info("!!MANUAL WORK REQUIRED!! Add/change the following lines to config.toml:")
+        msg = f"\nJOB_BOARD_CHANNEL_ID = {forum_channel.id}"
+        _logger.info(msg)
+        _logger.info("=========================================")
+        # TODO(dan): add sponsor channels that opted in for a channel
 
     async def _setup_categories_and_channels(self) -> None:
         """Set up categories and channels for the conference."""

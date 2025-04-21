@@ -32,6 +32,7 @@ class RoomConfiguration:
 
     discord_channel_id: str = attrs.field(validator=validators.matches_re(r"\d+"))
     webhook_id: str
+    slido_room_url: str
     # livestreams: Mapping[str, str]
 
 

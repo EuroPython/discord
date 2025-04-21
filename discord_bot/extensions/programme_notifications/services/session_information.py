@@ -1,7 +1,7 @@
+# ruff: noqa: ERA001
 from __future__ import annotations
 
 import logging
-import os
 
 import attrs
 import yarl
@@ -39,8 +39,9 @@ class SessionInformation:
             except Exception:
                 _logger.exception("Fetching addition session details failed!")
 
-        session.livestream_url = None  # self._get_livestream_url(session)
+        session.livestream_url = self._get_livestream_url(session)
         session.discord_channel_id = self._get_discord_channel_id(session)
+        session.slido_room_url = self._get_slido_room_url(session)
         return session
 
     async def _fetch_session_details(self, code: str) -> tuple[yarl.URL | None, str | None]:
@@ -65,17 +66,20 @@ class SessionInformation:
         :param session: The session
         :return: The livestream URL or None
         """
-        # TODO(dan): get livestream URLs directly from .secrets
-        date = session.slot.start.strftime("%Y-%m-%d")
-        try:
-            env_var_name = self._config.rooms[str(session.slot.room_id)].livestreams[date]
-            livestream_url = os.getenv(env_var_name)
-            if livestream_url:
-                return yarl.URL(livestream_url)
-        except (KeyError, AttributeError):
-            return None
-        else:
-            return None
+        return yarl.URL(f"https://talks.pycon.de/talks/{session.code}")
+
+        # fallback: vimeo livestream URL
+        # # TODO(dan): get livestream URLs directly from .secrets for secret vimeo URLs
+        # date = session.slot.start.strftime("%Y-%m-%d")
+        # try:
+        #     env_var_name = self._config.rooms[str(session.slot.room_id)].livestreams[date]
+        #     livestream_url = os.getenv(env_var_name)
+        #     if livestream_url:
+        #         return yarl.URL(livestream_url)
+        # except (KeyError, AttributeError):
+        #     return None
+        # else:
+        #     return None
 
     def _get_discord_channel_id(self, session: europython.Session) -> str | None:
         """Get the discord channel id for this session.
@@ -85,6 +89,17 @@ class SessionInformation:
         """
         try:
             return self._config.rooms[str(session.slot.room_id)].discord_channel_id
+        except (KeyError, AttributeError):
+            return None
+
+    def _get_slido_room_url(self, session: europython.Session) -> str | None:
+        """Get the slido room url for this session.
+
+        :param session: The session
+        :return: The slido url for the room or None
+        """
+        try:
+            return self._config.rooms[str(session.slot.room_id)].slido_room_url
         except (KeyError, AttributeError):
             return None
 

@@ -57,6 +57,7 @@ class Session:
     experience: str | None = attrs.field(validator=_optional_string, default=None)
     livestream_url: yarl.URL | None = attrs.field(validator=_optional_url, default=None)
     discord_channel_id: str | None = attrs.field(validator=_optional_string, default=None)
+    slido_room_url: str | None = attrs.field(validator=_optional_string, default=None)
 
 
 @attrs.define(frozen=True)
