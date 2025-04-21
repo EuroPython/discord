@@ -82,6 +82,7 @@ As we are not using ansible we need to rely to do some manual stuff on the ssh.
 # create log file
 mkdir /home/bot
 touch /home/bot/registered_log.txt
+touch /home/bot/posted_jobs.txt
 ```
 
 ```bash
