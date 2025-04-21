@@ -16,7 +16,9 @@ ENV PATH="/home/bot/.local/bin:$PATH"
 COPY --chown=bot:bot pyproject.toml poetry.lock ./
 COPY --chown=bot:bot discord_bot ./discord_bot
 
-RUN poetry install --no-root && \
+RUN python -m venv /home/bot/venv && \
+    . /home/bot/venv/bin/activate && \
+    poetry install && \
     rm -rf /home/bot/.cache
 
-ENTRYPOINT ["poetry", "run", "python", "discord_bot/bot.py"]
+ENTRYPOINT ["/home/bot/venv/bin/python", "discord_bot/bot.py"]
