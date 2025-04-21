@@ -101,5 +101,5 @@
         owner: bot
         group: bot
 
-    - name: Start EuroPythonBot
+    - name: Start Discord Bot
       shell: "cd /root/discord && docker compose down && docker compose up --detach --build"

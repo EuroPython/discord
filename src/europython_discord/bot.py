@@ -8,10 +8,10 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
-from EuroPythonBot import configuration
-from EuroPythonBot.cogs.ping import Ping
-from EuroPythonBot.program_notifications.cog import ProgramNotificationsCog
-from EuroPythonBot.registration.cog import RegistrationCog
+from europython_discord import configuration
+from europython_discord.cogs.ping import Ping
+from europython_discord.program_notifications.cog import ProgramNotificationsCog
+from europython_discord.registration.cog import RegistrationCog
 
 load_dotenv(Path(__file__).resolve().parent.parent.parent / ".secrets")
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
@@ -20,13 +20,13 @@ _logger = logging.getLogger("bot")
 
 
 class Bot(commands.Bot):
-    def __init__(self):
+    def __init__(self) -> None:
         intents = _get_intents()
         super().__init__(command_prefix=commands.when_mentioned_or("$"), intents=intents)
         self.guild = None
-        self.channels = dict()
+        self.channels = {}
 
-    async def on_ready(self):
+    async def on_ready(self) -> None:
         _logger.info("Logged in as user %r (ID=%r)", self.user.name, self.user.id)
 
     async def load_extension(self, name: str, *, package: str | None = None) -> None:
@@ -70,17 +70,17 @@ def _get_intents() -> discord.Intents:
     return intents
 
 
-async def run_bot(bot):
+async def run_bot(bot: Bot) -> None:
     _setup_logging()
     async with bot:
         await bot.add_cog(Ping(bot))
         await bot.add_cog(RegistrationCog(bot))
         await bot.add_cog(ProgramNotificationsCog(bot))
-        await bot.load_extension("EuroPythonBot.extensions.organisers")
+        await bot.load_extension("europython_discord.extensions.organisers")
         await bot.start(DISCORD_BOT_TOKEN)
 
 
-def main():
+def main() -> None:
     bot = Bot()
 
     try:

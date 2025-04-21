@@ -5,15 +5,15 @@ import itertools
 import logging
 import time
 from collections import defaultdict
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 import aiofiles
 import aiohttp
 from pydantic import BaseModel
 
-from EuroPythonBot.registration.pretix_api_response_models import PretixItem, PretixOrder
-from EuroPythonBot.registration.ticket import Ticket, generate_ticket_key
+from europython_discord.registration.pretix_api_response_models import PretixItem, PretixOrder
+from europython_discord.registration.ticket import Ticket, generate_ticket_key
 
 _logger = logging.getLogger(f"bot.{__name__}")
 
@@ -24,7 +24,7 @@ class PretixCache(BaseModel):
 
 
 class PretixConnector:
-    def __init__(self, *, url: str, token: str, cache_file: Path | None = None):
+    def __init__(self, *, url: str, token: str, cache_file: Path | None = None) -> None:
         self._pretix_api_url = url
 
         # https://docs.pretix.eu/en/latest/api/tokenauth.html#using-an-api-token
@@ -57,7 +57,7 @@ class PretixConnector:
         # if called during an ongoing fetch, the caller waits until the fetch is done...
         async with self._fetch_lock:
             # ... but does not trigger a second fetch
-            now = datetime.now(tz=timezone.utc)
+            now = datetime.now(tz=UTC)
             if self._last_fetch and now - self._last_fetch < timedelta(minutes=2):
                 _logger.info(f"Skipping pretix fetch (last fetch was at {self._last_fetch})")
                 return

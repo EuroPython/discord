@@ -2,8 +2,8 @@ from pathlib import Path
 
 import pytest
 
-from EuroPythonBot.registration.registration_logger import RegistrationLogger
-from EuroPythonBot.registration.ticket import Ticket
+from europython_discord.registration.registration_logger import RegistrationLogger
+from europython_discord.registration.ticket import Ticket
 
 
 def test_with_empty_file(tmp_path: Path) -> None:

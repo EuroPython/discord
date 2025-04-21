@@ -7,7 +7,7 @@ from pathlib import Path
 import aiofiles
 import aiohttp
 
-from EuroPythonBot.program_notifications.models import Break, Schedule, Session
+from europython_discord.program_notifications.models import Break, Schedule, Session
 
 _logger = logging.getLogger(f"bot.{__name__}")
 
@@ -19,6 +19,7 @@ class ProgramConnector:
         timezone_offset: int,
         cache_file: Path,
         simulated_start_time: datetime | None = None,
+        *,
         fast_mode: bool = False,
     ) -> None:
         self._api_url = api_url
@@ -35,10 +36,7 @@ class ProgramConnector:
         self.sessions_by_day: dict[date, list[Session]] | None = None
 
     async def parse_schedule(self, schedule: dict) -> dict[date, list[Session]]:
-        """
-        Parse the schedule data and return a dictionary with
-        the sessions grouped by date.
-        """
+        """Parse the schedule data and return a dictionary with the sessions grouped by date."""
         schedule: Schedule = Schedule.model_validate(schedule)
 
         sessions_by_day = {}
@@ -53,16 +51,15 @@ class ProgramConnector:
         return sessions_by_day
 
     async def fetch_schedule(self) -> None:
-        """
-        Fetch schedule data from the Program API and
-        write it to a file in case the API goes down.
-        """
+        """Fetch schedule data from the Program API and write it to a file as backup."""
         async with self._fetch_lock:
             try:
-                async with aiohttp.ClientSession() as session:
-                    async with session.get(self._api_url) as response:
-                        response.raise_for_status()
-                        schedule = await response.json()
+                async with (
+                    aiohttp.ClientSession() as session,
+                    session.get(self._api_url) as response,
+                ):
+                    response.raise_for_status()
+                    schedule = await response.json()
 
             except aiohttp.ClientError as e:
                 _logger.warning(f"Error fetching schedule: {e}.")
@@ -88,18 +85,16 @@ class ProgramConnector:
             _logger.info("Schedule parsed and loaded.")
 
     async def _get_schedule_from_cache(self) -> dict[date, list[Session]]:
-        """
-        Get the schedule data from the cache file.
-        """
+        """Get the schedule data from the cache file."""
         try:
             _logger.info(f"Getting schedule from cache file {self._cache_file}...")
-            async with aiofiles.open(self._cache_file, "r") as f:
+            async with aiofiles.open(self._cache_file) as f:
                 schedule = json.loads(await f.read())
 
             return await self.parse_schedule(schedule)
 
         except FileNotFoundError:
-            _logger.error("Schedule cache file not found and no schedule is already loaded.")
+            _logger.exception("Schedule cache file not found and no schedule is already loaded.")
 
     async def _get_now(self) -> datetime:
         """Get the current time in the conference timezone."""
@@ -107,8 +102,8 @@ class ProgramConnector:
             elapsed = datetime.now(tz=self._timezone) - self._real_start_time
             simulated_now = self._simulated_start_time + elapsed * self._time_multiplier
             return simulated_now.astimezone(self._timezone)
-        else:
-            return datetime.now(tz=self._timezone)
+
+        return datetime.now(tz=self._timezone)
 
     async def get_sessions_by_date(self, date_now: date) -> list[Session]:
         if self.sessions_by_day is None:
@@ -123,7 +118,7 @@ class ProgramConnector:
             # because this is expected on non-conference days
             _logger.debug(f"No sessions found on {date_now}")
         except TypeError:
-            _logger.error("Schedule data is not loaded.")
+            _logger.exception("Schedule data is not loaded.")
 
         return sessions_on_day
 

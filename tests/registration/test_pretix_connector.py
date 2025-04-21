@@ -1,7 +1,7 @@
 import json
 from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from http import HTTPStatus
 from pathlib import Path
 
@@ -12,13 +12,13 @@ from aiohttp.test_utils import TestClient, TestServer
 from aiohttp.web_request import Request
 from aiohttp.web_response import Response
 
-from EuroPythonBot.registration.pretix_connector import PretixConnector
-from EuroPythonBot.registration.ticket import Ticket
+from europython_discord.registration.pretix_connector import PretixConnector
+from europython_discord.registration.ticket import Ticket
 
 mock_items_file = Path(__file__).parent / "mock_pretix_items.json"
 mock_orders_file = Path(__file__).parent / "mock_pretix_orders.json"
 
-PRETIX_API_TOKEN = "MY_PRETIX_API_TOKEN"
+PRETIX_API_TOKEN = "MY_PRETIX_API_TOKEN"  # noqa: S105 (hardcoded password)
 
 
 @dataclass
@@ -64,7 +64,7 @@ async def create_pretix_app_mock(
     return PretixMock(base_url=str(client.make_url("")), requests=requests)
 
 
-@pytest.fixture()
+@pytest.fixture
 async def pretix_mock(aiohttp_client, unused_tcp_port_factory) -> PretixMock:
     return await create_pretix_app_mock(
         response_factories={
@@ -291,9 +291,9 @@ async def test_pagination(aiohttp_client, unused_tcp_port_factory):
     pretix_connector = PretixConnector(url=pretix_mock.base_url, token=PRETIX_API_TOKEN)
     await pretix_connector.fetch_pretix_data()
 
-    assert (
-        len(pretix_connector.item_names_by_id) == 5
-    ), "Only the first page of '/items' was fetched."
+    assert len(pretix_connector.item_names_by_id) == 5, (
+        "Only the first page of '/items' was fetched."
+    )
 
 
 @pytest.mark.asyncio
@@ -320,7 +320,7 @@ async def test_consecutive_fetches_after_some_time_fetch_updates(pretix_mock):
     pretix_connector = PretixConnector(url=pretix_mock.base_url, token=PRETIX_API_TOKEN)
     requests = pretix_mock.requests
 
-    initial_time = datetime.now(tz=timezone.utc)
+    initial_time = datetime.now(tz=UTC)
 
     # initial fetch should fetch everything
     await pretix_connector.fetch_pretix_data()

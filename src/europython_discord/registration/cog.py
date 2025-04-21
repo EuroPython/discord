@@ -8,9 +8,9 @@ import discord
 from discord import Client, Forbidden, Interaction, Role
 from discord.ext import commands, tasks
 
-from EuroPythonBot.configuration import Config
-from EuroPythonBot.registration.pretix_connector import PretixConnector
-from EuroPythonBot.registration.registration_logger import RegistrationLogger
+from europython_discord.configuration import Config
+from europython_discord.registration.pretix_connector import PretixConnector
+from europython_discord.registration.registration_logger import RegistrationLogger
 
 config = Config()
 
@@ -18,7 +18,7 @@ _logger = logging.getLogger(f"bot.{__name__}")
 
 
 class RegistrationButton(discord.ui.Button["Registration"]):
-    def __init__(self, parent_cog: RegistrationCog):
+    def __init__(self, parent_cog: RegistrationCog) -> None:
         super().__init__()
         self.parent_cog = parent_cog
         self.label = "Register here 👈"
@@ -29,7 +29,7 @@ class RegistrationButton(discord.ui.Button["Registration"]):
 
 
 class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
-    def __init__(self, parent_cog: RegistrationCog):
+    def __init__(self, parent_cog: RegistrationCog) -> None:
         super().__init__()
         self.parent_cog = parent_cog
 
@@ -152,7 +152,7 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
 
 
 class RegistrationCog(commands.Cog):
-    def __init__(self, bot: Client):
+    def __init__(self, bot: Client) -> None:
         self.bot = bot
 
         self.pretix_connector = PretixConnector(
@@ -164,7 +164,7 @@ class RegistrationCog(commands.Cog):
         _logger.info("Cog 'Registration' has been initialized")
 
     @commands.Cog.listener()
-    async def on_ready(self):
+    async def on_ready(self) -> None:
         reg_channel = self.bot.get_channel(config.REG_CHANNEL_ID)
 
         await reg_channel.purge()
@@ -221,7 +221,7 @@ class RegistrationCog(commands.Cog):
         )
 
     @tasks.loop(minutes=5)
-    async def fetch_pretix_updates(self):
+    async def fetch_pretix_updates(self) -> None:
         _logger.info("Starting the periodic pretix update...")
         try:
             await self.pretix_connector.fetch_pretix_data()

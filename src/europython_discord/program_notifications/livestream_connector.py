@@ -15,22 +15,14 @@ class LivestreamConnector:
         self.livestreams_by_room: dict[str, dict[date, str]] | None = None
 
     async def _open_livestreams_file(self) -> dict[str, dict[str, dict[str, str]]]:
-        """
-        Open the livestreams file and return its content.
-        """
-        async with aiofiles.open(self._livestreams_file, mode="r") as f:
-            livestreams = await f.read()
-            livestreams = tomllib.loads(livestreams)
-        return livestreams
+        """Open the livestreams file and return its content."""
+        async with aiofiles.open(self._livestreams_file) as f:
+            return tomllib.loads(await f.read())
 
     async def _parse_livestreams(
         self, livestreams_raw: dict[str, dict[str, dict[str, str]]]
     ) -> dict[str, dict[date, str]]:
-        """
-        Parse the livestream data and return a dictionary with
-        the livestreams grouped by room.
-        """
-
+        """Parse livestream data and return a dictionary with the livestreams grouped by room."""
         livestreams_by_room: dict[str, dict[date, str]] = {}
 
         for room_details in livestreams_raw["rooms"].values():
@@ -43,15 +35,15 @@ class LivestreamConnector:
         return livestreams_by_room
 
     async def fetch_livestreams(self) -> None:
-        """
-        Read the livestreams file and parse it.
-        """
+        """Read the livestreams file and parse it."""
         async with self._fetch_lock:
             livestreams_raw = await self._open_livestreams_file()
             self.livestreams_by_room = await self._parse_livestreams(livestreams_raw)
 
     async def get_livestream_url(self, room: str, date: date) -> None:
         """
+        Get the livestream URL for the given room and date.
+
         :param room: The room name.
         :param date: The date of the livestream.
 

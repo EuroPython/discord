@@ -6,7 +6,7 @@ _logger = logging.getLogger(f"bot.{__name__}")
 
 
 class Ping(commands.Cog):
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: commands.Bot) -> None:
         self.bot: commands.Bot = bot
         _logger.info("Cog 'Ping' has been initialized")
 

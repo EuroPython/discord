@@ -11,17 +11,14 @@ from pathlib import Path
 import discord
 from discord.ext.commands import Bot
 
+logger = logging.getLogger(__name__)
+
 DESCRIPTION = """\
 Export all guild members and their roles to per-guild .csv files.
 
 Requires the environment variable 'BOT_TOKEN' to be set.
 Requires bot privileges for receiving 'GUILD_MEMBER' events.
 """
-
-
-def report_error(message: str) -> None:
-    """Print an error message to stderr."""
-    print("ERROR:", message, file=sys.stderr)
 
 
 def write_members_to_csv_file(guild: discord.Guild, output_file: Path) -> None:
@@ -67,10 +64,10 @@ class MemberExportBot(Bot):
 
         await self.close()
 
-    async def on_error(self, event: str, *args, **kwargs) -> None:
+    async def on_error(self, event: str, *args, **kwargs) -> None:  # noqa: ANN002,ANN003 (types)
         """Event handler for uncaught exceptions."""
         exc_type, exc_value, _exc_traceback = sys.exc_info()
-        report_error(f"{exc_type.__name__} {exc_value}")
+        logger.error(f"{exc_type.__name__} {exc_value}")
 
         # let discord.py log the exception
         await super().on_error(event, *args, **kwargs)
@@ -85,12 +82,12 @@ async def run_bot(bot: Bot, token: str) -> None:
             await _bot.login(token)
             await _bot.connect()
         except discord.LoginFailure:
-            report_error("Invalid Discord bot token")
+            logger.exception("Invalid Discord bot token")
         except discord.PrivilegedIntentsRequired:
-            report_error("Insufficient privileges. Required events: 'GUILD_MEMBERS'")
+            logger.exception("Insufficient privileges. Required events: 'GUILD_MEMBERS'")
 
 
-def main():
+def main() -> None:
     """Run this application."""
     parser = argparse.ArgumentParser(
         description=DESCRIPTION,
@@ -106,6 +103,8 @@ def main():
 
     if args.debug:
         logging.basicConfig(level=logging.DEBUG, stream=sys.stderr)
+    else:
+        logging.basicConfig(level=logging.INFO, stream=sys.stderr)
 
     bot = MemberExportBot(args.output_dir)
     asyncio.run(run_bot(bot, bot_token))

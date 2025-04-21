@@ -8,7 +8,7 @@ We hosted the bot on Hetzner. And deployed with a single click Action from GitHu
 
 ## Overview
 
-The `main` method in `EuroPythonBot/bot.py` is the entry point for the bot.
+The `main` method in `src/europython_discord/bot.py` is the entry point for the bot.
 I't a good starting point to start browsing the codebase.
 It requires a `.secrets` file in the root of the repository with `DISCORD_BOT_TOKEN` and `PRETIX_TOKEN` environment variables.
 
@@ -87,16 +87,15 @@ uv remove package
 
 ### Development tools
 
-* Format code: `uv run --dev black .`
-* Check code format: `uv run --dev black --check .`
-* Sort imports: `uv run --dev isort .`
-* Check import order: `uv run --dev isort --check .`
-* Check code style: `uv run --dev flake8 .`
+* Format code: `uv run --dev ruff format`
+* Check code format: `uv run --dev ruff format --check`
+* Sort imports: `uv run --dev ruff check --select I001 --fix`
+* Check code style: `uv run --dev ruff check .`
 * Run tests: `uv run --dev pytest .`
 
 ### Configuration
 
-Create `config.local.toml` file in EuroPythonBot directory, it would be used instead of `config.toml` if exists.
+Create `config.local.toml` file in the `src/europython_discord` directory, it would be used instead of `config.toml` if exists.
 
 Add `.secrets` file to the root of the repository with the following content:
 
