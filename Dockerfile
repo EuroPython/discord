@@ -7,8 +7,10 @@ RUN groupadd --gid 1000 bot && \
 USER bot
 WORKDIR /home/bot
 
+ENV PATH="/home/bot/.local/bin:$PATH"
+
 RUN pip install --upgrade --user pip && rm -rf /home/bot/.cache
-RUN pip install --user poetry && rm -rf /home/bot/.cache
+RUN pip install poetry && rm -rf /home/bot/.cache
 RUN rm -rf /home/bot/.cache
 
 COPY --chown=bot:bot pyproject.toml poetry.lock ./
