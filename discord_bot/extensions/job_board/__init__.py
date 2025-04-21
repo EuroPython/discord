@@ -7,9 +7,9 @@ from pathlib import Path
 
 import aiofiles
 import attrs
+import discord
 from discord.ext import commands
 
-import discord_bot
 from discord_bot import configuration
 
 _logger = logging.getLogger(f"bot.{__name__}")
@@ -29,7 +29,7 @@ class JobBoard(commands.Cog):
     _config: configuration.Config
 
     @commands.Cog.listener()
-    async def on_ready(self):
+    async def on_ready(self) -> None:
         """Send jobs from csv file to job_board channel."""
         # get discord guild and channel
         self.guild = self._bot.get_guild(self._config.GUILD)
@@ -52,7 +52,8 @@ class JobBoard(commands.Cog):
         for job in job_list:
             key, name, content, thread_messages, file = self.prepare_job_post(job)
             if key not in self.posted_jobs_set:
-                _logger.info(f"Posting new job: {key}")
+                msg = f"Posting new job: {key}"
+                _logger.info(msg)
                 if file:
                     thread_with_message = await self.channel.create_thread(
                         name=name,
@@ -76,7 +77,8 @@ class JobBoard(commands.Cog):
                 async with aiofiles.open(self.posted_jobs_file, mode="a") as f:
                     await f.write(f"{key}\n")
             else:
-                _logger.info(f"Job already posted: {key}")
+                msg = f"Job already posted: {key}"
+                _logger.info(msg)
 
         if self.JOB_BOARD_TESTING:
             for thread in threads:
@@ -106,7 +108,7 @@ class JobBoard(commands.Cog):
     def prepare_job_post(
         self,
         job: list,
-    ) -> tuple[str, str, str, list, discord_bot.File | None]:
+    ) -> tuple[str, str, str, list, discord.File | None]:
         """Prepare the job post."""
         # get values from job columns
         timestamp = job[0]
@@ -167,6 +169,6 @@ class JobBoard(commands.Cog):
                 job_title_r = job_title.replace("/", "_")
                 job_title_r = job_title_r.replace(":", "_")
                 filename = f"{company_name}-{job_title_r}.jpg"
-            file = discord_bot.File(path / "pictures" / filename, filename=filename)
+            file = discord.File(path / "pictures" / filename, filename=filename)
 
         return key, name, content, thread_messages, file
