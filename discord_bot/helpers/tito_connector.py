@@ -1,3 +1,5 @@
+"""Tito API connector for ticket validation."""
+
 from __future__ import annotations
 
 import logging
@@ -114,7 +116,7 @@ class TitoOrder(metaclass=Singleton):
                 roles.append(self.config.ROLES["Remote"])  # Remote
             if data.get("is_onsite"):
                 roles.append(self.config.ROLES["On-Site"])  # On-Site
-            # TODO: what about these?
+            # TODO(dan): what about these?
             # "is_guest"
             # "online_access"
 

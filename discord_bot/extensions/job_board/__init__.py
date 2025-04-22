@@ -1,5 +1,7 @@
 """Extension for posting in job board forum."""
 
+from __future__ import annotations
+
 import csv
 import logging
 import random
@@ -86,22 +88,22 @@ class JobBoard(commands.Cog):
 
     def load_posted_jobs(self) -> set:
         """Load already posted jobs from txt file."""
-        with open(self.posted_jobs_file) as f:
-            return set([reg.strip() for reg in f.readlines()])
+        with open(self.posted_jobs_file) as f:  # noqa: PTH123
+            return {reg.strip() for reg in f}
 
     def get_job_positions_from_csv(self, filename: str) -> list:
         """Read csv file from google forms export."""
         path = Path(__file__).resolve().parent
-        with open(file=path / filename) as f:
+        with open(file=path / filename) as f:  # noqa: PTH123
             csv_reader = csv.reader(f)
             next(csv_reader)  # skip header row
-            return [row for row in csv_reader]
+            return list(csv_reader)
 
     def format_thread_message(self, title: str, message: str) -> list:
         """Split thread messages that are too long for discord to handle into multiple messages."""
-        MESSAGE_LIMIT = 2000
-        if len(title) + len(message) + 10 > MESSAGE_LIMIT:
-            split_message = [message[i : i + MESSAGE_LIMIT] for i in range(0, len(message), MESSAGE_LIMIT)]
+        message_limit = 2000
+        if len(title) + len(message) + 10 > message_limit:
+            split_message = [message[i : i + message_limit] for i in range(0, len(message), message_limit)]
             return [f"**{title}:**\n", *split_message]
         return [f"**{title}:**\n{message}"]
 
@@ -158,17 +160,17 @@ class JobBoard(commands.Cog):
         if url:
             thread_messages.append(f"**More info at:** {url}")
 
-        COMAPNIES_WITH_DIFFERENT_PICTURES = ["energy & meteo systems GmbH"]
+        # COMAPNIES_WITH_DIFFERENT_PICTURES = ["energy & meteo systems GmbH"]
 
         file = None
         if job_picture:
             path = Path(__file__).resolve().parent
             filename = f"{company_name}.png"
-            if company_name in COMAPNIES_WITH_DIFFERENT_PICTURES:
-                # replace special characters in job_title
-                job_title_r = job_title.replace("/", "_")
-                job_title_r = job_title_r.replace(":", "_")
-                filename = f"{company_name}-{job_title_r}.jpg"
+            # if company_name in COMAPNIES_WITH_DIFFERENT_PICTURES:
+            #     # replace special characters in job_title
+            #     job_title_r = job_title.replace("/", "_")
+            #     job_title_r = job_title_r.replace(":", "_")
+            #     filename = f"{company_name}-{job_title_r}.jpg"
             file = discord.File(path / "pictures" / filename, filename=filename)
 
         return key, name, content, thread_messages, file

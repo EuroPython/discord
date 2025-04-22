@@ -1,4 +1,7 @@
 """Models to represent Discord objects."""
+
+from __future__ import annotations
+
 from typing import Final
 
 import attrs
@@ -46,33 +49,19 @@ class Author:
 class Embed:
     """A Discord embed."""
 
-    title: str | None = attrs.field(
-        validator=validators.optional(validators.max_len(_MAX_LEN["title"]))
-    )
+    title: str | None = attrs.field(validator=validators.optional(validators.max_len(_MAX_LEN["title"])))
     author: Author | None
-    description: str | None = attrs.field(
-        validator=validators.optional(validators.max_len(_MAX_LEN["description"]))
-    )
-    fields: list[Field] | None = attrs.field(
-        validator=validators.optional(validators.max_len(_MAX_LEN["fields"]))
-    )
+    description: str | None = attrs.field(validator=validators.optional(validators.max_len(_MAX_LEN["description"])))
+    fields: list[Field] | None = attrs.field(validator=validators.optional(validators.max_len(_MAX_LEN["fields"])))
     footer: Footer | None
     url: str | None
-    color: int | None = attrs.field(
-        default=None, validator=validators.optional(validators.instance_of(int))
-    )
+    color: int | None = attrs.field(default=None, validator=validators.optional(validators.instance_of(int)))
 
 
 @attrs.define(frozen=True)
 class WebhookMessage:
     """A message to send to a Discord webhook."""
 
-    content: str | None = attrs.field(
-        validator=validators.optional(validators.max_len(_MAX_LEN["content"]))
-    )
-    embeds: list[Embed] = attrs.field(
-        default=attrs.Factory(list), validator=validators.max_len(_MAX_LEN["embeds"])
-    )
-    allowed_mentions: dict[str, list[str]] = attrs.field(
-        init=False, default=attrs.Factory(lambda: {"parse": []})
-    )
+    content: str | None = attrs.field(validator=validators.optional(validators.max_len(_MAX_LEN["content"])))
+    embeds: list[Embed] = attrs.field(default=attrs.Factory(list), validator=validators.max_len(_MAX_LEN["embeds"]))
+    allowed_mentions: dict[str, list[str]] = attrs.field(init=False, default=attrs.Factory(lambda: {"parse": []}))

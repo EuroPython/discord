@@ -1,3 +1,5 @@
+"""Clock service."""
+
 import asyncio
 from collections.abc import Coroutine
 from typing import Callable, Protocol

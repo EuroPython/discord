@@ -1,9 +1,10 @@
-async def log_to_channel(channel, interaction, name="", order="", roles=tuple(), error=None):
+"""Channel logging."""
+
+
+async def log_to_channel(channel, interaction, name="", order="", roles=(), error=None) -> None:  # noqa: ANN001, PLR0913
+    """Log to channel."""
     user = interaction.user
-    if user.nick is None:
-        user_name = user.name
-    else:
-        user_name = user.nick
+    user_name = user.name if user.nick is None else user.nick
 
     user_identifier = f"{user_name} ({user.id})"
     if error is None:

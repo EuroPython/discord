@@ -1,13 +1,20 @@
+"""Task scheduler for the bot."""
+
+from __future__ import annotations
+
 import asyncio
 import functools
 import logging
-from collections.abc import Coroutine
-from typing import Protocol
+from typing import TYPE_CHECKING, Protocol
 
-import arrow
 import attrs
 
-from discord_bot.extensions.programme_notifications.services import clock
+if TYPE_CHECKING:
+    from collections.abc import Coroutine
+
+    import arrow
+
+    from discord_bot.extensions.programme_notifications.services import clock
 
 _logger = logging.getLogger(f"bot.{__name__}")
 
@@ -23,7 +30,7 @@ class IScheduler(Protocol):
         """Schedule awaitables at the passed datetime."""
 
     def cancel_all(self) -> None:
-        """Cancel all scheduled tasks"""
+        """Cancel all scheduled tasks."""
 
 
 @attrs.define

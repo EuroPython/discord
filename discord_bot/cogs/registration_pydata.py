@@ -1,5 +1,6 @@
 """Registration for PyData."""
 
+# ruff: noqa: D101, D107
 from discord.ext import commands
 
 from discord_bot.cogs.registration import (
@@ -28,24 +29,24 @@ EMOJI_POINT = "\N{WHITE LEFT POINTING BACKHAND INDEX}"
 class RegistrationButtonPyData(RegistrationButton):
     def __init__(
         self,
-        registration_form: RegistrationForm,
-    ):
+        registration_form: RegistrationForm,  # noqa: ARG002
+    ) -> None:
         super().__init__(registration_form=RegistrationFormPyData)
 
 
 class RegistrationFormPyData(RegistrationForm):
-    def __init__(self):
+    def __init__(self) -> None:
         title = f"{config.CONFERENCE_NAME} Registration"
         super().__init__(title=title)
 
 
 class RegistrationViewPyData(RegistrationView):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__(registration_button=RegistrationButtonPyData, registration_form=RegistrationFormPyData)
 
 
 class RegistrationPyData(Registration, commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot) -> None:  # noqa: ANN001
         super().__init__(bot, registration_view=RegistrationViewPyData)
         self._title = f"Welcome to {config.CONFERENCE_NAME} on Discord! 🎉🐍"
         self._desc = (

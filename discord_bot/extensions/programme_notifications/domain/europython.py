@@ -1,5 +1,7 @@
 """Models to represent EuroPython sessions."""
 
+from __future__ import annotations
+
 import arrow
 import attrs
 import yarl

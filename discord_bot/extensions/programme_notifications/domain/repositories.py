@@ -1,12 +1,15 @@
 """A repository for EuroPython sessions."""
 
+from __future__ import annotations
+
 import logging
 from collections.abc import Sized
-from typing import Protocol
+from typing import TYPE_CHECKING, Protocol
 
 import attrs
 
-from discord_bot.extensions.programme_notifications.domain import europython
+if TYPE_CHECKING:
+    from discord_bot.extensions.programme_notifications.domain import europython
 
 _log = logging.getLogger(f"bot.{__name__}")
 

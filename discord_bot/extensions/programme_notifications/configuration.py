@@ -3,8 +3,7 @@
 from __future__ import annotations
 
 import os
-from collections.abc import Mapping
-from typing import Final
+from typing import TYPE_CHECKING, Final
 
 import arrow
 import attrs
@@ -13,7 +12,10 @@ import toml
 import yarl
 from attrs import validators
 
-from discord_bot import configuration
+if TYPE_CHECKING:
+    from collections.abc import Mapping
+
+    from discord_bot import configuration
 
 _WEBHOOK_ENVVAR_PREFIX: Final = "DISCORD_WEBHOOK_"
 

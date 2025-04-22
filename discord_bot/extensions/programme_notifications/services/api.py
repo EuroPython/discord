@@ -13,8 +13,7 @@ import hashlib
 import json
 import logging
 import pathlib
-from collections.abc import Iterable
-from typing import Any, Protocol, TypeVar
+from typing import TYPE_CHECKING, Any, Protocol, TypeVar
 
 import aiohttp
 import arrow
@@ -25,6 +24,9 @@ from attrs import validators
 
 from discord_bot.extensions.programme_notifications import configuration, exceptions
 from discord_bot.extensions.programme_notifications.domain import discord, europython
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
 
 _DEFAULT_SCHEDULE_CACHE_PATH: pathlib.Path = pathlib.Path(__file__).resolve().parent / "_cached" / "schedule.json"
 _logger = logging.getLogger(f"bot.{__name__}")
@@ -57,11 +59,12 @@ class ApiClient:
     )
 
     @_schedule_cache_path.validator
-    def _cache_path_exists_validator(self, attribute: str, value: pathlib.Path):
+    def _cache_path_exists_validator(self, attribute: str, value: pathlib.Path) -> None:
         """Validate that the schedule cache path exists."""
         del attribute  # unused
         if not value.exists():
-            raise ValueError("The path '%s' does not exist!")
+            msg = "The path '%s' does not exist!"
+            raise ValueError(msg)
 
     async def fetch_schedule(self) -> ScheduleResponse:
         """Fetch the schedule from the Pretalx API.
@@ -84,7 +87,7 @@ class ApiClient:
             sessions=self._convert(raw_schedule["slots"], europython.Session),
             breaks=self._convert(raw_schedule["breaks"], europython.Break),
             version=raw_schedule["version"],
-            schedule_hash=hashlib.sha1(response_content).hexdigest(),
+            schedule_hash=hashlib.sha1(response_content).hexdigest(),  # noqa: S324
         )
         return ScheduleResponse(schedule=schedule, from_cache=from_cache)
 
@@ -92,8 +95,7 @@ class ApiClient:
         """Fetch the schedule from Pretalx."""
         _logger.info("Making call to Pretalx API.")
         async with self.session.get(url=url, raise_for_status=True) as response:
-            response_content = await response.read()
-        return response_content
+            return await response.read()
 
     @functools.cached_property
     def _cached_schedule_response_content(self) -> bytes:
@@ -149,7 +151,7 @@ class ApiClient:
             # session_information = await response.json()
             html = await response.text()
 
-        # Find the first occurrence of 'Expected audience expertise: Python:' and then locate the first <p> tag after it
+        # Find the first occurrence of 'Expected audience expertise: Python:' and then locate the first <p> tag after
         keyword = "Expected audience expertise: Python:"
 
         keyword_index = html.find(keyword)

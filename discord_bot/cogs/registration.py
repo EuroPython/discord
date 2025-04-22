@@ -1,5 +1,6 @@
 """Registration cog for EuroPython 2023 Discord bot."""
 
+# ruff: noqa: D101, D107
 from __future__ import annotations
 
 import logging
@@ -32,7 +33,7 @@ class RegistrationButton(discord.ui.Button["Registration"]):
         y: int = 0,
         label: str = f"Register here {EMOJI_POINT}",
         style: discord.ButtonStyle = discord.ButtonStyle.green,
-    ):
+    ) -> None:
         super().__init__(style=discord.ButtonStyle.secondary, label=ZERO_WIDTH_SPACE, row=y)
         self.x = x
         self.y = y
@@ -40,8 +41,8 @@ class RegistrationButton(discord.ui.Button["Registration"]):
         self.style = style
         self.registration_form = registration_form
 
-    async def callback(self, interaction: discord.Interaction) -> None:
-        assert self.view is not None
+    async def callback(self, interaction: discord.Interaction) -> None:  # noqa: D102
+        assert self.view is not None  # noqa: S101
 
         # Launch the modal form
         await interaction.response.send_modal(self.registration_form())
@@ -113,6 +114,7 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
         await interaction.response.send_message(msg, ephemeral=True, delete_after=20)
 
     async def on_error(self, interaction: discord.Interaction, error: Exception) -> None:
+        """On error, log the error and send a message to the user."""
         # Make sure we know what the error actually is
         _logger.error("An error occurred!", exc_info=error)
 
@@ -141,7 +143,7 @@ class RegistrationView(discord.ui.View):
         self,
         registration_button: RegistrationButton = RegistrationButton,
         registration_form: RegistrationForm = RegistrationForm,
-    ):
+    ) -> None:
         # We don't timeout to have a persistent View
         super().__init__(timeout=None)
         self.value = None
@@ -149,7 +151,9 @@ class RegistrationView(discord.ui.View):
 
 
 class Registration(commands.Cog):
-    def __init__(self, bot, registration_view: RegistrationView = RegistrationView):
+    """Registration cogfor the discord bot."""
+
+    def __init__(self, bot, registration_view: RegistrationView = RegistrationView) -> None:  # noqa: ANN001
         self.bot = bot
         self.guild = None
         self._title = "Welcome to EuroPython 2023 on Discord! 🎉🐍"
@@ -170,7 +174,8 @@ class Registration(commands.Cog):
         _logger.info("Cog 'Registration' has been initialized")
 
     @commands.Cog.listener()
-    async def on_ready(self):
+    async def on_ready(self) -> None:
+        """On ready start the registration service."""
         if self.guild is None:
             self.guild = self.bot.get_guild(config.GUILD)
 

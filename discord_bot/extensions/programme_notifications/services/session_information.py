@@ -1,15 +1,20 @@
+"""Session information service."""
+
 # ruff: noqa: ERA001
 from __future__ import annotations
 
 import logging
 import os
+from typing import TYPE_CHECKING
 
 import attrs
 import yarl
 
 from discord_bot.extensions.programme_notifications import configuration, exceptions
-from discord_bot.extensions.programme_notifications.domain import europython, repositories
-from discord_bot.extensions.programme_notifications.services import api
+
+if TYPE_CHECKING:
+    from discord_bot.extensions.programme_notifications.domain import europython, repositories
+    from discord_bot.extensions.programme_notifications.services import api
 
 _logger = logging.getLogger(f"bot.{__name__}")
 

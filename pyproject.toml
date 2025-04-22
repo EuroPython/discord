@@ -34,13 +34,14 @@ ansible = "^11.4.0"
 
 [tool.ruff]
 line-length = 119
-extend-exclude = ["docs", "notebooks"]
+extend-exclude = ["docs", "notebooks", "tests"]
 
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
     "PD901", # `df` is a bad variable name. Be kinder to your future self. <- it's a great name
     "TD003",  # currently, we do not provide issue links for TODOs, could be done in future
+    "ERA001",  # commented out code. include this later
     "FIX002",  # we should manually check for TODOs in the code
     "COM812",  # ignore when using ruff formatter
     "ISC001",  # ignore when using ruff formatter

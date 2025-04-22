@@ -1,16 +1,21 @@
+"""Notify webhooks of sessions."""
+
 from __future__ import annotations
 
 import asyncio
 import datetime
 import logging
-from typing import Any, Final
+from typing import TYPE_CHECKING, Any, Final
 
-import arrow
 import attrs
 
-from discord_bot.extensions.programme_notifications import configuration
 from discord_bot.extensions.programme_notifications.domain import discord, europython, services
-from discord_bot.extensions.programme_notifications.services import api, session_information, task_scheduler
+
+if TYPE_CHECKING:
+    import arrow
+
+    from discord_bot.extensions.programme_notifications import configuration
+    from discord_bot.extensions.programme_notifications.services import api, session_information, task_scheduler
 
 _logger = logging.getLogger(f"bot.{__name__}")
 _SCHEDULE_NOTIFICATION_MESSAGE: Final = "# Sessions starting in 5 minutes:"
@@ -40,7 +45,7 @@ class Notifier:
     _config: configuration.NotifierConfiguration
     _previous_schedule_hash: str | None = attrs.field(init=False, default=None)
 
-    async def schedule_notifications(self, force: bool = False) -> None:
+    async def schedule_notifications(self, *, force: bool = False) -> None:
         """Schedule notifications by fetching a new schedule.
 
         If the fetched schedule has the same hash as the previous

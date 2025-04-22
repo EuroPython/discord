@@ -439,11 +439,17 @@ class ConferenceSetup:
             livestream_url = row["Event Link"]
             # make sure the start and end times are matching the self.conference_afternoon_session_start_time env var
             if period == "MORNING" and start_time >= self.conference_afternoon_session_start_time:
-                msg = f"Start time '{start_time}' is after the afternoon session start time '{self.conference_afternoon_session_start_time}'."
+                msg = (
+                    f"Start time '{start_time}' is after the afternoon session start time "
+                    f"'{self.conference_afternoon_session_start_time}'."
+                )
                 _logger.error(msg)
                 continue
             if period == "AFTERNOON" and start_time < self.conference_afternoon_session_start_time:
-                msg = f"Start time '{start_time}' is before the afternoon session start time '{self.conference_afternoon_session_start_time}'."
+                msg = (
+                    f"Start time '{start_time}' is before the afternoon session start time "
+                    f"'{self.conference_afternoon_session_start_time}'."
+                )
                 _logger.error(msg)
                 continue
 

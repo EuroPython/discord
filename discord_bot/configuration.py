@@ -14,12 +14,12 @@ import toml
 _logger = logging.getLogger(f"bot.{__name__}")
 
 
-class Singleton(type):
-    _instances = {}
+class Singleton(type):  # noqa: D101
+    _instances = {}  # noqa: RUF012
 
-    def __call__(cls, *args, **kwargs):
+    def __call__(cls, *args, **kwargs):  # noqa: ANN002, ANN003, ANN204, D102
         if cls not in cls._instances:
-            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)
+            cls._instances[cls] = super(Singleton, cls).__call__(*args, **kwargs)  # noqa: UP008
         return cls._instances[cls]
 
 
