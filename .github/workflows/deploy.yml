@@ -27,5 +27,5 @@ jobs:
             chmod 700 /home/runner/.ssh/id_rsa
             echo -e "${{secrets.ANSIBLE_DEPLOY_SSH_KEY}}" > /home/runner/.ssh/id_rsa
             ssh-keyscan -t ed25519 ${{secrets.BOT_HOST_IP}} >> /home/runner/.ssh/known_hosts
-      - name: Deploy EuroPythonBot with ansible
+      - name: Deploy DiscordBot with ansible
         run: pipenv run ansible-playbook -i ansible/inventory.ini ansible/deploy-playbook.yml --private-key="/home/runner/.ssh/id_rsa" --user=root

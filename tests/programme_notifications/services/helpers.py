@@ -1,6 +1,6 @@
 import asyncio
 
-from extensions.programme_notifications import services
+from discord_bot.extensions.programme_notifications import services
 
 
 class AwaitableScheduler(services.Scheduler):

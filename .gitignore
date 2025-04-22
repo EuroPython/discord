@@ -2,7 +2,7 @@
 .idea
 .vscode
 README.md
-EuroPythonBot/config.local.toml
+discord_bot/config.local.toml
 __pycache__
 .DS_Store
 registered_log.txt

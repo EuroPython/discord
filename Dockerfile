@@ -2,21 +2,23 @@ FROM python:3.11.4-slim
 
 RUN groupadd --gid 1000 bot && \
     useradd --uid 1000 --gid bot bot --create-home && \
-    rm -rf /var/cache/* var/log/*
+    rm -rf /var/cache/* /var/log/*
 
 USER bot
 WORKDIR /home/bot
 
+ENV PATH="/home/bot/.local/bin:/home/bot/.venv/bin:$PATH"
+ENV PYTHONPATH="/home/bot:$PYTHONPATH"
+ENV POETRY_VIRTUALENVS_IN_PROJECT=true
+
 RUN pip install --upgrade --user pip && rm -rf /home/bot/.cache
-RUN pip install --user pipenv && rm -rf /home/bot/.cache
+RUN pip install poetry && rm -rf /home/bot/.cache
 RUN rm -rf /home/bot/.cache
 
-ENV PATH="/home/bot/.local/bin:$PATH"
+COPY --chown=bot:bot pyproject.toml poetry.lock ./
+COPY --chown=bot:bot discord_bot ./discord_bot
 
-COPY --chown=bot:bot Pipfile Pipfile.lock ./
-COPY --chown=bot:bot EuroPythonBot ./EuroPythonBot
-
-RUN pipenv sync && \
+RUN poetry install --no-root && \
     rm -rf /home/bot/.cache
 
-ENTRYPOINT ["pipenv", "run", "python", "EuroPythonBot/bot.py"]
+ENTRYPOINT ["poetry", "run", "python", "discord_bot/bot.py"]

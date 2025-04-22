@@ -1,10 +1,13 @@
 services:
-  EuroPythonBot:
-    image: europythonbot
-    build: .
+  DiscordBot:
+    image: discordbot
+    build:
+      context: .
+      args:
+        - --no-cache
     volumes:
       - type: bind
-        source: /etc/EuroPython/discord/.secrets
+        source: /etc/discord/discord_bot/.secrets
         target: /home/bot/.secrets
         read_only: true
       - type: bind
@@ -16,7 +19,7 @@ services:
         target: /home/bot/posted_jobs.txt
         read_only: false
     # read all container only logs with
-    # journalctl -u docker IMAGE_NAME=europythonbot -f
+    # journalctl -u docker IMAGE_NAME=discordbot -f
     logging:
       driver: journald
     restart: unless-stopped

@@ -8,12 +8,13 @@ As we're sending embeds to webhooks in other Discord communities, the
 Discord channel information is optional: Members of other communities
 do not have access to the room channel in the EuroPython 2023 server.
 """
+
 import arrow
 import pytest
 import yarl
-from tests.programme_notifications import factories
 
-from extensions.programme_notifications.domain import discord, europython, services
+from discord_bot.extensions.programme_notifications.domain import discord, europython, services
+from tests.programme_notifications import factories
 
 
 def test_create_embed_from_session_information() -> None:
@@ -35,20 +36,15 @@ def test_create_embed_from_session_information() -> None:
             room=europython.TranslatedString("The Broom Closet"),
             start=arrow.Arrow(2023, 7, 19, 9, 55, 0, tzinfo="Europe/Prague"),
         ),
-        speakers=[
-            europython.Speaker(code="123456", name="Ada Lovelace", avatar="https://ada.avatar")
-        ],
+        speakers=[europython.Speaker(code="123456", name="Ada Lovelace", avatar="https://ada.avatar")],
         url=yarl.URL("https://ep.session/a-tale-of-two-pythons-subinterpreters-in-action"),
-        livestream_url=yarl.URL("https://livestreams.com/best-conference-sessions-of-2023"),
-        survey_url=yarl.URL("https://survey.com"),
+        livestream_url=yarl.URL("https://vimeo-livestreams.com/best-conference-sessions-of-2023"),
         discord_channel_id="123456789123456",
     )
     slido_url = "https://app.sli.do/event/test"
 
     # WHEN an embed is created with that information
-    embed = services.create_session_embed(
-        europython_session, slido_url, include_discord_channel=True
-    )
+    embed = services.create_session_embed(europython_session, slido_url, include_discord_channel=True)
 
     # THEN the embed is equal to the expected embed
     session_url = "https://ep.session/a-tale-of-two-pythons-subinterpreters-in-action"
@@ -68,7 +64,7 @@ def test_create_embed_from_session_information() -> None:
             discord.Field(name="Duration", value="45 minutes", inline=True),
             discord.Field(
                 name="Livestream",
-                value="[Vimeo](https://livestreams.com/best-conference-sessions-of-2023)",
+                value="[Vimeo](https://vimeo-livestreams.com/best-conference-sessions-of-2023)",
                 inline=True,
             ),
             discord.Field(
@@ -76,7 +72,6 @@ def test_create_embed_from_session_information() -> None:
                 value="[Slido](https://app.sli.do/event/test)",
                 inline=True,
             ),
-            discord.Field(name="Feedback", value="[sci-an](https://survey.com)", inline=True),
             discord.Field(name="Discord Channel", value="<#123456789123456>", inline=True),
         ],
         footer=discord.Footer(text="This session starts at 09:55:00 (local conference time)"),
@@ -134,10 +129,7 @@ def test_title_gets_formatted_according_to_maximum_width(
         pytest.param(
             "",
             yarl.URL("https://foo.session"),
-            (
-                "*This session does not have an abstract.*\n\n[Read more about this session]"
-                "(https://foo.session)"
-            ),
+            ("*This session does not have an abstract.*\n\n[Read more about this session]" "(https://foo.session)"),
             id="Empty abstract but with session url",
         ),
         pytest.param(
@@ -243,9 +235,7 @@ def test_abstract_gets_formatted_including_width_and_session_url(
                 {"code": "123456", "name": "Ada Lovelace", "avatar": "https://ada.avatar"},
                 {"code": "654321", "name": "Alan Turing", "avatar": "https://turing.png"},
             ],
-            discord.Author(
-                name="Barbara Liskov, Ada Lovelace, & Alan Turing", icon_url="https://barbara.jpg"
-            ),
+            discord.Author(name="Barbara Liskov, Ada Lovelace, & Alan Turing", icon_url="https://barbara.jpg"),
             id="More than two speakers",
         ),
         pytest.param(
@@ -254,9 +244,7 @@ def test_abstract_gets_formatted_including_width_and_session_url(
                 {"code": "123456", "name": "Ada Lovelace", "avatar": "https://ada.avatar"},
                 {"code": "654321", "name": "Alan Turing", "avatar": "https://turing.png"},
             ],
-            discord.Author(
-                name="Barbara Liskov, Ada Lovelace, & Alan Turing", icon_url="https://ada.avatar"
-            ),
+            discord.Author(name="Barbara Liskov, Ada Lovelace, & Alan Turing", icon_url="https://ada.avatar"),
             id="Fetch avatar url from non-first speaker",
         ),
         pytest.param(
@@ -471,8 +459,8 @@ def test_duration_is_displayed_correctly(
             id="No livestream URL available",
         ),
         pytest.param(
-            yarl.URL("https://some.stream.live/"),
-            "[Vimeo](https://some.stream.live/)",
+            yarl.URL("https://some.vimeo.stream.live/"),
+            "[Vimeo](https://some.vimeo.stream.live/)",
             id="Livestream URL is available",
         ),
     ],
@@ -524,37 +512,6 @@ def test_slido_url_is_displayed_if_available(
     assert embed.fields[5].value == expected_slido_value
 
 
-@pytest.mark.parametrize(
-    ("survey_url", "expected_survey_value"),
-    [
-        pytest.param(
-            None,
-            "—",
-            id="No survey URL available",
-        ),
-        pytest.param(
-            yarl.URL("https://survey.com"),
-            "[sci-an](https://survey.com)",
-            id="Survey URL is available",
-        ),
-    ],
-)
-def test_survey_url_is_displayed_if_available(
-    survey_url: yarl.URL | None,
-    expected_survey_value: str,
-    session_factory: factories.SessionFactory,
-) -> None:
-    """Show a survey url, if available."""
-    # GIVEN a session with a survey url
-    session = session_factory(survey_url=survey_url)
-
-    # WHEN the embed is created
-    embed = services.create_session_embed(session)
-
-    # THEN the embed url is as expected
-    assert embed.fields[6].value == expected_survey_value
-
-
 def test_discord_channel_is_linked_if_available(
     session_factory: factories.SessionFactory,
 ) -> None:
@@ -566,7 +523,7 @@ def test_discord_channel_is_linked_if_available(
     embed = services.create_session_embed(session, include_discord_channel=True)
 
     # THEN the embed shows the Discord channel
-    assert embed.fields[7].value == "<#123456789123456>"
+    assert embed.fields[6].value == "<#123456789123456>"
 
 
 @pytest.mark.parametrize(
@@ -592,8 +549,8 @@ def test_show_experience_if_discord_channel_is_unavailable(
     # THEN the embed does not the discord channel
     assert not any(field.name == "Discord Channel" for field in embed.fields)
     # BUT it does show the experience level
-    assert embed.fields[7].name == "Python Level"
-    assert embed.fields[7].value == "Intermediate"
+    assert embed.fields[6].name == "Python Level"
+    assert embed.fields[6].value == "Intermediate"
 
 
 def test_show_website_url_if_discord_channel_and_experience_are_unavailable(
@@ -608,8 +565,8 @@ def test_show_website_url_if_discord_channel_and_experience_are_unavailable(
     # THEN the embed does not the discord channel or experience
     assert not any(f.name == "Python Level" or f.name == "Discord Channel" for f in embed.fields)
     # BUT it does show a link to the europython website
-    assert embed.fields[7].name == "PyCon/PyData Website"
-    assert embed.fields[7].value == "[2024.pycon.de](https://2024.pycon.de)"
+    assert embed.fields[6].name == "PyCon DE & PyData Website"
+    assert embed.fields[6].value == "[pycon.de](https://pycon.de)"
 
 
 @pytest.mark.parametrize(

@@ -2,7 +2,7 @@
 - name: Deploy Discord Bot to the server
   hosts: bot_server
   vars:
-    repository_url: git@github.com:EuroPython/discord.git
+    repository_url: git@github.com:PioneersHub/discord.git
 
   tasks:
 
@@ -76,5 +76,5 @@
         owner: bot
         group: bot
 
-    - name: Start EuroPythonBot
+    - name: Start DiscordBot
       shell: "cd /root/discord && docker compose down && docker compose up --detach --build"

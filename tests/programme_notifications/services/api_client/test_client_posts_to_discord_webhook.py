@@ -4,11 +4,11 @@ import aiohttp
 import pytest
 import yarl
 from aiohttp import client_reqrep
-from tests.programme_notifications import factories
 
-from extensions.programme_notifications import exceptions
-from extensions.programme_notifications.domain import discord
-from extensions.programme_notifications.services import api
+from discord_bot.extensions.programme_notifications import exceptions
+from discord_bot.extensions.programme_notifications.domain import discord
+from discord_bot.extensions.programme_notifications.services import api
+from tests.programme_notifications import factories
 
 _WEBHOOK_MESSAGE = discord.WebhookMessage(
     content="Message content",
