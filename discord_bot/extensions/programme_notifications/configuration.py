@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+from collections.abc import Mapping  # noqa: TCH003
 from typing import TYPE_CHECKING, Final
 
 import arrow
@@ -13,8 +14,6 @@ import yarl
 from attrs import validators
 
 if TYPE_CHECKING:
-    from collections.abc import Mapping
-
     from discord_bot import configuration
 
 _WEBHOOK_ENVVAR_PREFIX: Final = "DISCORD_WEBHOOK_"
