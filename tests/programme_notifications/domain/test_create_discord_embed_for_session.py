@@ -38,7 +38,7 @@ def test_create_embed_from_session_information() -> None:
         ),
         speakers=[europython.Speaker(code="123456", name="Ada Lovelace", avatar="https://ada.avatar")],
         url=yarl.URL("https://ep.session/a-tale-of-two-pythons-subinterpreters-in-action"),
-        livestream_url=yarl.URL("https://livestreams.com/best-conference-sessions-of-2023"),
+        livestream_url=yarl.URL("https://vimeo-livestreams.com/best-conference-sessions-of-2023"),
         discord_channel_id="123456789123456",
     )
     slido_url = "https://app.sli.do/event/test"
@@ -64,7 +64,7 @@ def test_create_embed_from_session_information() -> None:
             discord.Field(name="Duration", value="45 minutes", inline=True),
             discord.Field(
                 name="Livestream",
-                value="[Vimeo](https://livestreams.com/best-conference-sessions-of-2023)",
+                value="[Vimeo](https://vimeo-livestreams.com/best-conference-sessions-of-2023)",
                 inline=True,
             ),
             discord.Field(
@@ -459,8 +459,8 @@ def test_duration_is_displayed_correctly(
             id="No livestream URL available",
         ),
         pytest.param(
-            yarl.URL("https://some.stream.live/"),
-            "[Vimeo](https://some.stream.live/)",
+            yarl.URL("https://some.vimeo.stream.live/"),
+            "[Vimeo](https://some.vimeo.stream.live/)",
             id="Livestream URL is available",
         ),
     ],
@@ -565,8 +565,8 @@ def test_show_website_url_if_discord_channel_and_experience_are_unavailable(
     # THEN the embed does not the discord channel or experience
     assert not any(f.name == "Python Level" or f.name == "Discord Channel" for f in embed.fields)
     # BUT it does show a link to the europython website
-    assert embed.fields[6].name == "PyCon/PyData Website"
-    assert embed.fields[6].value == "[2025.pycon.de](https://2025.pycon.de)"
+    assert embed.fields[6].name == "PyCon DE & PyData Website"
+    assert embed.fields[6].value == "[pycon.de](https://pycon.de)"
 
 
 @pytest.mark.parametrize(

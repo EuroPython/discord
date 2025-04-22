@@ -48,7 +48,6 @@ class RegistrationPyData(Registration, commands.Cog):
     def __init__(self, bot):
         super().__init__(bot, registration_view=RegistrationViewPyData)
         self._title = f"Welcome to {config.CONFERENCE_NAME} on Discord! 🎉🐍"
-        # TODO(dan): update text
         self._desc = (
             "Follow these steps to complete your registration:\n\n"
             f'1️⃣ Click on the green "Register Here {EMOJI_POINT}" button.\n\n'

@@ -1,5 +1,6 @@
 [conference]
 CONFERENCE_NAME = "PyCon DE & PyData 2025"
+CONFERENCE_WEBSITE = "https://2025.pycon.de"
 CONFERENCE_YEAR = 2025
 VOLUNTEER_SHIRT_COLOR = "cream"
 
@@ -9,6 +10,8 @@ CONFERENCE_SETUP_DONE = true
 
 [pytanis]
 PRETALX_EVENT_NAME = "pyconde-pydata-2025"
+LIVESTREAMS_SHEET_ID = ""
+LIVESTREAMS_WORKSHEET_NAME = ""
 
 [logging]
 LOG_LEVEL = "INFO"
@@ -56,6 +59,7 @@ timezone = "Europe/Berlin"
 timewarp = false  # true for testing
 conference_days_first = "2025-04-23"
 conference_days_last = "2025-04-25"
+conference_afternoon_session_start_time = 13
 pretalx_event_name = "pyconde-pydata-2025"
 pretalx_schedule_url = "https://pretalx.com/api/events/pyconde-pydata-2025/schedules/latest/"
 pretalx_talk_url = "https://pretalx.com/pyconde-pydata-2025/talk/{code}"
@@ -63,21 +67,9 @@ pretalx_talk_url = "https://pretalx.com/pyconde-pydata-2025/talk/{code}"
 # conference_website_api_session_url = "https://2025.pycon.de/program/{code}"
 slido_url = "https://app.sli.do/event/24bWdyRSGod8DbRpGHcThr"
 
-
 [[programme_notifications.notification_channels]]
 webhook_id = "PROGRAMME_NOTIFICATIONS"
 include_channel_in_embeds = true
-
-# Rooms from pretalx
-# KUPPELSAAL: 2578 in pretalx
-#[programme_notifications.rooms.2578]
-#webhook_id = "ROOM_2578"
-#discord_channel_id = "1225453671152877680"
-# livestreams are hidden in env vars. add the livestream links to .secrets
-#[programme_notifications.rooms.2578.livestreams]
-#"2024-04-22" = "LIVESTREAM_URL_KUPPELSAAL_DAY_1"
-#"2024-04-23" = "LIVESTREAM_URL_KUPPELSAAL_DAY_2"
-#"2024-04-24" = "LIVESTREAM_URL_KUPPELSAAL_DAY_3"
 
 # Zeiss Plenary (Spectrum) channel: 3893
 [programme_notifications.rooms.3893]

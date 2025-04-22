@@ -58,7 +58,12 @@ class Config(metaclass=Singleton):
 
             # Pytanis
             self.PRETALX_EVENT_NAME = config["pytanis"]["PRETALX_EVENT_NAME"]
+            self.LIVESTREAMS_SHEET_ID = config["pytanis"]["LIVESTREAMS_SHEET_ID"]
+            self.LIVESTREAMS_WORKSHEET_NAME = config["pytanis"]["LIVESTREAMS_WORKSHEET_NAME"]
 
+            self.CONFERENCE_AFTERNOON_SESSION_START_TIME = config["programme_notifications"][
+                "conference_afternoon_session_start_time"
+            ]
             self.SLIDO_URL = config["programme_notifications"]["slido_url"]
 
             if config["server"]["CONFERENCE_SETUP_DONE"]:

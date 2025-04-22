@@ -1,4 +1,6 @@
-"""Translate PyCon / PyData sessions to Discord embeds."""
+"""Translate PyCon DE / PyData sessions to Discord embeds."""
+
+from __future__ import annotations
 
 import textwrap
 from typing import Final
@@ -15,14 +17,14 @@ _EXPERIENCE_COLORS: Final = {
     "intermediate": 16764229,
     "novice": 6542417,
 }
-# TODO(dan): move to config
-_CONFERENCE_NAME = "PyCon/PyData"
-_CONFERENCE_WEBSITE: Final = "[2025.pycon.de](https://2025.pycon.de)"
 
 
 def create_session_embed(
     session: europython.Session,
     slido_url: str | None = None,
+    conference_name: str = "PyCon DE & PyData",
+    conference_website: str = "https://pycon.de",
+    *,
     include_discord_channel: bool = True,
 ) -> discord.Embed:
     """Create a Discord embed for a conference session.
@@ -58,10 +60,13 @@ def create_session_embed(
         experience = session.experience.capitalize()
         fields.append(discord.Field(name="Python Level", value=experience, inline=True))
     else:
+        conference_website_short = (
+            conference_website.replace("https://", "").replace("http://", "").replace("www.", "")
+        )
         fields.append(
             discord.Field(
-                f"{_CONFERENCE_NAME} Website",
-                value=_CONFERENCE_WEBSITE,
+                f"{conference_name} Website",
+                value=f"[{conference_website_short}]({conference_website})",
                 inline=True,
             )
         )
@@ -141,7 +146,7 @@ def _format_start_time(session: europython.Session) -> str:
 
 
 def _format_footer(session: europython.Session) -> discord.Footer | None:
-    """Create a footer with the local conference time
+    """Create a footer with the local conference time.
 
     :param session: The session
     :return: A `Footer`, if a start time is available, else `none`

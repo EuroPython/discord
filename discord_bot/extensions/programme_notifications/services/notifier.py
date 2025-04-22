@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import asyncio
 import datetime
 import logging
@@ -129,7 +131,6 @@ class Notifier:
                 message=_SCHEDULE_NOTIFICATION_MESSAGE,
                 sessions=sessions,
                 webhook_id=channel.webhook_id,
-                slido_url=self._config.slido_url,
                 include_discord_channel=channel.include_channel_in_embeds,
             )
             for channel in self._config.notification_channels
@@ -160,7 +161,6 @@ class Notifier:
             message=_ROOM_NOTIFICATION_MESSAGE,
             sessions=sessions,
             webhook_id=room_config.webhook_id,
-            slido_url=self._config.slido_url,
             include_discord_channel=False,
         )
 
@@ -182,12 +182,18 @@ class Notifier:
         message: str,
         sessions: list[europython.Session],
         webhook_id: str,
-        slido_url: str,
+        *,
         include_discord_channel: bool = False,
     ) -> None:
         """Send a notification with sessions to a webhook."""
         embeds = [
-            services.create_session_embed(session, slido_url, include_discord_channel=include_discord_channel)
+            services.create_session_embed(
+                session=session,
+                slido_url=self._config.slido_url,
+                conference_name=self._config.conference_name,
+                conference_website=self._config.conference_website,
+                include_discord_channel=include_discord_channel,
+            )
             for session in sessions
         ]
         if not embeds:
