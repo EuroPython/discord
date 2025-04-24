@@ -1,22 +1,22 @@
 """Commands for organisers."""
 
+import dataclasses
 import logging
 
-import attrs
 import discord
 from discord.ext import commands
 
-from europython_discord.extensions.organisers import roles
+from europython_discord.extensions.organisers.roles import Roles
 
 _logger = logging.getLogger(f"bot.{__name__}")
 
 
-@attrs.define
 class Organisers(commands.Cog):
     """A cog with commands for organisers."""
 
-    _bot: commands.Bot
-    _roles: roles.Roles
+    def __init__(self, bot: commands.Bot, roles: Roles) -> None:
+        self._bot = bot
+        self._roles = roles
 
     @commands.command(name="participants")
     async def participants(self, ctx: commands.Context) -> None:
@@ -50,7 +50,7 @@ class Organisers(commands.Cog):
             not_registered=sum(len(m.roles) == 1 for m in guild.members),
             **{
                 role: len(guild.get_role(role_id).members)
-                for role, role_id in attrs.asdict(self._roles).items()
+                for role, role_id in dataclasses.asdict(self._roles).items()
             },
         )
 
@@ -77,7 +77,7 @@ class Organisers(commands.Cog):
         return hash(id(self))
 
 
-@attrs.define(frozen=True)
+@dataclasses.dataclass(frozen=True)
 class _RoleCount:
     """Counts of members."""
 
