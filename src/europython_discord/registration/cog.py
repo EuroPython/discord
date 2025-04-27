@@ -17,7 +17,7 @@ config = Config()
 _logger = logging.getLogger(f"bot.{__name__}")
 
 
-class RegistrationButton(discord.ui.Button["Registration"]):
+class RegistrationButton(discord.ui.Button):
     def __init__(self, parent_cog: RegistrationCog) -> None:
         super().__init__()
         self.parent_cog = parent_cog
