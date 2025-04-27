@@ -44,16 +44,16 @@ LOG_LEVEL = "INFO"
 [program_notifications]
 # UTC offset in hours (e.g. 2 for CEST)
 timezone_offset = 2
-api_url = "https://programapi24.europython.eu/2024/schedule.json"
+api_url = "https://static.europython.eu/programme/ep2025/releases/current/schedule.json"
 schedule_cache_file = "schedule.json"
 livestream_url_file = "livestreams.toml"
 
 # optional simulated start time for testing program notifications
-# simulated_start_time = "2024-07-10T07:30:00"
+simulated_start_time = "2025-07-14T09:15:00"
 
 # optional fast mode for faster testing of program notifications
 # will only take effect if simulated_start_time is set
-# fast_mode = true
+fast_mode = true
 
 [program_notifications.rooms.main_channel]
 name = "Main Channel"
