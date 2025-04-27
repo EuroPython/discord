@@ -7,6 +7,7 @@ import textwrap
 import discord
 from discord import Client, Forbidden, Interaction, Role
 from discord.ext import commands, tasks
+from discord.utils import get as discord_get
 
 from europython_discord.configuration import Config
 from europython_discord.registration.pretix_connector import PretixConnector
@@ -130,25 +131,32 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
     async def log_registration_to_channel(
         interaction: Interaction, *, name: str, order: str, roles: list[Role]
     ) -> None:
-        channel = interaction.client.get_channel(config.REG_LOG_CHANNEL_ID)
+        channel = discord_get(
+            interaction.client.get_all_channels(), name=config.REG_LOG_CHANNEL_NAME
+        )
         message_lines = [
-            f"✅ : **<@{interaction.user.id}> REGISTERED**",
+            f"✅ : **{interaction.user.mention} REGISTERED**",
             f"{name=} {order=} roles={[role.name for role in roles]}",
         ]
         await channel.send(content="\n".join(message_lines))
 
     @staticmethod
     async def log_error_to_user(interaction: Interaction, message: str) -> None:
+        reg_help_channel = discord_get(
+            interaction.guild.channels, name=config.REG_HELP_CHANNEL_NAME
+        )
         await interaction.response.send_message(
-            f"{message} If you need help, please contact us in <#{config.REG_HELP_CHANNEL_ID}>.",
+            f"{message} If you need help, please contact us in {reg_help_channel.mention}.",
             ephemeral=True,
             delete_after=None,
         )
 
     @staticmethod
     async def log_error_to_channel(interaction: Interaction, message: str) -> None:
-        channel = interaction.client.get_channel(config.REG_LOG_CHANNEL_ID)
-        await channel.send(content=f"❌ : **<@{interaction.user.id}> ERROR**\n{message}")
+        channel = discord_get(
+            interaction.client.get_all_channels(), name=config.REG_LOG_CHANNEL_NAME
+        )
+        await channel.send(content=f"❌ : **{interaction.user.mention} ERROR**\n{message}")
 
 
 class RegistrationCog(commands.Cog):
@@ -165,7 +173,7 @@ class RegistrationCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self) -> None:
-        reg_channel = self.bot.get_channel(config.REG_CHANNEL_ID)
+        reg_channel = discord_get(self.bot.get_all_channels(), name=config.REG_CHANNEL_NAME)
 
         await reg_channel.purge()
         await self.pretix_connector.fetch_pretix_data()
@@ -173,6 +181,9 @@ class RegistrationCog(commands.Cog):
         view = discord.ui.View(timeout=None)  # timeout=None to make it persistent
         view.add_item(RegistrationButton(parent_cog=self))
 
+        reg_help_channel = discord_get(
+            self.bot.get_all_channels(), name=config.REG_HELP_CHANNEL_NAME
+        )
         welcome_message = create_welcome_message(
             textwrap.dedent(
                 f"""
@@ -190,7 +201,7 @@ class RegistrationCog(commands.Cog):
                 These steps will assign the correct server permissions and set your server nickname.
 
                 Experiencing trouble? Please contact us
-                * In the <#{config.REG_HELP_CHANNEL_ID}> channel
+                * In the {reg_help_channel.mention} channel
                 * By speaking to a volunteer in a yellow t-shirt
 
                 Enjoy our EuroPython 2024 Community Server! 🐍💻🎉
@@ -211,7 +222,7 @@ class RegistrationCog(commands.Cog):
         self.fetch_pretix_updates.cancel()
 
         _logger.info("Replacing registration form with 'currently offline' message")
-        reg_channel = self.bot.get_channel(config.REG_CHANNEL_ID)
+        reg_channel = discord_get(self.bot.get_all_channels(), name=config.REG_CHANNEL_NAME)
         await reg_channel.purge()
         await reg_channel.send(
             embed=create_welcome_message(

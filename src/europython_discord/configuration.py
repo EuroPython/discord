@@ -36,9 +36,9 @@ class Config(metaclass=Singleton):
 
         try:
             # Registration
-            self.REG_CHANNEL_ID = int(config["registration"]["REG_CHANNEL_ID"])
-            self.REG_HELP_CHANNEL_ID = int(config["registration"]["REG_HELP_CHANNEL_ID"])
-            self.REG_LOG_CHANNEL_ID = int(config["registration"]["REG_LOG_CHANNEL_ID"])
+            self.REG_CHANNEL_NAME = config["registration"]["REG_CHANNEL_NAME"]
+            self.REG_HELP_CHANNEL_NAME = config["registration"]["REG_HELP_CHANNEL_NAME"]
+            self.REG_LOG_CHANNEL_NAME = config["registration"]["REG_LOG_CHANNEL_NAME"]
             self.REGISTERED_LOG_FILE = Path(config["registration"]["REGISTERED_LOG_FILE"])
 
             # Pretix
