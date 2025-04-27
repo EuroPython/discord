@@ -1,9 +1,9 @@
 """Data structure for role IDs."""
 
-import attrs
+import dataclasses
 
 
-@attrs.define
+@dataclasses.dataclass
 class Roles:
     """Role mapping for the organisers extension."""
 
