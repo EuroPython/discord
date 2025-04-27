@@ -1,4 +1,16 @@
-[item_to_role]
+log_level = "INFO"
+
+[registration]
+registration_form_channel_name = "registration-form"
+registration_help_channel_name = "registration-help"
+registration_log_channel_name = "registration-log"
+
+pretix_base_url = "https://pretix.eu/api/v1/organizers/europython/events/ep2025"
+
+registered_cache_file = "registered_log.txt"
+pretix_cache_file = "pretix_cache.json"
+
+[registration.item_to_roles]
 # onsite participants
 "Business" = ["Participants", "Onsite Participants"]
 "Personal" = ["Participants", "Onsite Participants"]
@@ -14,21 +26,8 @@
 # speakers
 "Presenter" = ["Participants", "Onsite Participants", "Speakers"]
 
-[variation_to_role]
+[registration.variation_to_roles]
 "Volunteer" = ["Volunteers"]
-
-[registration]
-REG_CHANNEL_NAME = "registration-form"
-REG_HELP_CHANNEL_NAME = "registration-help"
-REG_LOG_CHANNEL_NAME = "registration-log"
-REGISTERED_LOG_FILE = "registered_log.txt"
-
-[pretix]
-PRETIX_BASE_URL = "https://pretix.eu/api/v1/organizers/europython/events/ep2025"
-PRETIX_CACHE_FILE = "pretix_cache.json"
-
-[logging]
-LOG_LEVEL = "INFO"
 
 [program_notifications]
 # UTC offset in hours (e.g. 2 for CEST)
@@ -39,7 +38,7 @@ livestream_url_file = "livestreams.toml"
 main_notification_channel_name = "programme-notifications"
 
 # optional simulated start time for testing program notifications
-# simulated_start_time = "2024-07-10T07:30:00"
+# simulated_start_time = "2024-07-10T07:30:00+02:00"
 
 # optional fast mode for faster testing of program notifications
 # will only take effect if simulated_start_time is set
@@ -54,5 +53,5 @@ main_notification_channel_name = "programme-notifications"
 "Terrace 2B" = "terrace-2b"
 "Exhibit Hall" = "exhibit-hall"
 
-[server_statistics]
+[guild_statistics]
 required_role = "Organizers"

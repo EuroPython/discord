@@ -1,20 +1,33 @@
+from __future__ import annotations
+
 import argparse
 import asyncio
 import logging
 import os
 import sys
+import tomllib
 from pathlib import Path
+from typing import Literal
 
 import discord
 from discord.ext import commands
+from pydantic import BaseModel
 
-from europython_discord.cogs.guild_statistics import GuildStatisticsCog
+from europython_discord.cogs.guild_statistics import GuildStatisticsCog, GuildStatisticsConfig
 from europython_discord.cogs.ping import PingCog
-from europython_discord.configuration import Config
 from europython_discord.program_notifications.cog import ProgramNotificationsCog
+from europython_discord.program_notifications.config import ProgramNotificationsConfig
 from europython_discord.registration.cog import RegistrationCog
+from europython_discord.registration.config import RegistrationConfig
 
 _logger = logging.getLogger(__name__)
+
+
+class Config(BaseModel):
+    log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+    registration: RegistrationConfig
+    program_notifications: ProgramNotificationsConfig
+    guild_statistics: GuildStatisticsConfig
 
 
 async def run_bot(config: Config, auth_token: str) -> None:
@@ -27,9 +40,9 @@ async def run_bot(config: Config, auth_token: str) -> None:
 
     async with commands.Bot(intents=intents, command_prefix="$") as bot:
         await bot.add_cog(PingCog(bot))
-        await bot.add_cog(RegistrationCog(bot, config))
-        await bot.add_cog(ProgramNotificationsCog(bot, config))
-        await bot.add_cog(GuildStatisticsCog(bot, config.ROLE_REQUIRED_FOR_STATISTICS))
+        await bot.add_cog(RegistrationCog(bot, config.registration))
+        await bot.add_cog(ProgramNotificationsCog(bot, config.program_notifications))
+        await bot.add_cog(GuildStatisticsCog(bot, config.guild_statistics))
 
         await bot.start(auth_token)
 
@@ -47,10 +60,11 @@ def main() -> None:
         raise RuntimeError("Missing environment variable 'DISCORD_BOT_TOKEN'")
     bot_auth_token = os.environ["DISCORD_BOT_TOKEN"]
 
-    config = Config(Path(config_file))
+    config_file_content = Path(config_file).read_text()
+    config = Config(**tomllib.loads(config_file_content))
 
     logging.basicConfig(
-        level=config.LOG_LEVEL,
+        level=config.log_level,
         stream=sys.stdout,
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     )

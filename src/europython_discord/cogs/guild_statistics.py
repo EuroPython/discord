@@ -1,20 +1,27 @@
 """Commands for organisers."""
 
+from __future__ import annotations
+
 import logging
 
 from discord import Role
 from discord.ext import commands
 from discord.utils import get as discord_get
+from pydantic import BaseModel
 
 _logger = logging.getLogger(__name__)
+
+
+class GuildStatisticsConfig(BaseModel):
+    required_role: str
 
 
 class GuildStatisticsCog(commands.Cog):
     """A cog with commands for organisers."""
 
-    def __init__(self, bot: commands.Bot, required_role_name: str) -> None:
+    def __init__(self, bot: commands.Bot, config: GuildStatisticsConfig) -> None:
         self._bot = bot
-        self._required_role_name = required_role_name
+        self._required_role_name = config.required_role
 
     @commands.command(name="participants")
     async def list_participants(self, ctx: commands.Context) -> None:
