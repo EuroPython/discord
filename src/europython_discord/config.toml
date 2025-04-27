@@ -36,6 +36,7 @@ timezone_offset = 2
 api_url = "https://static.europython.eu/programme/ep2025/releases/current/schedule.json"
 schedule_cache_file = "schedule.json"
 livestream_url_file = "livestreams.toml"
+main_notification_channel_name = "programme-notifications"
 
 # optional simulated start time for testing program notifications
 # simulated_start_time = "2024-07-10T07:30:00"
@@ -44,34 +45,14 @@ livestream_url_file = "livestreams.toml"
 # will only take effect if simulated_start_time is set
 # fast_mode = true
 
-[program_notifications.rooms.main_channel]
-name = "Main Channel"
-channel_id = "1363473705455325306"
+[program_notifications.rooms_to_channel_names]
+"Forum Hall" = "forum-hall"
+"South Hall 2A" = "south-hall-2a"
+"South Hall 2B" = "south-hall-2b"
+"North Hall" = "north-hall"
+"Terrace 2A" = "terrace-2a"
+"Terrace 2B" = "terrace-2b"
+"Exhibit Hall" = "exhibit-hall"
 
-[program_notifications.rooms.forum_hall]
-name = "Forum Hall"
-channel_id = "1363473707091366068"
-
-[program_notifications.rooms.south_hall_2a]
-name = "South Hall 2A"
-channel_id = "1363473708223693012"
-
-[program_notifications.rooms.south_hall_2b]
-name = "South Hall 2B"
-channel_id = "1363473709377261830"
-
-[program_notifications.rooms.north_hall]
-name = "North Hall"
-channel_id = "1363473710983680121"
-
-[program_notifications.rooms.terrace_2a]
-name = "Terrace 2A"
-channel_id = "1363473712124526715"
-
-[program_notifications.rooms.terrace_2b]
-name = "Terrace 2B"
-channel_id = "1363473713609310268"
-
-[program_notifications.rooms.exhibit_hall]
-name = "Exhibit Hall"
-channel_id = "1363473714573873263"
+[server_statistics]
+required_role = "Organizers"

@@ -9,7 +9,7 @@ import aiohttp
 
 from europython_discord.program_notifications.models import Break, Schedule, Session
 
-_logger = logging.getLogger(f"bot.{__name__}")
+_logger = logging.getLogger(__name__)
 
 
 class ProgramConnector:

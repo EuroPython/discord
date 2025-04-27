@@ -15,7 +15,7 @@ from europython_discord.registration.registration_logger import RegistrationLogg
 
 config = Config()
 
-_logger = logging.getLogger(f"bot.{__name__}")
+_logger = logging.getLogger(__name__)
 
 
 class RegistrationButton(discord.ui.Button):

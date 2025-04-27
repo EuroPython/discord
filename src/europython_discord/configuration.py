@@ -6,7 +6,7 @@ import tomllib
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-_logger = logging.getLogger(f"bot.{__name__}")
+_logger = logging.getLogger(__name__)
 
 
 class Singleton(type):
@@ -36,13 +36,13 @@ class Config(metaclass=Singleton):
 
         try:
             # Registration
-            self.REG_CHANNEL_NAME = config["registration"]["REG_CHANNEL_NAME"]
-            self.REG_HELP_CHANNEL_NAME = config["registration"]["REG_HELP_CHANNEL_NAME"]
-            self.REG_LOG_CHANNEL_NAME = config["registration"]["REG_LOG_CHANNEL_NAME"]
+            self.REG_CHANNEL_NAME: str = config["registration"]["REG_CHANNEL_NAME"]
+            self.REG_HELP_CHANNEL_NAME: str = config["registration"]["REG_HELP_CHANNEL_NAME"]
+            self.REG_LOG_CHANNEL_NAME: str = config["registration"]["REG_LOG_CHANNEL_NAME"]
             self.REGISTERED_LOG_FILE = Path(config["registration"]["REGISTERED_LOG_FILE"])
 
             # Pretix
-            self.PRETIX_BASE_URL = config["pretix"]["PRETIX_BASE_URL"]
+            self.PRETIX_BASE_URL: str = config["pretix"]["PRETIX_BASE_URL"]
             self.PRETIX_CACHE_FILE = Path(config["pretix"]["PRETIX_CACHE_FILE"])
 
             self.ITEM_TO_ROLES: dict[str, list[str]] = config["item_to_role"]
@@ -54,11 +54,13 @@ class Config(metaclass=Singleton):
             self.SCHEDULE_CACHE_FILE = Path(config["program_notifications"]["schedule_cache_file"])
             self.LIVESTREAM_URL_FILE = Path(config["program_notifications"]["livestream_url_file"])
 
+            self.MAIN_NOTIFICATION_CANNEL_NAME = config["program_notifications"][
+                "main_notification_channel_name"
+            ]
             # like {'forum_hall': {'name': 'Forum Hall', 'channel_id': '123456'}}
-            self.PROGRAM_CHANNELS: dict[str, dict[str, str]] = {
-                room: {"name": details["name"], "channel_id": details["channel_id"]}
-                for room, details in config["program_notifications"]["rooms"].items()
-            }
+            self.ROOMS_TO_CHANNEL_NAMES: dict[str, str] = config["program_notifications"][
+                "rooms_to_channel_names"
+            ]
 
             # optional testing parameters for program notifications
             if simulated_start_time := config["program_notifications"].get("simulated_start_time"):
@@ -72,6 +74,9 @@ class Config(metaclass=Singleton):
 
             # Logging
             self.LOG_LEVEL = config.get("logging", {}).get("LOG_LEVEL", "INFO")
+
+            # Statistics
+            self.ROLE_REQUIRED_FOR_STATISTICS = config["server_statistics"]["required_role"]
 
         except KeyError:
             _logger.exception(

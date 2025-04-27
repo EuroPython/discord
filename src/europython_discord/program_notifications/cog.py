@@ -1,16 +1,16 @@
 import logging
 
-from discord import Client, Embed, TextChannel
+from discord import Client, TextChannel
 from discord.ext import commands, tasks
+from discord.utils import get as discord_get
 
 from europython_discord.configuration import Config
 from europython_discord.program_notifications import session_to_embed
 from europython_discord.program_notifications.livestream_connector import LivestreamConnector
-from europython_discord.program_notifications.models import Session
 from europython_discord.program_notifications.program_connector import ProgramConnector
 
 config = Config()
-_logger = logging.getLogger(f"bot.{__name__}")
+_logger = logging.getLogger(__name__)
 
 
 class ProgramNotificationsCog(commands.Cog):
@@ -71,74 +71,60 @@ class ProgramNotificationsCog(commands.Cog):
         await self.livestream_connector.fetch_livestreams()
         _logger.info("Finished the periodic livestream update.")
 
-    async def set_room_topic(self, room: str, topic: str) -> None:
-        """Set the topic of a room channel."""
-        room_channel = self._get_channel(room)
-        if room_channel is not None:
-            await room_channel.edit(topic=topic)
-
-    async def notify_room(self, room: str, embed: Embed, content: str | None = None) -> None:
-        """Send the given notification to the room channel."""
-        room_channel = self._get_channel(room)
-        if room_channel is not None:
-            await room_channel.send(content=content, embed=embed)
-
-    def _get_channel(self, room: str) -> TextChannel | None:
-        room_key = room.lower().replace(" ", "_")
-        room_channel_config = config.PROGRAM_CHANNELS.get(room_key)
-
-        if room_channel_config is None:
-            # this may be intended: in 2024, there were no dedicated channels for the tutorial rooms
-            _logger.warning(f"Cannot find configuration for room {room!r} (key: {room_key!r})")
-            return None
-
-        channel_id = room_channel_config["channel_id"]
-        return self.bot.get_channel(int(channel_id))
-
     @tasks.loop()
     async def notify_sessions(self) -> None:
-        sessions: list[Session] = await self.program_connector.get_upcoming_sessions()
-        sessions_to_notify = [
-            session for session in sessions if session not in self.notified_sessions
-        ]
-        first_message = True
+        # determine sessions to send notifications for
+        sessions_to_notify = []
+        for session in await self.program_connector.get_upcoming_sessions():
+            if session in self.notified_sessions:
+                continue  # already notified
+            if len(session.rooms) > 1:
+                continue  # announcement or coffee/lunch break
+            sessions_to_notify.append(session)
+
+        if not sessions_to_notify:
+            return
+
+        main_notification_channel = discord_get(
+            self.bot.get_all_channels(), name=config.MAIN_NOTIFICATION_CANNEL_NAME
+        )
+        await main_notification_channel.send(content="# Sessions starting in 5 minutes:")
 
         for session in sessions_to_notify:
-            if len(session.rooms) > 1:
-                continue  # Don't notify registration sessions
+            room_name = session.rooms[0]
+            room_channel = self._get_room_channel(room_name)
 
+            # update room's livestream URL
             livestream_url = await self.livestream_connector.get_livestream_url(
-                session.rooms[0], session.start.date()
+                room_name, session.start.date()
             )
-
-            # Set the channel topic
-            await self.set_room_topic(
-                session.rooms[0],
-                f"Livestream: [YouTube]({livestream_url})" if livestream_url else "",
-            )
-
             embed = session_to_embed.create_session_embed(session, livestream_url)
 
-            # # Notify specific rooms
-            # for room in session.rooms:
-            await self.notify_room(
-                session.rooms[0], embed, content=f"# Starting in 5 minutes @ {session.rooms[0]}"
-            )
-
-            # Prefix the first message to the main channel with a header
-            if first_message:
-                await self.notify_room(
-                    "Main Channel", embed, content="# Sessions starting in 5 minutes:"
+            await main_notification_channel.send(embed=embed)
+            if room_channel is not None:
+                await room_channel.edit(
+                    topic=f"Livestream: [YouTube]({livestream_url})" if livestream_url else ""
                 )
-                first_message = False
-            else:
-                await self.notify_room("Main Channel", embed)
+                await room_channel.send(
+                    content=f"# Starting in 5 minutes @ {session.rooms[0]}",
+                    embed=embed,
+                )
+
+            # send session notification message to room and main channel
 
             self.notified_sessions.add(session)
 
     async def purge_all_room_channels(self) -> None:
         _logger.info("Purging all room channels...")
-        for room in config.PROGRAM_CHANNELS.values():
-            channel = self.bot.get_channel(int(room["channel_id"]))
+        for channel_name in config.ROOMS_TO_CHANNEL_NAMES.values():
+            channel = discord_get(self.bot.get_all_channels(), name=channel_name)
             await channel.purge()
-        _logger.info("Purged all room channels channels.")
+        _logger.info("Purged all room channels.")
+
+    def _get_room_channel(self, room_name: str) -> TextChannel | None:
+        channel_name = config.ROOMS_TO_CHANNEL_NAMES.get(room_name)
+        if channel_name is None:
+            _logger.warning(f"No notification channel configured for room {room_name!r}")
+            return None
+
+        return discord_get(self.bot.get_all_channels(), name=channel_name)
