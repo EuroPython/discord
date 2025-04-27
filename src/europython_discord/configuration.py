@@ -45,13 +45,8 @@ class Config(metaclass=Singleton):
             self.PRETIX_BASE_URL = config["pretix"]["PRETIX_BASE_URL"]
             self.PRETIX_CACHE_FILE = Path(config["pretix"]["PRETIX_CACHE_FILE"])
 
-            role_name_to_id: dict[str, int] = config["roles"]
-            self.ITEM_TO_ROLES: dict[str, list[int]] = self._translate_role_names_to_ids(
-                config["ticket_to_role"], role_name_to_id
-            )
-            self.VARIATION_TO_ROLES: dict[str, list[int]] = self._translate_role_names_to_ids(
-                config["additional_roles_by_variation"], role_name_to_id
-            )
+            self.ITEM_TO_ROLES: dict[str, list[str]] = config["item_to_role"]
+            self.VARIATION_TO_ROLES: dict[str, list[str]] = config["variation_to_role"]
 
             # Program Notifications
             self.PROGRAM_API_URL: str = config["program_notifications"]["api_url"]

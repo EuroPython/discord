@@ -74,14 +74,14 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
             _logger.info(f"Already registered: {tickets}")
             return
 
-        role_ids = set()
+        role_names = set()
         for ticket in tickets:
             if ticket.type in config.ITEM_TO_ROLES:
-                role_ids.update(config.ITEM_TO_ROLES[ticket.type])
+                role_names.update(config.ITEM_TO_ROLES[ticket.type])
             if ticket.variation in config.VARIATION_TO_ROLES:
-                role_ids.update(config.VARIATION_TO_ROLES[ticket.variation])
+                role_names.update(config.VARIATION_TO_ROLES[ticket.variation])
 
-        if not role_ids:
+        if not role_names:
             await self.log_error_to_user(interaction, "No ticket found.")
             await self.log_error_to_channel(interaction, f"Tickets without roles: {tickets}")
             _logger.info(f"Tickets without role assignments: {tickets}")
@@ -91,8 +91,8 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
         _logger.info("Assigning nickname %r", nickname)
         await interaction.user.edit(nick=nickname)
 
-        roles = [discord.utils.get(interaction.guild.roles, id=role_id) for role_id in role_ids]
-        _logger.info("Assigning %r role_ids=%r", name, role_ids)
+        roles = [discord_get(interaction.guild.roles, name=role_name) for role_name in role_names]
+        _logger.info("Assigning %r role_names=%r", name, role_names)
         await interaction.user.add_roles(*roles)
 
         await self.log_registration_to_channel(interaction, name=name, order=order, roles=roles)

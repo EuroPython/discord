@@ -1,32 +1,21 @@
-[roles]
-ORGANISERS = 1360676366244384878
-VOLUNTEERS = 1360676367561265335
-VOLUNTEERS_ONSITE = 1360676369159291060
-VOLUNTEERS_REMOTE = 1360676369725653158
-SPEAKERS = 1360676371356975124
-SPONSORS = 1360676372263080090
-PARTICIPANTS = 1360676375182180596
-PARTICIPANTS_ONSITE = 1360676376197468231
-PARTICIPANTS_REMOTE = 1360676377338183840
-
-[ticket_to_role]
+[item_to_role]
 # onsite participants
-"Business" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
-"Personal" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
-"Education" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
-"Community Contributors" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
-"Grant ticket" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
+"Business" = ["Participants", "Onsite Participants"]
+"Personal" = ["Participants", "Onsite Participants"]
+"Education" = ["Participants", "Onsite Participants"]
+"Community Contributors" = ["Participants", "Onsite Participants"]
+"Grant ticket" = ["PARTICIPANTS", "Onsite Participants"]
 # remote participants
-"Remote Participation Ticket" = ["PARTICIPANTS", "PARTICIPANTS_REMOTE"]
-"Remote Grant ticket" = ["PARTICIPANTS", "PARTICIPANTS_REMOTE"]
-"Remote Community Organiser" = ["PARTICIPANTS", "PARTICIPANTS_REMOTE"]
+"Remote Participation Ticket" = ["Participants", "Remote Participants"]
+"Remote Grant ticket" = ["Participants", "Remote Participants"]
+"Remote Community Organiser" = ["Participants", "Remote Participants"]
 # sponsors
-"Sponsor Conference Pass" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE", "SPONSORS"]
+"Sponsor Conference Pass" = ["Participants", "Onsite Participants", "Sponsors"]
 # speakers
-"Presenter" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE", "SPEAKERS"]
+"Presenter" = ["Participants", "Onsite Participants", "Speakers"]
 
-[additional_roles_by_variation]
-"Volunteer" = ["VOLUNTEERS"]
+[variation_to_role]
+"Volunteer" = ["Volunteers"]
 
 [registration]
 REG_CHANNEL_NAME = "registration-form"
