@@ -2,8 +2,6 @@
 .secrets
 .idea
 .vscode
-README.md
-src/europython_discord/config.local.toml
 __pycache__
 .DS_Store
 registered_log.txt
