@@ -13,26 +13,20 @@ from europython_discord.configuration import Config
 from europython_discord.registration.pretix_connector import PretixConnector
 from europython_discord.registration.registration_logger import RegistrationLogger
 
-config = Config()
-
 _logger = logging.getLogger(__name__)
 
 
-class RegistrationButton(discord.ui.Button):
-    def __init__(self, parent_cog: RegistrationCog) -> None:
-        super().__init__()
-        self.parent_cog = parent_cog
-        self.label = "Register here 👈"
-        self.style = discord.ButtonStyle.green
-
-    async def callback(self, interaction: discord.Interaction) -> None:
-        await interaction.response.send_modal(RegistrationForm(parent_cog=self.parent_cog))
-
-
 class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
-    def __init__(self, parent_cog: RegistrationCog) -> None:
+    def __init__(
+        self,
+        config: Config,
+        pretix_connector: PretixConnector,
+        registration_logger: RegistrationLogger,
+    ) -> None:
         super().__init__()
-        self.parent_cog = parent_cog
+        self.config = config
+        self.pretix_connector = pretix_connector
+        self.registration_logger = registration_logger
 
     order_field = discord.ui.TextInput(
         label="Order ID (As printed on your badge or ticket)",
@@ -57,7 +51,7 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
         order = self.order_field.value
 
         _logger.debug(f"Registration attempt: {order=}, {name=}")
-        tickets = self.parent_cog.pretix_connector.get_tickets(order=order, name=name)
+        tickets = self.pretix_connector.get_tickets(order=order, name=name)
 
         if not tickets:
             await self.log_error_to_user(
@@ -68,7 +62,7 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
             _logger.info(f"No ticket found: {order=}, {name=}")
             return
 
-        if any(self.parent_cog.registration_logger.is_registered(ticket) for ticket in tickets):
+        if any(self.registration_logger.is_registered(ticket) for ticket in tickets):
             await self.log_error_to_user(interaction, "You have already registered.")
             await self.log_error_to_channel(interaction, f"Already registered: {order=}, {name=}")
             _logger.info(f"Already registered: {tickets}")
@@ -76,10 +70,10 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
 
         role_names = set()
         for ticket in tickets:
-            if ticket.type in config.ITEM_TO_ROLES:
-                role_names.update(config.ITEM_TO_ROLES[ticket.type])
-            if ticket.variation in config.VARIATION_TO_ROLES:
-                role_names.update(config.VARIATION_TO_ROLES[ticket.variation])
+            if ticket.type in self.config.ITEM_TO_ROLES:
+                role_names.update(self.config.ITEM_TO_ROLES[ticket.type])
+            if ticket.variation in self.config.VARIATION_TO_ROLES:
+                role_names.update(self.config.VARIATION_TO_ROLES[ticket.variation])
 
         if not role_names:
             await self.log_error_to_user(interaction, "No ticket found.")
@@ -98,7 +92,7 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
         await self.log_registration_to_channel(interaction, name=name, order=order, roles=roles)
         await self.log_registration_to_user(interaction, name=name)
         for ticket in tickets:
-            await self.parent_cog.registration_logger.mark_as_registered(ticket)
+            await self.registration_logger.mark_as_registered(ticket)
         _logger.info(f"Registration successful: {order=}, {name=}")
 
     async def on_error(self, interaction: Interaction, error: Exception) -> None:
@@ -127,12 +121,11 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
             delete_after=None,
         )
 
-    @staticmethod
     async def log_registration_to_channel(
-        interaction: Interaction, *, name: str, order: str, roles: list[Role]
+        self, interaction: Interaction, *, name: str, order: str, roles: list[Role]
     ) -> None:
         channel = discord_get(
-            interaction.client.get_all_channels(), name=config.REG_LOG_CHANNEL_NAME
+            interaction.client.get_all_channels(), name=self.config.REG_LOG_CHANNEL_NAME
         )
         message_lines = [
             f"✅ : **{interaction.user.mention} REGISTERED**",
@@ -140,10 +133,9 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
         ]
         await channel.send(content="\n".join(message_lines))
 
-    @staticmethod
-    async def log_error_to_user(interaction: Interaction, message: str) -> None:
+    async def log_error_to_user(self, interaction: Interaction, message: str) -> None:
         reg_help_channel = discord_get(
-            interaction.guild.channels, name=config.REG_HELP_CHANNEL_NAME
+            interaction.guild.channels, name=self.config.REG_HELP_CHANNEL_NAME
         )
         await interaction.response.send_message(
             f"{message} If you need help, please contact us in {reg_help_channel.mention}.",
@@ -151,38 +143,43 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
             delete_after=None,
         )
 
-    @staticmethod
-    async def log_error_to_channel(interaction: Interaction, message: str) -> None:
+    async def log_error_to_channel(self, interaction: Interaction, message: str) -> None:
         channel = discord_get(
-            interaction.client.get_all_channels(), name=config.REG_LOG_CHANNEL_NAME
+            interaction.client.get_all_channels(), name=self.config.REG_LOG_CHANNEL_NAME
         )
         await channel.send(content=f"❌ : **{interaction.user.mention} ERROR**\n{message}")
 
 
 class RegistrationCog(commands.Cog):
-    def __init__(self, bot: Client) -> None:
+    def __init__(self, bot: Client, config: Config) -> None:
         self.bot = bot
+        self.config = config
 
         self.pretix_connector = PretixConnector(
-            url=config.PRETIX_BASE_URL,
+            url=self.config.PRETIX_BASE_URL,
             token=os.environ["PRETIX_TOKEN"],
-            cache_file=config.PRETIX_CACHE_FILE,
+            cache_file=self.config.PRETIX_CACHE_FILE,
         )
-        self.registration_logger = RegistrationLogger(config.REGISTERED_LOG_FILE)
+        self.registration_logger = RegistrationLogger(self.config.REGISTERED_LOG_FILE)
         _logger.info("Cog 'Registration' has been initialized")
 
     @commands.Cog.listener()
     async def on_ready(self) -> None:
-        reg_channel = discord_get(self.bot.get_all_channels(), name=config.REG_CHANNEL_NAME)
-
-        await reg_channel.purge()
         await self.pretix_connector.fetch_pretix_data()
 
+        button = discord.ui.Button(style=discord.ButtonStyle.green, label="Register here 👈")
+        button.callback = lambda interaction: interaction.response.send_modal(
+            RegistrationForm(
+                config=self.config,
+                pretix_connector=self.pretix_connector,
+                registration_logger=self.registration_logger,
+            )
+        )
         view = discord.ui.View(timeout=None)  # timeout=None to make it persistent
-        view.add_item(RegistrationButton(parent_cog=self))
+        view.add_item(button)
 
         reg_help_channel = discord_get(
-            self.bot.get_all_channels(), name=config.REG_HELP_CHANNEL_NAME
+            self.bot.get_all_channels(), name=self.config.REG_HELP_CHANNEL_NAME
         )
         welcome_message = create_welcome_message(
             textwrap.dedent(
@@ -209,7 +206,9 @@ class RegistrationCog(commands.Cog):
             )
         )
 
-        await reg_channel.send(embed=welcome_message, view=view)
+        channel = discord_get(self.bot.get_all_channels(), name=self.config.REG_CHANNEL_NAME)
+        await channel.purge()
+        await channel.send(embed=welcome_message, view=view)
 
     async def cog_load(self) -> None:
         """Load the initial schedule."""
@@ -222,7 +221,7 @@ class RegistrationCog(commands.Cog):
         self.fetch_pretix_updates.cancel()
 
         _logger.info("Replacing registration form with 'currently offline' message")
-        reg_channel = discord_get(self.bot.get_all_channels(), name=config.REG_CHANNEL_NAME)
+        reg_channel = discord_get(self.bot.get_all_channels(), name=self.config.REG_CHANNEL_NAME)
         await reg_channel.purge()
         await reg_channel.send(
             embed=create_welcome_message(

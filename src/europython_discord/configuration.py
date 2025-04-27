@@ -9,16 +9,7 @@ from pathlib import Path
 _logger = logging.getLogger(__name__)
 
 
-class Singleton(type):
-    _instances = {}  # noqa: RUF012 (missing type annotation as typing.ClassVar)
-
-    def __call__(cls, *args, **kwargs) -> Singleton:  # noqa: ANN002,ANN003 (missing annotations)
-        if cls not in cls._instances:
-            cls._instances[cls] = super().__call__(*args, **kwargs)
-        return cls._instances[cls]
-
-
-class Config(metaclass=Singleton):
+class Config:
     _CONFIG_DEFAULT = "config.toml"
     _CONFIG_LOCAL = "config.local.toml"
 

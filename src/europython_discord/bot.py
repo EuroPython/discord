@@ -30,9 +30,10 @@ async def run_bot(config: Config) -> None:
 
     async with commands.Bot(intents=intents, command_prefix="$") as bot:
         await bot.add_cog(PingCog(bot))
-        await bot.add_cog(RegistrationCog(bot))
-        await bot.add_cog(ProgramNotificationsCog(bot))
+        await bot.add_cog(RegistrationCog(bot, config))
+        await bot.add_cog(ProgramNotificationsCog(bot, config))
         await bot.add_cog(GuildStatisticsCog(bot, config.ROLE_REQUIRED_FOR_STATISTICS))
+
         await bot.start(DISCORD_BOT_TOKEN)
 
 

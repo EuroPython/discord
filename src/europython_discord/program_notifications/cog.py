@@ -9,34 +9,34 @@ from europython_discord.program_notifications import session_to_embed
 from europython_discord.program_notifications.livestream_connector import LivestreamConnector
 from europython_discord.program_notifications.program_connector import ProgramConnector
 
-config = Config()
 _logger = logging.getLogger(__name__)
 
 
 class ProgramNotificationsCog(commands.Cog):
-    def __init__(self, bot: Client) -> None:
+    def __init__(self, bot: Client, config: Config) -> None:
         self.bot = bot
+        self.config = config
         self.program_connector = ProgramConnector(
-            api_url=config.PROGRAM_API_URL,
-            timezone_offset=config.TIMEZONE_OFFSET,
-            cache_file=config.SCHEDULE_CACHE_FILE,
-            simulated_start_time=config.SIMULATED_START_TIME,
-            fast_mode=config.FAST_MODE,
+            api_url=self.config.PROGRAM_API_URL,
+            timezone_offset=self.config.TIMEZONE_OFFSET,
+            cache_file=self.config.SCHEDULE_CACHE_FILE,
+            simulated_start_time=self.config.SIMULATED_START_TIME,
+            fast_mode=self.config.FAST_MODE,
         )
 
-        self.livestream_connector = LivestreamConnector(config.LIVESTREAM_URL_FILE)
+        self.livestream_connector = LivestreamConnector(self.config.LIVESTREAM_URL_FILE)
 
         self.notified_sessions = set()
         _logger.info("Cog 'Program Notifications' has been initialized")
 
     @commands.Cog.listener()
     async def on_ready(self) -> None:
-        if config.SIMULATED_START_TIME:
+        if self.config.SIMULATED_START_TIME:
             _logger.info("Running in simulated time mode.")
             _logger.info("Will purge all room channels to avoid pile-up of test notifications.")
             await self.purge_all_room_channels()
-            _logger.debug(f"Simulated start time: {config.SIMULATED_START_TIME}")
-            _logger.debug(f"Fast mode: {config.FAST_MODE}")
+            _logger.debug(f"Simulated start time: {self.config.SIMULATED_START_TIME}")
+            _logger.debug(f"Fast mode: {self.config.FAST_MODE}")
         _logger.info("Starting the session notifier...")
         self.notify_sessions.start()
         _logger.info("Cog 'Program Notifications' is ready")
@@ -49,7 +49,7 @@ class ProgramNotificationsCog(commands.Cog):
         self.fetch_schedule.start()
         self.fetch_livestreams.start()
         self.notify_sessions.change_interval(
-            seconds=2 if config.FAST_MODE and config.SIMULATED_START_TIME else 60
+            seconds=2 if self.config.FAST_MODE and self.config.SIMULATED_START_TIME else 60
         )
         _logger.info("Schedule updater started and interval set for the session notifier")
 
@@ -86,7 +86,7 @@ class ProgramNotificationsCog(commands.Cog):
             return
 
         main_notification_channel = discord_get(
-            self.bot.get_all_channels(), name=config.MAIN_NOTIFICATION_CANNEL_NAME
+            self.bot.get_all_channels(), name=self.config.MAIN_NOTIFICATION_CANNEL_NAME
         )
         await main_notification_channel.send(content="# Sessions starting in 5 minutes:")
 
@@ -116,13 +116,13 @@ class ProgramNotificationsCog(commands.Cog):
 
     async def purge_all_room_channels(self) -> None:
         _logger.info("Purging all room channels...")
-        for channel_name in config.ROOMS_TO_CHANNEL_NAMES.values():
+        for channel_name in self.config.ROOMS_TO_CHANNEL_NAMES.values():
             channel = discord_get(self.bot.get_all_channels(), name=channel_name)
             await channel.purge()
         _logger.info("Purged all room channels.")
 
     def _get_room_channel(self, room_name: str) -> TextChannel | None:
-        channel_name = config.ROOMS_TO_CHANNEL_NAMES.get(room_name)
+        channel_name = self.config.ROOMS_TO_CHANNEL_NAMES.get(room_name)
         if channel_name is None:
             _logger.warning(f"No notification channel configured for room {room_name!r}")
             return None
