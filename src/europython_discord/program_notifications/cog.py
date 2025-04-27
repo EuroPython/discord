@@ -1,6 +1,6 @@
 import logging
 
-from discord import Client, Embed
+from discord import Client, Embed, TextChannel
 from discord.ext import commands, tasks
 
 from europython_discord.configuration import Config
@@ -73,15 +73,27 @@ class ProgramNotificationsCog(commands.Cog):
 
     async def set_room_topic(self, room: str, topic: str) -> None:
         """Set the topic of a room channel."""
-        channel_id = config.PROGRAM_CHANNELS[room.lower().replace(" ", "_")]["channel_id"]
-        channel = self.bot.get_channel(int(channel_id))
-        await channel.edit(topic=topic)
+        room_channel = self._get_channel(room)
+        if room_channel is not None:
+            await room_channel.edit(topic=topic)
 
     async def notify_room(self, room: str, embed: Embed, content: str | None = None) -> None:
         """Send the given notification to the room channel."""
-        channel_id = config.PROGRAM_CHANNELS[room.lower().replace(" ", "_")]["channel_id"]
-        channel = self.bot.get_channel(int(channel_id))
-        await channel.send(content=content, embed=embed)
+        room_channel = self._get_channel(room)
+        if room_channel is not None:
+            await room_channel.send(content=content, embed=embed)
+
+    def _get_channel(self, room: str) -> TextChannel | None:
+        room_key = room.lower().replace(" ", "_")
+        room_channel_config = config.PROGRAM_CHANNELS.get(room_key)
+
+        if room_channel_config is None:
+            # this may be intended: in 2024, there were no dedicated channels for the tutorial rooms
+            _logger.warning(f"Cannot find configuration for room {room!r} (key: {room_key!r})")
+            return None
+
+        channel_id = room_channel_config["channel_id"]
+        return self.bot.get_channel(int(channel_id))
 
     @tasks.loop()
     async def notify_sessions(self) -> None:
