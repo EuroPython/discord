@@ -50,7 +50,7 @@ class PretixConnector:
 
         cache = PretixCache.model_validate_json(file_content)
         self.item_names_by_id = cache.item_names_by_id
-        self.tickets_by_key = cache.tickets_by_key
+        self.tickets_by_key.update(cache.tickets_by_key)
 
     async def fetch_pretix_data(self) -> None:
         """Fetch order and item data from the Pretix API and cache it."""
