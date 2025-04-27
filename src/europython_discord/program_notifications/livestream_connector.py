@@ -1,9 +1,12 @@
 import asyncio
+import logging
 import tomllib
 from datetime import date
 from pathlib import Path
 
 import aiofiles
+
+logger = logging.getLogger(__name__)
 
 
 class LivestreamConnector:
@@ -40,17 +43,22 @@ class LivestreamConnector:
             livestreams_raw = await self._open_livestreams_file()
             self.livestreams_by_room = await self._parse_livestreams(livestreams_raw)
 
-    async def get_livestream_url(self, room: str, date: date) -> None:
+    async def get_livestream_url(self, room: str, day: date) -> str | None:
         """
         Get the livestream URL for the given room and date.
 
         :param room: The room name.
-        :param date: The date of the livestream.
+        :param day: The date of the livestream.
 
         :return: The URL of the livestream.
         """
         if not self.livestreams_by_room:
             await self.fetch_livestreams()
+
         if room not in self.livestreams_by_room:
+            logger.warning(f"Found no livestream URLs for room {room!r}")
             return None
-        return self.livestreams_by_room[room][date]
+        if day not in self.livestreams_by_room[room]:
+            logger.warning(f"Found no livestream URLs for room {room!r} and day {day!r}")
+            return None
+        return self.livestreams_by_room[room][day]
