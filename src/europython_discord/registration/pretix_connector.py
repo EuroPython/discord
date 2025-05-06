@@ -15,7 +15,7 @@ from pydantic import BaseModel
 from europython_discord.registration.pretix_api_response_models import PretixItem, PretixOrder
 from europython_discord.registration.ticket import Ticket, generate_ticket_key
 
-_logger = logging.getLogger(f"bot.{__name__}")
+_logger = logging.getLogger(__name__)
 
 
 class PretixCache(BaseModel):

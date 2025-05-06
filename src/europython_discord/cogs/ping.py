@@ -2,10 +2,10 @@ import logging
 
 from discord.ext import commands
 
-_logger = logging.getLogger(f"bot.{__name__}")
+_logger = logging.getLogger(__name__)
 
 
-class Ping(commands.Cog):
+class PingCog(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot: commands.Bot = bot
         _logger.info("Cog 'Ping' has been initialized")

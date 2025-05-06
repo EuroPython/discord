@@ -9,9 +9,11 @@ USER bot
 WORKDIR /home/bot
 
 ENV PATH="/home/bot/.local/bin:$PATH"
+ARG CONFIG_FILE
 
 COPY --chown=bot:bot pyproject.toml uv.lock ./
-COPY --chown=bot:bot src ./src
+COPY --chown=bot:bot src ./
+COPY --chown=bot:bot $CONFIG_FILE ./
 
 RUN uv sync
 

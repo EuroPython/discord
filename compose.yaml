@@ -1,13 +1,15 @@
 services:
   EuroPythonBot:
     image: europythonbot
-    build: .
+    build:
+      context: .
+      args:
+        - CONFIG_FILE=prod-config.toml
+    environment:
+      - CONFIG_FILE=prod-config.toml
+    env_file:
+      - /etc/EuroPython/discord/.secrets
     volumes:
-      - type: bind
-        source: /etc/EuroPython/discord/.secrets
-        target: /home/bot/.secrets
-        read_only: true
-
       - type: bind
         source: /etc/EuroPython/livestreams/livestreams.toml
         target: /home/bot/livestreams.toml
