@@ -9,7 +9,7 @@ on:
 
 jobs:
   lint:
-    name: 🕵 Lint Python code
+    name: Lint and Test
     runs-on: ubuntu-latest
 
     steps:
@@ -29,30 +29,4 @@ jobs:
         run: uv sync --dev
 
       - name: Check code format
-        run: uv run --dev ruff format --check
-
-      - name: Check code style
-        run: uv run --dev ruff check
-
-  test:
-    name: 🛠️ Test Python code
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v6
-        with:
-          version: "0.7.3"
-
-      - name: Set up Python
-        run: uv python install
-
-      - name: Install dev dependencies
-        run: uv sync --dev
-
-      - name: Run pytest
-        run: uv run --dev pytest .
+        run: uv run --dev pre-commit run --all-files
