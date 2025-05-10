@@ -15,7 +15,8 @@ from europython_discord.registration.registration_logger import RegistrationLogg
 
 _logger = logging.getLogger(__name__)
 
-REGISTRATION_BUTTON_LABEL = "Register here :point_left:"
+# Discord's colon-syntax `:point_left:` does not work in button labels, so we use `\N{...}` here
+REGISTRATION_BUTTON_LABEL = "Register here \N{WHITE LEFT POINTING BACKHAND INDEX}"
 WELCOME_MESSAGE_TITLE = "## Welcome to EuroPython 2025 on Discord! :tada::snake:"
 
 
