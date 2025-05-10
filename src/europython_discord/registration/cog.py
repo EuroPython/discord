@@ -189,7 +189,7 @@ class RegistrationCog(commands.Cog):
             {WELCOME_MESSAGE_TITLE}\n
             Follow these steps to complete your registration:
 
-            :one: Click on the green "%s" button below.
+            :one: Click on the green "{REGISTRATION_BUTTON_LABEL}" button below.
 
             :two: Fill in your Order ID and the name on your ticket. You can find them
             * Printed on your ticket
@@ -205,7 +205,7 @@ class RegistrationCog(commands.Cog):
             * By speaking to a volunteer in a yellow t-shirt
 
             Enjoy our EuroPython 2025 Community Server! :snake::computer::tada:
-            """ % REGISTRATION_BUTTON_LABEL
+            """
         )
 
         channel = discord_get(
