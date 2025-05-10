@@ -28,9 +28,9 @@ Configuration files:
 
 Arguments and environment variables:
 
-* `--config-file FILE` or `CONFIG_FILE=FILE`: Path to .toml configuration file
-* `DISCORD_BOT_TOKEN=TOKEN`: Discord bot auth token (with Admin and `GUILD_MEMBERS` privileges)
-* `PRETIX_TOKEN=TOKEN`: Pretix access token (preferably read-only)
+* Argument `--config-file`: Path to .toml configuration file
+* Environment variable `DISCORD_BOT_TOKEN`: Discord bot auth token (with Admin and `GUILD_MEMBERS` privileges)
+* Environment variable `PRETIX_TOKEN`: Pretix access token (preferably read-only)
 
 Files expected in the current directory (may be empty):
 

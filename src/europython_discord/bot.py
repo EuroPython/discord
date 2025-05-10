@@ -49,18 +49,14 @@ async def run_bot(config: Config, auth_token: str) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="EuroPython Discord Bot")
-    parser.add_argument("--config-file", help="Configuration file (.toml)")
+    parser.add_argument("--config-file", type=Path, required=True, help="Configuration file")
     args = parser.parse_args()
-
-    if not args.config_file and "CONFIG_FILE" not in os.environ:
-        raise RuntimeError("Missing option '--config-file' or environment variable 'CONFIG_FILE'")
-    config_file = args.config_file or os.environ["CONFIG_FILE"]
 
     if "DISCORD_BOT_TOKEN" not in os.environ:
         raise RuntimeError("Missing environment variable 'DISCORD_BOT_TOKEN'")
     bot_auth_token = os.environ["DISCORD_BOT_TOKEN"]
 
-    config_file_content = Path(config_file).read_text()
+    config_file_content = args.config_file.read_text()
     config = Config(**tomllib.loads(config_file_content))
 
     logging.basicConfig(
