@@ -74,7 +74,7 @@ run-bot --config your-config-file.toml
 Install `uv` as documented [here](https://docs.astral.sh/uv/getting-started/installation/), then run `uv sync --dev` to create/update a
 virtual environment with all dependencies according to [`uv.lock`](./uv.lock).
 
-If required, `uv` will download the required Python version, as specified in 
+If required, `uv` will download the required Python version, as specified in
 [`.python-version`](./.python-version).
 
 To run the bot, use the following:
