@@ -15,16 +15,19 @@ The bot has the following extensions ("Cogs"):
 * Registration: On startup, the bot posts a registration form. New users must register using their Pretix ticket data. On success, the bot assigns the appropriate roles.
 * Programme Notifications: Before each session, the bot posts a session summary and updates the livestream URLs.
 
-![registration_view.png](./img/registration_view.png)
+## Screenshots
+### Registration Channel:
+![Registration Channel](./img/registration-channel.png)
+
+### Registration Form:
+![Registration Form](./img/registration-form.png)
+
+### Programme Notification:
+![Programme Notification](./img/programme-notification.png)
 
 ## Configuration
 
 All configuration is server-agnostic. You can set up your own Discord server and use the included configuration.
-
-Configuration files:
-
-* [`prod-config.toml`](./prod-config.toml) or [`test-config.toml`](./test-config.toml): Prod/Test configuration
-* [`test-livestreams.toml`](./test-livestreams.toml): Test livestream URL configuration
 
 Arguments and environment variables:
 
@@ -32,7 +35,12 @@ Arguments and environment variables:
 * Environment variable `DISCORD_BOT_TOKEN`: Discord bot auth token (with Admin and `GUILD_MEMBERS` privileges)
 * Environment variable `PRETIX_TOKEN`: Pretix access token (preferably read-only)
 
-Files expected in the current directory (may be empty):
+Included example configuration files:
+
+* [`prod-config.toml`](./prod-config.toml) or [`test-config.toml`](./test-config.toml): Prod/Test configuration
+* [`test-livestreams.toml`](./test-livestreams.toml): Test livestream URL configuration
+
+Used cache and log files (will be created if necessary):
 
 * `pretix_cache.json`: Local cache of Pretix ticket data
 * `registered_log.txt`: Log of registered users
