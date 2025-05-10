@@ -1,15 +1,18 @@
 services:
   EuroPythonBot:
     image: europythonbot
-    build: .
+    build:
+      context: .
+    env_file:
+      - /root/.secrets
     volumes:
       - type: bind
-        source: /etc/EuroPython/discord/.secrets
-        target: /home/bot/.secrets
+        source: prod-config.toml
+        target: /home/bot/prod-config.toml
         read_only: true
 
       - type: bind
-        source: /etc/EuroPython/livestreams/livestreams.toml
+        source: /root/livestreams.toml
         target: /home/bot/livestreams.toml
         read_only: true
 
@@ -19,8 +22,8 @@ services:
         read_only: false
 
       - type: bind
-        source: /home/bot/schedule.json
-        target: /home/bot/schedule.json
+        source: /home/bot/schedule_cache.json
+        target: /home/bot/schedule_cache.json
         read_only: false
 
       - type: bind

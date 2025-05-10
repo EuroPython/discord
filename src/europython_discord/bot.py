@@ -1,90 +1,72 @@
+from __future__ import annotations
+
+import argparse
 import asyncio
 import logging
 import os
 import sys
+import tomllib
 from pathlib import Path
+from typing import Literal
 
 import discord
 from discord.ext import commands
-from dotenv import load_dotenv
+from pydantic import BaseModel
 
-from europython_discord import configuration
-from europython_discord.cogs.ping import Ping
+from europython_discord.cogs.guild_statistics import GuildStatisticsCog, GuildStatisticsConfig
+from europython_discord.cogs.ping import PingCog
 from europython_discord.program_notifications.cog import ProgramNotificationsCog
+from europython_discord.program_notifications.config import ProgramNotificationsConfig
 from europython_discord.registration.cog import RegistrationCog
+from europython_discord.registration.config import RegistrationConfig
 
-load_dotenv(Path(__file__).resolve().parent.parent.parent / ".secrets")
-DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
-
-_logger = logging.getLogger("bot")
+_logger = logging.getLogger(__name__)
 
 
-class Bot(commands.Bot):
-    def __init__(self) -> None:
-        intents = _get_intents()
-        super().__init__(command_prefix=commands.when_mentioned_or("$"), intents=intents)
-        self.guild = None
-        self.channels = {}
-
-    async def on_ready(self) -> None:
-        _logger.info("Logged in as user %r (ID=%r)", self.user.name, self.user.id)
-
-    async def load_extension(self, name: str, *, package: str | None = None) -> None:
-        """Load the extension by name.
-
-        :param name: The name of the extension to load
-        :param package: An optional package name for relative imports
-        """
-        try:
-            await super().load_extension(name, package=package)
-        except commands.ExtensionError:
-            _logger.exception("Failed to load extension %r (package=%r):", name, package)
-        else:
-            _logger.info("Successfully loaded extension %r (package=%r)", name, package)
+class Config(BaseModel):
+    log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+    registration: RegistrationConfig
+    program_notifications: ProgramNotificationsConfig
+    guild_statistics: GuildStatisticsConfig
 
 
-def _setup_logging() -> None:
-    """Set up a basic logging configuration."""
-    config = configuration.Config()
-
-    # Create a stream handler that logs to stdout (12-factor app)
-    stream_handler = logging.StreamHandler(stream=sys.stdout)
-    stream_handler.setLevel(config.LOG_LEVEL)
-    formatter = logging.Formatter(fmt="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-    stream_handler.setFormatter(formatter)
-
-    # Configure the root logger with the stream handler and log level
-    root_logger = logging.getLogger()
-    root_logger.addHandler(stream_handler)
-    root_logger.setLevel(config.LOG_LEVEL)
-
-
-def _get_intents() -> discord.Intents:
-    """Get the desired intents for the bot."""
+async def run_bot(config: Config, auth_token: str) -> None:
     intents = discord.Intents.all()
     intents.presences = False
     intents.dm_typing = False
     intents.dm_reactions = False
     intents.invites = False
     intents.integrations = False
-    return intents
 
+    async with commands.Bot(intents=intents, command_prefix="$") as bot:
+        await bot.add_cog(PingCog(bot))
+        await bot.add_cog(RegistrationCog(bot, config.registration))
+        await bot.add_cog(ProgramNotificationsCog(bot, config.program_notifications))
+        await bot.add_cog(GuildStatisticsCog(bot, config.guild_statistics))
 
-async def run_bot(bot: Bot) -> None:
-    _setup_logging()
-    async with bot:
-        await bot.add_cog(Ping(bot))
-        await bot.add_cog(RegistrationCog(bot))
-        await bot.add_cog(ProgramNotificationsCog(bot))
-        await bot.load_extension("europython_discord.extensions.organisers")
-        await bot.start(DISCORD_BOT_TOKEN)
+        await bot.start(auth_token)
 
 
 def main() -> None:
-    bot = Bot()
+    parser = argparse.ArgumentParser(description="EuroPython Discord Bot")
+    parser.add_argument("--config-file", type=Path, required=True, help="Configuration file")
+    args = parser.parse_args()
+
+    if "DISCORD_BOT_TOKEN" not in os.environ:
+        raise RuntimeError("Missing environment variable 'DISCORD_BOT_TOKEN'")
+    bot_auth_token = os.environ["DISCORD_BOT_TOKEN"]
+
+    config_file_content = args.config_file.read_text()
+    config = Config(**tomllib.loads(config_file_content))
+
+    logging.basicConfig(
+        level=config.log_level,
+        stream=sys.stdout,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    )
 
     try:
-        asyncio.run(run_bot(bot))
+        asyncio.run(run_bot(config, auth_token=bot_auth_token))
     except KeyboardInterrupt:
         _logger.info("Received KeyboardInterrupt, exiting...")
 

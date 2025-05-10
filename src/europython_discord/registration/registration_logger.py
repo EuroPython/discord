@@ -6,7 +6,7 @@ import aiofiles
 
 from europython_discord.registration.ticket import Ticket
 
-_logger = logging.getLogger(f"bot.{__name__}")
+_logger = logging.getLogger(__name__)
 
 
 class RegistrationLogger:
