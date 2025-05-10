@@ -24,7 +24,7 @@ All configuration is server-agnostic. You can set up your own Discord server and
 Configuration files:
 
 * [`prod-config.toml`](./prod-config.toml) or [`test-config.toml`](./test-config.toml): Prod/Test configuration
-* [`livestreams.toml`](./livestreams.toml): Livestream URL configuration
+* [`test-livestreams.toml`](./test-livestreams.toml): Test livestream URL configuration
 
 Arguments and environment variables:
 
@@ -36,7 +36,7 @@ Files expected in the current directory (may be empty):
 
 * `pretix_cache.json`: Local cache of Pretix ticket data
 * `registered_log.txt`: Log of registered users
-* `schedule.json`: Local cache of [programapi](https://github.com/europython/programapi) schedule
+* `schedule_cache.json`: Local cache of [programapi](https://github.com/europython/programapi) schedule
 
 ## Setup
 ### Quickstart using `pip`

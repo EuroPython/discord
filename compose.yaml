@@ -4,7 +4,7 @@ services:
     build:
       context: .
     env_file:
-      - /etc/EuroPython/discord/.secrets
+      - /root/.secrets
     volumes:
       - type: bind
         source: prod-config.toml
@@ -12,7 +12,7 @@ services:
         read_only: true
 
       - type: bind
-        source: /etc/EuroPython/livestreams/livestreams.toml
+        source: /root/livestreams.toml
         target: /home/bot/livestreams.toml
         read_only: true
 
@@ -22,8 +22,8 @@ services:
         read_only: false
 
       - type: bind
-        source: /home/bot/schedule.json
-        target: /home/bot/schedule.json
+        source: /home/bot/schedule_cache.json
+        target: /home/bot/schedule_cache.json
         read_only: false
 
       - type: bind

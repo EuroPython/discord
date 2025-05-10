@@ -33,7 +33,7 @@ pretix_cache_file = "pretix_cache.json"
 # UTC offset in hours (e.g. 2 for CEST)
 timezone_offset = 2
 api_url = "https://static.europython.eu/programme/ep2025/releases/current/schedule.json"
-schedule_cache_file = "schedule.json"
+schedule_cache_file = "schedule_cache.json"
 livestream_url_file = "livestreams.toml"
 main_notification_channel_name = "programme-notifications"
 

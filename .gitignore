@@ -5,6 +5,7 @@
 __pycache__
 .DS_Store
 registered_log.txt
-schedule.json
+schedule_cache.json
 pretix_cache.json
 *.egg-info/
+livestreams.toml
