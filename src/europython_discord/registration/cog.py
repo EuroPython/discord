@@ -15,8 +15,11 @@ from europython_discord.registration.registration_logger import RegistrationLogg
 
 _logger = logging.getLogger(__name__)
 
+REGISTRATION_BUTTON_LABEL = "Register here :point_left:"
+WELCOME_MESSAGE_TITLE = "## Welcome to EuroPython 2025 on Discord! :tada::snake:"
 
-class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
+
+class RegistrationForm(discord.ui.Modal, title="EuroPython 2025 Registration"):
     def __init__(
         self,
         config: RegistrationConfig,
@@ -128,7 +131,7 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
             interaction.client.get_all_channels(), name=self.config.registration_log_channel_name
         )
         message_lines = [
-            f"✅ : **{interaction.user.mention} REGISTERED**",
+            f":white_check_mark: **{interaction.user.mention} REGISTERED**",
             f"{name=} {order=} roles={[role.name for role in roles]}",
         ]
         await channel.send(content="\n".join(message_lines))
@@ -147,7 +150,7 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2024 Registration"):
         channel = discord_get(
             interaction.client.get_all_channels(), name=self.config.registration_log_channel_name
         )
-        await channel.send(content=f"❌ : **{interaction.user.mention} ERROR**\n{message}")
+        await channel.send(content=f":x: **{interaction.user.mention} ERROR**\n{message}")
 
 
 class RegistrationCog(commands.Cog):
@@ -167,7 +170,7 @@ class RegistrationCog(commands.Cog):
     async def on_ready(self) -> None:
         await self.pretix_connector.fetch_pretix_data()
 
-        button = discord.ui.Button(style=discord.ButtonStyle.green, label="Register here 👈")
+        button = discord.ui.Button(style=discord.ButtonStyle.green, label=REGISTRATION_BUTTON_LABEL)
         button.callback = lambda interaction: interaction.response.send_modal(
             RegistrationForm(
                 config=self.config,
@@ -181,36 +184,35 @@ class RegistrationCog(commands.Cog):
         reg_help_channel = discord_get(
             self.bot.get_all_channels(), name=self.config.registration_help_channel_name
         )
-        welcome_message = create_welcome_message(
-            textwrap.dedent(
-                f"""
-                Follow these steps to complete your registration:
+        welcome_message = textwrap.dedent(
+            f"""
+            {WELCOME_MESSAGE_TITLE}\n
+            Follow these steps to complete your registration:
 
-                1️⃣ Click on the green "Register here 👈" button below.
+            :one: Click on the green "%s" button below.
 
-                2️⃣ Fill in your Order ID and the name on your ticket. You can find them
-                * Printed on your ticket
-                * Printed on your badge
-                * In the email "[EuroPython 2024] Your order: XXXXX" from support@pretix.eu
+            :two: Fill in your Order ID and the name on your ticket. You can find them
+            * Printed on your ticket
+            * Printed on your badge
+            * In the email "[EuroPython 2025] Your order: XXXXX" from support@pretix.eu
 
-                3️⃣ Click "Submit".
+            :three: Click "Submit".
 
-                These steps will assign the correct server permissions and set your server nickname.
+            These steps will assign the correct server permissions and set your server nickname.
 
-                Experiencing trouble? Please contact us
-                * In the {reg_help_channel.mention} channel
-                * By speaking to a volunteer in a yellow t-shirt
+            Experiencing trouble? Please contact us
+            * In the {reg_help_channel.mention} channel
+            * By speaking to a volunteer in a yellow t-shirt
 
-                Enjoy our EuroPython 2024 Community Server! 🐍💻🎉
-                """
-            )
+            Enjoy our EuroPython 2025 Community Server! :snake::computer::tada:
+            """ % REGISTRATION_BUTTON_LABEL
         )
 
         channel = discord_get(
             self.bot.get_all_channels(), name=self.config.registration_form_channel_name
         )
         await channel.purge()
-        await channel.send(embed=welcome_message, view=view)
+        await channel.send(welcome_message, view=view)
 
     async def cog_load(self) -> None:
         """Load the initial schedule."""
@@ -228,10 +230,9 @@ class RegistrationCog(commands.Cog):
         )
         await reg_channel.purge()
         await reg_channel.send(
-            embed=create_welcome_message(
-                "The registration bot is currently offline. "
-                "We apologize for the inconvenience and are working hard to fix the issue."
-            )
+            f"{WELCOME_MESSAGE_TITLE}\n"
+            "The registration bot is currently offline. "
+            "We apologize for the inconvenience and are working hard to fix the issue."
         )
 
     @tasks.loop(minutes=5)
@@ -242,12 +243,3 @@ class RegistrationCog(commands.Cog):
             _logger.info("Finished the periodic pretix update.")
         except Exception:
             _logger.exception("Periodic pretix update failed")
-
-
-def create_welcome_message(body: str) -> discord.Embed:
-    orange = 0xFF8331
-    return discord.Embed(
-        title="Welcome to EuroPython 2024 on Discord! 🎉🐍",
-        description=body,
-        color=orange,
-    )
