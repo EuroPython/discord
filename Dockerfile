@@ -8,8 +8,6 @@ RUN groupadd --gid 1000 bot && \
 USER bot
 WORKDIR /home/bot
 
-ENV PATH="/home/bot/.local/bin:$PATH"
-
 COPY --chown=bot:bot pyproject.toml uv.lock ./
 COPY --chown=bot:bot src ./src
 
