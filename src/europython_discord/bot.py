@@ -5,7 +5,6 @@ import asyncio
 import logging
 import os
 import sys
-import tomllib
 from pathlib import Path
 from typing import Literal
 
@@ -19,6 +18,11 @@ from europython_discord.program_notifications.cog import ProgramNotificationsCog
 from europython_discord.program_notifications.config import ProgramNotificationsConfig
 from europython_discord.registration.cog import RegistrationCog
 from europython_discord.registration.config import RegistrationConfig
+
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    import tomli as tomllib
 
 # silence warning about missing discord voice support
 # https://github.com/Rapptz/discord.py/issues/1719#issuecomment-437703581
