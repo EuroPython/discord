@@ -5,6 +5,7 @@ A suite of tools for managing the EuroPython Conference Discord server:
 * [src/europython_discord](./src/europython_discord): Discord bot
 * [scripts/configure-guild.py](./scripts/configure-guild.py): Configure channels and roles of a Discord server
 * [scripts/export-members.py](./scripts/export-members.py): Export a list of all server members and their roles
+* [scripts/pretix-mock.py](./scripts/pretix-mock.py): Mock Pretix server for development purposes
 
 The scripts work standalone and only require an Auth token. Please find more documentation in the respective files.
 

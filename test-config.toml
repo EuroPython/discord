@@ -5,7 +5,7 @@ registration_form_channel_name = "registration-form"
 registration_help_channel_name = "registration-help"
 registration_log_channel_name = "registration-log"
 
-pretix_base_url = "https://pretix.eu/api/v1/organizers/europython/events/ep2025"
+pretix_base_url = "http://localhost:8080"
 
 registered_cache_file = "registered_log.txt"
 pretix_cache_file = "pretix_cache.json"
