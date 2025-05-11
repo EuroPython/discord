@@ -28,7 +28,7 @@ Order 'CCC33' (paid)
 - Personal Remote Ticket for 'Martina Mustermann'
 
 Order 'DDDD44' (paid)
-- Sponsor Ticket for Seán Ó Rudaí
+- Sponsor Ticket for 'Seán Ó Rudaí'
 - T-Shirt
 
 Order 'EEE55' (payment pending)
