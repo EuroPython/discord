@@ -1075,6 +1075,9 @@ class GuildConfigurator:
             logger.debug("Raise verification level at medium")
             await self.guild.edit(verification_level=discord.VerificationLevel.medium)
 
+        if self.guild.default_notifications != discord.NotificationLevel.only_mentions:
+            self.guild.edit(default_notifications=discord.NotificationLevel.only_mentions)
+
         if "COMMUNITY" not in self.guild.features:
             logger.debug("Enable guild 'COMMUNITY' feature")
             await self.guild.edit(
