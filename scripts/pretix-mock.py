@@ -201,6 +201,8 @@ def main(args: list[str] | None) -> None:
     with socketserver.ThreadingTCPServer(("localhost", args.port), RequestHandler) as httpd:
         logger.info("Serving at localhost:%d", args.port)
         httpd.serve_forever()
+        httpd.shutdown()
+        httpd.server_close()
 
 
 if __name__ == "__main__":
