@@ -36,6 +36,30 @@ You can use the configuration values from [test-config.toml](/test-config.toml).
 Make sure the entry `pretix_base_url` matches the port of your mock:
 If you use `python pretix-mock.py --port 8888`, set `pretix_base_url` to `http://localhost:8888`.
 
+### Mock Pretix Content
+
+The mock contains five Pretix orders:
+
+Order 'AAAAA' (paid)
+- Business Combined Ticket for 'Jane Doe'
+- Business Tutorial Ticket for 'John Doe'
+- Childcare
+
+Order 'BBB22' (paid)
+- Volunteer Ticket for 'Minta János'
+- Speaker Ticket for 'Minta Kata'
+- T-Shirt
+
+Order 'CCC33' (paid)
+- Personal Remote Ticket for 'Martina Mustermann'
+
+Order 'DDDD44' (paid)
+- Sponsor Ticket for 'Seán Ó Rudaí'
+- T-Shirt
+
+Order 'EEE55' (payment pending)
+- Personal Late Conference Ticket for 'Numerius Negidius'
+
 ## Real Pretix Instance
 
 If you want to use a real Pretix instance, make sure the `[configuration]` section in your bot
