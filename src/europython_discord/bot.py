@@ -20,6 +20,10 @@ from europython_discord.program_notifications.config import ProgramNotifications
 from europython_discord.registration.cog import RegistrationCog
 from europython_discord.registration.config import RegistrationConfig
 
+# silence warning about missing discord voice support
+# https://github.com/Rapptz/discord.py/issues/1719#issuecomment-437703581
+discord.VoiceClient.warn_nacl = False
+
 _logger = logging.getLogger(__name__)
 
 
