@@ -94,7 +94,7 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2025 Registration"):
         await interaction.user.add_roles(*roles)
 
         await self.log_registration_to_channel(interaction, name=name, order=order, roles=roles)
-        await self.log_registration_to_user(interaction, name=name)
+        await self.log_registration_to_user(interaction, name=nickname)
         for ticket in tickets:
             await self.registration_logger.mark_as_registered(ticket)
         _logger.info(f"Registration successful: {order=}, {name=}")
