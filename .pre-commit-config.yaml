@@ -24,6 +24,6 @@ repos:
       # run pytest with low verbosity (no header, no tracebacks)
       name: pytest
       language: system
-      entry: uv run --dev pytest --no-header --tb=no
+      entry: pytest --no-header --tb=no
       pass_filenames: false
       always_run: true
