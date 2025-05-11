@@ -18,13 +18,13 @@ The bot has the following extensions ("Cogs"):
 
 ## Screenshots
 ### Registration Channel:
-![Registration Channel](./img/registration-channel.png)
+![Registration Channel](docs/img/registration-channel.png)
 
 ### Registration Form:
-![Registration Form](./img/registration-form.png)
+![Registration Form](docs/img/registration-form.png)
 
 ### Programme Notification:
-![Programme Notification](./img/programme-notification.png)
+![Programme Notification](docs/img/programme-notification.png)
 
 ## Configuration
 
