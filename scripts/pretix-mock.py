@@ -1,5 +1,7 @@
 """Mock Pretix HTTP Server."""
 
+from __future__ import annotations
+
 import argparse
 import http.server
 import json
@@ -169,8 +171,8 @@ class RequestHandler(http.server.BaseHTTPRequestHandler):
         path = urlparse(self.path).path  # strip query parameters
 
         path_to_response_body = {
-            "/items.json": PRETIX_ITEMS,
-            "/orders.json": PRETIX_ORDERS,
+            "/items": PRETIX_ITEMS,
+            "/orders": PRETIX_ORDERS,
         }
         response_body = path_to_response_body.get(path)
         if response_body is None:
@@ -199,6 +201,8 @@ def main(args: list[str] | None) -> None:
     with socketserver.ThreadingTCPServer(("localhost", args.port), RequestHandler) as httpd:
         logger.info("Serving at localhost:%d", args.port)
         httpd.serve_forever()
+        httpd.shutdown()
+        httpd.server_close()
 
 
 if __name__ == "__main__":

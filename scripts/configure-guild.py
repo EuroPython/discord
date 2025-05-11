@@ -10,13 +10,18 @@ import re
 import sys
 import textwrap
 from collections import defaultdict
-from typing import Annotated, Literal, Self, assert_never
+from typing import Annotated, Literal
 
 import discord
 from discord import VerificationLevel
 from discord.ext.commands import Bot
 from discord.utils import get as discord_get
 from pydantic import AfterValidator, BaseModel, Field, model_validator
+
+if sys.version_info >= (3, 11):
+    from typing import Self, assert_never
+else:
+    from typing_extensions import Self, assert_never
 
 logger = logging.getLogger(__name__)
 
@@ -1069,6 +1074,9 @@ class GuildConfigurator:
         if self.guild.verification_level < VerificationLevel.medium:  # type: ignore[operator]
             logger.debug("Raise verification level at medium")
             await self.guild.edit(verification_level=discord.VerificationLevel.medium)
+
+        if self.guild.default_notifications != discord.NotificationLevel.only_mentions:
+            self.guild.edit(default_notifications=discord.NotificationLevel.only_mentions)
 
         if "COMMUNITY" not in self.guild.features:
             logger.debug("Enable guild 'COMMUNITY' feature")
