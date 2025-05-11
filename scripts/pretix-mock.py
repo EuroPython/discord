@@ -171,8 +171,8 @@ class RequestHandler(http.server.BaseHTTPRequestHandler):
         path = urlparse(self.path).path  # strip query parameters
 
         path_to_response_body = {
-            "/items.json": PRETIX_ITEMS,
-            "/orders.json": PRETIX_ORDERS,
+            "/items": PRETIX_ITEMS,
+            "/orders": PRETIX_ORDERS,
         }
         response_body = path_to_response_body.get(path)
         if response_body is None:
