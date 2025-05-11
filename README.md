@@ -49,9 +49,7 @@ Used cache and log files (will be created if necessary):
 ## Setup
 ### Quickstart using `pip`
 
-This project uses [uv](https://github.com/astral-sh/uv) for managing dependencies.
-If you just want to try the bot and skip the development setup,
-you can use `pip` instead of `uv` (requires Python >= 3.11):
+If you just want to try the bot and skip the development setup, you can use `pip` (requires Python >= 3.11):
 
 ```shell
 # create and activate virtual environment (optional, but recommended)
@@ -69,13 +67,13 @@ export PRETIX_TOKEN=...  # Windows: $env:PRETIX_TOKEN = '...'
 run-bot --config your-config-file.toml
 ```
 
-### Development setup using `uv`
+### Full Development Setup
 
-Install `uv` as documented [here](https://docs.astral.sh/uv/getting-started/installation/), then run `uv sync --dev` to create/update a
-virtual environment with all dependencies according to [`uv.lock`](./uv.lock).
-
-If required, `uv` will download the required Python version, as specified in 
-[`.python-version`](./.python-version).
+* Install `uv` as documented [here](https://docs.astral.sh/uv/getting-started/installation/).
+* Run `uv sync --dev` to create/update a virtual environment with all dependencies according to [`uv.lock`](./uv.lock).
+* Run `. .venv/bin/activate` (Windows: `.venv/Scripts/activate`) to activate the virtual environment
+* Run `pre-commit install` to install the [pre-commit](https://pre-commit.com/) hooks.
+* Run `pre-commit run --all-files` to verify your setup. All checks should pass.
 
 To run the bot, use the following:
 
@@ -85,31 +83,28 @@ export DISCORD_BOT_TOKEN=...  # Windows: $env:DISCORD_BOT_TOKEN = '...'
 export PRETIX_TOKEN=...  # Windows: $env:PRETIX_TOKEN = '...'
 
 # run the bot with a given config file
-uv run run-bot --config your-config-file.toml
+run-bot --config your-config-file.toml
 ```
 
-#### Useful `uv` commands
+#### Working with `uv`
 
+This is a list of useful commands when working with `uv`.
 Please refer to the [uv documentation](https://docs.astral.sh/uv) or `uv help` for details.
 
 ```shell
-# generate .venv/ from uv.lock
-uv sync
-uv sync --dev  # include dev dependencies
-
-# activate uv-generated venv
+# activate uv-generated virtual environment ("venv")
 . .venv/bin/activate  # Windows: '.venv/Scripts/activate'
 
-# execute command inside uv-generated venv
-uv run [command]
-
-# reset all packages to versions pinned in uv.lock
+# create/synchronize venv based on uv.lock file
 uv sync
 uv sync --dev  # include dev dependencies
+
+# execute command inside uv-generated venv (can be skipped if venv is activated)
+uv run [command]
 
 # add package
 uv add [package]
-uv add --dev [package]  # install as dev dependency
+uv add --dev [package]  # as dev dependency
 
 # upgrade packages
 uv lock --upgrade
@@ -120,11 +115,12 @@ uv remove [package]
 
 ### Development tools
 
-* Format code: `uv run --dev ruff format`
-* Check code format: `uv run --dev ruff format --check`
-* Sort imports: `uv run --dev ruff check --select I001 --fix`
-* Check code style: `uv run --dev ruff check .`
-* Run tests: `uv run --dev pytest .`
+* Run everything: `pre-commit run --all-files`
+* Format code: `ruff format`
+* Check code format: `ruff format --check`
+* Fix imports: `ruff check --select I001,F401 --fix`
+* Check code style: `ruff check .`
+* Run tests: `pytest`
 
 ### Deployment
 
@@ -137,3 +133,4 @@ Related files:
 * [ansible/deploy-playbook.yml](./ansible/deploy-playbook.yml): The Ansible Playbook
 * [Dockerfile](./Dockerfile): The Docker container recipe
 * [compose.yaml](./compose.yaml): The Docker Compose recipe
+* [prod-config.toml](./prod-config.toml): The Prod bot configuration

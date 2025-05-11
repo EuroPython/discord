@@ -1,0 +1,29 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-added-large-files
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.9
+    hooks:
+      - id: ruff
+        # fix imports:
+        # - I001: Bad import order or format
+        # - F401: Unused import
+        args: [ '--fix', '--fixable', 'I001,F401' ]
+      - id: ruff-format
+
+  - repo: local
+    hooks:
+    - id: pytest
+      # run pytest with low verbosity (no header, no tracebacks)
+      name: pytest
+      language: system
+      entry: uv run --dev pytest --no-header --tb=no
+      pass_filenames: false
+      always_run: true

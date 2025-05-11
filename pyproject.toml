@@ -20,6 +20,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "pre-commit>=4.2.0",
     "pytest>=8.3.5",
     "pytest-aiohttp>=1.1.0",
     "pytest-asyncio>=0.26.0",
@@ -31,6 +32,11 @@ run-bot = "europython_discord.bot:main"
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+filterwarnings = [
+    "error",
+    "ignore:'audioop' is deprecated:DeprecationWarning",
+]
 
 [tool.ruff]
 line-length = 100
