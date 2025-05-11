@@ -84,7 +84,7 @@ class ProgramConnector:
             self.sessions_by_day = await self.parse_schedule(schedule)
             _logger.info("Schedule parsed and loaded.")
 
-    async def _get_schedule_from_cache(self) -> dict[date, list[Session]]:
+    async def _get_schedule_from_cache(self) -> dict[date, list[Session]] | None:
         """Get the schedule data from the cache file."""
         try:
             _logger.info(f"Getting schedule from cache file {self._cache_file}...")
@@ -95,6 +95,7 @@ class ProgramConnector:
 
         except FileNotFoundError:
             _logger.exception("Schedule cache file not found and no schedule is already loaded.")
+        return None
 
     async def _get_now(self) -> datetime:
         """Get the current time in the conference timezone."""
