@@ -1,5 +1,7 @@
 name: EuroPython Discord Bot CI
 run-name: "🛠️ CI: ${{ github.event.head_commit.message }} (${{ github.sha }})"
+permissions:
+  contents: read
 
 on:
   push:
