@@ -84,13 +84,47 @@ export PRETIX_TOKEN=...  # Windows: $env:PRETIX_TOKEN = '...'
 uv run run-bot --config-file your-config-file.toml
 ```
 
-## Full Development Setup
+## Development Setup
 
-* Install `uv` as documented [here](https://docs.astral.sh/uv/getting-started/installation/).
-* Run `uv sync --dev` to create/update a virtual environment with all dependencies according to [`uv.lock`](./uv.lock).
-* Run `. .venv/bin/activate` (Windows: `.venv/Scripts/activate`) to activate the virtual environment
+NOTE: This project uses [uv](https://docs.astral.sh/uv/) to manage Python versions and dependencies.
+  If you don't plan to add/remove/update dependencies, you can also use [pip](https://pip.pypa.io/en/stable/), and any Python version >= 3.9.
+
+### Discord Server and Bot Setup
+
+Follow [Discord Server and Bot Setup](docs/discord-server-bot-setup.md)
+if you don't yet have a Bot and Server for developing the bot.
+
+Expected outcome: You have a Discord Bot Token and can run a Discord Bot on a Discord Server.
+
+### Discord Server Configuration
+
+Follow [Discord Server Configuration](docs/discord-server-configuration.md)
+to configure your existing Discord Server with the expected channels, roles and messages.
+
+Expected outcome: A Discord Server ready to be used for this bot.
+
+### Pretix Integration
+
+This bot connects to a Pretix instance to obtain a list of valid tickets.
+
+Follow [Pretix Client Setup](docs/pretix-client-setup.md) to either connect to a real Pretix instance,
+or to use a mock.
+
+### Python environment setup
+
+* Using `uv`
+    * Install `uv` as documented [here](https://docs.astral.sh/uv/getting-started/installation/)
+    * Activate virtual environment: `. .venv/bin/activate` (macOS, Linux) or `.venv/Scripts/activate` (Windows)
+    * Run `uv sync --dev` to create/update a virtual environment with all dependencies according to [uv.lock](./uv.lock).
+* Using `pip`
+    * Create a virtual environment: `python3 -m venv .venv` (might require `apt install python3-venv` or similar on some systems)
+    * Activate virtual environment: `. .venv/bin/activate` (macOS, Linux) or `.venv/Scripts/activate` (Windows)
+    * Ensure `pip` version is >= 25.1.0: `python3 -m pip install --upgrade pip` (earlier versions don't support [PEP 735](https://peps.python.org/pep-0735/) Dependency Groups)
+    * Install all dependencies according to [pyproject.toml](pyproject.toml): `python3 -m pip install -e . --group dev`
 * Run `pre-commit install` to install the [pre-commit](https://pre-commit.com/) hooks.
 * Run `pre-commit run --all-files` to verify your setup. All checks should pass.
+
+### Run the bot
 
 To run the bot, use the following:
 
