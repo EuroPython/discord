@@ -38,7 +38,7 @@ class GuildStatisticsCog(commands.Cog):
         lines = [f"{ctx.author.mention} Participant Statistics:"]
         for role_name, count in role_counts.items():
             lines.append(f"* {count} {role_name}")
-        await ctx.send(content="\n".join(lines), delete_after=5)
+        await ctx.send(content="\n".join(lines))
 
     async def cog_check(self, ctx: commands.Context) -> bool:
         """Check if the requested command shall be executed."""
