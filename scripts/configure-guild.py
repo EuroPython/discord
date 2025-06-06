@@ -301,6 +301,9 @@ SERVER_CONFIG = GuildConfig(
                         Use English to the best of your ability. Be polite if someone speaks English imperfectly.
                         **Rule 3**
                         Use the name on your ticket as your display name. This will be done automatically during the #registration-form process.
+                        **Rule 4**
+                        When posting pictures, please keep visually impaired attendees in mind. A short description can make a big difference.
+                        See also: [Discord - Add Alt Text To Your Image Upload](https://support.discord.com/hc/en-us/articles/211866427-How-do-I-upload-images-and-GIFs#h_01GWWTHYJEV2S1WCDGFEMY21AQ)
 
                         **Reporting Incidents**
                         If you notice something that needs the attention of a moderator of the community, please ping the <<@&Moderators>> role.
