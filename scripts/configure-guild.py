@@ -234,7 +234,13 @@ SERVER_CONFIG = GuildConfig(
             color=DARK_ORANGE,
             hoist=True,
             mentionable=True,
-            permissions=["kick_members", "ban_members"],
+            permissions=[
+                "kick_members",
+                "ban_members",
+                "priority_speaker",
+                "deafen_members",
+                "mute_members",
+            ],
         ),
         Role(
             name=ROLE_MODERATORS,
@@ -246,6 +252,9 @@ SERVER_CONFIG = GuildConfig(
                 "moderate_members",
                 "manage_messages",
                 "manage_threads",
+                "priority_speaker",
+                "deafen_members",
+                "mute_members",
             ],
         ),
         Role(
@@ -295,6 +304,9 @@ SERVER_CONFIG = GuildConfig(
                 "add_reactions",
                 "read_message_history",
                 "use_application_commands",
+                "connect",
+                "speak",
+                "use_voice_activation",
             ],
         ),
     ],
@@ -521,6 +533,17 @@ SERVER_CONFIG = GuildConfig(
                         ),
                     ],
                 ),
+            ],
+            permission_overwrites=[
+                PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["view_channel"]),
+                PermissionOverwrite(roles=ROLES_REGISTERED, allow=["view_channel"]),
+            ],
+        ),
+        Category(
+            name="Remote Attendees",
+            channels=[
+                TextChannel(name="remote-text", topic="Text chat for remote attendees"),
+                VoiceChannel(name="remote-voice"),
             ],
             permission_overwrites=[
                 PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["view_channel"]),
