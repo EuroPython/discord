@@ -60,7 +60,10 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2025 Registration"):
         if not tickets:
             await self.log_error_to_user(
                 interaction,
-                "We cannot find your ticket. Please double check your input and try again.",
+                (
+                    "We cannot find your ticket. Please double check your input and try again.\n\n"
+                    "If you just bought your ticket, please try again in a few minutes."
+                ),
             )
             await self.log_error_to_channel(interaction, f"No ticket found: {order=}, {name=}")
             _logger.info(f"No ticket found: {order=}, {name=}")
