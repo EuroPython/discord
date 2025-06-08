@@ -389,6 +389,12 @@ SERVER_CONFIG = GuildConfig(
                     tags=["Remote Support", "On-Site Support"],
                     require_tag=True,
                 ),
+                ForumChannel(
+                    name="feedback",
+                    topic="""
+                    Please share your thoughts and ideas. What works well? What doesn't? How can we make EuroPython even better?
+                    """,  # noqa: E501 (line too long)
+                ),
                 TextChannel(
                     name="introduction",
                     topic="Feel free to introduce yourself here :)",
