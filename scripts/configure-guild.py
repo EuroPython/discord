@@ -100,6 +100,14 @@ Permission = Literal[
     "kick_members",
     "ban_members",
     "administrator",
+    "connect",
+    "speak",
+    "stream",
+    "use_soundboard",
+    "use_voice_activation",
+    "priority_speaker",
+    "deafen_members",
+    "mute_members",
 ]
 
 
@@ -138,9 +146,18 @@ class TextChannel(BaseModel):
     channel_messages: list[MultilineString] = Field(default_factory=list)
 
 
+class VoiceChannel(BaseModel):
+    type: Literal["voice"] = "voice"
+
+    name: str
+    permission_overwrites: list[PermissionOverwrite] = Field(default_factory=list)
+
+
 class Category(BaseModel):
     name: str
-    channels: list[Annotated[TextChannel | ForumChannel, Field(discriminator="type")]]
+    channels: list[
+        Annotated[TextChannel | ForumChannel | VoiceChannel, Field(discriminator="type")]
+    ]
     permission_overwrites: list[PermissionOverwrite] = Field(default_factory=list)
 
 
@@ -754,10 +771,14 @@ class GuildConfigurator:
             raise RuntimeError(f"Could not find forum with name '{name}'")
         return channel
 
-    def get_channel(self, name: str) -> discord.TextChannel | discord.ForumChannel:
+    def get_channel(
+        self, name: str
+    ) -> discord.TextChannel | discord.ForumChannel | discord.VoiceChannel:
         channel = discord_get(self.guild.channels, name=name)
-        if channel is None or not isinstance(channel, (discord.TextChannel, discord.ForumChannel)):
-            raise RuntimeError(f"Could not find text or forum channel with name '{name}'")
+        if channel is None or not isinstance(
+            channel, (discord.TextChannel, discord.ForumChannel, discord.VoiceChannel)
+        ):
+            raise RuntimeError(f"Could not find text, forum, or voice channel with name '{name}'")
         return channel
 
     def get_role(self, name: str) -> discord.Role:
@@ -774,7 +795,7 @@ class GuildConfigurator:
 
     async def ensure_channel_permissions(
         self,
-        channel: discord.TextChannel | discord.ForumChannel,
+        channel: discord.TextChannel | discord.ForumChannel | discord.VoiceChannel,
         permission_overwrite_templates: list[PermissionOverwrite],
     ) -> None:
         logger.info("Ensure permissions for channel %s", channel.name)
@@ -830,6 +851,10 @@ class GuildConfigurator:
                     await self.ensure_text_channel(
                         channel_template.name, category=category, position=channel_position
                     )
+                elif isinstance(channel_template, VoiceChannel):
+                    await self.ensure_voice_channel(
+                        channel_template.name, category=category, position=channel_position
+                    )
                 elif isinstance(channel_template, ForumChannel):
                     await self.ensure_forum_channel(
                         channel_template.name,
@@ -866,6 +891,23 @@ class GuildConfigurator:
             await self.guild.create_text_channel(name=name, category=category, position=position)
         else:
             logger.debug("Found text channel")
+            if channel.category != category:
+                logger.debug("Update category")
+                await channel.edit(category=category)
+            if channel.position != position:
+                logger.debug("Update position")
+                await channel.edit(position=position)
+
+    async def ensure_voice_channel(
+        self, name: str, *, category: discord.CategoryChannel | None, position: int
+    ) -> None:
+        logger.info("Ensure voice channel %s at position %d", name, position)
+        channel = discord_get(self.guild.voice_channels, name=name)
+        if channel is None:
+            logger.debug("Create voice channel %s", name)
+            await self.guild.create_voice_channel(name=name, category=category, position=position)
+        else:
+            logger.debug("Found voice channel")
             if channel.category != category:
                 logger.debug("Update category")
                 await channel.edit(category=category)
@@ -1007,7 +1049,11 @@ class GuildConfigurator:
         logger.info("Ensure channel topics")
         for category_template in category_templates:
             for channel_template in category_template.channels:
+                if isinstance(channel_template, VoiceChannel):
+                    continue  # voice channels have no topic
                 channel = self.get_channel(channel_template.name)
+                if isinstance(channel, discord.VoiceChannel):
+                    continue  # voice channels have no topic
                 expected_topic = channel_template.topic
                 if channel.topic != expected_topic:
                     logger.debug("Update topic of channel %s", channel_template.name)
