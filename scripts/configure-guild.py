@@ -10,7 +10,7 @@ import re
 import sys
 import textwrap
 from collections import defaultdict
-from typing import Annotated, Literal
+from typing import Annotated, Any, Literal
 
 import discord
 from discord import VerificationLevel
@@ -170,7 +170,7 @@ class GuildConfig(BaseModel):
 
     @model_validator(mode="after")
     def verify_system_channel_names(self) -> Self:
-        channel_names = []
+        channel_names: list[str] = []
         for category in self.categories:
             channel_names.extend(channel.name for channel in category.channels)
 
@@ -1122,7 +1122,7 @@ class GuildConfigurator:
             await self.guild.edit(verification_level=discord.VerificationLevel.medium)
 
         if self.guild.default_notifications != discord.NotificationLevel.only_mentions:
-            self.guild.edit(default_notifications=discord.NotificationLevel.only_mentions)
+            await self.guild.edit(default_notifications=discord.NotificationLevel.only_mentions)
 
         if "COMMUNITY" not in self.guild.features:
             logger.debug("Enable guild 'COMMUNITY' feature")
@@ -1151,7 +1151,7 @@ class GuildConfigurationBot(Bot):
 
         await self.close()
 
-    async def on_error(self, event: str, /, *args, **kwargs) -> None:  # noqa: ANN002,ANN003 (types)
+    async def on_error(self, event: str, /, *args: Any, **kwargs: Any) -> None:  # noqa: ANN401 (Any)
         """Event handler for uncaught exceptions."""
         exc_type, exc_value, _exc_traceback = sys.exc_info()
         if exc_type is None:
