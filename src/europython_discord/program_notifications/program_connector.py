@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
-from datetime import date, datetime, timedelta, timezone
+from datetime import UTC, date, datetime, timedelta
 from pathlib import Path
 
 import aiofiles
@@ -18,21 +18,19 @@ class ProgramConnector:
     def __init__(
         self,
         api_url: str,
-        timezone_offset: int,
         cache_file: Path,
         simulated_start_time: datetime | None = None,
         *,
         fast_mode: bool = False,
     ) -> None:
         self._api_url = api_url
-        self._timezone = timezone(timedelta(hours=timezone_offset))
         self._cache_file = cache_file
 
         # time travel parameters for testing
         self._simulated_start_time = simulated_start_time
         if self._simulated_start_time:
             self._time_multiplier = 60 if fast_mode else 1
-            self._real_start_time = datetime.now(tz=self._timezone)
+            self._real_start_time = datetime.now(tz=UTC)
 
         self._fetch_lock = asyncio.Lock()
         self.sessions_by_day: dict[date, list[Session]] | None = None
@@ -102,11 +100,11 @@ class ProgramConnector:
     async def _get_now(self) -> datetime:
         """Get the current time in the conference timezone."""
         if self._simulated_start_time:
-            elapsed = datetime.now(tz=self._timezone) - self._real_start_time
+            elapsed = datetime.now(tz=UTC) - self._real_start_time
             simulated_now = self._simulated_start_time + elapsed * self._time_multiplier
-            return simulated_now.astimezone(self._timezone)
+            return simulated_now.astimezone(UTC)
 
-        return datetime.now(tz=self._timezone)
+        return datetime.now(tz=UTC)
 
     async def get_sessions_by_date(self, date_now: date) -> list[Session]:
         if self.sessions_by_day is None:

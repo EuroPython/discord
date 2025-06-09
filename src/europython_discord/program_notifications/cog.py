@@ -20,7 +20,6 @@ class ProgramNotificationsCog(commands.Cog):
         self.config = config
         self.program_connector = ProgramConnector(
             api_url=self.config.api_url,
-            timezone_offset=self.config.timezone_offset,
             cache_file=self.config.schedule_cache_file,
             simulated_start_time=self.config.simulated_start_time,
             fast_mode=self.config.fast_mode,

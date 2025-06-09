@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from datetime import date, datetime
+from datetime import date
 
-from pydantic import BaseModel
+from pydantic import AwareDatetime, BaseModel
 
 
 class DaySchedule(BaseModel):
@@ -25,7 +25,7 @@ class Break(BaseModel):
     title: str
     duration: int
     rooms: list[str]
-    start: datetime
+    start: AwareDatetime
 
 
 class Session(BaseModel):
@@ -41,7 +41,7 @@ class Session(BaseModel):
     level: str
     track: str | None
     rooms: list[str]
-    start: datetime
+    start: AwareDatetime
     website_url: str
     duration: int
 

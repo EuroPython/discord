@@ -27,9 +27,7 @@ def cache_file(tmp_path):
 
 @pytest.fixture
 async def program_connector(cache_file):
-    return ProgramConnector(
-        api_url="http://test.api/schedule", timezone_offset=0, cache_file=cache_file
-    )
+    return ProgramConnector(api_url="http://test.api/schedule", cache_file=cache_file)
 
 
 @pytest.fixture
