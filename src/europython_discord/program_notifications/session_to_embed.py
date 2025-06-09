@@ -6,6 +6,7 @@ from enum import Enum
 from typing import Final
 
 from discord import Embed
+from discord.utils import format_dt
 
 from europython_discord.program_notifications.models import Session, Speaker
 
@@ -34,7 +35,7 @@ def create_session_embed(session: Session, livestream_url: str | None) -> Embed:
         color=_get_color(session.level),
     )
 
-    embed.add_field(name="Start Time", value=_format_start_time(session.start), inline=True)
+    embed.add_field(name="Start Time", value=format_dt(session.start), inline=True)
     embed.add_field(name="Room", value=_format_room(session.rooms), inline=True)
     embed.add_field(name="Track", value=_format_track(session.track), inline=True)
     embed.add_field(name="Duration", value=_format_duration(session.duration), inline=True)
@@ -89,16 +90,6 @@ def _format_title(title: str) -> str:
     :return: The title for an embed
     """
     return textwrap.shorten(title, width=_TITLE_WIDTH)
-
-
-def _format_start_time(start_time: datetime) -> str:
-    """Format the start time to a Discord timestamp string.
-
-    :param start_time: The start time
-    :return: A start time value for the embed.
-    """
-    start_time_timestamp = int(start_time.timestamp())
-    return f"<t:{start_time_timestamp}:f>"
 
 
 def _format_footer(start_time: datetime) -> str:

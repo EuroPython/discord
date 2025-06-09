@@ -1,4 +1,4 @@
-from datetime import UTC, datetime
+from datetime import datetime, timedelta, timezone
 
 import pytest
 
@@ -126,10 +126,12 @@ def test_embed_color(session: Session, level: str, expected_color: int) -> None:
 
 def test_embed_fields_start_time(session: Session) -> None:
     """Test the 'Start Time' field of the embed."""
+    start_time = datetime(2024, 1, 2, 3, 4, 5, tzinfo=timezone(timedelta(hours=6)))
+    session = session.model_copy(update={"start": start_time})
+
     embed = session_to_embed.create_session_embed(session, None)
     assert embed.fields[0].name == "Start Time"
-    assert embed.fields[0].value.startswith("<t:")
-    assert embed.fields[0].value.endswith(":f>")
+    assert embed.fields[0].value == f"<t:{int(start_time.timestamp())}>"
 
 
 def test_embed_fields_room(session: Session) -> None:
@@ -250,19 +252,6 @@ def test_embed_footer(session: Session) -> None:
     """Test the footer of the embed."""
     embed = session_to_embed.create_session_embed(session, None)
     assert embed.footer.text == "This session starts at 08:00:00 (local conference time)"
-
-
-def test_format_start_time(session: Session) -> None:
-    """Test the _format_start_time function."""
-    formatted_start_time = session_to_embed._format_start_time(session.start)
-    assert formatted_start_time.startswith("<t:")
-    assert formatted_start_time.endswith(":f>")
-
-    # The following code assumes that the start time in the mock data is in UTC.
-    datetime_obj = datetime.fromtimestamp(
-        int(formatted_start_time.replace("<t:", "").replace(":f>", "")), tz=UTC
-    )
-    assert datetime_obj == session.start
 
 
 def test_format_duration(session: Session) -> None:
