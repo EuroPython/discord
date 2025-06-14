@@ -370,26 +370,10 @@ SERVER_CONFIG = GuildConfig(
                         """,  # noqa: E501 (line too long)
                         """
                         ## General Reporting Procedure
-                        If you are being harassed, notice that someone else is being harassed, or have any other concerns, please contact a member of the Code of Conduct committee immediately. They can be reached by emailing **coc@europython.eu**.
-
-                        If you prefer, you can also directly contact:
-
-                        - Person 1
-                          - Email: ...@europython.eu
-                          - Telegram: @...
-                          - Discord: <@...>
-                        - Person 2
-                          - Email: ...@europython.eu
-                          - Telegram: @...
-                          - Discord: <@...>
-                        - Person 3
-                          - Email: ...@europython.eu
-                          - Discord: <@...>
-                        - Person 4
-                          - Email: ...@europython.eu
-                          - Discord: <@...>
-
-                        Committee members have the role <<@&Code of Conduct Committee>> in this community.
+                        If you are being harassed, notice that someone else is being harassed, or have any other concerns, please contact a member of the Code of Conduct committee immediately:
+                        - Email: [coc@europython.eu](mailto:coc@europython.eu)
+                        - Discord role: <<@&Code of Conduct Committee>>
+                        - Individual contact information: [EPS Website](https://www.europython-society.org/coc/#contact-information)
                         """,  # noqa: E501 (line too long)
                         """
                         ## Links
