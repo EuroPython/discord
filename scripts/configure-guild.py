@@ -667,9 +667,6 @@ SERVER_CONFIG = GuildConfig(
                         PermissionOverwrite(roles=ROLES_SPONSORS, allow=["create_public_threads"]),
                     ],
                 ),
-                TextChannel(
-                    name="example-sponsor", topic="This is how a sponsor channel could look like"
-                ),
             ],
             permission_overwrites=[
                 PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["view_channel"]),
