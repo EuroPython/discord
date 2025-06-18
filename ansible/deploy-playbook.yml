@@ -39,7 +39,7 @@
             filename: docker-ce
             repo_content: |
               Types: deb
-              URIs: https://download.docker.com/linux/ubuntu 
+              URIs: https://download.docker.com/linux/ubuntu
               Suites: {{ ansible_lsb.codename }}
               Components: stable
               Architectures: amd64
