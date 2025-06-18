@@ -34,20 +34,21 @@
 
     - name: Install Docker
       block:
-        - name: Add Docker GPG key
-          apt_key:
-            url: https://download.docker.com/linux/ubuntu/gpg
-            state: present
-
-        - name: Add Docker repository
-          apt_repository:
-            repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable
-            state: present
+        - name: Add Docker repository (deb822 format)
+          deb822_repository:
+            filename: docker-ce
+            repo_content: |
+              Types: deb
+              URIs: https://download.docker.com/linux/ubuntu 
+              Suites: {{ ansible_lsb.codename }}
+              Components: stable
+              Architectures: amd64
 
         - name: Install Docker
           apt:
             name: docker-ce
             state: present
+            update_cache: yes
 
     - name: Clone repository
       git:
