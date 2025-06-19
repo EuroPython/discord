@@ -34,15 +34,16 @@
 
     - name: Install Docker
       block:
-        - name: Add Docker repository (deb822 format)
-          deb822_repository:
-            filename: docker-ce
-            repo_content: |
-              Types: deb
-              URIs: https://download.docker.com/linux/ubuntu
-              Suites: {{ ansible_lsb.codename }}
-              Components: stable
-              Architectures: amd64
+        - name: Add docker APT repository (Ubuntu 22_04)
+          ansible.builtin.deb822_repository:
+            name: docker
+            types: [ deb ]
+            uris: "https://download.docker.com/linux/ubuntu"
+            signed_by: "https://download.docker.com/linux/ubuntu/gpg"
+            suites: ["jammy"]
+            components: [stable]
+            state: present
+            enabled: yes
 
         - name: Install Docker
           apt:
