@@ -383,9 +383,50 @@ SERVER_CONFIG = GuildConfig(
                         """,
                     ],
                 ),
+                ForumChannel(
+                    name="job-board",
+                    topic="""
+                        Make sure your job openings follows the following rules:
+
+                        1. Title: A clear and concise title including the role and the Company/Organization
+                        2. Job Type: Indicate whether the job is full-time, part-time, contract-based, freelance, or an internship.
+                        3. Job Description: Provide a URL or text explaining the job.
+                        4. Application Deadline: If there is a specific deadline for applications, mention it in the post.
+                        5. Salary/Compensation: If possible and appropriate, include salary or compensation details.
+                        6. Additional Information: stuff like:  perks, or notable company culture, include them in the post.
+                        7. Relevant Tags: Use relevant tags or keywords to categorize the job post. Please let us know if important tags are missing.
+                        8. No Discrimination: Ensure that the job post does not include any discriminatory language or requirements.
+                        9. Updates and Removal: If the job position is filled or no longer available, update or remove the post to avoid confusion for job seekers.
+                        """,  # noqa: E501 (line too long)
+                    tags=[
+                        "Remote",
+                        "Hybrid",
+                        "On-site",
+                        "AI",
+                        "Data Science",
+                        "Data Engineering",
+                        "Backend",
+                        "Frontend",
+                        "Full Stack",
+                        "Cloud",
+                        "Web",
+                        "DevOps",
+                        "Junior",
+                        "Professional",
+                        "Senior",
+                    ],
+                    require_tag=True,
+                    permission_overwrites=[
+                        PermissionOverwrite(
+                            roles=ROLES_SPONSORS, allow=["send_messages", "create_public_threads"]
+                        ),
+                    ],
+                ),
             ],
             permission_overwrites=[
-                PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["send_messages"])
+                PermissionOverwrite(
+                    roles=[ROLE_EVERYONE], deny=["send_messages", "create_public_threads"]
+                )
             ],
         ),
         Category(
@@ -472,46 +513,7 @@ SERVER_CONFIG = GuildConfig(
         ),
         Category(
             name="Sponsors",
-            channels=[
-                ForumChannel(
-                    name="job-board",
-                    topic="""
-                        Make sure your job openings follows the following rules:
-
-                        1. Title: A clear and concise title including the role and the Company/Organization
-                        2. Job Type: Indicate whether the job is full-time, part-time, contract-based, freelance, or an internship.
-                        3. Job Description: Provide a URL or text explaining the job.
-                        4. Application Deadline: If there is a specific deadline for applications, mention it in the post.
-                        5. Salary/Compensation: If possible and appropriate, include salary or compensation details.
-                        6. Additional Information: stuff like:  perks, or notable company culture, include them in the post.
-                        7. Relevant Tags: Use relevant tags or keywords to categorize the job post. Please let us know if important tags are missing.
-                        8. No Discrimination: Ensure that the job post does not include any discriminatory language or requirements.
-                        9. Updates and Removal: If the job position is filled or no longer available, update or remove the post to avoid confusion for job seekers.
-                        """,  # noqa: E501 (line too long)
-                    tags=[
-                        "Remote",
-                        "Hybrid",
-                        "On-site",
-                        "AI",
-                        "Data Science",
-                        "Data Engineering",
-                        "Backend",
-                        "Frontend",
-                        "Full Stack",
-                        "Cloud",
-                        "Web",
-                        "DevOps",
-                        "Junior",
-                        "Professional",
-                        "Senior",
-                    ],
-                    require_tag=True,
-                    permission_overwrites=[
-                        PermissionOverwrite(roles=ROLES_REGISTERED, deny=["create_public_threads"]),
-                        PermissionOverwrite(roles=ROLES_SPONSORS, allow=["create_public_threads"]),
-                    ],
-                ),
-            ],
+            channels=[],
             permission_overwrites=[
                 PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["view_channel"]),
                 PermissionOverwrite(roles=ROLES_REGISTERED, allow=["view_channel"]),
