@@ -34,13 +34,13 @@
 
     - name: Install Docker
       block:
-        - name: Add docker APT repository (Ubuntu 22_04)
+        - name: Add docker APT repository (Ubuntu 24.04)
           ansible.builtin.deb822_repository:
             name: docker
             types: [ deb ]
             uris: "https://download.docker.com/linux/ubuntu"
             signed_by: "https://download.docker.com/linux/ubuntu/gpg"
-            suites: ["jammy"]
+            suites: ["noble"]
             components: [stable]
             state: present
             enabled: yes
