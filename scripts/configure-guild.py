@@ -463,6 +463,13 @@ SERVER_CONFIG = GuildConfig(
                     name="introduction",
                     topic="Feel free to introduce yourself here :)",
                 ),
+                TextChannel(
+                    name="ask-the-locals",
+                    topic="""
+                    The right place to ask locals for help and experience.
+                    Many people recommended the YouTube channel 'HONEST GUIDE', maybe you find it helpful as well: https://www.youtube.com/@HONESTGUIDE
+                    """,  # noqa: E501 (line too long)
+                ),
                 ForumChannel(
                     name="topics-and-interests",
                     topic="""
