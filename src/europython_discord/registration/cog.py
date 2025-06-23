@@ -93,6 +93,12 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2025 Registration"):
         await interaction.user.edit(nick=nickname)
 
         roles = [discord_get(interaction.guild.roles, name=role_name) for role_name in role_names]
+        if any(role is None for role in roles):
+            await self.log_error_to_user(interaction, "Internal error, please contact us.")
+            await self.log_error_to_channel(interaction, f"Found invalid role in {role_names}")
+            _logger.error("At least one of the role names %s is invalid", role_names)
+            return
+
         _logger.info("Assigning %r role_names=%r", name, role_names)
         await interaction.user.add_roles(*roles)
 
