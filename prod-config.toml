@@ -16,7 +16,7 @@ pretix_cache_file = "pretix_cache.json"
 "Personal" = ["Participants", "Onsite Participants"]
 "Education" = ["Participants", "Onsite Participants"]
 "Community Contributors" = ["Participants", "Onsite Participants"]
-"Grant ticket" = ["PARTICIPANTS", "Onsite Participants"]
+"Grant ticket" = ["Participants", "Onsite Participants"]
 # remote participants
 "Remote Participation Ticket" = ["Participants", "Remote Participants"]
 "Remote Grant ticket" = ["Participants", "Remote Participants"]
@@ -27,7 +27,7 @@ pretix_cache_file = "pretix_cache.json"
 "Presenter" = ["Participants", "Onsite Participants", "Speakers"]
 
 [registration.variation_to_roles]
-"Volunteer" = ["Volunteers"]
+"Volunteer" = ["Volunteers", "Onsite Volunteers"]
 
 [program_notifications]
 # UTC offset in hours (e.g. 2 for CEST)
