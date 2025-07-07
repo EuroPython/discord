@@ -29,7 +29,8 @@ pretix_cache_file = "pretix_cache.json"
 "On-site Volunteer" = ["Participants", "Onsite Participants", "Volunteers", "Onsite Volunteers"]
 
 [registration.variation_to_roles]
-"Volunteer" = ["Volunteers", "Onsite Volunteers"]
+# organizers
+"Volunteer" = ["Organizers", "Volunteers", "Onsite Volunteers"]
 
 [program_notifications]
 # UTC offset in hours (e.g. 2 for CEST)
