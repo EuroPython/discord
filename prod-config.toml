@@ -25,6 +25,8 @@ pretix_cache_file = "pretix_cache.json"
 "Sponsor Conference Pass" = ["Participants", "Onsite Participants", "Sponsors"]
 # speakers
 "Presenter" = ["Participants", "Onsite Participants", "Speakers"]
+# onsite volunteers
+"On-site Volunteer" = ["Participants", "Onsite Participants", "Volunteers", "Onsite Volunteers"]
 
 [registration.variation_to_roles]
 "Volunteer" = ["Volunteers", "Onsite Volunteers"]
