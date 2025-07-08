@@ -82,6 +82,7 @@ DARK_YELLOW = "#BC8C15"
 YELLOW = "#FFD700"
 PURPLE = "#D34EA5"
 GREY = "#99AAB5"
+DARK_PURPLE = "#658B34"
 
 Permission = Literal[
     "view_channel",
@@ -225,6 +226,7 @@ ROLE_SPEAKERS = "Speakers"
 ROLE_SPONSORS = "Sponsors"
 ROLE_PARTICIPANTS = "Participants"
 ROLE_EVERYONE = "@everyone"
+ROLE_BEGINNERS_DAY = "Beginners Day"
 
 ROLES_COC = [ROLE_COC]
 ROLES_MODERATORS = [ROLE_MODERATORS, *ROLES_COC]
@@ -298,6 +300,12 @@ SERVER_CONFIG = GuildConfig(
         ),
         Role(name="Onsite Participants"),
         Role(name="Remote Participants"),
+        Role(
+            name=ROLE_BEGINNERS_DAY,
+            color=DARK_PURPLE,
+            mentionable=True,
+            permissions=["use_external_emojis", "use_external_stickers", "create_polls"],
+        ),
         Role(name="Programme Team", mentionable=True),
         Role(
             name="@everyone",
@@ -579,6 +587,19 @@ SERVER_CONFIG = GuildConfig(
                         "If there are reasons to create multiple threads/posts "
                         "(e.g., for groups working on a sub-project), that should be fine, too."
                     ),
+                ),
+                ForumChannel(
+                    name="beginners-day",
+                    topic=(
+                        "Channel for the Beginners' Day: "
+                        "https://ep2025.europython.eu/beginners-day/"
+                    ),
+                    permission_overwrites=[
+                        PermissionOverwrite(
+                            roles=[ROLE_BEGINNERS_DAY],
+                            allow=["view_channel"],
+                        ),
+                    ],
                 ),
                 ForumChannel(
                     name="slides-and-artefacts",

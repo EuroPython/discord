@@ -27,6 +27,8 @@ pretix_cache_file = "pretix_cache.json"
 "Presenter" = ["Participants", "Onsite Participants", "Speakers"]
 # onsite volunteers
 "On-site Volunteer" = ["Participants", "Onsite Participants", "Volunteers", "Onsite Volunteers"]
+# beginners' day
+"Beginners’ Day Unconference / Humble Data Access" = ["Beginners Day"]
 
 [registration.variation_to_roles]
 # organizers
