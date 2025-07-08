@@ -37,7 +37,7 @@ class GuildStatisticsCog(commands.Cog):
         # send message
         lines = [f"{ctx.author.mention} Participant Statistics:"]
         for role_name, count in role_counts.items():
-            lines.append(f"* {count} {role_name}")
+            lines.append(f"* {count} {role_name.strip('<>@')}")
         await ctx.send(content="\n".join(lines))
 
     async def cog_check(self, ctx: commands.Context) -> bool:
