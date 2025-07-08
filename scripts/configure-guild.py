@@ -290,7 +290,7 @@ SERVER_CONFIG = GuildConfig(
             mentionable=True,
         ),
         Role(
-            name="Participants",
+            name=ROLE_PARTICIPANTS,
             color=PURPLE,
             hoist=True,
             mentionable=True,
@@ -298,7 +298,7 @@ SERVER_CONFIG = GuildConfig(
         ),
         Role(name="Onsite Participants"),
         Role(name="Remote Participants"),
-        Role(name="Programme Team"),
+        Role(name="Programme Team", mentionable=True),
         Role(
             name="@everyone",
             permissions=[
