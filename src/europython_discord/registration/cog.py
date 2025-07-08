@@ -83,7 +83,10 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2025 Registration"):
                 role_names.update(self.config.variation_to_roles[ticket.variation])
 
         if not role_names:
-            await self.log_error_to_user(interaction, "No ticket found.")
+            await self.log_error_to_user(
+                interaction,
+                "No such conference ticket found. Did you use another ticket (e.g. Social Event)?",
+            )
             await self.log_error_to_channel(interaction, f"Tickets without roles: {tickets}")
             _logger.info(f"Tickets without role assignments: {tickets}")
             return
