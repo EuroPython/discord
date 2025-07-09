@@ -85,6 +85,7 @@ GREY = "#99AAB5"
 DARK_PURPLE = "#658B34"
 
 Permission = Literal[
+    "manage_roles",
     "view_channel",
     "change_nickname",
     "create_public_threads",
@@ -269,7 +270,7 @@ SERVER_CONFIG = GuildConfig(
         Role(
             name=ROLE_ORGANIZERS,
             color=DARK_YELLOW,
-            permissions=["mention_everyone", "use_external_apps"],
+            permissions=["mention_everyone", "use_external_apps", "manage_roles"],
         ),
         Role(
             name=ROLE_VOLUNTEERS,
