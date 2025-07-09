@@ -235,7 +235,13 @@ ROLES_ORGANIZERS = [ROLE_ORGANIZERS, *ROLES_MODERATORS]
 ROLES_VOLUNTEERS = [ROLE_VOLUNTEERS, *ROLES_ORGANIZERS]
 ROLES_SPEAKERS = [ROLE_SPEAKERS, *ROLES_ORGANIZERS]
 ROLES_SPONSORS = [ROLE_SPONSORS, *ROLES_ORGANIZERS]
-ROLES_REGISTERED = [ROLE_PARTICIPANTS, ROLE_SPONSORS, ROLE_SPEAKERS, *ROLES_VOLUNTEERS]
+ROLES_REGISTERED = [
+    ROLE_PARTICIPANTS,
+    ROLE_SPONSORS,
+    ROLE_SPEAKERS,
+    *ROLES_VOLUNTEERS,
+    ROLE_BEGINNERS_DAY,
+]
 
 SERVER_CONFIG = GuildConfig(
     roles=[
@@ -434,7 +440,8 @@ SERVER_CONFIG = GuildConfig(
             ],
             permission_overwrites=[
                 PermissionOverwrite(
-                    roles=[ROLE_EVERYONE], deny=["send_messages", "create_public_threads"]
+                    roles=[ROLE_EVERYONE],
+                    deny=["send_messages", "create_public_threads", "add_reactions"],
                 )
             ],
         ),
