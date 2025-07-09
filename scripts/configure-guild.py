@@ -439,7 +439,8 @@ SERVER_CONFIG = GuildConfig(
             ],
             permission_overwrites=[
                 PermissionOverwrite(
-                    roles=[ROLE_EVERYONE], deny=["send_messages", "create_public_threads"]
+                    roles=[ROLE_EVERYONE],
+                    deny=["send_messages", "create_public_threads", "add_reactions"],
                 )
             ],
         ),
