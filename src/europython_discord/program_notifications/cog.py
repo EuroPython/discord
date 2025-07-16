@@ -32,6 +32,7 @@ class ProgramNotificationsCog(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self) -> None:
+        await self.livestream_connector.fetch_livestreams()
         if self.config.simulated_start_time:
             _logger.info("Running in simulated time mode.")
             _logger.info("Will purge all room channels to avoid pile-up of test notifications.")
