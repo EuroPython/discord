@@ -23,6 +23,7 @@ pretix_cache_file = "pretix_cache.json"
 "Remote Community Organiser" = ["Participants", "Remote Participants"]
 # sponsors
 "Sponsor Conference Pass" = ["Participants", "Onsite Participants", "Sponsors"]
+"Remote Sponsor" = ["Participants", "Remote Participants", "Sponsors"]
 # speakers
 "Presenter" = ["Participants", "Onsite Participants", "Speakers"]
 # onsite volunteers

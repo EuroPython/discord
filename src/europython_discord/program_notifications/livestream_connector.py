@@ -49,6 +49,7 @@ class LivestreamConnector:
         async with self._fetch_lock:
             livestreams_raw = await self._open_livestreams_file()
             self.livestreams_by_room = await self._parse_livestreams(livestreams_raw)
+        logger.info("Fetched %s", self.livestreams_by_room)
 
     async def get_livestream_url(self, room: str, day: date) -> str | None:
         """
