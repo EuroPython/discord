@@ -62,7 +62,6 @@ class LivestreamConnector:
         if not self.livestreams_by_room:
             await self.fetch_livestreams()
 
-        logger.info(str(self.livestreams_by_room))
         if room not in self.livestreams_by_room:
             logger.warning(f"Found no livestream URLs for room {room!r}")
             return None
