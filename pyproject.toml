@@ -72,3 +72,6 @@ ignore = [
 
 [tool.ruff.lint.pydocstyle]
 convention = "pep257"
+
+[tool.mypy]
+plugins = ['pydantic.mypy']

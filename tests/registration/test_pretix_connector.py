@@ -106,15 +106,15 @@ async def test_pretix_orders(pretix_mock):
     await pretix_connector.fetch_pretix_data()
 
     assert pretix_connector.tickets_by_key == {
-        "BR7UH-evanovakova": [
+        "BR7UH-evanovakova": {
             Ticket(order="BR7UH", name="Eva Nováková", type="Business", variation="Conference")
-        ],
-        "BR7UH-jannovak": [
+        },
+        "BR7UH-jannovak": {
             Ticket(order="BR7UH", name="Jan Novák", type="Business", variation="Tutorials")
-        ],
-        "RCZN9-maijameikalainen": [
+        },
+        "RCZN9-maijameikalainen": {
             Ticket(order="RCZN9", name="Maija Meikäläinen", type="Personal", variation=None)
-        ],
+        },
     }
 
 

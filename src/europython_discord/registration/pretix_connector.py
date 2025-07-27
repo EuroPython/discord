@@ -20,7 +20,7 @@ _logger = logging.getLogger(__name__)
 
 class PretixCache(BaseModel):
     item_names_by_id: dict[int, str]
-    tickets_by_key: dict[str, list[Ticket]]
+    tickets_by_key: dict[str, set[Ticket]]
 
 
 class PretixConnector:
@@ -36,7 +36,7 @@ class PretixConnector:
         self._cache_file = cache_file
 
         self.item_names_by_id: dict[int, str] = {}
-        self.tickets_by_key: dict[str, list[Ticket]] = defaultdict(list)
+        self.tickets_by_key: dict[str, set[Ticket]] = defaultdict(set)
 
         self._load_cache()
 
@@ -111,7 +111,7 @@ class PretixConnector:
                     variation=variation_name,
                 )
                 if order.is_paid:
-                    self.tickets_by_key[ticket.key].append(ticket)
+                    self.tickets_by_key[ticket.key].add(ticket)
                 elif ticket.key in self.tickets_by_key:  # remove cancelled tickets
                     self.tickets_by_key.pop(ticket.key)
 
@@ -174,6 +174,6 @@ class PretixConnector:
             key = generate_ticket_key(order=order, name=possible_name)
 
             if key in self.tickets_by_key:
-                return self.tickets_by_key[key]
+                return list(self.tickets_by_key[key])
 
         return []
