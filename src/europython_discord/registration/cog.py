@@ -54,7 +54,7 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2025 Registration"):
         name = self.name_field.value
         order = self.order_field.value
 
-        _logger.debug(f"Registration attempt: {order=}, {name=}")
+        _logger.info(f"Registration attempt: {order=}, {name=}")
         tickets = self.pretix_connector.get_tickets(order=order, name=name)
 
         if not tickets:
@@ -107,8 +107,7 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2025 Registration"):
 
         await self.log_registration_to_channel(interaction, name=name, order=order, roles=roles)
         await self.log_registration_to_user(interaction, name=nickname)
-        for ticket in tickets:
-            await self.registration_logger.mark_as_registered(ticket)
+        await self.registration_logger.mark_as_registered(tickets[0])
         _logger.info(f"Registration successful: {order=}, {name=}")
 
     async def on_error(self, interaction: Interaction, error: Exception) -> None:
