@@ -671,7 +671,7 @@ SERVER_CONFIG = GuildConfig(
                     ),
                     permission_overwrites=[
                         PermissionOverwrite(
-                            roles=ROLES_SPONSORS,
+                            roles=[*ROLES_SPONSORS, *ROLES_VOLUNTEERS],
                             allow=["view_channel"],
                         ),
                     ],
@@ -684,7 +684,7 @@ SERVER_CONFIG = GuildConfig(
                     ),
                     permission_overwrites=[
                         PermissionOverwrite(
-                            roles=ROLES_SPEAKERS,
+                            roles=[*ROLES_SPEAKERS, *ROLES_VOLUNTEERS],
                             allow=["view_channel"],
                         ),
                     ],
