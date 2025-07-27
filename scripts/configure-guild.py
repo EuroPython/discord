@@ -452,6 +452,12 @@ SERVER_CONFIG = GuildConfig(
                 TextChannel(
                     name="announcements",
                     topic="Organisers will make EuroPython announcements in this channel",
+                    permission_overwrites=[
+                        PermissionOverwrite(
+                            roles=[ROLE_EVERYONE], deny=["send_messages", "create_public_threads"]
+                        ),
+                        PermissionOverwrite(roles=[ROLE_ORGANIZERS], allow=["send_messages"]),
+                    ],
                 ),
                 TextChannel(
                     name="general-chat",
