@@ -725,7 +725,9 @@ SERVER_CONFIG = GuildConfig(
                         """,  # noqa: E501 (line too long)
                     ],
                     permission_overwrites=[
-                        PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["send_messages"]),
+                        PermissionOverwrite(
+                            roles=[ROLE_EVERYONE], deny=["send_messages", "create_public_threads"]
+                        ),
                         PermissionOverwrite(roles=ROLES_REGISTERED, deny=["view_channel"]),
                         PermissionOverwrite(roles=ROLES_ORGANIZERS, allow=["view_channel"]),
                     ],
@@ -734,7 +736,9 @@ SERVER_CONFIG = GuildConfig(
                     name="registration-form",
                     topic="Please follow the registration instructions.",
                     permission_overwrites=[
-                        PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["send_messages"]),
+                        PermissionOverwrite(
+                            roles=[ROLE_EVERYONE], deny=["send_messages", "create_public_threads"]
+                        ),
                         PermissionOverwrite(roles=ROLES_REGISTERED, deny=["view_channel"]),
                         PermissionOverwrite(roles=ROLES_ORGANIZERS, allow=["view_channel"]),
                     ],
