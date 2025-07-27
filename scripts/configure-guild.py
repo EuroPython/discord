@@ -563,10 +563,9 @@ SERVER_CONFIG = GuildConfig(
                     name="exhibit-hall", topic="For conversations related to the exhibit hall."
                 ),
                 TextChannel(
-                    name="open-space",
+                    name="open-spaces",
                     topic=(
-                        "For conversations related to the open spaces. "
-                        "We'll also post photos of the open space session board here!"
+                        "For conversations related to the open spaces. Schedule and booking: [TBA]"
                     ),
                 ),
                 ForumChannel(
