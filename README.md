@@ -188,6 +188,7 @@ Related files:
     * [compose.yaml](./compose.yaml): Docker Compose recipe
     * [prod-config.toml](./prod-config.toml): Prod bot configuration
 * On the VPS:
+    * NOTE: Read-only files are in `/root`, Cache files created by the bot are in `/home/bot`
     * `/root/.secrets`: Contains `DISCORD_BOT_TOKEN` and `PRETIX_TOKEN`
     * `/root/livestreams.toml`: Livestream URL configuration
     * `/home/bot/registered_log.txt`: Registration log
