@@ -49,7 +49,6 @@ class LivestreamConnector:
         async with self._fetch_lock:
             livestreams_raw = await self._open_livestreams_file()
             self.livestreams_by_room = await self._parse_livestreams(livestreams_raw)
-        logger.info("Fetched %s", self.livestreams_by_room)
 
     async def get_livestream_url(self, room: str, day: date) -> str | None:
         """
@@ -63,6 +62,7 @@ class LivestreamConnector:
         if not self.livestreams_by_room:
             await self.fetch_livestreams()
 
+        logger.info(str(self.livestreams_by_room))
         if room not in self.livestreams_by_room:
             logger.warning(f"Found no livestream URLs for room {room!r}")
             return None
