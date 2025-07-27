@@ -68,6 +68,12 @@ def test_embed_title_long(session: Session) -> None:
     )
 
 
+def test_embed_title_with_markdown(session: Session) -> None:
+    session.title = "A talk about __slots__ and *things*."
+    embed = session_to_embed.create_session_embed(session, None)
+    assert embed.title == "A talk about \\_\\_slots\\_\\_ and \\*things\\*."
+
+
 def test_embed_description_short(session: Session) -> None:
     """Test the description (tweet) of the embed with a short description."""
     session.tweet = "Short tweet."
@@ -101,6 +107,15 @@ def test_embed_description_empty(session: Session) -> None:
     session.tweet = ""
     embed = session_to_embed.create_session_embed(session, None)
     assert embed.description is None
+
+
+def test_embed_description_with_markdown(session: Session) -> None:
+    session.tweet = "A talk about __slots__ and *things*."
+    embed = session_to_embed.create_session_embed(session, None)
+    assert embed.description == (
+        "A talk about \\_\\_slots\\_\\_ and \\*things\\*.\n\n"
+        f"[Read more about this session]({session.website_url})"
+    )
 
 
 def test_embed_url(session: Session) -> None:

@@ -6,7 +6,7 @@ from enum import Enum
 from typing import Final
 
 from discord import Embed
-from discord.utils import format_dt
+from discord.utils import escape_markdown, format_dt
 
 from europython_discord.program_notifications.models import Session, Speaker
 
@@ -29,7 +29,7 @@ def create_session_embed(session: Session, livestream_url: str | None) -> Embed:
     :return: A Discord embed for this session
     """
     embed = Embed(
-        title=_format_title(session.title),
+        title=_format_title(escape_markdown(session.title)),
         description=_create_description(session),
         url=session.website_url,
         color=_get_color(session.level),
@@ -79,7 +79,7 @@ def _create_description(session: Session) -> str | None:
     """
     if not session.tweet:
         return None
-    tweet_short = textwrap.shorten(session.tweet, width=_TWEET_WIDTH)
+    tweet_short = textwrap.shorten(escape_markdown(session.tweet), width=_TWEET_WIDTH)
     return f"{tweet_short}\n\n[Read more about this session]({session.website_url})"
 
 
