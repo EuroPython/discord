@@ -318,7 +318,7 @@ class ConferenceSetup:
                     f"\n# {room_id_to_channel_name[room_id]} channel: {room_id}\n"
                     f"[programme_notifications.rooms.{room_id}]\n"
                     f'webhook_id = "ROOM_{room_id}"\n'
-                    f'discord_channel_id = "{channel_id}"'
+                    f'discord_channel_id = "{channel_id}"\n'
                     'slido_room_url = ""'
                 )
                 for room_id, channel_id in room_id_to_channel_id.items()
@@ -369,7 +369,7 @@ class ConferenceSetup:
         # await self._setup_registration_channels()  # DONE
         # await self._setup_conference_channels()  # DONE
         # await self._setup_rooms_channels()  # DONE
-        await self._setup_sponsors_channels()
+        # await self._setup_sponsors_channels()
 
     def _format_role_name(self, role_name: str) -> str:
         """Format the role name to match the Discord server."""
@@ -473,7 +473,7 @@ class ConferenceSetup:
     async def start(self) -> None:
         """Set up the conference roles, categories and channels."""
         # await self._create_roles()  # DONE
-        # await self._setup_categories_and_channels()
+        await self._setup_categories_and_channels()
         # await self._setup_livestream_urls()
 
 
