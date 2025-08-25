@@ -6,6 +6,7 @@ This module provides:
 """
 
 import logging
+import os
 import sys
 from pathlib import Path
 
@@ -58,13 +59,16 @@ class Config(metaclass=Singleton):
 
             # Pytanis
             self.PRETALX_EVENT_NAME = config["pytanis"]["PRETALX_EVENT_NAME"]
-            self.LIVESTREAMS_SHEET_ID = config["pytanis"]["LIVESTREAMS_SHEET_ID"]
-            self.LIVESTREAMS_WORKSHEET_NAME = config["pytanis"]["LIVESTREAMS_WORKSHEET_NAME"]
+            # TODO(dan): not required anymore?
+            self.LIVESTREAMS_SHEET_ID = os.getenv("LIVESTREAMS_SHEET_ID", "")
+            self.LIVESTREAMS_WORKSHEET_NAME = os.getenv("LIVESTREAMS_WORKSHEET_NAME", "")
+            # self.LIVESTREAMS_SHEET_ID = config["pytanis"]["LIVESTREAMS_SHEET_ID"]
+            # self.LIVESTREAMS_WORKSHEET_NAME = config["pytanis"]["LIVESTREAMS_WORKSHEET_NAME"]
 
             self.CONFERENCE_AFTERNOON_SESSION_START_TIME = config["programme_notifications"][
                 "conference_afternoon_session_start_time"
             ]
-            self.SLIDO_URL = config["programme_notifications"]["slido_url"]
+            self.VIDEO_URL = config["programme_notifications"]["video_url"]
 
             if config["server"]["CONFERENCE_SETUP_DONE"]:
                 # Registration

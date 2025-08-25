@@ -13,7 +13,9 @@ import arrow
 import pytest
 import yarl
 
-from discord_bot.extensions.programme_notifications.domain import discord, europython, services
+from discord_bot.extensions.programme_notifications.domain import (discord,
+                                                                   europython,
+                                                                   services)
 from tests.programme_notifications import factories
 
 
@@ -41,10 +43,9 @@ def test_create_embed_from_session_information() -> None:
         livestream_url=yarl.URL("https://vimeo-livestreams.com/best-conference-sessions-of-2023"),
         discord_channel_id="123456789123456",
     )
-    slido_url = "https://app.sli.do/event/test"
 
     # WHEN an embed is created with that information
-    embed = services.create_session_embed(europython_session, slido_url, include_discord_channel=True)
+    embed = services.create_session_embed(europython_session, include_discord_channel=True)
 
     # THEN the embed is equal to the expected embed
     session_url = "https://ep.session/a-tale-of-two-pythons-subinterpreters-in-action"
@@ -482,34 +483,20 @@ def test_livestream_url_is_displayed_if_available(
 
 
 @pytest.mark.parametrize(
-    ("slido_url", "expected_slido_value"),
+    ("q_and_a_url", "expected_q_and_a_value"),
     [
         pytest.param(
             None,
             "—",
-            id="No slido URL available",
+            id="No Q&A URL available",
         ),
         pytest.param(
             yarl.URL("https://app.sli.do/event/test"),
-            "[Slido](https://app.sli.do/event/test)",
-            id="Slido URL is available",
+            "[Q&A](https://app.sli.do/event/test)",
+            id="Q&A URL is available",
         ),
     ],
 )
-def test_slido_url_is_displayed_if_available(
-    slido_url: yarl.URL | None,
-    expected_slido_value: str,
-    session_factory: factories.SessionFactory,
-) -> None:
-    """Show a slido url, if available."""
-    # GIVEN a session
-    session = session_factory()
-
-    # WHEN the embed is created with slido_url
-    embed = services.create_session_embed(session, slido_url=slido_url)
-
-    # THEN the embed url is as expected
-    assert embed.fields[5].value == expected_slido_value
 
 
 def test_discord_channel_is_linked_if_available(
@@ -589,5 +576,7 @@ def test_embed_color_reflects_audience_experience(
     # WHEN the embed is created
     embed = services.create_session_embed(session)
 
+    # THEN the embed color is as expected
+    assert embed.color == expected_color
     # THEN the embed color is as expected
     assert embed.color == expected_color

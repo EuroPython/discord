@@ -18,7 +18,7 @@ from discord_bot.cogs.registration_pydata import RegistrationPyData
 from discord_bot.helpers.tito_connector import TitoOrder
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".secrets")
-DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
+DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN", "")
 
 _logger = logging.getLogger("bot")
 

@@ -194,7 +194,6 @@ class Notifier:
         embeds = [
             services.create_session_embed(
                 session=session,
-                slido_url=self._config.slido_url,
                 conference_name=self._config.conference_name,
                 conference_website=self._config.conference_website,
                 include_discord_channel=include_discord_channel,

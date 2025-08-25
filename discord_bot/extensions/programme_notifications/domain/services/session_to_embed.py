@@ -21,7 +21,6 @@ _EXPERIENCE_COLORS: Final = {
 
 def create_session_embed(
     session: europython.Session,
-    slido_url: str | None = None,
     conference_name: str = "PyCon DE & PyData",
     conference_website: str = "https://pycon.de",
     *,
@@ -30,28 +29,25 @@ def create_session_embed(
     """Create a Discord embed for a conference session.
 
     :param session: The session information as provided by Pretalx
-    :param slido_url: The url to slido (general)
     :param include_discord_channel: If the discord channel should be
       linked in the embed
     :return: A Discord embed for this session
     """
-    if session.livestream_url and "talks.pycon.de" in str(session.livestream_url):
-        livestream_value = f"[talks.pycon.de]({session.livestream_url})"
-    elif session.livestream_url and "vimeo" in str(session.livestream_url):
+    if session.livestream_url and "vimeo" in str(session.livestream_url):
         livestream_value = f"[Vimeo]({session.livestream_url})"
     else:
         livestream_value = f"[Video]({session.livestream_url})" if session.livestream_url else _FIELD_VALUE_EMTPY
-    # use slido room url if available, otherwise use the general slido url
-    if session.slido_room_url:
-        slido_url = session.slido_room_url
-    slido_value = f"[Slido]({slido_url})" if slido_url else _FIELD_VALUE_EMTPY
+    # use q_and_a_url if available, otherwise use the general slido url
+    if session.q_and_a_url:
+        q_and_a_url = session.q_and_a_url
+    q_and_a_value = f"[Q&A]({q_and_a_url})" if q_and_a_url else _FIELD_VALUE_EMTPY
     fields = [
         discord.Field(name="Start Time", value=_format_start_time(session), inline=True),
         discord.Field(name="Room", value=_format_room(session), inline=True),
         discord.Field(name="Track", value=_format_track(session), inline=True),
         discord.Field(name="Duration", value=_format_duration(session.duration), inline=True),
         discord.Field(name="Livestream", value=livestream_value, inline=True),
-        discord.Field(name="Live Q&A", value=slido_value, inline=True),
+        discord.Field(name="Live Q&A", value=q_and_a_value, inline=True),
     ]
     if include_discord_channel and session.discord_channel_id:
         channel_value = f"<#{session.discord_channel_id}>"
@@ -208,4 +204,7 @@ def _get_color(experience: str | None) -> int | None:
     try:
         return _EXPERIENCE_COLORS[experience]
     except KeyError:
+        return None
+        return None
+        return None
         return None
