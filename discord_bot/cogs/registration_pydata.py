@@ -3,12 +3,7 @@
 # ruff: noqa: D101, D107
 from discord.ext import commands
 
-from discord_bot.cogs.registration import (
-    Registration,
-    RegistrationButton,
-    RegistrationForm,
-    RegistrationView,
-)
+from discord_bot.cogs.registration import Registration, RegistrationButton, RegistrationForm, RegistrationView
 from discord_bot.configuration import Config
 
 # from discord_bot.error import AlreadyRegisteredError, NotFoundError
@@ -52,7 +47,7 @@ class RegistrationPyData(Registration, commands.Cog):
         self._desc = (
             "Follow these steps to complete your registration:\n\n"
             f'1️⃣ Click on the green "Register Here {EMOJI_POINT}" button.\n\n'
-            '2️⃣ Fill in the "Ticket ID" in the format "XXXX-X") and your "Full Name" '
+            '2️⃣ Fill in the "Ticket/Order ID" in the format "XXXXX") and your "Full Name" '
             "(first and last name as printed on your ticket/badge under ticket holder). "
             "You can find the information also in your confirmation email from "
             f'support@tito.io with the subject: "Your {config.CONFERENCE_NAME} Ticket".\n\n'

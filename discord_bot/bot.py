@@ -84,7 +84,7 @@ async def main() -> None:
     async with bot:
         await bot.add_cog(Ping(bot))
         await bot.add_cog(RegistrationPyData(bot))
-        await bot.load_extension("extensions.programme_notifications")
+        # await bot.load_extension("extensions.programme_notifications")
         await bot.load_extension("extensions.admin")
         # await bot.load_extension("extensions.job_board")
         await bot.start(DISCORD_BOT_TOKEN)
