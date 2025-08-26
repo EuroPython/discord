@@ -1,7 +1,8 @@
 import arrow
 import pytest
 
-from discord_bot.extensions.programme_notifications.domain import europython, services
+from discord_bot.extensions.programme_notifications.domain import (europython,
+                                                                   services)
 from tests.programme_notifications import factories
 
 
@@ -12,8 +13,10 @@ from tests.programme_notifications import factories
         pytest.param(
             [
                 {
-                    "code": "ABCDEF",
-                    "slot": {"room_id": 1234, "start": "2023-07-19T09:55:00+02:00"},
+                    "id": 1,
+                    "submission": {"code": "ABCDEF"},
+                    "start": "2023-07-19T09:55:00+02:00",
+                    "room": {"id": 1234},
                 },
             ],
             {arrow.Arrow(2023, 7, 19, 9, 55, 0, tzinfo="Europe/Prague"): ["ABCDEF"]},
@@ -22,12 +25,16 @@ from tests.programme_notifications import factories
         pytest.param(
             [
                 {
-                    "code": "ABCDEF",
-                    "slot": {"room_id": 1234, "start": "2023-07-19T10:55:00+02:00"},
+                    "id": 1,
+                    "submission": {"code": "ABCDEF"},
+                    "start": "2023-07-19T10:55:00+02:00",
+                    "room": {"id": 1234},
                 },
                 {
-                    "code": "123456",
-                    "slot": {"room_id": 1234, "start": "2023-07-19T08:55:00+00:00"},
+                    "id": 2,
+                    "submission": {"code": "123456"},
+                    "start": "2023-07-19T08:55:00+00:00",
+                    "room": {"id": 1234},
                 },
             ],
             {arrow.Arrow(2023, 7, 19, 10, 55, 0, tzinfo="Europe/Prague"): ["ABCDEF", "123456"]},
@@ -36,16 +43,22 @@ from tests.programme_notifications import factories
         pytest.param(
             [
                 {
-                    "code": "ABCDEF",
-                    "slot": {"room_id": 1234, "start": "2023-07-19T09:55:00+02:00"},
+                    "id": 1,
+                    "submission": {"code": "ABCDEF"},
+                    "start": "2023-07-19T09:55:00+02:00",
+                    "room": {"id": 1234},
                 },
                 {
-                    "code": "123456",
-                    "slot": {"room_id": 1234, "start": "2023-07-19T08:55:00+01:00"},
+                    "id": 2,
+                    "submission": {"code": "123456"},
+                    "start": "2023-07-19T08:55:00+01:00",
+                    "room": {"id": 1234},
                 },
                 {
-                    "code": "ZZZEEE",
-                    "slot": {"room_id": 1234, "start": "2023-07-19T11:55:00+01:00"},
+                    "id": 3,
+                    "submission": {"code": "ZZZEEE"},
+                    "start": "2023-07-19T11:55:00+01:00",
+                    "room": {"id": 1234},
                 },
             ],
             {
@@ -73,4 +86,4 @@ def test_grouper_groups_sessions_per_minute(
     assert all(key in expected_groups for key in grouped_sessions)
     # AND the sessions in the groups are as expected
     for key, group in grouped_sessions.items():
-        assert sorted(s.code for s in group) == sorted(expected_groups[key])
+        assert sorted(s.submission.code for s in group) == sorted(expected_groups[key])

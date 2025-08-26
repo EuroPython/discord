@@ -202,7 +202,7 @@ def _session_factory(**attributes) -> europython.Session:
             "room": {"en": "The Broom Closet"},
             "start": "2024-04-24T12:30:00+02:00",
         },
-        "speakers": [{"code": "AB34EF", "name": "Ada Lovelace", "avatar": "https://ada.avatar"}],
+        "speakers": [{"code": "AB34EF", "name": "Ada Lovelace", "avatar_url": "https://ada.avatar"}],
         "url": "https://europython/sessions/a-tale-of-two-pythons",
     }
     converter = cattrs.Converter()

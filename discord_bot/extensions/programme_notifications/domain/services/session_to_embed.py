@@ -68,8 +68,8 @@ def create_session_embed(
         )
 
     return discord.Embed(
-        title=_format_title(session.title),
-        author=_create_author_from_speakers(session.speakers),
+        title=_format_title(session.submission.title),
+        author=_create_author_from_speakers(session.submission.speakers),
         description=_create_description(session),
         fields=fields,
         footer=_format_footer(session),
@@ -99,7 +99,7 @@ def _create_author_from_speakers(speakers: list[europython.Speaker]) -> discord.
         case _:
             return None
     author_name = textwrap.shorten(author_name, width=_AUTHOR_WIDTH)
-    icon_url = next((avatar for speaker in speakers if (avatar := speaker.avatar)), None)
+    icon_url = next((avatar for speaker in speakers if (avatar := speaker.avatar_url)), None)
     return discord.Author(name=author_name, icon_url=icon_url)
 
 
@@ -109,8 +109,14 @@ def _create_description(session: europython.Session) -> str:
     :param session: The session
     :return: The embed description
     """
+    if session.submission is None:
+        return _FIELD_VALUE_EMTPY
     url = session.url
-    abstract = _ABSTRACT_EMPTY if not session.abstract else textwrap.shorten(session.abstract, width=_ABSTRACT_WIDTH)
+    abstract = (
+        _ABSTRACT_EMPTY
+        if not session.submission.abstract
+        else textwrap.shorten(session.submission.abstract, width=_ABSTRACT_WIDTH)
+    )
     return f"{abstract}\n\n[Read more about this session]({url})" if url else abstract
 
 
@@ -134,7 +140,7 @@ def _format_start_time(session: europython.Session) -> str:
       unavailable, this function returns a placeholder value.
     """
     try:
-        start_time_timestamp = session.slot.start.int_timestamp
+        start_time_timestamp = session.start.int_timestamp
     except AttributeError:
         return _FIELD_VALUE_EMTPY
 
@@ -148,7 +154,7 @@ def _format_footer(session: europython.Session) -> discord.Footer | None:
     :return: A `Footer`, if a start time is available, else `none`
     """
     try:
-        formatted_time = session.slot.start.strftime("%H:%M:%S")
+        formatted_time = session.start.strftime("%H:%M:%S")
     except AttributeError:
         return None
 
@@ -162,7 +168,9 @@ def _format_room(session: europython.Session) -> str:
     :return: The name of a room or a placeholder value.
     """
     try:
-        room = session.slot.room.en
+        if session.room is None or session.room.name is None:
+            return _FIELD_VALUE_EMTPY
+        room = session.room.name.en
     except AttributeError:
         return _FIELD_VALUE_EMTPY
 
@@ -176,7 +184,9 @@ def _format_track(session: europython.Session) -> str:
     :return: The name of a track or a placeholder value.
     """
     try:
-        track = session.track.en
+        if session.submission is None or session.submission.track is None or session.submission.track.name is None:
+            return _FIELD_VALUE_EMTPY
+        track = session.submission.track.name.en
     except AttributeError:
         return _FIELD_VALUE_EMTPY
 
@@ -202,9 +212,8 @@ def _get_color(experience: str | None) -> int | None:
     :return: A color (int) or None
     """
     try:
-        return _EXPERIENCE_COLORS[experience]
+        if isinstance(experience, str):
+            return _EXPERIENCE_COLORS[experience.lower()]
     except KeyError:
         return None
-        return None
-        return None
-        return None
+    return None

@@ -71,7 +71,9 @@ class SessionInformation:
         :param session: The session
         :return: The livestream URL or None
         """
-        return yarl.URL(f"{self._config.video_url}/talks/{session.code}")
+        if session.submission is None:
+            return None
+        return yarl.URL(f"{self._config.video_url}/talks/{session.submission.code}")
 
         # fallback: vimeo livestream URL
         # try:
@@ -113,7 +115,9 @@ class SessionInformation:
         :param session: The session
         :return: The Q&A url for the room or None
         """
-        return yarl.URL(f"{self._config.video_url}/talks/{session.code}/questions/")
+        if session.submission is None:
+            return None
+        return yarl.URL(f"{self._config.video_url}/talks/{session.submission.code}/questions/")
 
         # try:
         #     return self._config.rooms[str(session.slot.room_id)].slido_room_url

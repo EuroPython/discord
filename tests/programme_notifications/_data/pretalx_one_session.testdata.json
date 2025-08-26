@@ -7,13 +7,13 @@
           "code": "ABCDEF",
           "name": "John Johnson",
           "biography": "",
-          "avatar": "https://my.avatar/john.jpg"
+          "avatar_url": "https://my.avatar/john.jpg"
         },
         {
           "code": "ABCDEG",
           "name": "Carl Carlsson",
           "biography": "",
-          "avatar": "https://my.avatar/carl.jpg"
+          "avatar_url": "https://my.avatar/carl.jpg"
         }
       ],
       "title": "Stop using globals!",

@@ -19,27 +19,8 @@ from tests.programme_notifications import factories
             europython.Schedule(
                 sessions=[
                     europython.Session(
-                        code="ABABAB",
-                        speakers=[
-                            europython.Speaker(
-                                code="ABCDEF",
-                                name="John Johnson",
-                                avatar="https://my.avatar/john.jpg",
-                            ),
-                            europython.Speaker(
-                                code="ABCDEG",
-                                name="Carl Carlsson",
-                                avatar="https://my.avatar/carl.jpg",
-                            ),
-                        ],
-                        title="Stop using globals!",
-                        track=europython.TranslatedString("Python Basics"),
-                        abstract="Globalization of your Python code is bad for you!",
-                        duration=30,
-                        slot=europython.Slot(
-                            room_id=1234,
-                            room=europython.TranslatedString("The Great Outdoors"),
-                            start=arrow.Arrow(
+                        id=1,
+                        start=arrow.Arrow(
                                 year=2023,
                                 month=7,
                                 day=21,
@@ -47,7 +28,33 @@ from tests.programme_notifications import factories
                                 minute=30,
                                 second=0,
                                 tzinfo="Europe/Prague",
+                        ),
+                        submission=europython.Submission(
+                            code="ABABAB",
+                            speakers=[
+                                europython.Speaker(
+                                    code="ABCDEF",
+                                    name="John Johnson",
+                                    avatar_url="https://my.avatar/john.jpg",
+                                ),
+                                europython.Speaker(
+                                    code="ABCDEG",
+                                    name="Carl Carlsson",
+                                    avatar_url="https://my.avatar/carl.jpg",
+                                ),
+                            ],
+                            title="Stop using globals!",
+                            track=europython.Track(
+                                id=1,
+                                name=europython.TranslatedString("Python Basics"),
                             ),
+                            abstract="Globalization of your Python code is bad for you!",
+                            duration=30,
+                        ),
+                        room=europython.Room(
+                            id=1234,
+                            name=europython.TranslatedString("The Great Outdoors"),
+
                         ),
                         url=None,
                     )
@@ -107,24 +114,27 @@ from tests.programme_notifications import factories
             europython.Schedule(
                 sessions=[
                     europython.Session(
-                        code="ALPLOA",
-                        title="The scientific journey",
-                        speakers=[europython.Speaker(code="STEVEB", name="Steve Bytheway", avatar=None)],
-                        abstract="Around the world in 1.5 days.",
-                        track=None,
-                        duration=None,
-                        slot=europython.Slot(
-                            room_id=2191,
-                            room=europython.TranslatedString(en="South Hall 2B"),
-                            start=arrow.Arrow(
-                                year=2023,
-                                month=7,
-                                day=21,
-                                hour=12,
-                                minute=30,
-                                second=0,
-                                tzinfo="Europe/Prague",
-                            ),
+                        id=15,
+                        start=arrow.Arrow(
+                            year=2023,
+                            month=7,
+                            day=21,
+                            hour=12,
+                            minute=30,
+                            second=0,
+                            tzinfo="Europe/Prague",
+                        ),
+                        submission=europython.Submission(
+                            code="ALPLOA",
+                            title="The scientific journey",
+                            speakers=[europython.Speaker(code="STEVEB", name="Steve Bytheway", avatar_url=None)],
+                            abstract="Around the world in 1.5 days.",
+                            track=None,
+                            duration=None,
+                        ),
+                        room=europython.Room(
+                            id=2191,
+                            name=europython.TranslatedString(en="South Hall 2B"),
                         ),
                         url=None,
                     )
@@ -265,35 +275,42 @@ async def test_fetch_schedule_returns_cached_schedule_on_api_error(
     assert response.schedule == europython.Schedule(
         sessions=[
             europython.Session(
-                code="ABABAB",
-                speakers=[
-                    europython.Speaker(
-                        code="ABCDEF",
-                        name="John Johnson",
-                        avatar="https://my.avatar/john.jpg",
+                id=10,
+                start=arrow.Arrow(
+                    year=2023,
+                    month=7,
+                    day=21,
+                    hour=12,
+                    minute=30,
+                    second=0,
+                    tzinfo="Europe/Prague",
+                ),
+                submission=europython.Submission(
+                    code="ABABAB",
+                    speakers=[
+                        europython.Speaker(
+                            code="ABCDEF",
+                            name="John Johnson",
+                            avatar_url="https://my.avatar/john.jpg",
+                        ),
+                        europython.Speaker(
+                            code="ABCDEG",
+                            name="Carl Carlsson",
+                            avatar_url="https://my.avatar/carl.jpg",
+                        ),
+                    ],
+                    title="Stop using globals!",
+                    track=europython.Track(
+                        id=2,
+                        name=europython.TranslatedString("Python Basics"),
                     ),
-                    europython.Speaker(
-                        code="ABCDEG",
-                        name="Carl Carlsson",
-                        avatar="https://my.avatar/carl.jpg",
-                    ),
-                ],
-                title="Stop using globals!",
-                track=europython.TranslatedString("Python Basics"),
-                abstract="Globalization of your Python code is bad for you!",
-                duration=30,
-                slot=europython.Slot(
-                    room_id=1234,
-                    room=europython.TranslatedString("The Great Outdoors"),
-                    start=arrow.Arrow(
-                        year=2023,
-                        month=7,
-                        day=21,
-                        hour=12,
-                        minute=30,
-                        second=0,
-                        tzinfo="Europe/Prague",
-                    ),
+                    abstract="Globalization of your Python code is bad for you!",
+                    duration=30,
+                ),
+                room=europython.Room(
+                    id=1234,
+                    name=europython.TranslatedString("The Great Outdoors"),
+
                 ),
                 url=None,
             )

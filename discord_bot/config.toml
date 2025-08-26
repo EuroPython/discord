@@ -55,12 +55,12 @@ TITO_BASE_URL="https://val.pycon.de"
 [programme_notifications]
 timezone = "Europe/Berlin"
 timewarp = false  # true for testing
-conference_days_first = "2025-04-23"
-conference_days_last = "2025-04-25"
+conference_days_first = "2025-09-01"
+conference_days_last = "2025-09-03"
 conference_afternoon_session_start_time = 13
 # pretalx_event_name = "berlin2025"
-pretalx_schedule_url = "https://pretalx.com/api/events/pyconde-pydata-2025/schedules/latest/"
-pretalx_talk_url = "https://pretalx.com/pyconde-pydata-2025/talk/{code}"
+pretalx_schedule_url = "https://pretalx.com/api/events/berlin2025/schedules/latest/?expand=slots,slots.room,slots.submission,slots.submission.speakers,slots.submission.submission_type,slots.submission.track"
+pretalx_talk_url = "https://cfp.pydata.org/berlin2025/talk/{code}"
 # conference_website_session_base_url = "https://2025.pycon.de/program/{slug}"
 # conference_website_api_session_url = "https://2025.pycon.de/program/{code}"
 video_url = "https://videos.pydata-berlin.org"
@@ -69,22 +69,22 @@ video_url = "https://videos.pydata-berlin.org"
 webhook_id = "PROGRAMME_NOTIFICATIONS"
 include_channel_in_embeds = true
 
-# Kuppelsaal channel: 19
-[programme_notifications.rooms.19]
-webhook_id = "ROOM_19"
+# Kuppelsaal channel: 4560
+[programme_notifications.rooms.4560]
+webhook_id = "ROOM_4560"
 discord_channel_id = "1394335693916082409"
 
-# B09 channel: 20
-[programme_notifications.rooms.20]
-webhook_id = "ROOM_20"
+# B09 channel: 4561
+[programme_notifications.rooms.4561]
+webhook_id = "ROOM_4561"
 discord_channel_id = "1394335699158827059"
 
-# B07-B08 channel: 21
-[programme_notifications.rooms.21]
-webhook_id = "ROOM_21"
+# B07-B08 channel: 4562
+[programme_notifications.rooms.4562]
+webhook_id = "ROOM_4562"
 discord_channel_id = "1394335703453667541"
 
-# B05-B06 channel: 22
-[programme_notifications.rooms.22]
-webhook_id = "ROOM_22"
+# B05-B06 channel: 4563
+[programme_notifications.rooms.4563]
+webhook_id = "ROOM_4563"
 discord_channel_id = "1394335707191050353"

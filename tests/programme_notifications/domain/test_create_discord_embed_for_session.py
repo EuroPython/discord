@@ -23,22 +23,28 @@ def test_create_embed_from_session_information() -> None:
     """Create an embed if all session information is available."""
     # GIVEN a EuroPython session instance
     europython_session = europython.Session(
-        code="ABCDEF",
-        title="A Tale of Two Pythons: Subinterpreters in Action!",
-        abstract=(
-            "Sometimes, having one, undivided interpreter just isn't enough. The pesky GIL,"
-            " problems with isolation, and the difficult problem of concurrency haunt the dreams of"
-            " even the most talented Python developer. Clearly, a good solution is needed and that"
-            " solution is finally here: subinterpreters."
+        id=1,
+        start=arrow.Arrow(2023, 7, 19, 9, 55, 0, tzinfo="Europe/Prague"),
+        submission=europython.Submission(
+            code="ABCDEF",
+            title="A Tale of Two Pythons: Subinterpreters in Action!",
+            abstract=(
+                "Sometimes, having one, undivided interpreter just isn't enough. The pesky GIL,"
+                " problems with isolation, and the difficult problem of concurrency haunt the dreams of"
+                " even the most talented Python developer. Clearly, a good solution is needed and that"
+                " solution is finally here: subinterpreters."
+            ),
+            speakers=[europython.Speaker(code="123456", name="Ada Lovelace", avatar_url="https://ada.avatar")],
+            duration=45,
+            track=europython.Track(
+                id=1,
+                name=europython.TranslatedString(en="Core Python"),
+            ),
         ),
-        track=europython.TranslatedString(en="Core Python"),
-        duration=45,
-        slot=europython.Slot(
-            room_id=1234,
-            room=europython.TranslatedString("The Broom Closet"),
-            start=arrow.Arrow(2023, 7, 19, 9, 55, 0, tzinfo="Europe/Prague"),
+        room=europython.Room(
+            id=1234,
+            name=europython.TranslatedString("The Broom Closet"),
         ),
-        speakers=[europython.Speaker(code="123456", name="Ada Lovelace", avatar="https://ada.avatar")],
         url=yarl.URL("https://ep.session/a-tale-of-two-pythons-subinterpreters-in-action"),
         livestream_url=yarl.URL("https://vimeo-livestreams.com/best-conference-sessions-of-2023"),
         discord_channel_id="123456789123456",
@@ -217,51 +223,51 @@ def test_abstract_gets_formatted_including_width_and_session_url(
         pytest.param([], None, id="No speakers"),
         pytest.param(
             [
-                {"code": "123456", "name": "Ada Lovelace", "avatar": "https://ada.avatar"},
+                {"code": "123456", "name": "Ada Lovelace", "avatar_url": "https://ada.avatar"},
             ],
             discord.Author(name="Ada Lovelace", icon_url="https://ada.avatar"),
             id="One speakers",
         ),
         pytest.param(
             [
-                {"code": "123456", "name": "Ada Lovelace", "avatar": "https://ada.avatar"},
-                {"code": "654321", "name": "Alan Turing", "avatar": "https://turing.png"},
+                {"code": "123456", "name": "Ada Lovelace", "avatar_url": "https://ada.avatar"},
+                {"code": "654321", "name": "Alan Turing", "avatar_url": "https://turing.png"},
             ],
             discord.Author(name="Ada Lovelace & Alan Turing", icon_url="https://ada.avatar"),
             id="Two speakers",
         ),
         pytest.param(
             [
-                {"code": "121314", "name": "Barbara Liskov", "avatar": "https://barbara.jpg"},
-                {"code": "123456", "name": "Ada Lovelace", "avatar": "https://ada.avatar"},
-                {"code": "654321", "name": "Alan Turing", "avatar": "https://turing.png"},
+                {"code": "121314", "name": "Barbara Liskov", "avatar_url": "https://barbara.jpg"},
+                {"code": "123456", "name": "Ada Lovelace", "avatar_url": "https://ada.avatar"},
+                {"code": "654321", "name": "Alan Turing", "avatar_url": "https://turing.png"},
             ],
             discord.Author(name="Barbara Liskov, Ada Lovelace, & Alan Turing", icon_url="https://barbara.jpg"),
             id="More than two speakers",
         ),
         pytest.param(
             [
-                {"code": "121314", "name": "Barbara Liskov", "avatar": None},
-                {"code": "123456", "name": "Ada Lovelace", "avatar": "https://ada.avatar"},
-                {"code": "654321", "name": "Alan Turing", "avatar": "https://turing.png"},
+                {"code": "121314", "name": "Barbara Liskov", "avatar_url": None},
+                {"code": "123456", "name": "Ada Lovelace", "avatar_url": "https://ada.avatar"},
+                {"code": "654321", "name": "Alan Turing", "avatar_url": "https://turing.png"},
             ],
             discord.Author(name="Barbara Liskov, Ada Lovelace, & Alan Turing", icon_url="https://ada.avatar"),
             id="Fetch avatar url from non-first speaker",
         ),
         pytest.param(
             [
-                {"code": "121314", "name": "Barbara Liskov", "avatar": None},
-                {"code": "123456", "name": "Ada Lovelace", "avatar": None},
-                {"code": "654321", "name": "Alan Turing", "avatar": None},
+                {"code": "121314", "name": "Barbara Liskov", "avatar_url": None},
+                {"code": "123456", "name": "Ada Lovelace", "avatar_url": None},
+                {"code": "654321", "name": "Alan Turing", "avatar_url": None},
             ],
             discord.Author(name="Barbara Liskov, Ada Lovelace, & Alan Turing", icon_url=None),
             id="No speakers with avatars",
         ),
         pytest.param(
             [
-                {"code": "121314", "name": "Barbara Liskov", "avatar": "https://barbara.jpg"},
-                {"code": "123456", "name": "Ada Lovelace", "avatar": "https://ada.avatar"},
-                {"code": "654321", "name": "Alan Turing", "avatar": "https://turing.png"},
+                {"code": "121314", "name": "Barbara Liskov", "avatar_url": "https://barbara.jpg"},
+                {"code": "123456", "name": "Ada Lovelace", "avatar_url": "https://ada.avatar"},
+                {"code": "654321", "name": "Alan Turing", "avatar_url": "https://turing.png"},
                 {
                     "code": "654321",
                     "name": (

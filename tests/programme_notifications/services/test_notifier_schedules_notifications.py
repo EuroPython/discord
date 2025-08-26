@@ -5,8 +5,10 @@ import arrow
 import yarl
 
 from discord_bot.extensions.programme_notifications import services
-from discord_bot.extensions.programme_notifications.domain import discord, europython, repositories
-from discord_bot.extensions.programme_notifications.services import api, clock, task_scheduler
+from discord_bot.extensions.programme_notifications.domain import (
+    discord, europython, repositories)
+from discord_bot.extensions.programme_notifications.services import (
+    api, clock, task_scheduler)
 from tests.programme_notifications import factories
 from tests.programme_notifications.services import helpers
 
@@ -64,7 +66,7 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                 "room": {"en": "The Main Terrarium"},
                 "start": "2024-04-22T09:55:00+02:00",
             },
-            speakers=[{"code": "BBCDEE", "name": "Monty the Python", "avatar": "https://snek.com"}],
+            speakers=[{"code": "BBCDEE", "name": "Monty the Python", "avatar_url": "https://snek.com"}],
         )
     }
     # AND a schedule with only that session
@@ -390,7 +392,7 @@ async def test_excludes_non_conference_days_sessions(
                 "room": {"en": "The Main Terrarium"},
                 "start": "2024-04-18T23:59:59+02:00",
             },
-            speakers=[{"code": "BBCDEE", "name": "Monty the Python", "avatar": "https://snek.com"}],
+            speakers=[{"code": "BBCDEE", "name": "Monty the Python", "avatar_url": "https://snek.com"}],
         ),
         "GHIJKL": session_factory(
             code="GHIJKL",
@@ -403,7 +405,7 @@ async def test_excludes_non_conference_days_sessions(
                 "room": {"en": "The Main Terrarium"},
                 "start": "2024-04-25T00:00:00+02:00",
             },
-            speakers=[{"code": "BBCDEE", "name": "Monty the Python", "avatar": "https://snek.com"}],
+            speakers=[{"code": "BBCDEE", "name": "Monty the Python", "avatar_url": "https://snek.com"}],
         ),
     }
     # AND a schedule with only those sessions
