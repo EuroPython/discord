@@ -1,3 +1,4 @@
+
 import asyncio
 from unittest import mock
 
@@ -16,6 +17,7 @@ from discord_bot.extensions.programme_notifications.services import clock
         (arrow.Arrow(1999, 1, 2, 3, 18, 0), 0.0),
     ],
 )
+@pytest.mark.asyncio
 async def test_clock_sleeps_until_specified_datetime(until: arrow.Arrow, expected_seconds: float) -> None:
     """The clock calculates the seconds and sleeps."""
     # GIVEN a value for `now`

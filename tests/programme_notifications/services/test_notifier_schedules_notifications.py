@@ -1,7 +1,9 @@
+
 import os
 from unittest import mock
 
 import arrow
+import pytest
 import yarl
 
 from discord_bot.extensions.programme_notifications import services
@@ -13,6 +15,7 @@ from tests.programme_notifications import factories
 from tests.programme_notifications.services import helpers
 
 
+@pytest.mark.asyncio
 async def test_does_not_schedule_tasks_for_schedule_without_session(
     client_session: mock.Mock, configuration_factory: factories.ConfigurationFactory
 ) -> None:
@@ -31,13 +34,13 @@ async def test_does_not_schedule_tasks_for_schedule_without_session(
     config = configuration_factory({})
     # AND an instance of the session information service
     session_info = services.SessionInformation(
-        session_repository=repositories.SessionRepository(), api_client=client, config=config
+        repositories.SessionRepository(), client, config
     )
     # AND a task scheduler mock
     scheduler = mock.create_autospec(spec=task_scheduler.IScheduler)
     # AND a notifier that uses that client
     notifier = services.Notifier(
-        api_client=client, config=config, session_information=session_info, scheduler=scheduler
+        scheduler, session_info, client, config
     )
 
     # WHEN notifications are scheduled
@@ -47,6 +50,7 @@ async def test_does_not_schedule_tasks_for_schedule_without_session(
     scheduler.schedule_tasks_at.assert_not_called()
 
 
+@pytest.mark.asyncio
 async def test_scheduling_notifications_delivers_to_webhooks(
     client_session: mock.Mock,
     configuration_factory: factories.ConfigurationFactory,
@@ -83,6 +87,8 @@ async def test_scheduling_notifications_delivers_to_webhooks(
         "ABCDEF": (yarl.URL("https://europythoon/hungry-snakes"), "intermediate"),
     }
     client.fetch_session_details.side_effect = lambda session_code: session_details[session_code]
+    # Ensure execute_webhook is an AsyncMock so await_count is tracked
+    client.execute_webhook = mock.AsyncMock()
     # AND an instance of the config
     config = configuration_factory(
         {
@@ -114,20 +120,20 @@ async def test_scheduling_notifications_delivers_to_webhooks(
 
     # AND a session information service with the session
     session_info = services.SessionInformation(
-        session_repository=repositories.SessionRepository(),
-        api_client=client,
-        config=config,
+        repositories.SessionRepository(),
+        client,
+        config,
     )
     # AND a clock with a fixed `now` and fake sleeper
     clock_obj = clock.Clock(sleeper=mock.AsyncMock(), now=lambda: arrow.get("2024-04-22T09:00:00+02:00"))
     # AND a scheduler that uses that clock
-    scheduler = helpers.AwaitableScheduler(clock=clock_obj)
+    scheduler = helpers.AwaitableScheduler(clock_obj)
     # AND a notifier that uses that client
     notifier = services.Notifier(
-        api_client=client,
-        config=config,
-        session_information=session_info,
-        scheduler=scheduler,
+        scheduler,
+        session_info,
+        client,
+        config,
     )
 
     # WHEN notifications are scheduled
@@ -267,6 +273,7 @@ async def test_scheduling_notifications_delivers_to_webhooks(
     assert room_notification_call in client.execute_webhook.await_args_list
 
 
+@pytest.mark.asyncio
 async def test_does_not_schedule_tasks_if_schedule_has_not_changed(
     client_session: mock.Mock,
     configuration_factory: factories.ConfigurationFactory,
@@ -293,19 +300,19 @@ async def test_does_not_schedule_tasks_if_schedule_has_not_changed(
     config = configuration_factory({})
     # AND a session information service
     session_info = services.SessionInformation(
-        session_repository=repositories.SessionRepository(),
-        api_client=client,
-        config=config,
+        repositories.SessionRepository(),
+        client,
+        config,
     )
     # AND a task scheduler mock
     scheduler = mock.create_autospec(spec=task_scheduler.IScheduler)
     scheduler.schedule_tasks_at.side_effect = lambda *coros, at: [c.close() for c in coros]
     # AND a notifier with a previous schedule hash equal to the new hash
     notifier = services.Notifier(
-        api_client=client,
-        config=config,
-        session_information=session_info,
-        scheduler=scheduler,
+        scheduler,
+        session_info,
+        client,
+        config,
     )
     # AND the notifications tasks are scheduled a first time
     await notifier.schedule_notifications()
@@ -320,6 +327,7 @@ async def test_does_not_schedule_tasks_if_schedule_has_not_changed(
     assert scheduler.schedule_tasks_at.call_count == 0
 
 
+@pytest.mark.asyncio
 async def test_force_bypasses_hash_check(
     client_session: mock.Mock,
     configuration_factory: factories.ConfigurationFactory,
@@ -346,19 +354,19 @@ async def test_force_bypasses_hash_check(
     config = configuration_factory({})
     # AND a session information service
     session_info = services.SessionInformation(
-        session_repository=repositories.SessionRepository(),
-        api_client=client,
-        config=config,
+        repositories.SessionRepository(),
+        client,
+        config,
     )
     # AND a task scheduler mock
     scheduler = mock.create_autospec(spec=task_scheduler.IScheduler)
     scheduler.schedule_tasks_at.side_effect = lambda *coros, at: [c.close() for c in coros]
     # AND a notifier with a previous schedule hash equal to the new hash
     notifier = services.Notifier(
-        api_client=client,
-        config=config,
-        session_information=session_info,
-        scheduler=scheduler,
+        scheduler,
+        session_info,
+        client,
+        config,
     )
     # AND the notifications tasks are scheduled a first time
     await notifier.schedule_notifications()
@@ -373,6 +381,7 @@ async def test_force_bypasses_hash_check(
     assert scheduler.schedule_tasks_at.call_count == 2
 
 
+@pytest.mark.asyncio
 async def test_excludes_non_conference_days_sessions(
     client_session: mock.Mock,
     configuration_factory: factories.ConfigurationFactory,
@@ -427,15 +436,18 @@ async def test_excludes_non_conference_days_sessions(
     )
     # AND a session information service
     session_info = services.SessionInformation(
-        session_repository=repositories.SessionRepository(),
-        api_client=client,
-        config=config,
+        repositories.SessionRepository(),
+        client,
+        config,
     )
     # AND a task scheduler mock
     scheduler = mock.create_autospec(spec=task_scheduler.IScheduler)
     # AND a notifier that uses that client
     notifier = services.Notifier(
-        api_client=client, config=config, session_information=session_info, scheduler=scheduler
+        scheduler,
+        session_info,
+        client,
+        config,
     )
 
     # WHEN notifications are scheduled based on the schedule

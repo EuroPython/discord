@@ -5,6 +5,8 @@ from collections.abc import Callable, Coroutine
 
 import arrow
 import attrs
+import pytest
+
 from tests.programme_notifications.services import helpers
 
 
@@ -30,12 +32,13 @@ class EternalClock(FakeClock):
         await asyncio.sleep(1e10)
 
 
+@pytest.mark.asyncio
 async def test_runs_coroutines_at_provided_datetime() -> None:
     """The scheduler schedules coroutines at a specified datetime."""
     # GIVEN an instance of a clock with a fixed now
     clock = FakeClock(now=lambda: arrow.Arrow(2023, 7, 19, 11, 15, 4))
     # AND a scheduler that uses the clock
-    scheduler = helpers.AwaitableScheduler(clock=clock)
+    scheduler = helpers.AwaitableScheduler(clock)
     # AND several coroutines with await counters to schedule
     n_coroutines = 5
     coroutines = [AwaitCounter.get_coroutine_with_counter() for _ in range(n_coroutines)]
@@ -53,12 +56,13 @@ async def test_runs_coroutines_at_provided_datetime() -> None:
     assert all(counter.count == 1 for _, counter in coroutines)
 
 
+@pytest.mark.asyncio
 async def test_scheduler_cancels_all_pending_coroutines() -> None:
     """Scheduled tasks can be cancelled, all at once."""
     # GIVEN an instance of a clock
     clock = EternalClock()
     # AND a scheduler that uses the clock
-    scheduler = helpers.AwaitableScheduler(clock=clock)
+    scheduler = helpers.AwaitableScheduler(clock)
     # AND several schedule tasks at various datetimes
     coroutines = []
     for hour in range(9, 18):
@@ -77,6 +81,7 @@ async def test_scheduler_cancels_all_pending_coroutines() -> None:
     assert all(inspect.getcoroutinestate(coro) == inspect.CORO_CLOSED for coro, _ in coroutines)
 
 
+@pytest.mark.asyncio
 async def test_scheduler_does_not_schedule_coroutines_in_the_past() -> None:
     """Can't schedule something in the past!"""
     # GIVEN a fixed value for `now`
@@ -84,7 +89,7 @@ async def test_scheduler_does_not_schedule_coroutines_in_the_past() -> None:
     # AND an instance of a clock that uses that fixed `now`
     clock = FakeClock(now=lambda: now)
     # AND a scheduler that uses the clock
-    scheduler = helpers.AwaitableScheduler(clock=clock)
+    scheduler = helpers.AwaitableScheduler(clock)
     # AND a coroutine object with await counter
     coroutine, counter = AwaitCounter.get_coroutine_with_counter()
 

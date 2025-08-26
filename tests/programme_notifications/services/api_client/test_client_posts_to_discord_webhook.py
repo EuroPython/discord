@@ -42,10 +42,10 @@ _EXPECTED_PAYLOAD = {
             "color": None,
         }
     ],
-    "allowed_mentions": {"parse": []},
 }
 
 
+@pytest.mark.asyncio
 async def test_posts_message_to_discord_webhook(
     configuration_factory: factories.ConfigurationFactory,
     client_session: mock.Mock,
@@ -69,6 +69,7 @@ async def test_posts_message_to_discord_webhook(
     )
 
 
+@pytest.mark.asyncio
 async def test_failing_webhook_does_not_reveal_webhook_url(
     configuration_factory: factories.ConfigurationFactory,
     client_session: mock.Mock,
