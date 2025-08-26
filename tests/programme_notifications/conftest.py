@@ -186,26 +186,72 @@ def _session_factory(**attributes) -> europython.Session:
       attributes, combined with default attributes for unspecified
       attributes.
     """
+    # Defaults for nested structure
     defaults = {
-        "code": "ABCDEF",
-        "title": "A Tale of Two Pythons: Subinterpreters in Action!",
-        "abstract": (
-            "Sometimes, having one, undivided interpreter just isn't enough. The pesky GIL,"
-            " problems with isolation, and the difficult problem of concurrency haunt the dreams of"
-            " even the most talented Python developer. Clearly, a good solution is needed and that"
-            " solution is finally here: subinterpreters."
-        ),
-        "track": {"en": "Core Python"},
+        "id": 1,
+        "start": "2023-07-19T09:55:00+02:00",
         "duration": 45,
-        "slot": {
-            "room_id": 1234,
-            "room": {"en": "The Broom Closet"},
-            "start": "2024-04-24T12:30:00+02:00",
+        "description": {"en": None},
+        "room": {
+            "id": 1234,
+            "name": {"en": "The Broom Closet"},
         },
-        "speakers": [{"code": "AB34EF", "name": "Ada Lovelace", "avatar_url": "https://ada.avatar"}],
+        "submission": {
+            "code": "ABCDEF",
+            "title": "A Tale of Two Pythons: Subinterpreters in Action!",
+            "abstract": (
+                "Sometimes, having one, undivided interpreter just isn't enough. The pesky GIL,"
+                " problems with isolation, and the difficult problem of concurrency haunt the dreams of"
+                " even the most talented Python developer. Clearly, a good solution is needed and that"
+                " solution is finally here: subinterpreters."
+            ),
+            "speakers": [
+                {"code": "AB34EF", "name": "Ada Lovelace", "avatar_url": "https://ada.avatar"}
+            ],
+            "duration": 45,
+            "track": {"id": 1, "name": {"en": "Core Python"}},
+        },
         "url": "https://europython/sessions/a-tale-of-two-pythons",
+        "experience": None,
+        "livestream_url": None,
+        "discord_channel_id": None,
+        "q_and_a_url": None,
     }
+    # Allow test overrides to update nested fields
+    import copy
+    merged = copy.deepcopy(defaults)
+    # Map top-level overrides into nested submission dict if needed
+    submission_keys = ["title", "abstract", "speakers", "track", "duration", "code"]
+    for k, v in attributes.items():
+        if k in ["room"] and isinstance(v, dict):
+            merged[k].update(v)
+        elif k in ["submission"] and isinstance(v, dict):
+            merged[k].update(v)
+        elif k in ["url", "livestream_url", "q_and_a_url"] and v is not None:
+            merged[k] = str(v)
+        elif k in submission_keys:
+            # Special handling for track: allow None or dict
+            if k == "track":
+                if v is None:
+                    merged["submission"]["track"] = None
+                elif isinstance(v, dict):
+                    # If only {"en": ...} is provided, wrap in id=1
+                    if "en" in v and len(v) == 1:
+                        merged["submission"]["track"] = {"id": 1, "name": v}
+                    else:
+                        merged["submission"]["track"] = v
+                else:
+                    merged["submission"]["track"] = v
+            elif k == "speakers":
+                merged["submission"]["speakers"] = v
+            elif k == "duration":
+                merged["submission"]["duration"] = v
+                merged["duration"] = v
+            else:
+                merged["submission"][k] = v
+        else:
+            merged[k] = v
     converter = cattrs.Converter()
     converter.register_structure_hook(arrow.Arrow, lambda v, _: arrow.get(v))
     converter.register_structure_hook(yarl.URL, lambda v, t: t(v))
-    return converter.structure(defaults | attributes, europython.Session)
+    return converter.structure(merged, europython.Session)

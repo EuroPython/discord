@@ -38,8 +38,7 @@ def create_session_embed(
     else:
         livestream_value = f"[Video]({session.livestream_url})" if session.livestream_url else _FIELD_VALUE_EMTPY
     # use q_and_a_url if available, otherwise use the general slido url
-    if session.q_and_a_url:
-        q_and_a_url = session.q_and_a_url
+    q_and_a_url = session.q_and_a_url if session.q_and_a_url else None
     q_and_a_value = f"[Q&A]({q_and_a_url})" if q_and_a_url else _FIELD_VALUE_EMTPY
     fields = [
         discord.Field(name="Start Time", value=_format_start_time(session), inline=True),

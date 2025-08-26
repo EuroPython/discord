@@ -155,12 +155,12 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                         discord.Field(name="Duration", value="37 minutes", inline=True),
                         discord.Field(
                             name="Livestream",
-                            value="[Vimeo](https://one.livestream.ep)",
+                            value="[Video](https://one.livestream.ep)",
                             inline=True,
                         ),
                         discord.Field(
                             name="Live Q&A",
-                            value="[Slido](https://app.sli.do/event/test)",
+                            value="[Q&A](https://app.sli.do/event/test)",
                             inline=True,
                         ),
                         discord.Field(
@@ -198,12 +198,12 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                         discord.Field(name="Duration", value="37 minutes", inline=True),
                         discord.Field(
                             name="Livestream",
-                            value="[Vimeo](https://one.livestream.ep)",
+                            value="[Video](https://one.livestream.ep)",
                             inline=True,
                         ),
                         discord.Field(
                             name="Live Q&A",
-                            value="[Slido](https://app.sli.do/event/test)",
+                            value="[Q&A](https://app.sli.do/event/test)",
                             inline=True,
                         ),
                         discord.Field(
@@ -241,12 +241,12 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                         discord.Field(name="Duration", value="37 minutes", inline=True),
                         discord.Field(
                             name="Livestream",
-                            value="[Vimeo](https://one.livestream.ep)",
+                            value="[Video](https://one.livestream.ep)",
                             inline=True,
                         ),
                         discord.Field(
                             name="Live Q&A",
-                            value="[Slido](https://app.sli.do/event/test)",
+                            value="[Q&A](https://app.sli.do/event/test)",
                             inline=True,
                         ),
                         discord.Field(
