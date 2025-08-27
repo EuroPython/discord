@@ -11,10 +11,10 @@ from discord.ext import commands
 from discord_bot.configuration import Config
 from discord_bot.error import AlreadyRegisteredError, NotFoundError
 from discord_bot.helpers.channel_logging import log_to_channel
-from discord_bot.helpers.tito_connector import TitoOrder
+from discord_bot.helpers.ticket_connector import TicketOrder
 
 config = Config()
-order_ins = TitoOrder()
+order_ins = TicketOrder()
 
 CHANGE_NICKNAME = True
 

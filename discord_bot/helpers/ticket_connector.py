@@ -1,4 +1,4 @@
-"""Tito API connector for ticket validation."""
+"""Ticket API connector for ticket validation."""
 
 from __future__ import annotations
 
@@ -23,11 +23,11 @@ def sanitize_string(input_string: str) -> str:
     return input_string.replace(" ", "").lower()
 
 
-class TitoOrder(metaclass=Singleton):
-    """Tito API connector for ticket validation."""
+class TicketOrder(metaclass=Singleton):
+    """Ticket API connector for ticket validation."""
 
     def __init__(self) -> None:
-        """Initialize the TitoOrder class."""
+        """Initialize the TicketOrder class."""
         self.config = Config()
         load_dotenv(Path(__file__).resolve().parent.parent.parent / ".secrets")
         # PRETIX_TOKEN = os.getenv("PRETIX_TOKEN")
@@ -50,17 +50,17 @@ class TitoOrder(metaclass=Singleton):
 
     @tasks.loop(minutes=10.0)
     async def fetch_data(self) -> None:
-        """Run refresh_all route from API that reloads ticket data from Tito."""
-        _logger.info("Refresh tickets from Tito")
+        """Run refresh_all route from API that reloads ticket data."""
+        _logger.info("Refresh tickets from Ticket API %r", self.config.TICKETS_BASE_URL)
         time_start = time()
-        await self._update_tito(f"{self.config.TITO_BASE_URL}/tickets/refresh_all")
-        _logger.info("Updated tickets from Tito in %r seconds", time() - time_start)
+        await self._update_tickets(f"{self.config.TICKETS_BASE_URL}{self.config.TICKETS_REFRESH_ROUTE}")
+        _logger.info("Updated tickets from %r in %r seconds", self.config.TICKETS_BASE_URL, time() - time_start)
 
-    async def _update_tito(self, url: str) -> bool:
+    async def _update_tickets(self, url: str) -> bool:
         async with aiohttp.ClientSession() as session, session.get(url, headers=self.HEADERS) as response:
             if response.status == HTTPStatus.OK:
                 return True
-        _logger.error("Error occurred while updating Tito API: Status %r", response.status)
+        _logger.error("Error occurred while updating Ticket API: Status %r", response.status)
         return False
 
     async def get_ticket_type(self, order: str, full_name: str) -> dict | None:
@@ -70,9 +70,9 @@ class TitoOrder(metaclass=Singleton):
         data = None
 
         async with aiohttp.ClientSession() as session, session.post(
-            f"{self.config.TITO_BASE_URL}/tickets/validate_name/",
+            f"{self.config.TICKETS_BASE_URL}{self.config.TICKETS_VALIDATION_ROUTE}",
             headers=self.HEADERS,
-            json={"ticket_id": order, "name": full_name},
+            json={"order_id": order, "name": full_name},
         ) as request:
             if request.status == HTTPStatus.OK:
                 data = await request.json()

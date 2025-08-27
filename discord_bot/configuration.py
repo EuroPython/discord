@@ -76,8 +76,10 @@ class Config(metaclass=Singleton):
                 self.REG_HELP_CHANNEL_ID = int(config["registration"]["REG_HELP_CHANNEL_ID"])
                 self.REG_LOG_CHANNEL_ID = int(config["registration"]["REG_LOG_CHANNEL_ID"])
 
-                # Tito
-                self.TITO_BASE_URL = config["tito"]["TITO_BASE_URL"]
+                # Tickets
+                self.TICKETS_BASE_URL = config["tickets"]["TICKETS_BASE_URL"]
+                self.TICKETS_REFRESH_ROUTE = config["tickets"]["TICKETS_REFRESH_ROUTE"]
+                self.TICKETS_VALIDATION_ROUTE = config["tickets"]["TICKETS_VALIDATION_ROUTE"]
 
                 # Job Board
                 self.JOB_BOARD_CHANNEL_ID = config["job_board"]["JOB_BOARD_CHANNEL_ID"]

@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 from discord_bot import configuration
 from discord_bot.cogs.ping import Ping
 from discord_bot.cogs.registration_pydata import RegistrationPyData
-from discord_bot.helpers.tito_connector import TitoOrder
+from discord_bot.helpers.ticket_connector import TicketOrder
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".secrets")
 DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN", "")
@@ -92,7 +92,7 @@ async def main() -> None:
 
 if __name__ == "__main__":
     bot = Bot()
-    orders = TitoOrder()
+    orders = TicketOrder()
     try:
         asyncio.run(main())
     except KeyboardInterrupt:

@@ -49,8 +49,10 @@ REG_LOG_CHANNEL_ID = 1394333364538052618
 JOB_BOARD_CHANNEL_ID = 1363984069553295531
 JOB_BOARD_TESTING = false
 
-[tito]
-TITO_BASE_URL="https://val.pycon.de"
+[tickets]
+TICKETS_BASE_URL="https://val.pycon.de"
+TICKETS_REFRESH_ROUTE="/tickets/refresh_all/"
+TICKETS_VALIDATION_ROUTE="/tickets/validate_attendee/"
 
 [programme_notifications]
 timezone = "Europe/Berlin"

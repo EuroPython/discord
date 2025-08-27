@@ -26,7 +26,7 @@ class Admin(commands.Cog):
     async def participants(self, ctx: commands.Context) -> None:
         """Get statistics about registered participants."""
         embed = discord.Embed(
-            title="Participant Statistics 2024",
+            title="Participant Statistics",
             colour=16747421,
         )
         counts = self._get_counts(ctx.guild)

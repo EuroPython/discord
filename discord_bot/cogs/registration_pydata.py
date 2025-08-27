@@ -8,11 +8,11 @@ from discord_bot.configuration import Config
 
 # from discord_bot.error import AlreadyRegisteredError, NotFoundError
 # from discord_bot.channel_logging import log_to_channel
-# from discord_bot.tito_connector import TitoOrder
+# from discord_bot.ticket_connector import TicketOrder
 
 
 config = Config()
-# order_ins = TitoOrder()
+# order_ins = TicketOrder()
 
 # CHANGE_NICKNAME = False
 
@@ -47,13 +47,17 @@ class RegistrationPyData(Registration, commands.Cog):
         self._desc = (
             "Follow these steps to complete your registration:\n\n"
             f'1️⃣ Click on the green "Register Here {EMOJI_POINT}" button.\n\n'
-            '2️⃣ Fill in the "Ticket/Order ID" in the format "XXXXX") and your "Full Name" '
-            "(first and last name as printed on your ticket/badge under ticket holder). "
-            "You can find the information also in your confirmation email from "
-            f'support@tito.io with the subject: "Your {config.CONFERENCE_NAME} Ticket".\n\n'
+            '2️⃣ Fill in the "ticket/order ID" in the format "XXXXX", e.g. "AB1CD") and '
+            "your full name (as printed on your ticket PDF). The ticket/order ID can also be found on your ticket PDF."
+            "Trouble finding the infos? Check your emails from tickets@pydata-berlin.org again."
+            # "You can find the information also in your confirmation email from "
+            # f'tickets@pydata-berlin.org with the subject: '
+            # '"[Action required] Ticket for {config.CONFERENCE_NAME}".\n\n'
             '3️⃣ Click "Submit". We\'ll verify your ticket and give you your role(s) based on '
-            "your ticket type.\n\n"
+            "your ticket type so you can see the conference channels.\n\n"
+            "Your registration was successful if you can see the conference channels under the categories "
+            f"'{config.CONFERENCE_YEAR}_CONFERENCE' and '{config.CONFERENCE_YEAR}_ROOMS'.\n\n"
             "Experiencing trouble? Ask for help in the #registration-help channel or from a "
             f"volunteer (look for the {config.VOLUNTEER_SHIRT_COLOR} t-shirts) at the conference.\n\n"
-            "See you on the server! 🐍💻🎉"
+            f"See you at {config.CONFERENCE_NAME}! 🐍💻🎉"
         )
