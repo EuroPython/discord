@@ -91,7 +91,7 @@ def _configuration_factory(config: dict[str, Any]) -> configuration.NotifierConf
         "conference_website": "https://2024.pycon.de",
         "pretalx_talk_url": "https://2024.pycon.de/program/{code}",
         "pretalx_schedule_url": ("https://pretalx.com/api/events/pyconde-pydata-2024/schedules/latest/"),
-        "video_url": "https://app.sli.do/event/test",
+        "video_url": "https://video.pydata.org",
         "notification_channels": [
             {"webhook_id": "PROGRAMME_NOTIFICATIONS", "include_channel_in_embeds": True},
         ],
@@ -208,7 +208,6 @@ def _session_factory(**attributes) -> europython.Session:
             "speakers": [
                 {"code": "AB34EF", "name": "Ada Lovelace", "avatar_url": "https://ada.avatar"}
             ],
-            "duration": 45,
             "track": {"id": 1, "name": {"en": "Core Python"}},
         },
         "url": "https://europython/sessions/a-tale-of-two-pythons",
