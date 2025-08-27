@@ -50,11 +50,11 @@ class RegistrationButton(discord.ui.Button["Registration"]):
 
 class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
     order = discord.ui.TextInput(
-        label="Order/Reference Number (e.g. 'XXXX-X')",
+        label="Order/Ticket ID (e.g. 'ABCD1')",
         required=True,
-        min_length=6,
-        max_length=6,
-        placeholder="Character combination of 4 capital letters and one numbers with a dash '-', e.g. 'ABCD-1'.",
+        min_length=5,
+        max_length=5,
+        placeholder="Character combination of 5 capital letters or numbers, e.g. 'ABCD1'.",
     )
 
     name = discord.ui.TextInput(
@@ -110,6 +110,15 @@ class RegistrationForm(discord.ui.Modal, title="Europython 2023 Registration"):
             error_msg = f"No roles found for name='{self.name.value}' and order='{self.order.value}'."
             _logger.error(error_msg)
             msg = "Something went wrong, please check your input and try again."
+
+            await log_to_channel(
+                channel=interaction.client.get_channel(config.REG_LOG_CHANNEL_ID),
+                interaction=interaction,
+                name=self.name.value,
+                order=self.order.value,
+                roles=roles,
+                error=NotFoundError(error_msg),
+            )
 
         await interaction.response.send_message(msg, ephemeral=True, delete_after=20)
 

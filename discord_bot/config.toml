@@ -1,17 +1,15 @@
 [conference]
-CONFERENCE_NAME = "PyCon DE & PyData 2025"
-CONFERENCE_WEBSITE = "https://2025.pycon.de"
+CONFERENCE_NAME = "PyData Berlin 2025"
+CONFERENCE_WEBSITE = "https://pydata.org/berlin2025/"
 CONFERENCE_YEAR = 2025
-VOLUNTEER_SHIRT_COLOR = "cream"
+VOLUNTEER_SHIRT_COLOR = "green"
 
 [server]
-GUILD = 955933777706762280
+GUILD = 1340999177139650561
 CONFERENCE_SETUP_DONE = true
 
 [pytanis]
-PRETALX_EVENT_NAME = "pyconde-pydata-2025"
-LIVESTREAMS_SHEET_ID = ""
-LIVESTREAMS_WORKSHEET_NAME = ""
+PRETALX_EVENT_NAME = "berlin2025"
 
 [logging]
 LOG_LEVEL = "INFO"
@@ -31,20 +29,20 @@ Remote = "#96dc00"  # light green
 # =====
 # fill by running discord_bot/conference_setup.py
 [roles]
-Organiser = 1362862779173961919
-Volunteer = 1362862780373405849
-Attendee = 1362862781401010438
-Speaker = 1362862782214705225
-Session-Chair = 1362862783732908142
-Sponsor = 1362862785096323073
-On-Site = 1362862786258145473
-Remote = 1362862788103635135
+Organiser = 1386648341777092702
+Volunteer = 1386648343567929426
+Attendee = 1386648344721489970
+Speaker = 1386648345547771905
+Session-Chair = 1386648347414233198
+Sponsor = 1386648348647227453
+On-Site = 1386648350270685246
+Remote = 1386648351813926912
 
 [registration]
-REG_CHANNEL_ID = 1363223311043006605
-REG_HELP_CHANNEL_ID = 1363223312460943702
+REG_CHANNEL_ID = 1394333955683123270
+REG_HELP_CHANNEL_ID = 1394333957457317900
 # =====
-REG_LOG_CHANNEL_ID = 1216373483114598491
+REG_LOG_CHANNEL_ID = 1394333364538052618
 
 
 [job_board]
@@ -57,82 +55,36 @@ TITO_BASE_URL="https://val.pycon.de"
 [programme_notifications]
 timezone = "Europe/Berlin"
 timewarp = false  # true for testing
-conference_days_first = "2025-04-23"
-conference_days_last = "2025-04-25"
+conference_days_first = "2025-09-01"
+conference_days_last = "2025-09-03"
 conference_afternoon_session_start_time = 13
-pretalx_event_name = "pyconde-pydata-2025"
-pretalx_schedule_url = "https://pretalx.com/api/events/pyconde-pydata-2025/schedules/latest/"
-pretalx_talk_url = "https://pretalx.com/pyconde-pydata-2025/talk/{code}"
+# pretalx_event_name = "berlin2025"
+pretalx_schedule_url = "https://pretalx.com/api/events/berlin2025/schedules/latest/?expand=slots,slots.room,slots.submission,slots.submission.speakers,slots.submission.submission_type,slots.submission.track"
+pretalx_talk_url = "https://cfp.pydata.org/berlin2025/talk/{code}"
 # conference_website_session_base_url = "https://2025.pycon.de/program/{slug}"
 # conference_website_api_session_url = "https://2025.pycon.de/program/{code}"
-slido_url = "https://app.sli.do/event/24bWdyRSGod8DbRpGHcThr"
+video_url = "https://videos.pydata-berlin.org"
 
 [[programme_notifications.notification_channels]]
 webhook_id = "PROGRAMME_NOTIFICATIONS"
 include_channel_in_embeds = true
 
-# Zeiss Plenary (Spectrum) channel: 3893
-[programme_notifications.rooms.3893]
-webhook_id = "ROOM_3893"
-discord_channel_id = "1363604787832164363"
-slido_room_url = "https://app.sli.do/event/24bWdyRSGod8DbRpGHcThr/?section=b1cdcda9-83b7-446d-b822-d6e3946a8116"
+# Kuppelsaal channel: 4560
+[programme_notifications.rooms.4560]
+webhook_id = "ROOM_4560"
+discord_channel_id = "1394335693916082409"
 
-# Titanium3 channel: 3894
-[programme_notifications.rooms.3894]
-webhook_id = "ROOM_3894"
-discord_channel_id = "1363604791413968988"
-slido_room_url = "https://app.sli.do/event/24bWdyRSGod8DbRpGHcThr/?section=38f2af37-c3e4-4f42-a44a-9e3bbaf30144"
+# B09 channel: 4561
+[programme_notifications.rooms.4561]
+webhook_id = "ROOM_4561"
+discord_channel_id = "1394335699158827059"
 
-# Helium3 channel: 3895
-[programme_notifications.rooms.3895]
-webhook_id = "ROOM_3895"
-discord_channel_id = "1363604794757091469"
-slido_room_url = "https://app.sli.do/event/24bWdyRSGod8DbRpGHcThr/?section=1798fbdb-1445-468f-b5e6-21e8b975b5ca"
+# B07-B08 channel: 4562
+[programme_notifications.rooms.4562]
+webhook_id = "ROOM_4562"
+discord_channel_id = "1394335703453667541"
 
-# Platinum3 channel: 3896
-[programme_notifications.rooms.3896]
-webhook_id = "ROOM_3896"
-discord_channel_id = "1363604799500714127"
-slido_room_url = "https://app.sli.do/event/24bWdyRSGod8DbRpGHcThr/?section=d7121ad8-0a89-41de-9357-368e208891ed"
-
-# Europium2 channel: 3897
-[programme_notifications.rooms.3897]
-webhook_id = "ROOM_3897"
-discord_channel_id = "1363604802776469624"
-slido_room_url = "https://app.sli.do/event/24bWdyRSGod8DbRpGHcThr/?section=dfeb8cf1-5ed7-4e37-b42e-d802c24c31bf"
-
-# Hassium channel: 3898
-[programme_notifications.rooms.3898]
-webhook_id = "ROOM_3898"
-discord_channel_id = "1363604805754556679"
-slido_room_url = "https://app.sli.do/event/24bWdyRSGod8DbRpGHcThr/?section=371b2a34-3c32-4c3c-b413-dc475c413709"
-
-# Palladium channel: 3899
-[programme_notifications.rooms.3899]
-webhook_id = "ROOM_3899"
-discord_channel_id = "1363604808375734435"
-slido_room_url = "https://app.sli.do/event/24bWdyRSGod8DbRpGHcThr/?section=ca68af75-c203-484d-bfbf-e5d11bd46c5b"
-
-# Ferrum channel: 3900
-[programme_notifications.rooms.3900]
-webhook_id = "ROOM_3900"
-discord_channel_id = "1363604811060351116"
-slido_room_url = "https://app.sli.do/event/24bWdyRSGod8DbRpGHcThr/?section=2151c07b-fcee-4114-81ba-1ba6dc5773cb"
-
-# Dynamicum channel: 3901
-[programme_notifications.rooms.3901]
-webhook_id = "ROOM_3901"
-discord_channel_id = "1363604813937643671"
-slido_room_url = "https://app.sli.do/event/24bWdyRSGod8DbRpGHcThr/?section=33ccab25-4f24-42b9-8dce-8e1dcbbe190b"
-
-# Carbonium channel: 3973
-[programme_notifications.rooms.3973]
-webhook_id = "ROOM_3973"
-discord_channel_id = "1363604817007870154"
-slido_room_url = ""
-
-# OpenSpace channel: 4084
-[programme_notifications.rooms.4084]
-webhook_id = "ROOM_4084"
-discord_channel_id = "1363604827455881488"
-slido_room_url = ""
+# B05-B06 channel: 4563
+[programme_notifications.rooms.4563]
+webhook_id = "ROOM_4563"
+discord_channel_id = "1394335707191050353"

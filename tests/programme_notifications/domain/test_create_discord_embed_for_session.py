@@ -13,38 +13,42 @@ import arrow
 import pytest
 import yarl
 
-from discord_bot.extensions.programme_notifications.domain import discord, europython, services
+from discord_bot.extensions.programme_notifications.domain import (discord,
+                                                                   europython,
+                                                                   services)
 from tests.programme_notifications import factories
 
 
-def test_create_embed_from_session_information() -> None:
+def test_create_embed_from_session_information(session_factory):
     """Create an embed if all session information is available."""
     # GIVEN a EuroPython session instance
-    europython_session = europython.Session(
-        code="ABCDEF",
-        title="A Tale of Two Pythons: Subinterpreters in Action!",
-        abstract=(
-            "Sometimes, having one, undivided interpreter just isn't enough. The pesky GIL,"
-            " problems with isolation, and the difficult problem of concurrency haunt the dreams of"
-            " even the most talented Python developer. Clearly, a good solution is needed and that"
-            " solution is finally here: subinterpreters."
-        ),
-        track=europython.TranslatedString(en="Core Python"),
-        duration=45,
-        slot=europython.Slot(
-            room_id=1234,
-            room=europython.TranslatedString("The Broom Closet"),
-            start=arrow.Arrow(2023, 7, 19, 9, 55, 0, tzinfo="Europe/Prague"),
-        ),
-        speakers=[europython.Speaker(code="123456", name="Ada Lovelace", avatar="https://ada.avatar")],
-        url=yarl.URL("https://ep.session/a-tale-of-two-pythons-subinterpreters-in-action"),
-        livestream_url=yarl.URL("https://vimeo-livestreams.com/best-conference-sessions-of-2023"),
+    europython_session = session_factory(
+        id=1,
+        start="2023-07-19T09:55:00+02:00",
+        submission={
+            "code": "ABCDEF",
+            "title": "A Tale of Two Pythons: Subinterpreters in Action!",
+            "abstract": (
+                "Sometimes, having one, undivided interpreter just isn't enough. The pesky GIL,"
+                " problems with isolation, and the difficult problem of concurrency haunt the dreams of"
+                " even the most talented Python developer. Clearly, a good solution is needed and that"
+                " solution is finally here: subinterpreters."
+            ),
+            "speakers": [{"code": "123456", "name": "Ada Lovelace", "avatar_url": "https://ada.avatar"}],
+            "duration": 45,
+            "track": {"id": 1, "name": {"en": "Core Python"}},
+        },
+        room={
+            "id": 1234,
+            "name": {"en": "The Broom Closet"},
+        },
+        url="https://ep.session/a-tale-of-two-pythons-subinterpreters-in-action",
+        livestream_url="https://vimeo-livestreams.com/best-conference-sessions-of-2023",
         discord_channel_id="123456789123456",
     )
-    slido_url = "https://app.sli.do/event/test"
 
     # WHEN an embed is created with that information
-    embed = services.create_session_embed(europython_session, slido_url, include_discord_channel=True)
+    embed = services.create_session_embed(europython_session, include_discord_channel=True)
 
     # THEN the embed is equal to the expected embed
     session_url = "https://ep.session/a-tale-of-two-pythons-subinterpreters-in-action"
@@ -69,13 +73,14 @@ def test_create_embed_from_session_information() -> None:
             ),
             discord.Field(
                 name="Live Q&A",
-                value="[Slido](https://app.sli.do/event/test)",
+                value="—",
                 inline=True,
             ),
             discord.Field(name="Discord Channel", value="<#123456789123456>", inline=True),
         ],
         footer=discord.Footer(text="This session starts at 09:55:00 (local conference time)"),
         url=session_url,
+        color=None,
     )
 
 
@@ -202,7 +207,12 @@ def test_abstract_gets_formatted_including_width_and_session_url(
 ) -> None:
     """Abstracts may be shortened and a url is added if available."""
     # GIVEN a session with a known abstract and session url
-    session = session_factory(abstract=abstract, url=session_url)
+    session = session_factory(
+        id=1,
+        start="2023-07-19T09:55:00+02:00",
+        submission={"code": "ABCD", "abstract": abstract},
+        url=session_url,
+    )
     # WHEN the embed is created
     embed = services.create_session_embed(session)
 
@@ -216,51 +226,51 @@ def test_abstract_gets_formatted_including_width_and_session_url(
         pytest.param([], None, id="No speakers"),
         pytest.param(
             [
-                {"code": "123456", "name": "Ada Lovelace", "avatar": "https://ada.avatar"},
+                {"code": "123456", "name": "Ada Lovelace", "avatar_url": "https://ada.avatar"},
             ],
             discord.Author(name="Ada Lovelace", icon_url="https://ada.avatar"),
             id="One speakers",
         ),
         pytest.param(
             [
-                {"code": "123456", "name": "Ada Lovelace", "avatar": "https://ada.avatar"},
-                {"code": "654321", "name": "Alan Turing", "avatar": "https://turing.png"},
+                {"code": "123456", "name": "Ada Lovelace", "avatar_url": "https://ada.avatar"},
+                {"code": "654321", "name": "Alan Turing", "avatar_url": "https://turing.png"},
             ],
             discord.Author(name="Ada Lovelace & Alan Turing", icon_url="https://ada.avatar"),
             id="Two speakers",
         ),
         pytest.param(
             [
-                {"code": "121314", "name": "Barbara Liskov", "avatar": "https://barbara.jpg"},
-                {"code": "123456", "name": "Ada Lovelace", "avatar": "https://ada.avatar"},
-                {"code": "654321", "name": "Alan Turing", "avatar": "https://turing.png"},
+                {"code": "121314", "name": "Barbara Liskov", "avatar_url": "https://barbara.jpg"},
+                {"code": "123456", "name": "Ada Lovelace", "avatar_url": "https://ada.avatar"},
+                {"code": "654321", "name": "Alan Turing", "avatar_url": "https://turing.png"},
             ],
             discord.Author(name="Barbara Liskov, Ada Lovelace, & Alan Turing", icon_url="https://barbara.jpg"),
             id="More than two speakers",
         ),
         pytest.param(
             [
-                {"code": "121314", "name": "Barbara Liskov", "avatar": None},
-                {"code": "123456", "name": "Ada Lovelace", "avatar": "https://ada.avatar"},
-                {"code": "654321", "name": "Alan Turing", "avatar": "https://turing.png"},
+                {"code": "121314", "name": "Barbara Liskov", "avatar_url": None},
+                {"code": "123456", "name": "Ada Lovelace", "avatar_url": "https://ada.avatar"},
+                {"code": "654321", "name": "Alan Turing", "avatar_url": "https://turing.png"},
             ],
             discord.Author(name="Barbara Liskov, Ada Lovelace, & Alan Turing", icon_url="https://ada.avatar"),
             id="Fetch avatar url from non-first speaker",
         ),
         pytest.param(
             [
-                {"code": "121314", "name": "Barbara Liskov", "avatar": None},
-                {"code": "123456", "name": "Ada Lovelace", "avatar": None},
-                {"code": "654321", "name": "Alan Turing", "avatar": None},
+                {"code": "121314", "name": "Barbara Liskov", "avatar_url": None},
+                {"code": "123456", "name": "Ada Lovelace", "avatar_url": None},
+                {"code": "654321", "name": "Alan Turing", "avatar_url": None},
             ],
             discord.Author(name="Barbara Liskov, Ada Lovelace, & Alan Turing", icon_url=None),
             id="No speakers with avatars",
         ),
         pytest.param(
             [
-                {"code": "121314", "name": "Barbara Liskov", "avatar": "https://barbara.jpg"},
-                {"code": "123456", "name": "Ada Lovelace", "avatar": "https://ada.avatar"},
-                {"code": "654321", "name": "Alan Turing", "avatar": "https://turing.png"},
+                {"code": "121314", "name": "Barbara Liskov", "avatar_url": "https://barbara.jpg"},
+                {"code": "123456", "name": "Ada Lovelace", "avatar_url": "https://ada.avatar"},
+                {"code": "654321", "name": "Alan Turing", "avatar_url": "https://turing.png"},
                 {
                     "code": "654321",
                     "name": (
@@ -330,10 +340,11 @@ def test_start_time_is_available_in_embed(
     """Show a localized Discord timestamp & conference local time."""
     # GIVEN a session with a known start time
     session = session_factory(
-        slot={
-            "room_id": 1234,
-            "room": {"en": "The Broom Closet"},
-            "start": "2023-07-19T09:55:00+02:00",
+        id=1,
+        start="2023-07-19T09:55:00+02:00",
+        room={
+            "id": 1234,
+            "name": {"en": "The Broom Closet"},
         }
     )
     # WHEN the embed is created
@@ -346,37 +357,37 @@ def test_start_time_is_available_in_embed(
 
 
 @pytest.mark.parametrize(
-    ("slot", "expected_room_name"),
+    ("room", "expected_room_name"),
     [
         pytest.param(
             {
-                "room_id": 1234,
-                "room": {"en": "The Broom Closet"},
-                "start": "2023-07-19T09:55:00+02:00",
+                "id": 1234,
+                "name": {"en": "The Broom Closet"},
+                # "start": "2023-07-19T09:55:00+02:00",
             },
             "The Broom Closet",
             id="The room name is available",
         ),
         pytest.param(
-            {"room_id": 1234, "room": dict(en=""), "start": "2023-07-19T09:55:00+02:00"},
+            {"id": 1234, "name": dict(en="")},
             "—",
             id="The room name is empty",
         ),
         pytest.param(
-            {"room_id": 1234, "room": None, "start": "2023-07-19T09:55:00+02:00"},
+            {"id": 1234, "name": None},
             "—",
             id="The room name is unavailable in the slot",
         ),
     ],
 )
 def test_room_is_displayed_correctly(
-    slot: europython.Slot | None,
+    room: europython.Room | None,
     expected_room_name: str,
     session_factory: factories.SessionFactory,
 ) -> None:
     """Show the room name or a placeholder if unavailable."""
-    # GIVEN a session with a known slot
-    session = session_factory(slot=slot)
+    # GIVEN a session with a known room
+    session = session_factory(room=room)
 
     # WHEN the embed is created
     embed = services.create_session_embed(session)
@@ -482,34 +493,36 @@ def test_livestream_url_is_displayed_if_available(
 
 
 @pytest.mark.parametrize(
-    ("slido_url", "expected_slido_value"),
+    ("q_and_a_url", "expected_q_and_a_value"),
     [
         pytest.param(
             None,
             "—",
-            id="No slido URL available",
+            id="No Q&A URL available",
         ),
         pytest.param(
             yarl.URL("https://app.sli.do/event/test"),
-            "[Slido](https://app.sli.do/event/test)",
-            id="Slido URL is available",
+            "[Q&A](https://app.sli.do/event/test)",
+            id="Q&A URL is available",
         ),
     ],
 )
-def test_slido_url_is_displayed_if_available(
-    slido_url: yarl.URL | None,
-    expected_slido_value: str,
+def test_q_and_a_url_is_displayed_if_available(
+    q_and_a_url: yarl.URL | None,
+    expected_q_and_a_value: str,
     session_factory: factories.SessionFactory,
 ) -> None:
-    """Show a slido url, if available."""
-    # GIVEN a session
-    session = session_factory()
-
-    # WHEN the embed is created with slido_url
-    embed = services.create_session_embed(session, slido_url=slido_url)
+    """Show a Q&A url, if available."""
+    # GIVEN a session with a Q&A url
+    session = session_factory(
+        id=1,
+        start="2023-07-21T09:11:12+02:00",
+        submission={"code": "123", "title": "Q&A test title"},
+        q_and_a_url=q_and_a_url)
+    embed = services.create_session_embed(session)
 
     # THEN the embed url is as expected
-    assert embed.fields[5].value == expected_slido_value
+    assert embed.fields[5].value == expected_q_and_a_value
 
 
 def test_discord_channel_is_linked_if_available(
@@ -517,7 +530,7 @@ def test_discord_channel_is_linked_if_available(
 ) -> None:
     """Link to the Discord channel, if available and enabled."""
     # GIVEN a session with a discord channel
-    session = session_factory(discord_channel_id="123456789123456")
+    session = session_factory(id=1, start="2023-07-21T09:11:12+02:00", discord_channel_id="123456789123456")
 
     # WHEN the embed is created
     embed = services.create_session_embed(session, include_discord_channel=True)
@@ -589,5 +602,7 @@ def test_embed_color_reflects_audience_experience(
     # WHEN the embed is created
     embed = services.create_session_embed(session)
 
+    # THEN the embed color is as expected
+    assert embed.color == expected_color
     # THEN the embed color is as expected
     assert embed.color == expected_color

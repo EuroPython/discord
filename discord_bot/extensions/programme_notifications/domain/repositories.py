@@ -57,8 +57,11 @@ class SessionRepository:
 
         :param session: A session to add to the repository
         """
-        self._sessions[session.code] = session
-        _log.debug("Added session %r to the session repository", session.code)
+        if session.submission is None:
+            _log.debug("Skipped session without submission. Description: %r", session.description)
+            return
+        self._sessions[session.submission.code] = session
+        _log.debug("Added session %r to the session repository", session.submission.code)
 
     def clear(self) -> None:
         """Clear the session repository."""

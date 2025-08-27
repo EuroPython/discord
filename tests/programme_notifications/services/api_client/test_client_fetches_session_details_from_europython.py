@@ -24,6 +24,7 @@ from tests.programme_notifications import factories
         ),
     ],
 )
+@pytest.mark.asyncio
 async def test_api_client_returns_level_and_url_for_session(
     session_id: str,
     expected_session_url: yarl.URL,
@@ -44,7 +45,7 @@ async def test_api_client_returns_level_and_url_for_session(
     #     return_value=json.loads(get_bytes_from_data_file(f"europython_{session_id}.testdata.json"))
     # )
     client_session.get.return_value.__aenter__.return_value.text = mock.AsyncMock(
-        return_value=f"bla bla Python Skill Level {expected_experience_level}</a> bla bla",
+        return_value=f"bla bla Expected audience expertise: Domain: <p>{expected_experience_level}</p> bla bla",
     )
     # AND a configuration repository with a pretalx schedule url
     config = configuration_factory(

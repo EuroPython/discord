@@ -69,7 +69,7 @@ docker build --tag discord_bot .
 docker run --interactive --tty --env DISCORD_BOT_TOKEN=$DISCORD_BOT_TOKEN --env PRETIX_TOKEN=$PRETIX_TOKEN discord_bot
 ```
 
-Create the following files in the root directory manually if you want to run the bot on your machine:
+Create manually the following files in the root directory of this repository if you want to run the bot on your machine:
 
 - `registered_log.txt`
 - `posted_jobs.txt`

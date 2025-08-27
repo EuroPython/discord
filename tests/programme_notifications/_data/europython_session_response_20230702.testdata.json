@@ -1,1 +1,27 @@
-{"session":{"id":"BHXSQU","code":"BHXSQU","slug":"dont-panic-a-developers-guide-to-security","title":"Don’t Panic! A Developer’s Guide to Security","description":"One of the leading security principles today is that you should embrace security practices throughout your entire Software Development Lifecycle (SDLC), from design to deployment and maintenance. This means that you, as a developer, have a crucial part to play in keeping your projects secure.\r\n\r\nIn my talk, I will show you how to do that by introducing you to the [OWASP DevSecOps Maturity Model (DSOMM)](https://owasp.org/www-project-devsecops-maturity-model/). This model, which is very accessible to anyone familiar with DevOps, allows you to evaluate and improve your security practices. As the model describes the entire Software Development Lifecycle, it also serves as a nice reference framework for industry-standard security practices.\r\n\r\nI will start by giving you a high-level overview of the model and the principles behind it. I will also compare the DevSecOps Maturity Model with its older sibling, the [OWASP Software Assurance Maturity Model (SAMM)](https://owasp.org/www-project-samm/). Since it’s important, I will end the first part by going into the difference between having a good security culture and [checkbox compliance](https://en.wiktionary.org/wiki/checkbox_compliance).\r\n\r\nNext, I will take you through the dimensions of the DevSecOps Maturity Model, with a focus on those dimensions that are especially relevant to developers. I will illustrate each dimension with concrete examples of security practices that you can implement yourself today.\r\n\r\nFinally, I will talk about the best way to start implementing these practices. This is crucial: For instance, if you suddenly introduce all the tools you can find, chances are that the only thing you’ll learn from the plethora of alerts you’ll get is how to ignore these tools. Since some of us also have to deal with corporate policies and a limited sphere of influence within an organization, I will end with some pointers on how to advocate good security practices from the bottom up.\r\n\r\nAnd, if this all feels a bit overwhelming, remember the big friendly letters in the title: [**Don’t Panic!**](https://en.wikipedia.org/wiki/The_Hitchhiker%27s_Guide_to_the_Galaxy)","abstract":"As a developer, you play a crucial role in the security of your projects. At the same time, it can be difficult to know if what you’re doing is enough. Luckily, you don’t have to be a security expert to contribute to the security of your projects. Instead, you can use industry standards as a guide for your approach to security.\r\n\r\nIn this talk, I will introduce you to a framework that is especially accessible to developers, the [OWASP DevSecOps Maturity Model](https://owasp.org/www-project-devsecops-maturity-model/), and help you get started with a systematic approach to improving the security of your projects.","duration":30,"speakers":[{"name":"Sebastiaan Zeeff","avatar":"https://pretalx.com/media/avatars/photo_square_cropped_1000_1000_fRtHpCV.jpg","bio":"Sebastiaan is a Senior Software Engineer for the [Ordina Pythoneers](https://ordina.com) and a Fellow of the [Python Software Foundation](https://www.python.org/psf-landing/). He has a passion for teaching Python and writing clean code. Sebastiaan is also active in the Python community, as the Financial Aid lead for EuroPython, open-source contributor, Python educator, and founder of [Python Discord](https://www.pythondiscord.com/).\r\n\r\nAs a public speaker, Sebastiaan makes frequent appearances at Python conferences, including PyCon US, EuroPython, PyCon APAC, FOSDEM, and Pyjamas Conf. He currently lives in The Netherlands.","code":"UPWXFZ","slug":"sebastiaan-zeeff"}],"tags":[],"track":"Security","type":"Talk","length":"30","experience":"intermediate","room":null,"slidesUrl":null}}
+{
+	"session": {
+		"id": 2,
+		"start": "2025-08-26T10:00:00+02:00",
+		"duration": 30,
+		"description": {"en": "One of the leading security principles today is that you should embrace security practices throughout your entire Software Development Lifecycle (SDLC), from design to deployment and maintenance. This means that you, as a developer, have a crucial part to play in keeping your projects secure."},
+		"room": null,
+		"submission": {
+			"code": "BHXSQU",
+			"title": "Don’t Panic! A Developer’s Guide to Security",
+			"abstract": "As a developer, you play a crucial role in the security of your projects. At the same time, it can be difficult to know if what you’re doing is enough. Luckily, you don’t have to be a security expert to contribute to the security of your projects. Instead, you can use industry standards as a guide for your approach to security.",
+			"speakers": [
+				{
+					"code": "UPWXFZ",
+					"name": "Sebastiaan Zeeff",
+					"avatar_url": "https://pretalx.com/media/avatars/photo_square_cropped_1000_1000_fRtHpCV.jpg"
+				}
+			],
+			"duration": 30,
+			"track": {
+				"id": 2,
+						"name": {"en": "Security"}
+					}
+				}
+
+	}
+}

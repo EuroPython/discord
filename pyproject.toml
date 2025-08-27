@@ -24,7 +24,7 @@ aiofiles = "^24.1.0"
 pytanis = "^0.8"
 
 [tool.poetry.group.dev.dependencies]
-ruff = "^0.5.3"
+ruff = "^0.5.7"
 pre-commit = "^4.2.0"
 pytest = "^8.3.5"
 pytest-asyncio = "^0.26.0"

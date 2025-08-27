@@ -21,7 +21,6 @@ _EXPERIENCE_COLORS: Final = {
 
 def create_session_embed(
     session: europython.Session,
-    slido_url: str | None = None,
     conference_name: str = "PyCon DE & PyData",
     conference_website: str = "https://pycon.de",
     *,
@@ -30,28 +29,24 @@ def create_session_embed(
     """Create a Discord embed for a conference session.
 
     :param session: The session information as provided by Pretalx
-    :param slido_url: The url to slido (general)
     :param include_discord_channel: If the discord channel should be
       linked in the embed
     :return: A Discord embed for this session
     """
-    if session.livestream_url and "talks.pycon.de" in str(session.livestream_url):
-        livestream_value = f"[talks.pycon.de]({session.livestream_url})"
-    elif session.livestream_url and "vimeo" in str(session.livestream_url):
+    if session.livestream_url and "vimeo" in str(session.livestream_url):
         livestream_value = f"[Vimeo]({session.livestream_url})"
     else:
         livestream_value = f"[Video]({session.livestream_url})" if session.livestream_url else _FIELD_VALUE_EMTPY
-    # use slido room url if available, otherwise use the general slido url
-    if session.slido_room_url:
-        slido_url = session.slido_room_url
-    slido_value = f"[Slido]({slido_url})" if slido_url else _FIELD_VALUE_EMTPY
+    # use q_and_a_url if available, otherwise use the general slido url
+    q_and_a_url = session.q_and_a_url if session.q_and_a_url else None
+    q_and_a_value = f"[Q&A]({q_and_a_url})" if q_and_a_url else _FIELD_VALUE_EMTPY
     fields = [
         discord.Field(name="Start Time", value=_format_start_time(session), inline=True),
         discord.Field(name="Room", value=_format_room(session), inline=True),
         discord.Field(name="Track", value=_format_track(session), inline=True),
         discord.Field(name="Duration", value=_format_duration(session.duration), inline=True),
         discord.Field(name="Livestream", value=livestream_value, inline=True),
-        discord.Field(name="Live Q&A", value=slido_value, inline=True),
+        discord.Field(name="Live Q&A", value=q_and_a_value, inline=True),
     ]
     if include_discord_channel and session.discord_channel_id:
         channel_value = f"<#{session.discord_channel_id}>"
@@ -72,8 +67,8 @@ def create_session_embed(
         )
 
     return discord.Embed(
-        title=_format_title(session.title),
-        author=_create_author_from_speakers(session.speakers),
+        title=_format_title(session.submission.title),
+        author=_create_author_from_speakers(session.submission.speakers),
         description=_create_description(session),
         fields=fields,
         footer=_format_footer(session),
@@ -103,7 +98,7 @@ def _create_author_from_speakers(speakers: list[europython.Speaker]) -> discord.
         case _:
             return None
     author_name = textwrap.shorten(author_name, width=_AUTHOR_WIDTH)
-    icon_url = next((avatar for speaker in speakers if (avatar := speaker.avatar)), None)
+    icon_url = next((avatar for speaker in speakers if (avatar := speaker.avatar_url)), None)
     return discord.Author(name=author_name, icon_url=icon_url)
 
 
@@ -113,8 +108,14 @@ def _create_description(session: europython.Session) -> str:
     :param session: The session
     :return: The embed description
     """
+    if session.submission is None:
+        return _FIELD_VALUE_EMTPY
     url = session.url
-    abstract = _ABSTRACT_EMPTY if not session.abstract else textwrap.shorten(session.abstract, width=_ABSTRACT_WIDTH)
+    abstract = (
+        _ABSTRACT_EMPTY
+        if not session.submission.abstract
+        else textwrap.shorten(session.submission.abstract, width=_ABSTRACT_WIDTH)
+    )
     return f"{abstract}\n\n[Read more about this session]({url})" if url else abstract
 
 
@@ -138,7 +139,7 @@ def _format_start_time(session: europython.Session) -> str:
       unavailable, this function returns a placeholder value.
     """
     try:
-        start_time_timestamp = session.slot.start.int_timestamp
+        start_time_timestamp = session.start.int_timestamp
     except AttributeError:
         return _FIELD_VALUE_EMTPY
 
@@ -152,7 +153,7 @@ def _format_footer(session: europython.Session) -> discord.Footer | None:
     :return: A `Footer`, if a start time is available, else `none`
     """
     try:
-        formatted_time = session.slot.start.strftime("%H:%M:%S")
+        formatted_time = session.start.strftime("%H:%M:%S")
     except AttributeError:
         return None
 
@@ -166,7 +167,9 @@ def _format_room(session: europython.Session) -> str:
     :return: The name of a room or a placeholder value.
     """
     try:
-        room = session.slot.room.en
+        if session.room is None or session.room.name is None:
+            return _FIELD_VALUE_EMTPY
+        room = session.room.name.en
     except AttributeError:
         return _FIELD_VALUE_EMTPY
 
@@ -180,7 +183,9 @@ def _format_track(session: europython.Session) -> str:
     :return: The name of a track or a placeholder value.
     """
     try:
-        track = session.track.en
+        if session.submission is None or session.submission.track is None or session.submission.track.name is None:
+            return _FIELD_VALUE_EMTPY
+        track = session.submission.track.name.en
     except AttributeError:
         return _FIELD_VALUE_EMTPY
 
@@ -206,6 +211,8 @@ def _get_color(experience: str | None) -> int | None:
     :return: A color (int) or None
     """
     try:
-        return _EXPERIENCE_COLORS[experience]
+        if isinstance(experience, str):
+            return _EXPERIENCE_COLORS[experience.lower()]
     except KeyError:
         return None
+    return None

@@ -6,10 +6,11 @@ repos:
     -   id: end-of-file-fixer
     -   id: trailing-whitespace
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.5.3
+    rev: v0.5.7
     hooks:
     # Run the linter.
     -   id: ruff
-        args: [ --fix ]
+        args: [ --fix, --line-length=119 ]
     # Run the formatter.
     -   id: ruff-format
+        args: [ --line-length=119 ]

@@ -34,7 +34,6 @@ class RoomConfiguration:
 
     discord_channel_id: str = attrs.field(validator=validators.matches_re(r"\d+"))
     webhook_id: str
-    slido_room_url: str
     # livestreams: Mapping[str, str]
 
 
@@ -58,7 +57,7 @@ class NotifierConfiguration:
     pretalx_talk_url: str = attrs.field(validator=_PRETALX_TALK_URL)
     pretalx_schedule_url: str = attrs.field(validator=_INSTANCE_OF_STR)
     conference_afternoon_session_start_time: int = attrs.field(validator=_INSTANCE_OF_INT)
-    slido_url: str = attrs.field(validator=_INSTANCE_OF_STR)
+    video_url: str = attrs.field(validator=_INSTANCE_OF_STR)
     notification_channels: list[NotificationChannel]
     rooms: Mapping[str, RoomConfiguration]
     webhooks: Mapping[str, yarl.URL] = attrs.field(repr=False, validator=_URL_MAPPING)

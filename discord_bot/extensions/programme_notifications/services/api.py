@@ -85,7 +85,7 @@ class ApiClient:
         raw_schedule = json.loads(response_content)
         schedule = europython.Schedule(
             sessions=self._convert(raw_schedule["slots"], europython.Session),
-            breaks=self._convert(raw_schedule["breaks"], europython.Break),
+            breaks=[],  # self._convert(raw_schedule["breaks"], europython.Break),
             version=raw_schedule["version"],
             schedule_hash=hashlib.sha1(response_content).hexdigest(),  # noqa: S324
         )
@@ -151,15 +151,15 @@ class ApiClient:
             # session_information = await response.json()
             html = await response.text()
 
-        # Find the first occurrence of 'Expected audience expertise: Python:' and then locate the first <p> tag after
-        keyword = "Expected audience expertise: Python:"
+        # Find the first occurrence of 'Expected audience expertise: Domain:' and then locate the first <p> tag after
+        keyword = "Expected audience expertise: Domain:"
 
         keyword_index = html.find(keyword)
         if keyword_index == -1:
             msg = f"The keyword '{keyword}' was not found in the HTML content."
             raise ValueError(msg)
 
-        # Extract the portion of the HTML after 'Python'
+        # Extract the portion of the HTML after 'Domain'
         html_after_keyword = html[keyword_index:]
 
         # Find the first <p> tag and extract the value between <p> and </p>

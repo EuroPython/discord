@@ -21,7 +21,7 @@ console_handler.setFormatter(formatter)
 _logger.addHandler(console_handler)
 
 load_dotenv(Path(__file__).resolve().parent.parent / ".secrets")
-DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN")
+DISCORD_BOT_TOKEN = os.getenv("DISCORD_BOT_TOKEN", "")
 
 intents = discord.Intents.all()
 intents.guilds = True
@@ -37,7 +37,11 @@ class ConferenceSetup:
         """Initialize the ConferenceSetup class."""
         self.pretalx_client = PretalxClient()
         self.gsheets_client = GSheetsClient()
-        self.guild = client.get_guild(config.GUILD)
+        self.guild: discord.Guild = client.get_guild(config.GUILD)  # pyright: ignore[reportAttributeAccessIssue] # type: ignore: PGH003
+        if self.guild is None:
+            msg = "Guild not found. Check the GUILD ID in the config."
+            _logger.critical(msg)
+            raise ValueError(msg)
         self.pretalx_event_name = config.PRETALX_EVENT_NAME
         self.livestreams_sheet_id = config.LIVESTREAMS_SHEET_ID
         self.livestreams_worksheet_name = config.LIVESTREAMS_WORKSHEET_NAME
@@ -46,7 +50,7 @@ class ConferenceSetup:
         self.conference_year = config.CONFERENCE_YEAR
         self.roles = config.ROLES
         self.role_colors = config.ROLE_COLORS
-        self.slido_url = config.SLIDO_URL
+        self.video_url = config.VIDEO_URL
 
         self.category_names = {
             "REGISTRATION": f"{self.conference_year}_REGISTRATION",
@@ -289,7 +293,7 @@ class ConferenceSetup:
             else:
                 msg = f"Create room channel {room.name.en}."
                 _logger.info(msg)
-                topic = f"{room.description.en}.\n\nPost your questions via slido: {self.slido_url}"
+                topic = f"{room.description.en}."
                 text_channel = await self.guild.create_text_channel(
                     name=room_name,
                     category=discord.utils.get(self.guild.categories, name=self.category_names["ROOMS"]),
@@ -319,7 +323,6 @@ class ConferenceSetup:
                     f"[programme_notifications.rooms.{room_id}]\n"
                     f'webhook_id = "ROOM_{room_id}"\n'
                     f'discord_channel_id = "{channel_id}"\n'
-                    'slido_room_url = ""'
                 )
                 for room_id, channel_id in room_id_to_channel_id.items()
             ]
@@ -473,7 +476,7 @@ class ConferenceSetup:
     async def start(self) -> None:
         """Set up the conference roles, categories and channels."""
         # await self._create_roles()  # DONE
-        await self._setup_categories_and_channels()
+        # await self._setup_categories_and_channels()
         # await self._setup_livestream_urls()
 
 

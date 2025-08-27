@@ -1,43 +1,67 @@
 {
+  "id": 1,
+  "version": "0.10",
+  "published": "2025-08-26T08:12:47.672313+02:00",
+  "comment": {"en": "Test schedule version for one session."},
   "slots": [
     {
-      "code": "ABABAB",
-      "speakers": [
-        {
-          "code": "ABCDEF",
-          "name": "John Johnson",
-          "biography": "",
-          "avatar": "https://my.avatar/john.jpg"
-        },
-        {
-          "code": "ABCDEG",
-          "name": "Carl Carlsson",
-          "biography": "",
-          "avatar": "https://my.avatar/carl.jpg"
-        }
-      ],
-      "title": "Stop using globals!",
-      "submission_type": {
-        "en": "Talk"
+      "id": 101,
+      "room": {
+        "id": 1234,
+        "name": {"en": "The Great Outdoors"},
+        "description": {},
+        "uuid": "room-uuid-1234",
+        "guid": null,
+        "capacity": null,
+        "position": null
       },
-      "submission_type_id": 2749,
-      "track": {
-        "en": "Python Basics"
-      },
-      "track_id": 3571,
-      "state": "confirmed",
-      "abstract": "Globalization of your Python code is bad for you!",
-      "description": "You should pass more often and then return.",
-      "duration": 30,
-      "slot": {
-        "room_id": 1234,
-        "room": {
-          "en": "The Great Outdoors"
+      "start": "2023-07-21T12:30:00+02:00",
+      "end": "2023-07-21T13:00:00+02:00",
+      "submission": {
+        "code": "ABABAB",
+        "title": "Stop using globals!",
+        "speakers": [
+          {
+            "code": "ABCDEF",
+            "name": "John Johnson",
+            "biography": "",
+            "avatar_url": "https://my.avatar/john.jpg"
+          },
+          {
+            "code": "ABCDEG",
+            "name": "Carl Carlsson",
+            "biography": "",
+            "avatar_url": "https://my.avatar/carl.jpg"
+          }
+        ],
+        "submission_type": {
+          "id": 2749,
+          "name": {"en": "Talk"},
+          "default_duration": 30,
+          "deadline": null,
+          "requires_access_code": false
         },
-        "start": "2023-07-21T12:30:00+02:00"
-      }
+        "track": {
+          "id": 3571,
+          "name": {"en": "Python Basics"},
+          "description": {},
+          "color": "#000000",
+          "position": null,
+          "requires_access_code": false
+        },
+        "tags": [],
+        "state": "confirmed",
+        "abstract": "Globalization of your Python code is bad for you!",
+        "description": "You should pass more often and then return.",
+        "duration": 30,
+        "slot_count": 1,
+        "content_locale": "en",
+        "do_not_record": false,
+        "resources": [],
+        "answers": []
+      },
+      "description": {"en": "You should pass more often and then return."},
+      "duration": 30
     }
-  ],
-  "version": "0.1.0",
-  "breaks": []
+  ]
 }

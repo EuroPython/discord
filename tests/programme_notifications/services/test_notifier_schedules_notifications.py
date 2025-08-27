@@ -1,16 +1,21 @@
+
 import os
 from unittest import mock
 
 import arrow
+import pytest
 import yarl
 
 from discord_bot.extensions.programme_notifications import services
-from discord_bot.extensions.programme_notifications.domain import discord, europython, repositories
-from discord_bot.extensions.programme_notifications.services import api, clock, task_scheduler
+from discord_bot.extensions.programme_notifications.domain import (
+    discord, europython, repositories)
+from discord_bot.extensions.programme_notifications.services import (
+    api, clock, task_scheduler)
 from tests.programme_notifications import factories
 from tests.programme_notifications.services import helpers
 
 
+@pytest.mark.asyncio
 async def test_does_not_schedule_tasks_for_schedule_without_session(
     client_session: mock.Mock, configuration_factory: factories.ConfigurationFactory
 ) -> None:
@@ -29,13 +34,13 @@ async def test_does_not_schedule_tasks_for_schedule_without_session(
     config = configuration_factory({})
     # AND an instance of the session information service
     session_info = services.SessionInformation(
-        session_repository=repositories.SessionRepository(), api_client=client, config=config
+        repositories.SessionRepository(), client, config
     )
     # AND a task scheduler mock
     scheduler = mock.create_autospec(spec=task_scheduler.IScheduler)
     # AND a notifier that uses that client
     notifier = services.Notifier(
-        api_client=client, config=config, session_information=session_info, scheduler=scheduler
+        scheduler, session_info, client, config
     )
 
     # WHEN notifications are scheduled
@@ -45,6 +50,7 @@ async def test_does_not_schedule_tasks_for_schedule_without_session(
     scheduler.schedule_tasks_at.assert_not_called()
 
 
+@pytest.mark.asyncio
 async def test_scheduling_notifications_delivers_to_webhooks(
     client_session: mock.Mock,
     configuration_factory: factories.ConfigurationFactory,
@@ -54,17 +60,20 @@ async def test_scheduling_notifications_delivers_to_webhooks(
     # GIVEN a single session session
     sessions = {
         "ABCDEF": session_factory(
-            code="ABCDEF",
-            title="Feeding Your Pet Python",
-            abstract="Pythons need to eat, too!",
-            track={"en": "Pet Pythons"},
+            id=1,
             duration=37,
-            slot={
-                "room_id": 1234,
-                "room": {"en": "The Main Terrarium"},
-                "start": "2024-04-22T09:55:00+02:00",
+            start="2024-04-22T09:55:00+02:00",
+            room={
+                "id": 1234,
+                "name": {"en": "The Main Terrarium"},
             },
-            speakers=[{"code": "BBCDEE", "name": "Monty the Python", "avatar": "https://snek.com"}],
+            submission={
+                "code": "ABCDEF",
+                "title": "Feeding Your Pet Python",
+                "abstract": "Pythons need to eat, too!",
+                "speakers": [{"code": "BBCDEE", "name": "Monty the Python", "avatar_url": "https://snek.com"}],
+                "track": {"id": 1, "name": {"en": "Pet Pythons"}},
+            },
         )
     }
     # AND a schedule with only that session
@@ -81,23 +90,22 @@ async def test_scheduling_notifications_delivers_to_webhooks(
         "ABCDEF": (yarl.URL("https://europythoon/hungry-snakes"), "intermediate"),
     }
     client.fetch_session_details.side_effect = lambda session_code: session_details[session_code]
+    # Ensure execute_webhook is an AsyncMock so await_count is tracked
+    client.execute_webhook = mock.AsyncMock()
     # AND an instance of the config
     config = configuration_factory(
         {
             "rooms": {
                 "1234": {
+                    "name": "Room 1234",
                     "discord_channel_id": "1234567890",
-                    "webhook_id": "room_1234",
-                    "livestreams": {
-                        "2024-04-22": "LIVESTREAM_URL_TEST_DAY_1",
-                        "2024-04-23": "LIVESTREAM_URL_TEST_DAY_2",
-                        "2024-04-24": "LIVESTREAM_URL_TEST_DAY_3",
-                    },
+                    "webhook_id": "ROOM_1234",
                 }
             },
             "webhooks": {
                 "schedule_notifications_one": yarl.URL("https://one.webhook.ep"),
                 "schedule_notifications_two": yarl.URL("https://two.webhook.ep"),
+
             },
             "notification_channels": [
                 {"webhook_id": "schedule_notifications_one", "include_channel_in_embeds": True},
@@ -106,26 +114,22 @@ async def test_scheduling_notifications_delivers_to_webhooks(
         }
     )
 
-    os.environ["LIVESTREAM_URL_TEST_DAY_1"] = "https://one.livestream.ep"
-    os.environ["LIVESTREAM_URL_TEST_DAY_2"] = "https://two.livestream.ep"
-    os.environ["LIVESTREAM_URL_TEST_DAY_3"] = "https://three.livestream.ep"
-
     # AND a session information service with the session
     session_info = services.SessionInformation(
-        session_repository=repositories.SessionRepository(),
-        api_client=client,
-        config=config,
+        repositories.SessionRepository(),
+        client,
+        config,
     )
     # AND a clock with a fixed `now` and fake sleeper
     clock_obj = clock.Clock(sleeper=mock.AsyncMock(), now=lambda: arrow.get("2024-04-22T09:00:00+02:00"))
     # AND a scheduler that uses that clock
-    scheduler = helpers.AwaitableScheduler(clock=clock_obj)
+    scheduler = helpers.AwaitableScheduler(clock_obj)
     # AND a notifier that uses that client
     notifier = services.Notifier(
-        api_client=client,
-        config=config,
-        session_information=session_info,
-        scheduler=scheduler,
+        scheduler,
+        session_info,
+        client,
+        config,
     )
 
     # WHEN notifications are scheduled
@@ -153,20 +157,15 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                         discord.Field(name="Duration", value="37 minutes", inline=True),
                         discord.Field(
                             name="Livestream",
-                            value="[Vimeo](https://one.livestream.ep)",
+                            value="[Video](https://video.pydata.org/talks/ABCDEF)",
                             inline=True,
                         ),
                         discord.Field(
                             name="Live Q&A",
-                            value="[Slido](https://app.sli.do/event/test)",
+                            value="[Q&A](https://video.pydata.org/talks/ABCDEF/questions/)",
                             inline=True,
                         ),
-                        discord.Field(
-                            name="Feedback",
-                            value="[sci-an](https://survey.com)",
-                            inline=True,
-                        ),
-                        discord.Field(name="Discord Channel", value="<#1234567890>", inline=True),
+                        discord.Field(name="Python Level", value="Intermediate", inline=True),
                     ],
                     footer=discord.Footer(text="This session starts at 09:55:00 (local conference time)"),
                     url="https://europythoon/hungry-snakes",
@@ -196,17 +195,12 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                         discord.Field(name="Duration", value="37 minutes", inline=True),
                         discord.Field(
                             name="Livestream",
-                            value="[Vimeo](https://one.livestream.ep)",
+                            value="[Video](https://video.pydata.org/talks/ABCDEF)",
                             inline=True,
                         ),
                         discord.Field(
                             name="Live Q&A",
-                            value="[Slido](https://app.sli.do/event/test)",
-                            inline=True,
-                        ),
-                        discord.Field(
-                            name="Feedback",
-                            value="[sci-an](https://survey.com)",
+                            value="[Q&A](https://video.pydata.org/talks/ABCDEF/questions/)",
                             inline=True,
                         ),
                         discord.Field(name="Python Level", value="Intermediate", inline=True),
@@ -239,17 +233,12 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                         discord.Field(name="Duration", value="37 minutes", inline=True),
                         discord.Field(
                             name="Livestream",
-                            value="[Vimeo](https://one.livestream.ep)",
+                            value="[Video](https://video.pydata.org/talks/ABCDEF)",
                             inline=True,
                         ),
                         discord.Field(
                             name="Live Q&A",
-                            value="[Slido](https://app.sli.do/event/test)",
-                            inline=True,
-                        ),
-                        discord.Field(
-                            name="Feedback",
-                            value="[sci-an](https://survey.com)",
+                            value="[Q&A](https://video.pydata.org/talks/ABCDEF/questions/)",
                             inline=True,
                         ),
                         discord.Field(name="Python Level", value="Intermediate", inline=True),
@@ -260,11 +249,12 @@ async def test_scheduling_notifications_delivers_to_webhooks(
                 )
             ],
         ),
-        webhook="room_1234",
+        webhook="ROOM_1234",
     )
     assert room_notification_call in client.execute_webhook.await_args_list
 
 
+@pytest.mark.asyncio
 async def test_does_not_schedule_tasks_if_schedule_has_not_changed(
     client_session: mock.Mock,
     configuration_factory: factories.ConfigurationFactory,
@@ -291,19 +281,19 @@ async def test_does_not_schedule_tasks_if_schedule_has_not_changed(
     config = configuration_factory({})
     # AND a session information service
     session_info = services.SessionInformation(
-        session_repository=repositories.SessionRepository(),
-        api_client=client,
-        config=config,
+        repositories.SessionRepository(),
+        client,
+        config,
     )
     # AND a task scheduler mock
     scheduler = mock.create_autospec(spec=task_scheduler.IScheduler)
     scheduler.schedule_tasks_at.side_effect = lambda *coros, at: [c.close() for c in coros]
     # AND a notifier with a previous schedule hash equal to the new hash
     notifier = services.Notifier(
-        api_client=client,
-        config=config,
-        session_information=session_info,
-        scheduler=scheduler,
+        scheduler,
+        session_info,
+        client,
+        config,
     )
     # AND the notifications tasks are scheduled a first time
     await notifier.schedule_notifications()
@@ -318,6 +308,7 @@ async def test_does_not_schedule_tasks_if_schedule_has_not_changed(
     assert scheduler.schedule_tasks_at.call_count == 0
 
 
+@pytest.mark.asyncio
 async def test_force_bypasses_hash_check(
     client_session: mock.Mock,
     configuration_factory: factories.ConfigurationFactory,
@@ -325,7 +316,41 @@ async def test_force_bypasses_hash_check(
 ) -> None:
     """Even if the schedule hasn't changed, allow for manual refresh."""
     # GIVEN two sessions
-    sessions = {"ABCDEF": session_factory(code="ABCDEF"), "FEDCBA": session_factory(code="FEDCBA")}
+    sessions = {
+        "ABCDEF": session_factory(
+            id=1,
+            duration=37,
+            start="2024-04-22T09:55:00+02:00",
+            room={
+                "id": 1234,
+                "name": {"en": "The Main Terrarium"},
+            },
+            submission={
+                "code": "ABCDEF",
+                "title": "Feeding Your Pet Python",
+                "abstract": "Pythons need to eat, too!",
+                "speakers": [{"code": "BBCDEE", "name": "Monty the Python", "avatar_url": "https://snek.com"}],
+                "track": {"id": 1, "name": {"en": "Pet Pythons"}},
+            },
+        ),
+        "FEDCBA": session_factory(
+            id=1,
+            duration=20,
+            start="2024-04-22T11:20:00+02:00",
+            room={
+                "id": 1234,
+                "name": {"en": "The Main Terrarium"},
+            },
+            submission={
+                "code": "FEDCBA",
+                "title": "Test title",
+                "abstract": "This is a test abstract.",
+                "speakers": [{"code": "TESTY", "name": "Test Speaker", "avatar_url": "https://test.com"}],
+                "track": {"id": 2, "name": {"en": "Test Track"}},
+            },
+
+        )
+    }
     # AND a schedule with those sessions
     schedule = europython.Schedule(
         sessions=list(sessions.values()),
@@ -344,19 +369,19 @@ async def test_force_bypasses_hash_check(
     config = configuration_factory({})
     # AND a session information service
     session_info = services.SessionInformation(
-        session_repository=repositories.SessionRepository(),
-        api_client=client,
-        config=config,
+        repositories.SessionRepository(),
+        client,
+        config,
     )
     # AND a task scheduler mock
     scheduler = mock.create_autospec(spec=task_scheduler.IScheduler)
     scheduler.schedule_tasks_at.side_effect = lambda *coros, at: [c.close() for c in coros]
     # AND a notifier with a previous schedule hash equal to the new hash
     notifier = services.Notifier(
-        api_client=client,
-        config=config,
-        session_information=session_info,
-        scheduler=scheduler,
+        scheduler,
+        session_info,
+        client,
+        config,
     )
     # AND the notifications tasks are scheduled a first time
     await notifier.schedule_notifications()
@@ -368,9 +393,10 @@ async def test_force_bypasses_hash_check(
     # THEN the pending notifications were cancelled
     scheduler.cancel_all.assert_called_once()
     # AND the new notifications were scheduled
-    assert scheduler.schedule_tasks_at.call_count == 2
+    assert scheduler.schedule_tasks_at.call_count == 4
 
 
+@pytest.mark.asyncio
 async def test_excludes_non_conference_days_sessions(
     client_session: mock.Mock,
     configuration_factory: factories.ConfigurationFactory,
@@ -390,7 +416,7 @@ async def test_excludes_non_conference_days_sessions(
                 "room": {"en": "The Main Terrarium"},
                 "start": "2024-04-18T23:59:59+02:00",
             },
-            speakers=[{"code": "BBCDEE", "name": "Monty the Python", "avatar": "https://snek.com"}],
+            speakers=[{"code": "BBCDEE", "name": "Monty the Python", "avatar_url": "https://snek.com"}],
         ),
         "GHIJKL": session_factory(
             code="GHIJKL",
@@ -403,7 +429,7 @@ async def test_excludes_non_conference_days_sessions(
                 "room": {"en": "The Main Terrarium"},
                 "start": "2024-04-25T00:00:00+02:00",
             },
-            speakers=[{"code": "BBCDEE", "name": "Monty the Python", "avatar": "https://snek.com"}],
+            speakers=[{"code": "BBCDEE", "name": "Monty the Python", "avatar_url": "https://snek.com"}],
         ),
     }
     # AND a schedule with only those sessions
@@ -425,15 +451,18 @@ async def test_excludes_non_conference_days_sessions(
     )
     # AND a session information service
     session_info = services.SessionInformation(
-        session_repository=repositories.SessionRepository(),
-        api_client=client,
-        config=config,
+        repositories.SessionRepository(),
+        client,
+        config,
     )
     # AND a task scheduler mock
     scheduler = mock.create_autospec(spec=task_scheduler.IScheduler)
     # AND a notifier that uses that client
     notifier = services.Notifier(
-        api_client=client, config=config, session_information=session_info, scheduler=scheduler
+        scheduler,
+        session_info,
+        client,
+        config,
     )
 
     # WHEN notifications are scheduled based on the schedule

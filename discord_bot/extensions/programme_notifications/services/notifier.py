@@ -73,7 +73,9 @@ class Notifier:
         self._session_information.refresh_from_sessions(sessions)
         grouped_sessions = services.group_sessions_by_minutes(sessions)
         for timeslot, sessions in grouped_sessions.items():
-            self._schedule_timeslot_notifications(timeslot, [session.code for session in sessions])
+            self._schedule_timeslot_notifications(
+                timeslot, [session.submission.code for session in sessions if session.submission is not None]
+            )
         self._previous_schedule_hash = new_schedule.schedule_hash
         _logger.info("Scheduled notifications!")
 
@@ -157,7 +159,7 @@ class Notifier:
             return
 
         try:
-            room_config = self._config.rooms[str(sessions[0].slot.room_id)]
+            room_config = self._config.rooms[str(sessions[0].room.id)]
         except KeyError:
             _logger.exception("Failed find a room configuration for session %r", session_code)
             return
@@ -194,7 +196,6 @@ class Notifier:
         embeds = [
             services.create_session_embed(
                 session=session,
-                slido_url=self._config.slido_url,
                 conference_name=self._config.conference_name,
                 conference_website=self._config.conference_website,
                 include_discord_channel=include_discord_channel,
