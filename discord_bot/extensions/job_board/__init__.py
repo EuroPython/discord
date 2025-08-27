@@ -4,7 +4,8 @@ from __future__ import annotations
 
 import csv
 import logging
-import random
+
+# import random
 from pathlib import Path
 
 import aiofiles
@@ -49,9 +50,9 @@ class JobBoard(commands.Cog):
         threads = []  # list of threads to delete when testing
 
         # shuffle job_list for random post order
-        random.seed(42)
-        random.shuffle(job_list)
-        for job in job_list:
+        # random.seed(42)
+        # random.shuffle(job_list)
+        for job in reversed(job_list):
             key, name, content, thread_messages, file = self.prepare_job_post(job)
             if key not in self.posted_jobs_set:
                 msg = f"Posting new job: {key}"
@@ -160,17 +161,17 @@ class JobBoard(commands.Cog):
         if url:
             thread_messages.append(f"**More info at:** {url}")
 
-        # COMAPNIES_WITH_DIFFERENT_PICTURES = ["energy & meteo systems GmbH"]
+        companies_with_different_pictures = ["GetYourGuide"]
 
         file = None
         if job_picture:
             path = Path(__file__).resolve().parent
             filename = f"{company_name}.png"
-            # if company_name in COMAPNIES_WITH_DIFFERENT_PICTURES:
-            #     # replace special characters in job_title
-            #     job_title_r = job_title.replace("/", "_")
-            #     job_title_r = job_title_r.replace(":", "_")
-            #     filename = f"{company_name}-{job_title_r}.jpg"
+            if company_name in companies_with_different_pictures:
+                # replace special characters in job_title
+                job_title_r = job_title.replace("/", "_")
+                job_title_r = job_title_r.replace(":", "_")
+                filename = f"{company_name}-{job_title_r}.png"
             file = discord.File(path / "pictures" / filename, filename=filename)
 
         return key, name, content, thread_messages, file

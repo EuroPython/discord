@@ -1,506 +1,91 @@
-\"Timestamp","Username","Job title","Company name","Job Location","Deadline","Job description","Duties and responsibilities","Appreciated qualification and experience","Additional info (optional)","Contact person name","Contact person email","URL/Link to job posting","Picture for job posting (if available)"
-"2025/03/18 10:56:46 AM GMT+2","botan.creighton@quantco.com","Software Engineer","QuantCo","Berlin, Munich, Zurich, London","2025-12-31","Software Engineers at QuantCo build robust and scalable solutions with tangible impact. With full ownership, they will design end-to-end solutions that integrate our industry-leading models into our clients’ businesses. As owners of the process and the code base, they will be responsible for the whole engineering project cycle from high-level system design and prototyping to application development and data integration. In this role, they will bridge the worlds of IT infrastructure and data science. They will work with our clients to understand their technical setups and solicit constant feedback from both clients and colleagues to improve our products with rapid iteration cycles. As such, they will ensure that our solutions provide continuous value to our clients.
-","- Ability to write clean, effective, and production-ready code
-- Expert-level proficiency with developing services in Python
-- Familiarity with backend frameworks like Django / Flask / FastAPI, and packaging these services in the Python ecosystem
-- In-depth knowledge of SQL with brief experience in pandas
-- Experience with OS-independent, cross-platform development, and deployment by using modern CI/CD techniques
-- Passion to work effectively in interdisciplinary teams of technical and non-technical individuals with different cultural backgrounds on health-related (business) problems
-- Business proficiency in English. Conversational proficiency in German is beneficial, but not required
-- Understanding of how technical decisions impact end-users
-Willingness to travel when necessary","- BSc, MSc or PhD in a STEM (or similarly technical) field ","At QuantCo, we leverage expertise in data science, engineering, and economics to help organizations turn data into decisions. Started by 4 PhDs from Harvard and Stanford, we are now more than 180 professionals with extensive quantitative, engineering, and business experience. We are globally distributed with offices in Berlin, Boston, Cologne, Karlsruhe, London, Munich, San Francisco, and Zurich.
+Timestamp,Email address,Job title,Company name,Job Location,Deadline,Job description,Duties and responsibilities,Appreciated qualification and experience,Additional info (optional),Contact person name,Contact person email,URL/Link to job posting,Picture for job posting (if available)
+08/08/2025 18:25:00,employer.branding@getyourguide.com,"Staff Data Analyst, Marketing Analytics",GetYourGuide,Berlin,,"GetYourGuide is searching for a Staff Data Analyst to join our Marketing Analytics team.
 
-Our solutions include algorithmic pricing, data-driven claims management, and high-dimensional forecasting systems. Our customers include some of the largest financial, retail, and healthcare organizations in the US and Europe. We impact core business processes and decisions by combining advanced data-driven insights with scalable engineering solutions.
+The Marketing Analytics team's objective is to help our marketing scale our investments towards the most incremental and loyal customers. This is a very strategic position within the team as the Analyst will look at solving cross-channel problems in order to accelerate our growth. This means for example addressing the best strategy to grow our mid-funnel spend and understanding the behaviour of our repeat audiences.","Develop quantitative analysis and statistical models to evaluate and steer marketing decisions
 
-We are excited about writing mission-critical code that affects millions of people and impacts billions of dollars. If you feel the same way, we look forward to hearing from you.","Botan Creighton","botan.creighton@quantco.com","https://jobs.lever.co/quantco-",""
-"2025/03/18 11:10:28 AM GMT+2","botan.creighton@quantco.com","Deep Learning Engineer","Quanto","Berlin, Munich, Zurich, London","2025-12-31","Deep Learning Engineers at QuantCo build robust and scalable products that reach millions of people and interact with billions of dollars. Our engineers own systems end-to-end, collaborating closely with our exceptionally talented colleagues to develop and implement industry-leading models into our clients’ businesses.","As a Deep Learning Engineer, you will be part of a best-in-class team building pioneering NLP and Computer Vision products, applied at scale within some of the largest organisations in the world, set within a highly entrepreneurial and fast-paced environment. From design, testing, and development, to deployment and operation of our models and systems, Deep Learning Engineers at QuantCo work across the entire project pipeline. ","- BSc, MSc or PhD in Computer Science, Mathematics, or a related technical field
-- Experience training deep learning models within the following fields; Computer Vision, Natural Language Processing or Graph Neural Networks
-- Experience writing production-ready code, deploying and optimising deep learning models, etc.
-- Substantial experience programming in Python 
-- Experience and willingness to work through the challenges associated with large, messy, real-world data sets","At QuantCo, we leverage expertise in data science, engineering, and economics to help organizations turn data into decisions. Started by 4 PhDs from Harvard and Stanford, we are now more than 180 professionals with extensive quantitative, engineering, and business experience. We are globally distributed with offices in Berlin, Boston, Cologne, Karlsruhe, London, Munich, San Francisco, and Zurich.
+Propose and defend strategic recommendations to our top marketing leads
 
-Our solutions include algorithmic pricing, data-driven claims management, high-dimensional forecasting systems, cancer detection platforms and clinical risk prediction engines. Our customers include some of the largest financial, retail, and healthcare organizations in the US and Europe. We impact core business processes and decisions by combining advanced data-driven insights with scalable engineering solutions.
+Maintain and improve our marketing measurement tools (Attribution, experimentation framework, Customer lifetime value…)
 
-We are excited about writing mission-critical code that affects millions of people and impacts billions of dollars. If you feel the same way, we look forward to hearing from you.","Botan Creighton","botan.creighton@quantco.com","https://jobs.lever.co/quantco-/0f9393c5-c4f9-4b62-a06a-41a61937be94",""
-"2025/03/20 5:24:42 PM GMT+2","elsa.mendes@mostly.ai","AI Content Manager – Product Team (Remote)","MOSTLY AI","Remote","","Welcome to the future!
+Explore large datasets, give meaning to data and numbers, identify opportunities and issues, and present findings to stakeholders
 
-Join our team at MOSTLY AI at the forefront of Generative AI, providing data access and data insights for everyone.
+Setup and analyse marketing experiments to drive strategic decision making
 
-If you are looking to contribute to a future where data empowers everyone safely and equitably, MOSTLY AI offers the perfect environment for you to grow, innovate, and lead the synthetic data revolution!
+Serve as a liaison between the marketing teams and the data engineering team
 
+Mentor others in the skills needed for this role","8+ years of relevant experience interpreting data in an analytics, data science or business intelligence role
 
-About the role
+Strong knowledge of SQL and Python for analysis (eg, pandas, scikit-learn, pyspark)
 
-We’re looking for an AI Content Manager to own and drive the creation of educational content, documentation, and UX copy that helps users understand and maximize the value of our platform and SDK.
+Ability to understand user behavior and meaning behind the numbers and a track record in sharing insights to business stakeholders
 
-This is not a traditional content marketing role - it’s about explaining AI and data products in a way that resonates with all users. From writing tutorials and technical documentation to refining in-product UX copy and explainer videos, you will play a key role in shaping the clarity and accessibility of our AI solutions.
+Prior exposure to digital and performance marketing, especially data-driven platforms such as Google Ads and Meta
 
+Experience with data visualization and reporting tools (e.g. Looker, Jupyter Notebooks, Databricks)
 
-About you
+Desire to work in an international environment, with minimal direction and with highly engaged individuals
 
-You’re passionate about breaking down complex AI and data concepts into clear, engaging, and accessible content. You love working across teams, advocating for better product communication, and ensuring users - whether they are developers, data scientists, or business users - have a smooth learning experience.
+Excellent written and verbal communication skills in English
+",,Sean Araujo,,https://grnh.se/ef8v5god1us,https://drive.google.com/open?id=1271lzALx4kie4vUAxKuHjhqqj6Qu-Hlp
+08/08/2025 18:31:32,employer.branding@getyourguide.com,Senior Data Scientist,GetYourGuide,Berlin,,"At GetYourGuide, we're looking for a passionate Senior Data Scientist to join our Traveler Data Products Team. In this role, you'll have the opportunity to make a significant impact on our product and our customers' experiences. You'll work with a vast and diverse set of structured and unstructured data, powering various data products such as search, recommendations, SEM, and incentives. Our team has touchpoints across the business, developing end-to-end solutions that directly contribute to creating memorable travel experiences for people around the world.","Develop innovative data products that not only delight our customers but also drive the success of our company.
 
-✔ AI-Savvy & Curious – You have a strong understanding of AI, machine learning, and data science, and you stay up to date with the latest trends.
-✔ Exceptional Communicator – You can write clear, structured, and engaging content for both technical and non-technical audiences.
-✔ Technical Writing & Content Creation Experience – You know how to structure documentation, blog posts, video scripts, and tutorials effectively.
-✔ Product-First Mindset – You think from the user’s perspective and understand how content enhances the product experience.
-✔ UX Copywriting Awareness – You understand how microcopy, onboarding flows, and tooltips impact usability.
-✔ Cross-Team Collaborator – You work well with Product, Engineering, and UX teams to refine documentation and educational materials.
-✔ Proactive & Opinionated – You have a clear perspective on how content should be structured and are not afraid to advocate for clarity.
+Take full ownership of projects, guiding them from the initial business challenge to the deployment of production code. This includes:
+- Analyzing large datasets to uncover meaningful insights
+- Building and maintaining robust data pipelines
+- Monitoring and optimizing data products after deployment
 
-","What you will be doing
+Contribute to the development of our machine learning infrastructure and help establish best practices that will shape our future.
 
-✅ Create Clear & Engaging Content
-- Develop tutorials, explainer videos, and blog posts to showcase how to use the MOSTLY AI platform and SDK effectively.
-- Own and improve public documentation to ensure developers and data teams have the best experience.
-- Write in-product UX copy (tooltips, onboarding flows, error messages) to improve product clarity.
+Work closely with cross-functional teams, leveraging your unique perspective to solve complex and exciting problems.
 
-✅ Enhance the Developer & User Experience
-- Identify and address friction points in how developers and data teams engage with our tools.
-- Collaborate with Product, Engineering, and UX teams to ensure seamless product communication.
-- Improve onboarding experiences for different user personas.
+Support the continuous improvement and growth of our team, including participating in recruiting efforts to bring in new talent.","Machine Learning Familiarity with regressors, classifiers, and recommender systems. A solid understanding of ML techniques and their practical applications. Experience deploying ML models in production is a must. Experience with LLMs in a production environment is beneficial.
 
-✅ Own & Manage Documentation
-- Maintain and structure clear API documentation, SDK guides, and best practices.
-- Work with the Platform team to ensure deployment guides are up to date.
-- Ensure consistency and accessibility across all written resources.
+Software Engineering Proficiency in Python. Knowledge of distributed machine learning and computing frameworks (e.g., Spark) is beneficial.
 
-✅ Advocate for Better Product Communication
-- Ensure that both technical and non-technical users can easily understand and adopt our solutions.
-- Help define a clear, opinionated tone for documentation and UX copywriting.
-- Work across teams to refine how AI and synthetic data concepts are explained.","What we are looking for
+Analytics Ability to transform data into actionable insights. Experience with hypothesis testing and proficiency in analytics tools (e.g., pandas, R) and SQL.
 
-♦︎ Strong AI & Data Knowledge – Experience with AI, ML, or data-related products.
-♦︎ Technical Writing Expertise – Experience writing documentation, tutorials, and technical content.
-♦︎ Product Awareness – Experience working with SaaS, AI platforms, or SDKs is a plus.
-♦︎ Content Creation Skills – Ability to produce video scripts, blog posts, and structured learning materials.
-♦︎ Collaboration & Communication – Ability to work across teams and advocate for better user understanding.","Benefits
+Business Acumen Applied experience in a business environment, demonstrating result-driven work.
 
-- Remote: work from anywhere in the EMEA region.
-- Win as a Team: participation in MOSTLY AI Phantom Stock Option Plan.
-- Home office support: €1000 when you join and yearly €300 top-up after that.
-- Lunch subsidy: monthly lunch stipend valued at €100 per month.
-- Time to recharge: 25 days of PTO, and extra days off in addition to standard national bank holidays.
-- Heaps of fun: virtual and in person team events.
-- Boost your development: continuous career development with an individual training budget.
+Academic Background An advanced degree in a quantitative field or equivalent practical experience.
 
+Communication Strong skills in explaining complex concepts to both technical and non-technical stakeholders.",,Sean Araujo,,https://grnh.se/7h8k08931us ,https://drive.google.com/open?id=1-WwVKIO7Nv-a8gAYxLudH35Y18lIub7L
+08/08/2025 18:44:02,employer.branding@getyourguide.com,"Lead Product Manager, Traveler Data Products",GetYourGuide,Berlin,,"As a Lead Product Manager, you will have significant ownership and be responsible for defining a vision and strategy that impacts multiple product areas and teams within GetYourGuide. You will have an executive presence to gain buy-in and influence the company's long-term vision. In this role, you will execute complex projects that require multiple Product and Business teams that depend on you to achieve their goals.
 
-About us
+On the Traveler Data Products team, you will enable our customers to discover products they will love. Your team consists of experienced data scientists and engineers tackling this challenge in an algorithmic way, mainly by applying techniques from machine learning and AI. You will also work closely with other product teams to leverage AI in ways that directly impact the traveler experience. You will be responsible for a critical part of our customer experience that also drives business success.
 
-MOSTLY AI serves many of the most renowned brands with its synthetic data platform. In particular, industries that deal with highly sensitive data already today reap the value of synthetic data. At the same time, there is a growing appetite for safe & smart data across all industries. These innovation leaders help us move forward, and define the category for years to come. Synthetic data will become a key pillar of every organization’s data stack.
+Join our team as a visionary leader, where your passion for data products and enthusiasm for artificial intelligence will be the driving force behind shaping the future of supply optimization at GetYourGuide. We seek an inspiring and dynamic individual who is ready to harness the power of AI to transform our operations, innovate boldly, and lead us into a new era of efficiency and excellence.","Ownership: Develop and implement a comprehensive strategy for your product area, set clear, measurable goals, and take full responsibility for outcomes. Drive sustained impact through a long-term (12 months+) roadmap, identifying areas for non-incremental impact.
 
-To us, it is key that as many people as possible can access, collaborate and build upon granular-level data, without infringing on anyone’s privacy. Data that is artificially generated, yet representative, realistic, and insightful for people as well as algorithms alike. This allows for broad data collaboration within and across organizations, helping these to leverage the immense power of Data & AI in order to put these to good use for the benefit of everyone.
+Ambiguity: Proactively navigate and clarify ambiguous situations, breaking down complex problems into manageable tasks. Making confident decisions even with incomplete information and independently identifying opportunities for significant impact.
 
-Our Mission: We enable organizations to thrive ethically and responsibly with smart and safe synthetic data.  
- 
-Our Vision: Data should empower all people to build a smarter and fairer future together for the benefit of everyone.   
-   
-If you're ready to join the revolution and make a real impact through AI, we want to hear from you!  
+Communication: Articulate and connect your product area’s strategy to the company’s mission. Break down the strategy into actionable steps, regularly update stakeholders on progress, and create excitement for your long-term vision.
 
-Our team is a vibrant mosaic of individuals from diverse backgrounds, and we are committed to equality and inclusivity in hiring. We provide equal employment opportunities regardless of race, ethnicity, colour, creed, religion, gender, sexual orientation, gender identity, marital status, citizenship, age, national origin, ancestry, disability, veteran status, or any other legally protected status. We actively uphold the principles of equal employment.","Elsa Mendes","elsa.mendes@mostly.ai","https://mostly-ai.jobs.personio.de/job/2025265?display=en",""
-"2025/03/24 9:00:10 AM GMT+2","klange@rosen-group.com","Physicist as Data Scientist / Algorithm Developer in the field of Ultrasound (all genders welcome)","ROSEN Group","Lingen (Ems)","","Data science refers to the extraction of knowledge from data. We achieve this through the use of the most modern tools from the areas of big data, high performance computing and artificial intelligence, especially deep learning. Our solutions in the area of predictive analytics allow the safe operation of critical infrastructures. An agile way of working and technological expertise enable us to master the greatest challenges. You will become part of our self-organizing teams, in which an exchange of knowledge with colleagues from different departments is inherent. We have the highest demands on ourselves to learn new things and to perfect old things. In this way, we are prepared for the future.","Development of algorithms for the detection and classification of objects from data measured by our pipeline inspection devices
-Co-design and use of technological trends, for example in the areas of artificial intelligence, high performance computing, data persistence and processing, and big data solutions
-Collecting, preparing, processing and analyzing large heterogeneous data sources
-Development of algorithmic methods from the areas of signal processing, machine learning and computer vision and use of 3rd party components
-Provision of algorithms and intelligent services in the form of minimum viable products with a focus on customer experience
-Interdisciplinary collaboration in the integration of the algorithms into our software applications","Degree or doctorate in information technology, physics, mathematics, computer science or a comparable field of study
-Solid knowledge of applied mathematics (linear algebra, optimization methods, stochastics)
-Knowledge of at least one object-oriented programming language (e.g. Python, C/C++ or Java)
-Methodological skills in the field of data mining and machine learning, in particular supervised and unsupervised learning
-Experience in algorithm development, for example for descriptive and diagnostic analyses, as well as with forecasting methods
-Basic knowledge of non-destructive testing using ultrasound and experience in the subject areas of explainable artificial intelligence, MLOps and applied statistics desirable
-Experience in software engineering is an advantage
-Good written and spoken English language skills","","Kerstin Lange","hr-lin@rosen-group.com","https://jobs.rosen-group.com/Job/4638","last year"
-"2025/03/24 9:04:12 AM GMT+2","klange@rosen-group.com","Physicist / Mathematician as Data Scientist (all genders welcome)","ROSEN Group","Lingen (Ems)","","At ROSEN, we are at the forefront of the digital transformation of critical infrastructure anomaly assessment. As part of our strategic vision, we are developing a state-of-the-art, AI-driven solution designed to modernize our evaluation processes, increase efficiency, and deliver high-quality results to our customers.
- 
-Our new project is a key pillar of our digital transformation strategy and focuses on cloud-native architectures, advanced AI models and a modern JavaScript technology stack to streamline workflows, modernize the portfolio, and revolutionize how we analyze and interpret pipeline integrity data. By leveraging machine learning, advanced data processing, and cutting-edge web technologies, we aim to significantly reduce cycle times, increase customer satisfaction, and provide an intuitive, seamless user experience.","Desing and develop new models and algorithms to automate alignment of multiple data sets and analyze large amounts of signal data
-Implement training and validation pipelines to derive a robust estimate of performance in production
-Support your team when deploying your model as a service
-Collaborate closely with Cloud & Data teams to enable and monitor real-time analytics
-Ensure robustness, performance, observability, and scalability of your models
-Drive automation of data evaluation with a zero-incident mindset","Completed degree or doctorate in information technology, physics, mathematics, computer science or a comparable field of study
-Minimum of 5 years professional experience in deep learning, statistics and signal data processing
-Proficiency in the python deep learning ecosystem (python, tensorflow,pytorch, pandas,...)
-A problem-solving mindset, strong collaboration skills, and a passion for building high-performance systems
-Familiarity with developing in an agile SCRUM Team
-Experience in solving sequence alignment problems is a plus
-Solid knowledge of bringing models to production
-Very good German and English language skills","Development opportunities and career opportunities in a global, innovative and long-term oriented group of companies with family character
-Flexible working time  and Home Office possible
-An open,  informal corporate culture, where we celebrate success with social events
-Compatibility of work and family through our company-owned bilingual day care center ROKIDS as well as our bilingual elementary school ROBIGS (optional: day care during the holiday)
-Employer funded pension and capital accumulation benefits
-Company Restaurant (only in Lingen) and fresh fruit is available daily
-Various in-house sports activities (EGYM Wellpass and other offers)
-Attractive leasing offers for IT-products and bikes for private use
-Corporate Benefits - employee offers in changing online shops at top conditions","Kerstin Lange","hr-lin@rosen-group.com","https://jobs.rosen-group.com/Job/4619","last year"
-"2025/03/24 9:16:12 AM GMT+2","klange@rosen-group.com","AI/ML Engineer Data Driven Solutions (all genders welcome)","ROSEN Group","Lingen (Ems)","","The ROSEN Group ensures the safe operation of industrial plants with inspection systems deployed worldwide. As a company constantly grows, ROSEN is constantly exploring new areas of application. As a data scientist with a focus on ML engineering, you will support the further development of our non-destructive testing methods.","Development and optimization of machine learning pipelines for productive use
-Implementation and maintenance of scalable ML models in a containerized environment (e.g., Docker, Kubernetes)
-Close collaboration with data scientists to transfer models to productive environments
-Automation of ML pipelines with KubeFlow and other orchestration tools
-Setup and maintenance of CI/CD pipelines for machine learning applications
-Monitoring, maintenance, and continuous improvement of ML services in productive operation
-Acquisition, preparation, and analysis of heterogeneous data
-Development, implementation, application, and optimization of algorithms for data analysis
-Integration of algorithms into software applications
-Close collaboration with the specialist departments for algorithm, software, and sensor development
-Analysis, documentation, and presentation of results
-Research, evaluation, and implementation of current trends and technologies in the field of machine learning","Completed degree in computer science, mathematics, data science, or a comparable field
-Solid knowledge of machine learning and practical experience with ML frameworks such as TensorFlow, PyTorch, or scikit-learn
-Extensive knowledge of DevOps technologies, especially Docker, Kubernetes, and CI/CD workflows
-Good understanding of MLOps principles and ML deployment strategies
-Experience with cloud technologies (Azure, AWS) is an advantage
-Good programming skills, ideally in Python
-Knowledge of non-destructive testing is an advantage
-Excellent problem-solving skills and analytical thinking
-A high degree of initiative, commitment, and team spirit, as well as good communication skills
-Good written and spoken German and English skills","Development opportunities and career opportunities in a global, innovative and long-term oriented group of companies with family character
-Flexible working time  and Home Office possible
-An open,  informal corporate culture, where we celebrate success with social events
-Compatibility of work and family through our company-owned bilingual day care center ROKIDS as well as our bilingual elementary school ROBIGS (optional: day care during the holiday)
-Employer funded pension and capital accumulation benefits
-Company Restaurant (only in Lingen) and fresh fruit is available daily
-Various in-house sports activities (EGYM Wellpass and other offers)
-Attractive leasing offers for IT-products and bikes for private use
-Corporate Benefits - employee offers in changing online shops at top conditions","Kerstin Lange","hr-lin@rosen-group.com","https://jobs.rosen-group.com/Job/4644","last year"
-"2025/03/24 11:58:50 AM GMT+2","lucinda.abberley@vonage.com","Network API Developer Advocate (Tooling)","Vonage","Poland (remote)","","We're looking for an Developer Advocate (Network API) to join the Vonage Developer Relations team and drive adoption of our Network APIs, such as Sim Swap, QoD or Device Location. In this role, you'll focus on enhancing developer experience and reducing implementation complexity while navigating compliance requirements. Your work will blend technical expertise with practical implementation knowledge to help developers overcome the unique challenges of network-level integrations, ensuring successful adoption of our Network APIs across diverse use cases.","Technical Advocacy: Develop and maintain comprehensive implementation guides, sample applications, and tooling specifically for Network APIs
-Developer Experience: Build proof-of-concepts, reference implementations, and debugging tools that showcase best practices for Network API implementation
-Developer Feedback: Gather and analyze developer feedback to identify opportunities for tooling improvements and new automation solutions
-Community Engagement: Represent Vonage at technical events, focusing on network-level solutions and compliance considerations
-Product Feedback: Collaborate with Product teams to provide developer perspective on Network API features","Software development experience and experience with API integration
-Proficiency in Python or JavaScript
-Excellent problem-solving, debugging skills and ability to explain complex technical concepts
-Strong communication skills and ability to work in a remote environment","","","community@vonage.com","https://www.vonage.com/careers/job-details/7857299002/",""
-"2025/03/24 11:59:59 AM GMT+2","lucinda.abberley@vonage.com","Senior Developer Advocate (Onboarding)","Vonage","Poland (remote)","","We're looking for a Developer Advocate (Onboarding) to join the Vonage Developer Relations team and transform the developer onboarding experience for our APIs. In this role, you'll drive operational efficiency by creating and maintaining tools, scripts, and automation solutions that streamline the developer journey from initial API evaluation to adoption Your work will focus on reducing friction points, accelerating time-to-value, and ensuring developers can quickly and confidently integrate Vonage's APIs into their applications.","Onboarding Automation: Create and implement automated solutions for common onboarding tasks, reducing manual setup time and potential configuration errors.
-Integration Support: Build tooling that helps developers diagnose and resolve common integration challenges, including debugging utilities and testing frameworks.
-Documentation Tools: Develop and maintain tools that help keep API documentation current, including automated testing of code samples and integration examples.
-Developer Tools: Design, develop, and maintain CLI tools, SDKs, and automation scripts that streamline the integration of Vonage's Network APIs into various development environments.
-Developer Feedback: Gather and analyze developer feedback to identify opportunities for tooling improvements and new automation solutions.
-Cross-team Collaboration: Work closely with Product, Engineering, and Support teams to ensure tooling aligns with platform capabilities and developer needs.","Strong software development experience with expertise in building developer tools and automation solutions
-Experience with API integration
-Proficiency in Python or JavaScript
-Excellent problem-solving and debugging skills
-Strong communication skills and ability to work in a remote environment","","","community@vonage.com","https://www.vonage.com/careers/job-details/7803708002/",""
-"2025/03/24 12:02:03 PM GMT+2","lucinda.abberley@vonage.com","Online Community Manager","Vonage","Poland (remote)","","As a Community Manager at Vonage, you will primarily work on identifying and establishing relationships with key developer communities and community leaders in the online space, in order to understand their needs, and build a collaborative environment to ensure we can authentically and effectively serve them. You will work as part of a global Developer Relations team whose goal is to raise awareness of Vonage within developer communities, run engaging physical and online events and campaigns and gather actionable product feedback through community building activities.
+Prioritization: Analyze user feedback, market trends, and business metrics to inform decision-making. Prioritize initiatives, re-evaluate the roadmap based on new insights, and ensure the most valuable features are delivered first. Make strategic decisions on sequencing and prioritizing product work to maximize impact and learning.
 
-The Community team comprises a Head of Community and three Community Managers (covering EMEA, APAC,US and Global). All Community Managers work on global initiatives, and this Online Community Manager position serves all regions.
+Collaboration: Build trust with various stakeholders, set clear expectations, and align them with your product area’s roadmap. Facilitate cross-functional collaboration and create buy-in across the organization. Influence laterally and upward to build support for product initiatives, motivating and engaging your team and other important stakeholder groups.
 
-","Manage the Developer Community Slack channel, including strategic changes to communication, reward and recognition and support for developer community members
-Manage the developer content for all Vonage developer social platforms, including but not limited to X, Bluesky, LinkedIn, StackOverflow and Github
-Manage the planning and running of online developer events, webinars, hackathons and product feedback activities in collaboration with the Developer Relations and Product teams
-Establish and manage all systems, tooling and processes needed to efficiently deliver all aspects of managing the online community and planning
-Use tooling to track, understand and report on insights and analytics to inform the online community  strategy and activities
-Conceptualise and run recruitment and promotional activities to engage the developer community around Vonage products
-Collaborate with other departments within Vonage to promote Developer Relations internally and externally
-Create and deliver the strategy for driving online awareness of Vonage products through related content for social media, blogs and other media
-Manage and distribute an online Community Rewards program to incentivise community members 
-Participate in other developer community initiatives as needed
-Manage future Vonage developer champion programs end to end","Experience of managing a Community or highly contributing as a member of a community. 
-Experience of managing events from ideation to execution.
-Project management experience working cross-functionally and with all levels of management.
-Experience of managing technical questions through a support function, Stackoverflow or a developer community. 
-Excellent written and verbal communication skills. We primarily communicate in English, but other languages are always a plus!","","","community@vonage.com","https://www.vonage.com/careers/job-details/7857346002/",""
-"2025/03/25 2:40:19 PM GMT+2","fabian.gebhart@aleph-alpha.com","Staff Software Engineer - Studio, Catch, Assistant Team (f/m/d)","Aleph Alpha GmbH","Berlin, Heidelberg","","As a Staff Software Engineer at Aleph Alpha, you will play a crucial role in designing, developing, and optimizing software systems that power our AI-driven products. You will be part of one of our engineering teams, contributing to architectural decisions, writing high-quality code, and ensuring best practices are followed throughout the software development lifecycle. The ideal candidate is a skilled engineer with a strong technical foundation, a passion for AI technology, and a proven track record of delivering impactful software solutions. ","- Software Development: Design, implement, and maintain scalable, high-performance software solutions that support AI-driven products. 
-- Technical Contribution: Work alongside senior engineers and cross-functional teams to drive software architecture, development, and optimization efforts. 
-- Code Quality & Review: Write clean, efficient, and maintainable code while conducting peer reviews to uphold high coding standards. 
-- Collaboration: Work closely with product managers, AI engineers, and data scientists to translate product requirements into actionable development plans. 
-- Performance Optimization: Ensure software solutions meet performance, scalability, and reliability requirements. 
-- Problem Solving: Troubleshoot technical issues and contribute to the resolution of software-related challenges during development and in production. 
-- Continuous Learning: Stay up to date with industry trends, best practices, and emerging technologies in AI and software engineering. 
-- Projects & Tools: Work on projects such as PhariaStudio, PhariaCatch, and PhariaAssistant. Utilize tools and technologies including Python & Kubernetes.","- Bachelor's or Master’s degree in Computer Science, Software Engineering, or a related field. 
-- Strong experience in software engineering, with expertise in designing and implementing complex systems.  
-- Proficiency in programming languages such as Python or similar, along with experience in relevant frameworks and libraries. 
-- Solid understanding of software architecture principles, design patterns, and best practices for building scalable and maintainable software. 
-- Experience with AI or machine learning applications is a plus. 
-- Familiarity with cloud platforms (e.g., AWS, Azure, Google Cloud) and containerization technologies (Docker, Kubernetes) is desirable. 
-- Strong problem-solving skills and the ability to work through complex technical challenges. 
-- Excellent communication and teamwork skills, with the ability to collaborate effectively in a fast-paced environment.","What you can expect from us:
-- Be part of an AI revolution! 
-- 30 days of paid vacation 
-- Access to a variety of fitness & wellness offerings via Wellhub 
-- Mental health support through nilo.health
-- Substantially subsidized company pension plan for your future security 
-- Subsidized Germany-wide transportation ticket 
-- Budget for additional technical equipment 
-- Flexible working hours and a hybrid working model for better work-life balance 
-","Fabian Gebhart","fabian.gebhart@aleph-alpha.com","https://jobs.ashbyhq.com/AlephAlpha/c34af13c-0990-4a46-a850-ddface1b85db",""
-"2025/03/25 2:45:22 PM GMT+2","fabian.gebhart@aleph-alpha.com","Engineering Manager (f/m/d)","Aleph Alpha GmbH","Berlin, Heidelberg","","Engineering Manager - Generative AI 
+Experimentation: Plan and execute experiments to test hypotheses, develop A/B tests, and analyze data to derive actionable insights. Leverage experimentation to evaluate your team's investment and inform future product decisions.
 
-Are you an Engineering Manager with a deep understanding of Generative AI and a passion for driving enterprise-scale solutions? At Aleph Alpha, we are dedicated to empowering businesses and governments with groundbreaking AI technology that enhances human productivity while upholding ethical standards. In this role, you will lead by example—guiding and empowering your team while staying hands-on with high-impact projects. You will help shape our technical direction, ensuring the development of robust, production-ready AI systems that integrate seamlessly into enterprise environments.","- Lead and Mentor: Guide a team of engineers in developing sovereign AI solutions, fostering technical excellence and innovation. 
-- Proactive Ownership: Take initiative in addressing engineering challenges, driving forward-thinking solutions that align with our mission of delivering transparent and compliant AI technologies. 
-- Hands-On Contribution: Dedicate at least 40% of your time to critical projects, proofs of concept, and optimizations, ensuring our AI applications meet the highest standards of performance and security. 
-- Architect Scalable Solutions: Design and implement secure, high-performing Generative AI applications tailored for enterprise use cases, emphasizing data sovereignty and compliance. 
-- Collaborate Cross-Functionally: Work closely with AI/ML research teams and other departments to translate cutting-edge developments into deployable, real-world solutions. 
-- Talent Development: Drive hiring and mentorship initiatives, attracting and retaining world-class engineering talent committed to our vision of ethical AI. 
-- Promote Continuous Learning: Cultivate a culture of adaptability, continuous improvement, and excellence in execution.","- Educational Background: Bachelor’s or Master’s degree in Computer Science, Engineering, or a related field.
-- Technical Expertise: Proven experience in software engineering with a focus on building and deploying AI-driven applications at scale. 
-- Deep Learning Proficiency: Hands-on experience with frameworks such as TensorFlow and PyTorch; familiarity with LLM fine-tuning, retrieval-augmented generation (RAG), and model optimization techniques. 
-- Architectural Skills: Ability to design and optimize AI architectures that prioritize security, scalability, and efficiency, ensuring compliance with regulatory standards. 
-- Infrastructure Knowledge: Experience with cloud platforms (AWS, Azure, GCP) and on-premise AI infrastructure, supporting our commitment to data sovereignty. 
-- Leadership Acumen: Proven ability to lead engineering teams in dynamic environments, balancing technical rigor with strategic objectives. 
-- Proactive Mindset: A history of driving initiatives, solving complex challenges, and delivering high-impact AI solutions. 
-- Collaborative Communication: Strong interpersonal skills, with the ability to work across teams and align AI innovations with business goals. ","What You Can Expect from Us:
-- Mission-Driven Work: Be at the forefront of the AI revolution, developing cutting-edge Generative AI solutions that empower enterprises and governments. 
-- Comprehensive Benefits: Enjoy 30 days of paid vacation, access to fitness and wellness offerings via Wellhub, and mental health support through nilo.health. 
-- Financial Security: Benefit from a substantially subsidized company pension plan and a Germany-wide transportation ticket. 
-- Supportive Environment: Receive a budget for additional technical equipment, flexible working hours, and a hybrid work model. 
-- Growth Opportunities: Participate in our Virtual Stock Option Plan and join a team committed to continuous innovation and ethical AI practices.","Fabian Gebhart","fabian.gebhart@aleph-alpha.com","https://jobs.ashbyhq.com/AlephAlpha/9017e87c-ad53-47f2-b5f7-6cf7ce0ebb1e",""
-"2025/03/26 2:18:51 PM GMT+2","silja.eikermann@sovanta.com","(Junior) Process Automation Consultant - SAP Cloud (m/w/d)","sovanta AG","Heidelberg, Hamburg, Köln, remote (deutschlandweit)","","Die sovanta AG optimiert den Einsatz von SAP mit Hilfe von Software Development, UX Design und künstlicher Intelligenz.
+Leadership: Represent user interests at all levels of the organization. Act openly and transparently with your team, peers, and executive leadership. Provide coaching and mentorship to other team members, helping them grow and develop their skills.","6+ years of professional experience in data science-oriented product management and at least 2+ as a Lead Product Manager
 
-Du hast Spaß daran, Geschäftsprozesse zu analysieren und innovative Ansätze zur Automatisierung auszuprobieren? Du hast Lust, nicht nur an theoretischen KI-Konzepten und PoCs, sondern auch an geschäftskritischen Kundenproblemen mit KI und Automatisierungslösungen zu arbeiten? Du bist motiviert in einem stetig wachsenden Team aus Automation Experts innovative Technologien wie Process Mining, Machine Learning und Workflows in der Cloud miteinander zu verknüpfen? Dann freuen wir uns auf deine Bewerbung!","- Gemeinsam mit dem Team erarbeitest du Automatisierungslösungen im Umfeld von SAP BTP
-- Deine Aufgabe ist es dabei, den Kunden bei der Formulierung der Anforderungen, dem Aufbau und der Umsetzung seiner Lösung zu helfen
-- Du berätst unsere Kunden hinsichtlich SAP-Automatisierungsszenarien im Kontext von Robotic Process Automation, Bots und klassischer Prozessautomatisierung in der SAP BTP Cloud
-- Als AnsprechpartnerIn für Entwicklungsabteilungen bist du verantwortlich für die Übersetzung von Kundenanforderungen in Cloud-Technologien
-- Process Documentation und Process Mining sind erste Schritte, die dir dabei helfen, Anforderungen aufzunehmen und unter Nutzung von aktuellen technischen Möglichkeiten Automatisierungsszenarien auszuarbeiten
-- Du steuerst den Austausch zwischen den Anforderungen der Kunden und der technischen Ausarbeitung durch unsere Machine Learning Experten
-- Du erarbeitest innovative Strategien, vor allem hinsichtlich neuer Systemlösungen und moderner Tools","- Du hast ein gutes Verständnis von betrieblichen Prozessen und Prozessmanagement, BPMN und KPI sind für dich keine Fremdwörter
-- Du hast ein sehr gutes Verständnis und einen Überblick über die Einsatzmöglichkeiten von Machine Learning zur Prozessautomatisierung (z.B. im Process Mining)
-- Beim Verstehen und Aufnehmen von Geschäftsprozessen und Workflows punktest du mit einem prozessorientierten Vorgehen und ausgeprägten Analysefähigkeiten
-- In der Tasche hast du ein abgeschlossenes Hochschulstudium mit relevanten Inhalten und Qualifikationen
-- Im Umgang mit APIs und komplexen Datenmodellen hast du keine Berührungsängste, Programmierfähigkeiten (in Python, Javascript o.Ä.) sind von Vorteil
-- Du konntest im besten Fall bereits Erfahrung mit SAP-Technologien sammeln: SAP Business Technology Platform, SAP RPA, SAP Workflow, SAP Analytics Cloud, SAP Signavio
-- Bonuspunkte: Du bringst Kenntnisse über Cloud Architekturen (vorzugsweise SAP BTP) und Wissen über den Umgang mit Cloud Services mit
-- Idealerweise konntest du bereits Erfahrungen im User Experience und Experience Management sammeln, zum Beispiel mit Qualtrics
-- Gute Kommunikationsfähigkeiten in Deutsch und Englisch runden dein Profil ab","Was dich bei sovanta erwartet:
-- Bei uns erhältst du die Möglichkeit, deine Interessen und Kompetenzen innerhalb von SAP im Cloud Umfeld einzusetzen
-- Dich erwarten moderne SAP-Technologien, top Kunden und abwechslungsreiche Projekte
-- Werde Teil eines hochmotivierten und interdisziplinären Teams und gestalte aktiv die weitere Erfolgsstory der sovanta mit
-- Flexibilität pur: Unsere Remote Work Policy ermöglicht dir das deutschlandweite Arbeiten im Büro, von zu Hause, im Schwarzwald oder auch an der Nordsee, wie es dir am besten passt
-- Dank unserem strukturierten Onboarding wirst du dich schnell bei uns zurecht finden
-- Beim Welcome Lunch lernst du direkt viele andere sovantees kennen
-- Ein Mentor* steht dir ab Tag eins zur Seite und unterstützt dich bei allen fachlichen und organisatorischen Fragen
-- Wir arbeiten eigenverantwortlich, agil und in interdisziplinären Teams
-- Bei uns entwickelst du dich weiter: Im Team immer wieder neue Herausforderungen meistern, Arbeiten mit den neusten Technologien und individuelle Weiterbildungen – starte mit uns durch und wir bringen dich in deiner Karriere voran
-- Wir bieten dir, was dein Tech-Herz begehrt – such‘ dir deine Hardware ganz nach deinen Wünschen aus
-- Wir leben von einem engen Austausch und legen viel Wert auf unsere regelmäßigen Knowledge-Sharing-Sessions und Unit Meetings
-- Werde Teil der sovanta Familie – unser großartiges Team kann es kaum erwarten, dich schon bald zu begrüßen!","Silja Eikermann","career@sovanta.com","https://sovanta.com/job/junior-process-automation-consultant-sap-cloud/","yes(manually)"
-"2025/04/01 11:31:05 AM GMT+2","fabian.gebhart@aleph-alpha.com","Senior Software Engineer (f/m/d)","Aleph Alpha GmbH","Berlin, Heidelberg","","As a Software Engineer at Aleph Alpha GmbH, you will play a crucial role in designing, developing, and maintaining software applications and systems. You will play a pivotal role in leading cutting-edge projects and shaping our technical direction. If you're passionate about building scalable, high-performance solutions and working with emerging technologies, this is your opportunity to make a significant impact!","- Lead the design, development, and deployment of innovative products or features from conception to delivery.
-- Collaborate closely with cross-functional teams including product managers, designers, and other developers to create technical solutions that align with project requirements.
-- Architect scalable software systems for both cloud and on-premise environments.
-- Conduct thorough code reviews and provide mentorship to team members.
-- Troubleshoot and resolve complex software issues, ensuring robust and efficient performance.
-- Drive the development lifecycle, from planning and design to coding, testing, and deployment.
-- Ensure code quality through rigorous testing, including unit and automated tests.
-- Be part of the DevOps team that ensures seamless software deployment and monitoring.
-- Continuously stay ahead of industry trends and contribute to the improvement of our engineering processes.","- Expertise in Python or Java.
-- Strong foundation in systems thinking, software engineering, and architecture design.
-- Experience building and shipping scalable software solutions.
-- Familiarity with machine learning (ML) and data engineering projects.
-- Proficiency in cloud platforms (AWS, Google Cloud) and containerization (Docker, Kubernetes).
-- Strong problem-solving skills and a collaborative approach to working in fast-paced environments.
-- Passion for staying up-to-date with emerging technologies and applying them to drive innovation.","## What you can expect from us
-- Become part of an AI revolution!
-- 30 days of paid vacation
-- Access to a variety of fitness & wellness offerings via [Wellhub](https://wellhub.com/de-de/)
-- Mental health support through [nilo.health](http://nilo.health)
-- Substantially subsidized company pension plan for your future security
-- Subsidized Germany-wide transportation ticket
-- Budget for additional technical equipment
-- Flexible working hours for better work-life balance and hybrid working model
-- Virtual Stock Option Plan","Fabian Gebhart","fabian.gebhart@aleph-alpha.com","https://jobs.ashbyhq.com/AlephAlpha/97e49f44-18a4-44e4-8cce-453ee5a42e6a",""
-"2025/04/03 12:26:40 PM GMT+2","silja.eikermann@sovanta.com","SAP Integration Consultant (m/w/d)","sovanta AG","Heidelberg (DE), Köln (DE), Hamburg (DE), remote (Deutschlandweit)","","Die sovanta AG optimiert den Einsatz von SAP mit Hilfe von Software Development, UX Design und künstlicher Intelligenz.
+Demonstrated ownership over multiple product areas in a previous role, including responsibilities for strategy, KPI setup, goal-setting, and execution of roadmap
 
-Bist du bereit, als SAP-Integration Consultant (m/w/d) innovative Lösungen für unsere Kunden* zu gestalten?
-Als erfahrener SAP-Integration Consultant (m/w/d) bei sovanta wirst du zentrale Integrationsarchitekturen entwickeln und als Ansprechpartner* für anspruchsvolle SAP PI/PO zur SAP Integration Suite Migrationsprojekte agieren. Unterstütze unsere Kunden* dabei, maßgeschneiderte Migrationsstrategien zu entwickeln und umzusetzen – und trage aktiv zur Gestaltung unternehmensweiter Standards und Best Practices bei.
+Ability to build alignment with a cross-functional mission team and a large set of stakeholders in a collaborative way that is aligned with our Guiding Principles
 
-Die Position wird in Teilzeit besetzt, sodass du deinen Beruf flexibel mit deinen individuellen Bedürfnissen verbinden kannst.","- Du berätst Kunden*, entwickelst Architekturen und implementierst Lösungen für Integrationsszenarien mit der SAP Integration Suite 
-- Als zentraler Ansprechpartner (m/w/d) berätst und unterstützt du unsere Kunden* bei der Strategieentwicklung und dem Umstieg von SAP PI/PO zur SAP Integration Suite
-- Du etablierst unternehmensweite Integrationsstandards, Richtlinien und Best Practices
-- Du nimmst an Kundenworkshops und Demos teil 
-- Du arbeitest eng mit der Projektleitung* und den BTP Solution Architects (m/w/d) zusammen","- Du hast ein ganzheitliches Verständnis von Integration und bist mit den Konzepten der Architektur verteilter Systeme, Netzwerke und Web-Services-Technologien vertraut
-- Du hast mehrere Jahre Erfahrung mit SAP PI/PO, insbesondere in Bezug auf die Architektur, Adapter, Message Mappings und Routing-Techniken
-- Du hast fundierte Kenntnisse in der SAP Integration Suite sowie ihren Funktionen Cloud Integration, API Management und Advanced Event Mesh
-- Du bringst Erfahrung in Java, Groovy Scripting und XML-basierten Technologien mit
-- Du hast gute Kenntnisse der SAP BTP-Technologien im Zusammenhang mit der SAP Integration Suite
-- Du hast sehr gute Kommunikationsfähigkeiten und bist in der Lage, komplexe technische Konzepte in verständliche Begriffe zu übersetzen
-- Gute Deutsch- und Englischkenntnisse runden dein Profil ab","Was dich bei sovanta erwartet
-- Flexibilität pur: Unsere Remote Work Policy ermöglicht dir das deutschlandweite Arbeiten im Büro, von zu Hause, im Schwarzwald oder auch an der Nordsee, wie es dir am besten passt
-- Dank unserem strukturierten Onboarding wirst du dich schnell bei uns zurechtfinden
-- Beim Welcome Lunch lernst du direkt viele andere sovantees kennen
-- Ein Mentor (m/w/d) steht dir ab Tag eins zur Seite und unterstützt dich bei allen fachlichen und organisatorischen Fragen
-- Wir arbeiten eigenverantwortlich, agil und in interdisziplinären Teams
-- Bei uns entwickelst du dich weiter: Im Team immer wieder neue Herausforderungen meistern, Arbeiten mit den neusten Technologien und individuelle Weiterbildungen – starte mit uns durch und wir bringen dich in deiner Karriere voran
-- Wir bieten dir, was dein Tech-Herz begehrt – such‘ dir deine Hardware ganz nach deinen - Wünschen aus
-- Wir leben von einem engen Austausch und legen viel Wert auf unsere regelmäßigen Knowledge-Sharing-Sessions und Unit Meetings
-- Werde Teil der sovanta Familie – unser großartiges Team kann es kaum erwarten, dich schon bald zu begrüßen!
+Excellent data analytics skills with the ability to derive insights from large data sets
 
-Hinweis: *Talent primär, Geschlecht egal","Silja Eikermann","career@sovanta.com","https://sovanta.com/job/sap-integration-consultant/","https://drive.google.com/u/1/open?usp=forms_web&id=1OR6uENbFgct1igOIX1bH-cxSTJvp7puu"
-"2025/04/03 12:38:49 PM GMT+2","silja.eikermann@sovanta.com","(Junior) Data Scientist (m/w/d)","sovanta AG","Heidelberg (DE), Hamburg (DE), Köln (DE), Remote (Deutschlandweit)","","Die sovanta AG optimiert die Nutzung von SAP mit Hilfe von Softwareentwicklung, UX-Design und künstlicher Intelligenz.
-Du arbeitest leidenschaftlich gerne an interessanten Problemen, die kreative Ansätze für maschinelles Lernen erfordern? Du hast Lust, nicht nur an theoretischen KI-Konzepten und PoCs, sondern auch an geschäftskritischen Kundenproblemen mit KI, GenAI und Automatisierungslösungen zu arbeiten? Du bist bereit, in Projekten zur intelligenten Automatisierung Verantwortung zu übernehmen? Dann freuen wir uns auf deine Bewerbung!
-Hinweis: *Talent primär, Geschlecht egal","•Gemeinsam mit dem Team erarbeitest du Automatisierungslösungen im Umfeld von SAP BTP
-•Deine Aufgabe ist es dabei, dem Kunden* im kompletten Projektzyklus an der Seite zu stehen: sei es beim Aufnehmen von Anforderungen, beim Analysieren von komplexen Datenquellen, oder beim Umsetzen von ML-Implementierungen, sowohl mit traditioneller KI, aber auch mit LLMs
-•Unter Nutzung der aktuellen technischen Möglichkeiten kreierst du aus Daten neue Features und trainierst Machine Learning Modelle
-•Falls sinnvoll, wendest du Sprachmodelle an, nutzt bzw. erweiterst KI-Agenten oder nutzt den Retrieval-Augmented Generation-Ansatz
-•Du bist bereit, dich immer wieder in neuste Entwicklungen einzuarbeiten und dich weiterzubilden, sei es in Richtung Bilderkennung, Sound- und Videoanalyse oder Generative AI
-•Du steuerst die Anforderungen des Kunden* und kannst diese in technische Features übersetzen
-•Du erarbeitest innovative Strategien, vor allem hinsichtlich neuer Systemlösungen und moderner Tools
-•Nicht zuletzt triffst du IT-Architekturentscheidungen für den weiteren Auf- und Ausbau von IT-Systemen","•Du hast ein abgeschlossenes Hochschulstudium mit relevanten Inhalten und Qualifikationen in der Tasche
-•Du hast Praxis-Erfahrung mit gängigen Python-Libraries (Fokus auf Daten, AI, GenAI und REST) und schreibst strukturierten Code inklusive Unit Tests
-•Du kennst dich mit der Nutzung und Funktionsweise von Sprachmodellen, RAG und Agents aus
-•Du hast ein sehr gutes Verständnis und einen Überblick über die Einsatzmöglichkeiten von Machine Learning, AI und GenAI im Kontext von Geschäftsprozessen
-•Für technische Probleme findest du eigenständig Lösungen, kannst dich schnell in neue Themen einarbeiten und hast eine ausgeprägte analytische Denkweise
-•Gute Kommunikationsfähigkeiten in Deutsch und Englisch und die Fähigkeit, Kunden komplexe Sachverhalte einfach zu erklären runden dein Profil ab
-•SAP, Cloud und Containerisierung sind für dich keine Fremdwörter
-•Bonuspunkte: Du bringst Kenntnisse über Cloud Architekturen (vorzugsweise SAP BTP) und Wissen über den Umgang mit Cloud Services mit bzw. hast praktische Erfahrungen auf der SAP BTP
-","Was dich bei sovanta erwartet
-•Bei uns erhältst du die Möglichkeit, deine Interessen und Kompetenzen innerhalb von SAP im Cloud Umfeld einzusetzen
-•Dich erwarten moderne SAP-Technologien, namenhafte Kunden und abwechslungsreiche Machine Learning Projekte
-•Werde Teil eines hochmotivierten und interdisziplinären Teams und gestalte aktiv die weitere Erfolgsstory der sovanta mit
-•Flexibilität pur: Unsere Remote Work Policy ermöglicht dir das deutschlandweite Arbeiten im Büro, von zu Hause, im Schwarzwald oder auch an der Nordsee, wie es dir am besten passt
-•Dank unserem strukturierten Onboarding wirst du dich schnell bei uns zurecht finden
-•Beim Welcome Lunch lernst du direkt viele andere sovantees kennen
-•Ein Mentor* steht dir ab Tag eins zur Seite und unterstützt dich bei allen fachlichen und organisatorischen Fragen
-•Bei uns entwickelst du dich weiter: Im Team immer wieder neue Herausforderungen meistern, Arbeiten mit den neusten Technologien und individuelle Weiterbildungen – starte mit uns durch und wir bringen dich in deiner Karriere voran
-•Wir bieten dir, was dein Tech-Herz begehrt – such‘ dir deine Hardware ganz nach deinen Wünschen aus
-•Wir leben von einem engen Austausch und legen viel Wert auf unsere regelmäßigen Knowledge-Sharing-Sessions, Unit Events, - Breakfasts und -Meetings
-•Werde Teil der sovanta Familie – unser großartiges Team kann es kaum erwarten, dich schon bald zu begrüßen!
-","Silja Eikermann","career@sovanta.com","https://sovanta.com/job/junior-data-scientist/","https://drive.google.com/u/1/open?usp=forms_web&id=1enGh1Hk-sOyOjeJz26zOBbvWinRGA5eT"
-"2025/04/07 10:10:04 AM GMT+2","franz.woellert@heidelberg.com","Software Developer - Image Analysis","Heidelberger Druckmaschinen AG","Wiesloch, Heidelberg","","As an internal service provider, the Research and Development department is responsible for providing innovative  
-technologies in all performance classes of the product portfolio in close coordination with internal and external 
-partners in the global printing industry. In the course of developing new printing processes you will use your free
-dom to build up specialist skills and process technologies in our company. ","- Designing, developing and specifying image evaluation software systems and algorithms for digital printing  systems (inkjet) 
-- (Further) developing camera-based measurement and inspection systems and architectures - Designing high-performance image processing systems in the context of complex printing machines with a wide  range of components 
-- Systematically evaluating, validating and interpreting image data","- Successfully completed studies, preferably in engineering or physics 
-- Very good knowledge of modern software development environments, especially in C++ with the libraries Boost, OpenCV, as well as CMake, Git and Python as evaluation tools
-- Ideally practical knowledge in image data processing or color measurement 
-- Communication and persuasive skills in the context of team and project work","Heidelberger Druckmaschinen Aktiengesellschaft has been a reliable partner with high innovative strength for the global printing industry for many years. Our mission is to shape the digital future of our industry. To this end, we have aligned our portfolio to the growth areas of our industry. It is based on products for prepress, printing and finishing, service and consumables as well as software solutions.  ","Klaus Köhler","klaus.koehler@heidelberg.com","",""
-"2025/04/07 10:12:56 AM GMT+2","franz.woellert@heidelberg.com","Developer Hardware and Software Drive Controls","Heidelberger Druckmaschinen AG","Wiesloch, Heidelberg","","Der Bereich „Drives & Sensor Systems“ innerhalb „Forschung & Entwicklung“ 
-verantwortet am Standort Heidelberg/Wiesloch-Walldorf die Sensorik und 
-Antriebstechnik für alle Leistungsklassen des Produktportfolios.  Dies umfasst 
-Entwicklung von Antriebssteuerungen sowie die Auslegung und Spezifikation von 
-Antrieben und Sensoren für alle Applikationen an der Druckmaschine.","• Analysieren der Anforderungen und Konzepterstellung für Antriebssteuerungen
- • Abstimmen mit beteiligten Entwicklungsbereichen
- • Entwickeln und Pflegen von Hardware und Embedded Software für 
-Antriebssteuerungen
- • Programmieren, Integrieren und Inbetriebnehmen der Baugruppen
- • Unterstützen bei Validierung, Verifikation und Test der Gesamtfunktion","• Abgeschlossenes Hochschulstudium der Fachrichtung Elektrotechnik oder eine 
-vergleichbare Qualifikation
- • Langjährige Erfahrung auf dem Gebiet der Entwicklung von Hard- und Software 
-für Antriebssteuerungen
- • Gute Kenntnisse in C, C++, in der Scriptsprache Ruby sowie in Eclipse
-Entwicklungsumgebung mit GNU-Compiler unter Linux
- • Ausgeprägte Team- und Kommunikationsfähigkeit sowie eine zielstrebige 
-selbständige Arbeitsweise","HEIDELBERG ist ein Unternehmen mit einer lebendigen Geschichte – seit über 170 Jahren verbinden wir Innovation mit Tradition. Wir glauben daran, dass wir unsere Zukunft gestalten können. Wenn alle an einem Strang ziehen, werden wir miteinander unsere Vision der Zukunft zur Wirklichkeit werden lassen. 
+Demonstrated passion for driving customer and business impact
 
-Wir suchen zukünftige Mitarbeiterinnen und Mitarbeiter, die mit uns im Team das HEIDELBERG von morgen aktiv mitgestalten. Wir suchen Mitarbeitende, die Ideen zu Konzepten und Konzepte zur Realität entwickeln. Wenn Sie nicht nur über Veränderung sprechen, sondern Themen tatkräftig umsetzen und dabei im Team arbeiten möchten, dann 
-gestalten Sie mit uns aktiv eine nachhaltig erfolgreiche Zukunft. Wir schätzen Menschen, die Dinge in die Hand nehmen und andere Menschen auf den Weg dorthin mitnehmen. ","Klaus Köhler","klaus.koehler@heidelberg.com","",""
-"2025/04/07 10:15:06 AM GMT+2","franz.woellert@heidelberg.com","Software Developer Production Workflow Cloud ","Heidelberger Druckmaschinen AG","Wiesloch, Heidelberg","","HEIDELBERG's Prinect products are designed to streamline the workflow of their global customers by integrating management, prepress, printing, and postpress into a single, automated platform. The company's development team, consisting of 180 employees, utilizes agile software development methods to continuously improve their software, focusing on transitioning to a cloud-based solution.","•	Designing, developing, testing and documenting Prinect workflow components
-•	Adapting and optimising existing software modules in line with changes to functions or requirements
-•	Designing and implementing software architectures and ensuring quality through automated testing of components and systems
-•	Designing and realising a modern build infrastructure for existing and new components and systems as part of CI/CD
-","•	Ideally knowledge and practical experience in the technologies mentioned as well as an interest in familiarising yourself with new topics
-•	A completed technical degree, preferably in the field of computer science
-•	Initiative, a goal-oriented way of working and the ability to analyse and conceptually map complex processes
-•	Ability to communicate in German and English on a daily basis
-•	Python, Java, Typescript and corresponding frameworks
-•	CI/CD tools
-•	Cloud technologies (AWS, Azure)
-","•	A good work-life balance: 35-hour week, flexible working hours, part-time models, mobile working, 30 days holiday
-•	Professional personnel development, international environment, extensive career opportunities
-•	Holiday and Christmas bonus, company pension scheme, health management, canteen.","Klaus Köhler","klaus.koehler@heidelberg.com","",""
-"2025/04/16 9:26:06 AM GMT+2","francoise.de-sutter@kraken.tech","Backend Software Engineer (m/f/d)","Kraken Technologies","Berlin, Munich, Valencia, Milan, Paris, Remote DE, Remote ES, Remote IT, Remote FR","2025-05-30","Help us use technology to make a big green dent in the universe!
+Excellent written and verbal communication skills in English",,Steve Rose,,https://grnh.se/miuxjfm51us,https://drive.google.com/open?id=1EmXrd-fcPn1e-L9MVU1ZJDqT5cbzXKKw
+12/08/2025 15:10:38,people@dlthub.com,Senior Software Engineer - Python,dltHub,Berlin,,"At dltHub, we're building on the success of dlt, the most popular open-source library for data loading in Python with over 2 million monthly downloads. After proving its value in the OSS community, we’re now building our commercial offering, dltHub, to make data engineering accessible to all Python developers.
 
-Kraken powers some of the most innovative global developments in energy.
+Our team is based in Berlin, now growing into other locations, especially across the US. Founded by experienced data and ML engineers, we're backed by Foundation Capital, Dig Ventures, and technical founders from Hugging Face, Instana, Matillion, Miro, MotherDuck, Datadog, Mode, and Rasa.
 
-We’re a technology company focused on creating a smart, sustainable energy system. From optimising renewable generation, creating a more intelligent grid and enabling utilities to provide excellent customer experiences, our operating system for energy is transforming the industry around the world in a way that benefits everyone.
-
-It’s a really exciting time in energy. Help us make a real impact on shaping a better, more sustainable future. 
-
-Kraken Customer
-
-What we do: build the most AI-driven, innovative, forward-thinking platform for energy management. From optimizing resources to delivering cost-effective, exceptional customer experiences through advanced Customer Information Systems (CIS), billing, meter data management, CRM, and AI-driven communications, Kraken is powering the next wave of innovation in the energy industry.
-
-Why we do it: future energy will not look like energy as we know it today. We need to not just think about our future, but build for it. Now.
-
-Our team
-
-All technology is written and maintained by a multi-discipline engineering team of around 1500 people globally. Our engineers work in ‘super teams’ which are focused on key areas of our platform as well as other innovative products. This also includes server-side, client-side and mobile engineers working closely with UX experts, copywriters and designers. 
-
-Teams are empowered to choose a way of working that works for them, often opting for a Kanban-like approach. Notion and Asana are then used to specify and manage work; Github, CircleCI and Terraform Enterprise as part of an immutable-infrastructure, continuous delivery pipeline; and Datadog, Sentry and Cloudwatch to measure performance and monitor production. 
-
-Your main focus will be to continue building Kraken’s Market Gateway offering which allows Kraken to communicate with the broader electrical industry market and other energy companies. The Market Gateway product sits within the Industry domain.  
-
-Together with the rest of the team, you will bring the same revolutionary customer experience, operational excellence and speed of innovation that Kraken is powering across energy retailers to other sectors. 
-
-Some of our coding conventions are open-source. Kraken is a great place to learn, work with some talented engineers and level-up your skills.  
-
-Our technology
-
-Client-side, we use React, Next.js, Typescript, htmx and SASS; our mobile apps are built using native code or React Native.
-
-On the server-side, we mainly use Python. Most of our websites are powered by Django, Django-REST-framework and GraphQL (Graphene).  
-
-We use AWS heavily as part of a continuous deployment pipeline. See, for example, Django, ELB health checks and continuous delivery. ","We have lots of difficult design challenges to solve. The utilities market is complicated, outdated and process-heavy - there's an awful lot of domain modelling that we need to get right. Strong attention to detail is essential.
-We have challenging technical problems to solve; like processing tens of millions of meter readings a day. We need the right technology in place to handle this smoothly as well as feeding data into a machine learning pipeline that models and predicts consumption. Or thinking about how we adapt Kraken to improve other utilities like water and broadband.
-There's a great opportunity for disruption across the energy market. The big suppliers still dominate, but are not exactly popular. The energy landscape is changing as we move to more dis-aggregated forms of generation, with less predictability, more dynamism and smarter technology.
-We aim to use greener technology and renewable energy, all helping move towards a lower carbon future.","We're looking for someone with a general interest in technology and problem-solving; someone diligent and thoughtful. It would be helpful to have experience/expertise in the following (in rough priority order):
-Python
-Django (or equiv. web framework)
-Domain modelling
-HTTP and REST APIs
-Writing robust and fault-tolerant software
-Celery and async processing
-Postgres
-English & Spanish
-Plus experience in the following would be a bonus:
-AWS
-Terraform, Packer, Consul
-React and Redux","If this sounds like you then we'd love to hear from you.
-
-Are you ready for a career with us? We want to ensure you have all the tools and environment you need to unleash your potential. Need any specific accommodations? Whether you require specific accommodations or have a unique preference, let us know, and we'll do what we can to customise your interview process for comfort and maximum magic!
-
-Studies have shown that some groups of people, like women, are less likely to apply to a role unless they meet 100% of the job requirements. Whoever you are, if you like one of our jobs, we encourage you to apply as you might just be the candidate we hire. Across Octopus, we're looking for genuinely decent people who are honest and empathetic. Our people are our strongest asset and the unique skills and perspectives people bring to the team are the driving force of our success. As an equal opportunity employer, we do not discriminate on the basis of any protected attribute. Our commitment is to provide equal opportunities, an inclusive work environment, and fairness for everyone.","Samia Ait Hamadouche","samia.ait-hamadouche@kraken.tech","https://jobs.lever.co/kraken123/a46b04cf-f5eb-4e82-809c-1c8c3a3e9b6a","https://drive.google.com/u/1/open?usp=forms_web&id=1Ty64A_H0ffxd31VmzJWHSPnbdmXbtqCm"
-"2025/04/16 8:08:38 PM GMT+2","erin.hallbeck@exasol.com","Senior DevOps","Exasol","Chennai, India","","Exasol is looking for an experienced DevOps Lead that will be responsible for designing, developing, and maintaining our Linux-based development and test infrastructure. This infrastructure consists of a Linux cluster running thousands of tests every hour supporting our development teams. You will work closely with development and IT teams to understand requirements and develop efficient solutions.","-Collaborate with development and IT teams to design, implement, and maintain a scalable, secure, and high-availability Linux-based infrastructure
--Work with the development teams to maintain and improve the test orchestration and scheduling tool chain
--Optimize system performance and troubleshoot issues to ensure smooth operations
--Handle system updates, upgrades, and patch management to keep the environment secure and up to date
--Set up monitoring tools to track system performance, application metrics, and infrastructure health
--Utilize configuration management tools (e.g., Ansible, Puppet, Chef, Salt) to automate server provisioning and software installations
--Create and maintain comprehensive documentation, including system configurations, procedures, and troubleshooting guides","-Bachelor's degree in computer science, Information Technology, or a related field, or equivalent work experience
--5+ years of professional experience as a DevOps Engineer
--Strong proficiency in Linux system administration and shell scripting
--Strong proficiency in Python development
--Proficient in configuration management tools (e.g., Ansible, Puppet, Chef, Salt)
--Hands-on experience with containerization technologies (e.g., Docker, Kubernetes, Nomad)
--Experience with monitoring and alerting tools
--Strong problem-solving and troubleshooting skills
--Excellent communication and collaboration abilities
--Experience with C++ is a plus
--Experience with workload manager software (Nomad, Slurm, etc.) is a plus
--Experience with cloud technology is a plus (e.g., AWS, Azure, GCP)
--Experience with OpenStack is a plus
--Fluent in English","","","","https://careers.exasol.com/jobs/5257658-senior-devops-chennai-india",""
-"2025/04/16 8:10:39 PM GMT+2","erin.hallbeck@exasol.com","Senior Software Engineer, Build System Automation (C++/Python/Java)","Exasol","Chennai, India","","We are seeking a skilled and motivated Build Engineer to join our team. The Build Engineer will play a critical role in streamlining and optimizing our software build, integration, and deployment processes. This role involves collaborating with teams, ensuring the delivery of reliable and high-quality build artifacts and supporting our development and release workflows.","-Collaborate closely with development teams to understand build and packaging requirements for new projects or features.
--Assess, configure, and upgrade build tools to enhance efficiency, align with industry best practices, and support evolving project needs.
--Ensure that compilers are always up-to-date, compatible with current software projects, and optimized for performance.
--Regularly update and integrate third-party libraries, dependencies, or frameworks to ensure compatibility, security, and functionality.
--Create and maintain documentation for build processes, workflows, and development tooling to ensure knowledge transfer and standardization.
--Continuously optimize build pipelines and infrastructure to support increasing workloads as the team scales.","-Bachelor's degree in computer science, Information Technology, or a related field, or equivalent work experience
--5+ years of professional experience as a Build Engineer
--Expert knowledge of build tools such as CMake, Make, Bazel, or similar.
--Deep knowledge of Linux and system administration tools and bash scripting
--Working knowledge of Git and Docker with familiarity in managing repositories and containerization workflows.
--Experience with CI systems such as Jenkins, GitHub actions or similar
--Proficiency in at least one programming language (e.g., C++, Python, Java) and comfortable with scripting languages for automation tasks; Go programming experience is a plus.
--Familiarity with cloud-based services and infrastructure (e.g., AWS, Azure, GCP) is a plus.
--Fluent in English with excellent written and verbal communication skills to work with international teams.","","","","https://careers.exasol.com/jobs/5802556-senior-software-engineer-build-system-automation-c-python-java-chennai-india",""
-"2025/04/16 8:12:55 PM GMT+2","erin.hallbeck@exasol.com","Software Engineer, Platform (C++/Python/Go) (f/m/d)","Exasol","This position is open to candidates based in Spain, Germany, or the UK.","","We are seeking a skilled and motivated Software Engineer to join our platform team. You will work on the foundations that underpin Exasol's shared-nothing massively parallel database product, helping to improve product robustness, fault tolerance, scalability, and the usability of the product.","-Design and implement high-performance software components or modules that meet industry standards for quality, security, supportability, maintainability, and user experience.
--Develop and maintain services and libraries using modern C++ and Python with Async IO.
--Build robust abstractions for process management, synchronization, and messaging across cluster nodes.
--Continuously improve system performance, reliability, and scalability.
--Ensure timely completion of project milestones and deliverables.
--Collaborate closely with stakeholders across different departments to understand business needs.
--Actively participate in resolving critical customer issues, providing timely and effective solutions.
--Champion agile engineering practices, including CI/CD.","Required qualifications:
--Bachelor’s degree in computer science, engineering, or a related field.
--2-3 years of industry experience in software development.
--Strong proficiency in C++ and Python, with experience in Async IO in Python. 
--Deep understanding of Linux systems and kernel interfaces.
--Demonstrated ability to write secure, maintainable, and high-quality code.
--Solid understanding of Agile engineering practices and principles.
--Excellent problem-solving skills and meticulous attention to detail.
-Preferred Qualifications: 
--Knowledge of Go is preferred.
--Previous experience with Exasol or other similar database systems.
--Knowledge of distributed systems and cluster management.
--Familiarity with configuration management tools.","","","","https://careers.exasol.com/jobs/5781942-software-engineer-platform-c-python-go-f-m-d",""
+We're building a new service, ground-up, that brings together the `dlt` library, an LLM-first development workspace, and data lake storage and runtime for data pipelines and notebooks. This takes our stack beyond Python into new languages, infrastructure, and systems and we’re looking to grow the team with people who bring required skills and background. Our focus is on deeply understanding user needs and developing the best technologies to meet them. To make that happen, we’re looking for smart, driven people that, with time, will take ownership of key parts of the product.","- Design and implement our commercial product. This involves both writing Python code and listening to our customers, who are running sophisticated data platforms we augment.
+- You’ll be on top of recent trends in how data platforms are built and will be able to serve as a technical expert or architect. You’ll work closely with our Solution Engineering team and help them solve real-world problems our customers face.
+- Contribute to the dlt open source core, including code, tests, and documentation
+- Maintain the open source project with the team (e.g., review PRs, resolve issues, talk with community contributors, write docs, etc.)","Here’s the stack we use (or plan to use) so you can quickly see if it’s a good fit for you. Strong Python knowledge is essential. You don’t need to know everything listed, but if you’re confident in any of the areas below, we’d love to hear from you:
+- Python/OSS/backend: pyarrow, duckdb (data processing), ibis (data querying), data frame libraries like polars, fastapi/starlette. Rust for optimizations.
+- Frontend/UI: next.js/react, Marimo/Streamlit/Jupyter (Python)
+- Storage tech: DuckLake, Iceberg, Parquet, bucket storage
+- Runtime infra: Docker, Kubernetes, AWS/AZURE/GCP
+",,Steffi Flöth,people@dlthub.com,https://apply.workable.com/dlthub/j/CE1643F3B9/,https://drive.google.com/open?id=1rZCmKZnfhrX-RagR0Vwu1dVMH6ePatjd

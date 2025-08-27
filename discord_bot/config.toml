@@ -46,11 +46,11 @@ REG_LOG_CHANNEL_ID = 1394333364538052618
 
 
 [job_board]
-JOB_BOARD_CHANNEL_ID = 1363984069553295531
+JOB_BOARD_CHANNEL_ID = 1410336053197279303
 JOB_BOARD_TESTING = false
 
 [tickets]
-TICKETS_BASE_URL="https://val.pycon.de"
+TICKETS_BASE_URL="https://val.pydata-berlin.org"
 TICKETS_REFRESH_ROUTE="/tickets/refresh_all/"
 TICKETS_VALIDATION_ROUTE="/tickets/validate_attendee/"
 
