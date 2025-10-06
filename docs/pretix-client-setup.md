@@ -40,7 +40,7 @@ If you use `python pretix-mock.py --port 8888`, set `pretix_base_url` to `http:/
 
 The mock contains five Pretix orders:
 
-Order 'AAAAA' (paid)
+Order 'AAA11' (paid)
 - Business Combined Ticket for 'Jane Doe'
 - Business Tutorial Ticket for 'John Doe'
 - Childcare
@@ -53,7 +53,7 @@ Order 'BBB22' (paid)
 Order 'CCC33' (paid)
 - Personal Remote Ticket for 'Martina Mustermann'
 
-Order 'DDDD44' (paid)
+Order 'DDD44' (paid)
 - Sponsor Ticket for 'Seán Ó Rudaí'
 - T-Shirt
 
