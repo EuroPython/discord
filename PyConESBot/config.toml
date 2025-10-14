@@ -1,52 +1,53 @@
 [roles]
-ORGANISERS = 1234981466681774117
-VOLUNTEERS = 1234981466681774118
-VOLUNTEERS_ONSITE = 1234981466681774118
-VOLUNTEERS_REMOTE = 1234981466681774118
-SPEAKERS = 1289585935238828073
-SPONSORS = 1289586348294148117
+ORGANIZERS = 1315757223355351141
+VOLUNTEERS = 1427705636287807641
+SPEAKERS = 1427706394207059968
+SPONSORS = 1427706552865001493
+SUPPORTER = 1427706663338512465
 PARTICIPANTS = 1234981466681774111
-PARTICIPANTS_ONSITE = 1289586561977159760
-PARTICIPANTS_REMOTE = 1289586925216206879
+VOLUNTEERS_ONSITE = 0
+VOLUNTEERS_REMOTE = 0
+PARTICIPANTS_ONSITE = 0
+PARTICIPANTS_REMOTE = 0
 
 [ticket_to_role]
 # onsite participants
-"Collaborators" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
-"Community Contributors" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
-"Education" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
-"Personal" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
-"Grants" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
-"Diversity" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
-"Volunteers" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE", "VOLUNTEERS"]
+"Collaborators" = ["PARTICIPANTS"]
+"Community Contributors" = ["PARTICIPANTS"]
+"Education" = ["PARTICIPANTS"]
+"Personal" = ["PARTICIPANTS"]
+"Grants" = ["PARTICIPANTS"]
+"Diversity" = ["PARTICIPANTS"]
+"Volunteers" = ["PARTICIPANTS", "VOLUNTEERS"]
 # early-bird
-"Individual Ticket (Early Bird)" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
-"Educational Ticket (Early Bird)" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
+"Individual Ticket (Early Bird)" = ["PARTICIPANTS"]
+"Educational Ticket (Early Bird)" = ["PARTICIPANTS"]
 # normal tickets
-"Individual Ticket" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
-"Business Ticket" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
-"Educational Ticket" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
-"Individual Supporter Ticket" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
-"Business Supporter Ticket" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
-"Individual Ticket Partners" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE"]
+"Individual Ticket" = ["PARTICIPANTS"]
+"Business Ticket" = ["PARTICIPANTS"]
+"Actual Business Ticket" = ["PARTICIPANTS"]
+"Educational Ticket" = ["PARTICIPANTS"]
+"Individual Supporter Ticket" = ["PARTICIPANTS", "SUPPORTER"]
+"Business Supporter Ticket" = ["PARTICIPANTS", "SUPPORTER"]
+"Individual Ticket Partners" = ["PARTICIPANTS"]
 # remote participants
-"Virtual Only Ticket" = ["PARTICIPANTS", "PARTICIPANTS_REMOTE"]
-"Donation Ticket" = ["PARTICIPANTS", "PARTICIPANTS_REMOTE"]
+"Donation Ticket" = ["PARTICIPANTS", "SUPPORTER"]
 # sponsors
-"Sponsors" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE", "SPONSORS"]
+"Sponsors" = ["PARTICIPANTS", "SPONSORS"]
 # speakers
-"Speaker" = ["PARTICIPANTS", "PARTICIPANTS_ONSITE", "SPEAKERS"]
+"Speaker" = ["PARTICIPANTS", "SPEAKERS"]
 
 [additional_roles_by_variation]
 "Volunteers" = ["VOLUNTEERS"]
 
 [registration]
-REG_CHANNEL_ID = 1289589609138753536
-REG_HELP_CHANNEL_ID = 1289591481799147610
-REG_LOG_CHANNEL_ID = 1289593057800355851
+REG_CHANNEL_ID = 1427707228042957043
+REG_HELP_CHANNEL_ID = 1427707925928874175
+REG_LOG_CHANNEL_ID = 1427709826946957322
 REGISTERED_LOG_FILE = "registered_log.txt"
 
 [pretix]
-PRETIX_BASE_URL = "https://pretix.eu/api/v1/organizers/python-spain/events/pycones2024"
+PRETIX_BASE_URL = "https://pretix.eu/api/v1/organizers/python-spain/events/pycones-2025"
 PRETIX_CACHE_FILE = "pretix_cache.json"
 
 [logging]
@@ -55,7 +56,7 @@ LOG_LEVEL = "INFO"
 [program_notifications]
 # UTC offset in hours (e.g. 2 for CEST)
 timezone_offset = 2
-api_url = "https://pretalx.com/pycones-2024/schedule/export/schedule.json"
+api_url = "https://pretalx.com/pycones-2025/schedule/export/schedule.json"
 schedule_cache_file = "schedule.json"
 livestream_url_file = "livestreams.toml"
 
@@ -68,24 +69,44 @@ livestream_url_file = "livestreams.toml"
 
 [program_notifications.rooms.main_channel]
 name = "Main Channel"
-channel_id = "1234981466690293849"
+channel_id = "1427716180470267974"
 
-[program_notifications.rooms.treboada]
-name = "Treboada"
-channel_id = "1290374755446292523"
+[program_notifications.rooms.track01]
+name = "Track 01 - Paraninfo Bloomberg"
+channel_id = "1427723091273842799"
 
-[program_notifications.rooms.poalla]
-name = "Poalla"
-channel_id = "1290375008119685161"
+[program_notifications.rooms.track02]
+name = "Track 02 - E04, A01"
+channel_id = "1427724217268568104"
 
-[program_notifications.rooms.saraiba]
-name = "Saraiba"
-channel_id = "1290375213820936222"
+[program_notifications.rooms.track03]
+name = "Track 03 - E04, A02"
+channel_id = "1427724394829971506"
 
-[program_notifications.rooms.orballo]
-name = "Orballo"
-channel_id = "1290375406091767808"
+[program_notifications.rooms.track04]
+name = "Track 04 - E05, A01"
+channel_id = "1427724486119129181"
 
-[program_notifications.rooms.neboeira]
-name = "Neboeira"
-channel_id = "1290375569531473962"
+[program_notifications.rooms.track05]
+name = "Track 05 - E05, A02"
+channel_id = "1427724597402275990"
+
+[program_notifications.rooms.workshop01]
+name = "Workshop 01, E45 AB11"
+channel_id = "1427723234177978503"
+
+[program_notifications.rooms.workshop02]
+name = "Workshop 02, E45 A105"
+channel_id = "1427723389090529361"
+
+[program_notifications.rooms.workshop03]
+name = "Workshop 03, E45 A107"
+channel_id = "1427723621010243584"
+
+[program_notifications.rooms.workshop04]
+name = "Workshop 04, E45 A108"
+channel_id = "1427723804628746311"
+
+[program_notifications.rooms.workshop05]
+name = "Workshop 05, E45 A109"
+channel_id = "1427723901231825008"
