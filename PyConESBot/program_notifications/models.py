@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import date, datetime
-from typing import Annotated, Any
+from typing import Annotated, Any, Optional
 
 from pydantic import BaseModel, BeforeValidator, Field
 
@@ -85,7 +85,7 @@ class Session(BaseModel):
     url: str
     abstract: str
     start: datetime = Field(alias="date")
-    level: Annotated[str, BeforeValidator(level_validator)] = Field(alias="answers")
+    level: Annotated[Optional[str], BeforeValidator(level_validator)] = Field(alias="answers", default=None)
     duration: Annotated[int, BeforeValidator(parse_duration)]
 
     def __hash__(self) -> int:
@@ -114,4 +114,4 @@ class Speaker(BaseModel):
     code: str
     avatar: str | None
     name: str = Field(alias="public_name")
-    website_url: Annotated[str, BeforeValidator(public_profile_validator)] = Field(alias="answers")
+    website_url: str = Field(alias="url")
