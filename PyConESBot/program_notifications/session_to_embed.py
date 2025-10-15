@@ -30,15 +30,13 @@ def create_session_embed(session: Session, livestream_url: str | None) -> Embed:
         title=_format_title(session.title),
         description=_create_description(session),
         url=session.url,
-        color=_get_color(session.level),
+        color=LevelColors.NA.value,
     )
 
-    embed.add_field(name="Start Time", value=_format_start_time(session.start), inline=True)
-    embed.add_field(name="Room", value=_format_room(session.room), inline=True)
+    embed.add_field(name="Inicio", value=_format_start_time(session.start), inline=True)
+    embed.add_field(name="Sala", value=_format_room(session.room), inline=True)
     embed.add_field(name="Track", value=_format_track(session.track), inline=True)
-    embed.add_field(name="Duration", value=_format_duration(session.duration), inline=True)
-    embed.add_field(name="Livestream", value=_format_live_stream(livestream_url), inline=True)
-    embed.add_field(name="Level", value=session.level.capitalize(), inline=True)
+    embed.add_field(name="Duración", value=_format_duration(session.duration), inline=True)
 
     author = _create_author_from_speakers(session.persons)
     if author:
