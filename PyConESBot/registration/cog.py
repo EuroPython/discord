@@ -97,8 +97,8 @@ class RegistrationForm(discord.ui.Modal, title="PyConES 2025 Registration"):
 
         await self.log_registration_to_channel(interaction, name=name, order=order, roles=roles)
         await self.log_registration_to_user(interaction, name=name)
-        for ticket in tickets:
-            await self.parent_cog.registration_logger.mark_as_registered(ticket)
+        # if the user has multiple tickets, we only log the first one
+        await self.parent_cog.registration_logger.mark_as_registered(tickets[0])
         _logger.info(f"Registration successful: {order=}, {name=}")
 
     async def on_error(self, interaction: Interaction, error: Exception) -> None:
