@@ -4,7 +4,7 @@ VOLUNTEERS = 1427705636287807641
 SPEAKERS = 1427706394207059968
 SPONSORS = 1427706552865001493
 SUPPORTER = 1427706663338512465
-PARTICIPANTS = 1234981466681774111
+PARTICIPANTS = 1427706937008459877
 VOLUNTEERS_ONSITE = 0
 VOLUNTEERS_REMOTE = 0
 PARTICIPANTS_ONSITE = 0
@@ -18,6 +18,7 @@ PARTICIPANTS_REMOTE = 0
 "Personal" = ["PARTICIPANTS"]
 "Grants" = ["PARTICIPANTS"]
 "Diversity" = ["PARTICIPANTS"]
+"Individual Ticket Organization" = ["PARTICIPANTS", "ORGANIZERS"]
 "Volunteers" = ["PARTICIPANTS", "VOLUNTEERS"]
 # early-bird
 "Individual Ticket (Early Bird)" = ["PARTICIPANTS"]
@@ -61,52 +62,52 @@ schedule_cache_file = "schedule.json"
 livestream_url_file = "livestreams.toml"
 
 # optional simulated start time for testing program notifications
-# simulated_start_time = "2024-07-10T07:30:00"
+#simulated_start_time = "2025-10-18T09:30:00"
 
 # optional fast mode for faster testing of program notifications
 # will only take effect if simulated_start_time is set
-# fast_mode = true
+#fast_mode = true
 
 [program_notifications.rooms.main_channel]
 name = "Main Channel"
 channel_id = "1427716180470267974"
 
-[program_notifications.rooms.track01]
+[program_notifications.rooms.track_01_-_paraninfo_bloomberg]
 name = "Track 01 - Paraninfo Bloomberg"
 channel_id = "1427723091273842799"
 
-[program_notifications.rooms.track02]
+[program_notifications.rooms."track_02_-_b04,_c01"]
 name = "Track 02 - E04, A01"
 channel_id = "1427724217268568104"
 
-[program_notifications.rooms.track03]
+[program_notifications.rooms."track_03_-_b04,_c02"]
 name = "Track 03 - E04, A02"
 channel_id = "1427724394829971506"
 
-[program_notifications.rooms.track04]
+[program_notifications.rooms."track_04_-_b05,_c01"]
 name = "Track 04 - E05, A01"
 channel_id = "1427724486119129181"
 
-[program_notifications.rooms.track05]
+[program_notifications.rooms."track_05_-_b05,_c02"]
 name = "Track 05 - E05, A02"
 channel_id = "1427724597402275990"
 
-[program_notifications.rooms.workshop01]
+[program_notifications.rooms."workshop_01,_b45_cb11"]
 name = "Workshop 01, E45 AB11"
 channel_id = "1427723234177978503"
 
-[program_notifications.rooms.workshop02]
+[program_notifications.rooms."workshop_02,_b45_c105"]
 name = "Workshop 02, E45 A105"
 channel_id = "1427723389090529361"
 
-[program_notifications.rooms.workshop03]
+[program_notifications.rooms."workshop_03,_b45_c107"]
 name = "Workshop 03, E45 A107"
 channel_id = "1427723621010243584"
 
-[program_notifications.rooms.workshop04]
+[program_notifications.rooms."workshop_04,_b45_c108"]
 name = "Workshop 04, E45 A108"
 channel_id = "1427723804628746311"
 
-[program_notifications.rooms.workshop05]
+[program_notifications.rooms."workshop_05,_b45_c109"]
 name = "Workshop 05, E45 A109"
 channel_id = "1427723901231825008"
