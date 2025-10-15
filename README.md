@@ -81,7 +81,12 @@ Add `.secrets` file to the root of the repository with the following content:
 ```shell
 DISCORD_BOT_TOKEN=<PyConESBotToken>
 PRETIX_TOKEN=<PretixStagingToken>
+PRETALX_API_TOKEN=<PretalxAPIToken>
 ````
+
+> [!tip]
+> The Pretalx API token is not strictly necessary, unless you want to access internal field data.
+
 After you have added the `.secrets` file, you can run the bot with the following command:
 ```shell
 rye run python PyConESBot/bot.py
