@@ -12,6 +12,7 @@ import discord
 from discord.ext import commands
 from pydantic import BaseModel
 
+from europython_discord.cogs.activity import ActivityCog
 from europython_discord.cogs.guild_statistics import GuildStatisticsCog, GuildStatisticsConfig
 from europython_discord.cogs.ping import PingCog
 from europython_discord.program_notifications.cog import ProgramNotificationsCog
@@ -51,6 +52,7 @@ async def run_bot(config: Config, auth_token: str) -> None:
         await bot.add_cog(RegistrationCog(bot, config.registration))
         await bot.add_cog(ProgramNotificationsCog(bot, config.program_notifications))
         await bot.add_cog(GuildStatisticsCog(bot, config.guild_statistics))
+        await bot.add_cog(ActivityCog(bot))
 
         await bot.start(auth_token)
 
