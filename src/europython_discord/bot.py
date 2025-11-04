@@ -56,7 +56,7 @@ async def run_bot(config: Config, auth_token: str) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="EuroPython Discord Bot")
+    parser = argparse.ArgumentParser(description="PyLadiesCon Discord Bot")
     parser.add_argument("--config-file", type=Path, required=True, help="Configuration file")
     args = parser.parse_args()
 

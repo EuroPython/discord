@@ -81,6 +81,17 @@ class ProgramConnector:
                 await f.write(json.dumps(schedule, indent=2))
             _logger.info("Schedule written to cache file.")
 
+            # TODO PyLadiesCon: Here we need to modify the fetched schedule file
+            # and add the new field of each session 'youtube_url' from a local
+            # configuration file that needs to be provided once the videos are scheduled
+            # The file needs to have a map with 'Session Code' and the 'Youtube URL',
+            # for example: 
+            # {
+            #     'XSRQD': 'https://youtube.com/adasdsdsad',
+            # }
+            # so later we can go to the schedule.json and find the 'code'
+            # field in each item inside 'events', and add it.
+
             self.sessions_by_day = await self.parse_schedule(schedule)
             _logger.info("Schedule parsed and loaded.")
 

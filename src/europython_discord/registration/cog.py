@@ -17,10 +17,10 @@ _logger = logging.getLogger(__name__)
 
 # Discord's colon-syntax `:point_left:` does not work in button labels, so we use `\N{...}` here
 REGISTRATION_BUTTON_LABEL = "Register here \N{WHITE LEFT POINTING BACKHAND INDEX}"
-WELCOME_MESSAGE_TITLE = "## Welcome to EuroPython 2025 on Discord! :tada::snake:"
+WELCOME_MESSAGE_TITLE = "## Welcome to PyLadiesCon 2025 on Discord! :tada::snake:"
 
 
-class RegistrationForm(discord.ui.Modal, title="EuroPython 2025 Registration"):
+class RegistrationForm(discord.ui.Modal, title="PyLadiesCon 2025 Registration"):
     def __init__(
         self,
         config: RegistrationConfig,
@@ -33,7 +33,7 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2025 Registration"):
         self.registration_logger = registration_logger
 
     order_field = discord.ui.TextInput(
-        label="Order ID (As printed on your badge or ticket)",
+        label="Order ID (As in your ticket)",
         required=True,
         min_length=5,
         max_length=9,
@@ -41,7 +41,7 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2025 Registration"):
     )
 
     name_field = discord.ui.TextInput(
-        label="Name (As printed on your badge or ticket)",
+        label="Name (As in your ticket)",
         required=True,
         min_length=1,
         max_length=50,
@@ -129,9 +129,7 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2025 Registration"):
     async def log_registration_to_user(interaction: Interaction, *, name: str) -> None:
         await interaction.response.send_message(
             f"Thank you {name}, you are now registered!\n\n"
-            f"Also, your nickname was changed to the name you used to register your ticket. "
-            f"This is also the name that would be on your conference badge, which means that "
-            f"your nickname can be your 'virtual conference badge'.",
+            f"Also, your nickname was changed to the name you used to register your ticket. ",
             ephemeral=True,
             delete_after=None,
         )
@@ -205,8 +203,7 @@ class RegistrationCog(commands.Cog):
 
             :two: Fill in your Order ID and the name on your ticket. You can find them
             * Printed on your ticket
-            * Printed on your badge
-            * In the email "[EuroPython 2025] Your order: XXXXX" from support@pretix.eu
+            * In the email "[PyLadiesCon 2025] Your order: XXXXX" from support@pretix.eu
 
             :three: Click "Submit".
 
@@ -216,7 +213,7 @@ class RegistrationCog(commands.Cog):
             * In the {reg_help_channel.mention} channel
             * By speaking to a volunteer in a yellow t-shirt
 
-            Enjoy our EuroPython 2025 Community Server! :snake::computer::tada:
+            Enjoy our PyLadiesCon 2025 Community Server! :snake::computer::tada:
             """
         )
 

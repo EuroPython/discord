@@ -39,7 +39,8 @@ def create_session_embed(session: Session, livestream_url: str | None) -> Embed:
     embed.add_field(name="Room", value=_format_room(session.rooms), inline=True)
     embed.add_field(name="Track", value=_format_track(session.track), inline=True)
     embed.add_field(name="Duration", value=_format_duration(session.duration), inline=True)
-    embed.add_field(name="Livestream", value=_format_live_stream(livestream_url), inline=True)
+    #embed.add_field(name="Livestream", value=_format_live_stream(livestream_url), inline=True)
+    embed.add_field(name="Livestream", value=_format_live_stream(session.youtube_url), inline=True)  # Add PyLadiesCon
     embed.add_field(name="Level", value=session.level.capitalize(), inline=True)
 
     author = _create_author_from_speakers(session.speakers)

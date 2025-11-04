@@ -8,7 +8,7 @@ from discord.utils import get as discord_get
 
 from europython_discord.program_notifications import session_to_embed
 from europython_discord.program_notifications.config import ProgramNotificationsConfig
-from europython_discord.program_notifications.livestream_connector import LivestreamConnector
+#from europython_discord.program_notifications.livestream_connector import LivestreamConnector
 from europython_discord.program_notifications.program_connector import ProgramConnector
 
 _logger = logging.getLogger(__name__)
@@ -25,7 +25,7 @@ class ProgramNotificationsCog(commands.Cog):
             fast_mode=self.config.fast_mode,
         )
 
-        self.livestream_connector = LivestreamConnector(self.config.livestream_url_file)
+        #self.livestream_connector = LivestreamConnector(self.config.livestream_url_file)
 
         self.notified_sessions = set()
         _logger.info("Cog 'Program Notifications' has been initialized")
@@ -48,7 +48,7 @@ class ProgramNotificationsCog(commands.Cog):
             "Starting the schedule updater and setting the interval for the session notifier..."
         )
         self.fetch_schedule.start()
-        self.fetch_livestreams.start()
+        #self.fetch_livestreams.start()
         self.notify_sessions.change_interval(
             seconds=2 if self.config.fast_mode and self.config.simulated_start_time else 60
         )
@@ -66,11 +66,11 @@ class ProgramNotificationsCog(commands.Cog):
         _logger.info("Starting the periodic schedule update...")
         await self.program_connector.fetch_schedule()
 
-    @tasks.loop(minutes=5)
-    async def fetch_livestreams(self) -> None:
-        _logger.info("Starting the periodic livestream update...")
-        await self.livestream_connector.fetch_livestreams()
-        _logger.info("Finished the periodic livestream update.")
+    #@tasks.loop(minutes=5)
+    #async def fetch_livestreams(self) -> None:
+    #    _logger.info("Starting the periodic livestream update...")
+    #    await self.livestream_connector.fetch_livestreams()
+    #    _logger.info("Finished the periodic livestream update.")
 
     @tasks.loop()
     async def notify_sessions(self) -> None:
@@ -96,16 +96,18 @@ class ProgramNotificationsCog(commands.Cog):
             room_channel = self._get_room_channel(room_name)
 
             # update room's livestream URL
-            livestream_url = await self.livestream_connector.get_livestream_url(
-                room_name, session.start.date()
-            )
-            embed = session_to_embed.create_session_embed(session, livestream_url)
+            #livestream_url = await self.livestream_connector.get_livestream_url(
+            #    room_name, session.start.date()
+            #)
+            #embed = session_to_embed.create_session_embed(session, livestream_url)
+            embed = session_to_embed.create_session_embed(session, None)
+
 
             await main_notification_channel.send(embed=embed)
             if room_channel is not None:
-                await room_channel.edit(
-                    topic=f"Livestream: [YouTube]({livestream_url})" if livestream_url else ""
-                )
+                #await room_channel.edit(
+                #    topic=f"Livestream: [YouTube]({livestream_url})" if livestream_url else ""
+                #)
                 await room_channel.send(
                     content=f"# Starting in 5 minutes @ {session.rooms[0]}",
                     embed=embed,

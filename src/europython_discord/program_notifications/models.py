@@ -6,20 +6,20 @@ from pydantic import AwareDatetime, BaseModel
 
 
 class DaySchedule(BaseModel):
-    """Schedule of a single day of EuroPython."""
+    """Schedule of a single day of PyLadiesCon."""
 
     rooms: list[str]
     events: list[Session | Break]
 
 
 class Schedule(BaseModel):
-    """Complete schedule of EuroPython."""
+    """Complete schedule of PyLadiesCon."""
 
     days: dict[date, DaySchedule]
 
 
 class Break(BaseModel):
-    """Break in the EuroPython schedule."""
+    """Break in the PyLadiesCon schedule."""
 
     event_type: str
     title: str
@@ -29,7 +29,7 @@ class Break(BaseModel):
 
 
 class Session(BaseModel):
-    """Session in the EuroPython schedule."""
+    """Session in the PyLadiesCon schedule."""
 
     event_type: str
     code: str
@@ -40,6 +40,7 @@ class Session(BaseModel):
     tweet: str
     level: str
     track: str | None
+    youtube_url: str | None  # Add PyLadiesCon
     rooms: list[str]
     start: AwareDatetime
     website_url: str

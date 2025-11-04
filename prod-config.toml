@@ -5,42 +5,25 @@ registration_form_channel_name = "registration-form"
 registration_help_channel_name = "registration-help"
 registration_log_channel_name = "registration-log"
 
-pretix_base_url = "https://pretix.eu/api/v1/organizers/europython/events/ep2025"
+pretix_base_url = "https://pretix.eu/api/v1/organizers/pyladiescon/events/2025"
 
 registered_cache_file = "registered_log.txt"
 pretix_cache_file = "pretix_cache.json"
 
 [registration.item_to_roles]
-# onsite participants
-"Business" = ["Participants", "Onsite Participants"]
-"Personal" = ["Participants", "Onsite Participants"]
-"Education" = ["Participants", "Onsite Participants"]
-"Community Contributors" = ["Participants", "Onsite Participants"]
-"Grant ticket" = ["Participants", "Onsite Participants"]
-# remote participants
-"Remote Participation Ticket" = ["Participants", "Remote Participants"]
-"Remote Grant ticket" = ["Participants", "Remote Participants"]
-"Remote Community Organiser" = ["Participants", "Remote Participants"]
-# sponsors
-"Sponsor Conference Pass" = ["Participants", "Onsite Participants", "Sponsors"]
-"Remote Sponsor" = ["Participants", "Remote Participants", "Sponsors"]
-# speakers
-"Presenter" = ["Participants", "Onsite Participants", "Speakers"]
-# onsite volunteers
-"On-site Volunteer" = ["Participants", "Onsite Participants", "Volunteers", "Onsite Volunteers"]
-# beginners' day
-"Beginners’ Day Unconference / Humble Data Access" = ["Beginners Day"]
+"Sponsors Ticket" = ["Participant", "Sponsor"]
+"Speaker Ticket" = ["Participant", "Speaker"]
+"General Ticket" = ["Participant"]
 
 [registration.variation_to_roles]
-# organizers
-"Volunteer" = ["Organizers", "Volunteers", "Onsite Volunteers"]
+"Volunteer" = ["Organizer", "Volunteer"]
 
 [program_notifications]
-# UTC offset in hours (e.g. 2 for CEST)
-api_url = "https://static.europython.eu/programme/ep2025/releases/current/schedule.json"
+# UTC offset in hours (e.g. 1 for CET)
+api_url = "https://programapi.conference.pyladies.com/schedule.json"
 schedule_cache_file = "schedule_cache.json"
 livestream_url_file = "livestreams.toml"
-main_notification_channel_name = "programme-notifications"
+main_notification_channel_name = "session-notifications"
 
 # optional simulated start time for testing program notifications
 # simulated_start_time = "2024-07-10T07:30:00+02:00"
@@ -50,13 +33,8 @@ main_notification_channel_name = "programme-notifications"
 # fast_mode = true
 
 [program_notifications.rooms_to_channel_names]
-"Forum Hall" = "forum-hall"
-"South Hall 2A" = "south-hall-2a"
-"South Hall 2B" = "south-hall-2b"
-"North Hall" = "north-hall"
-"Terrace 2A" = "terrace-2a"
-"Terrace 2B" = "terrace-2b"
-"Exhibit Hall" = "exhibit-hall"
+"Main Stream" = "main-stream"
+"Activities & Open Spaces" = "activities-open-spaces"
 
 [guild_statistics]
-required_role = "Organizers"
+required_role = "Organizer"
