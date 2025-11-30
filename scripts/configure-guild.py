@@ -74,16 +74,6 @@ MultilineString = Annotated[
     AfterValidator(lambda text: textwrap.dedent(text.strip("\r\n").rstrip())),
 ]
 
-BLUE = "#0096C7"
-LIGHT_BLUE = "#8FD3E0"
-DARK_ORANGE = "#E6412C"
-ORANGE = "#E85D04"
-DARK_YELLOW = "#BC8C15"
-YELLOW = "#FFD700"
-PURPLE = "#D34EA5"
-GREY = "#99AAB5"
-DARK_PURPLE = "#658B34"
-
 Permission = Literal[
     "add_reactions",
     "administrator",
@@ -243,6 +233,16 @@ class GuildConfig(BaseModel):
         return self
 
 
+COLOR_BLUE = "#0096C7"
+COLOR_LIGHT_BLUE = "#8FD3E0"
+COLOR_DARK_ORANGE = "#E6412C"
+COLOR_ORANGE = "#E85D04"
+COLOR_DARK_YELLOW = "#BC8C15"
+COLOR_YELLOW = "#FFD700"
+COLOR_PURPLE = "#D34EA5"
+COLOR_GREY = "#99AAB5"
+COLOR_DARK_PURPLE = "#658B34"
+
 ROLE_COC = "Code of Conduct Committee"
 ROLE_MODERATORS = "Moderators"
 ROLE_ORGANIZERS = "Organizers"
@@ -271,7 +271,7 @@ SERVER_CONFIG = GuildConfig(
     roles=[
         Role(
             name=ROLE_COC,
-            color=DARK_ORANGE,
+            color=COLOR_DARK_ORANGE,
             hoist=True,
             mentionable=True,
             permissions=[
@@ -284,7 +284,7 @@ SERVER_CONFIG = GuildConfig(
         ),
         Role(
             name=ROLE_MODERATORS,
-            color=ORANGE,
+            color=COLOR_ORANGE,
             hoist=True,
             mentionable=True,
             permissions=[
@@ -299,48 +299,48 @@ SERVER_CONFIG = GuildConfig(
         ),
         Role(
             name=ROLE_ORGANIZERS,
-            color=DARK_YELLOW,
+            color=COLOR_DARK_YELLOW,
             permissions=["mention_everyone", "use_external_apps", "manage_roles"],
         ),
         Role(
             name=ROLE_VOLUNTEERS,
-            color=YELLOW,
+            color=COLOR_YELLOW,
             hoist=True,
             mentionable=True,
         ),
-        Role(name="Onsite Volunteers", color=GREY),
-        Role(name="Remote Volunteers", color=GREY),
+        Role(name="Onsite Volunteers", color=COLOR_GREY),
+        Role(name="Remote Volunteers", color=COLOR_GREY),
         Role(
             name=ROLE_SPEAKERS,
-            color=BLUE,
+            color=COLOR_BLUE,
             hoist=True,
             mentionable=True,
         ),
         Role(
             name=ROLE_SPONSORS,
-            color=LIGHT_BLUE,
+            color=COLOR_LIGHT_BLUE,
             hoist=True,
             mentionable=True,
         ),
         Role(
             name=ROLE_PARTICIPANTS,
-            color=PURPLE,
+            color=COLOR_PURPLE,
             hoist=True,
             mentionable=True,
             permissions=["use_external_emojis", "use_external_stickers", "create_polls"],
         ),
-        Role(name="Onsite Participants", color=GREY),
-        Role(name="Remote Participants", color=GREY),
+        Role(name="Onsite Participants", color=COLOR_GREY),
+        Role(name="Remote Participants", color=COLOR_GREY),
         Role(
             name=ROLE_BEGINNERS_DAY,
-            color=DARK_PURPLE,
+            color=COLOR_DARK_PURPLE,
             mentionable=True,
             permissions=["use_external_emojis", "use_external_stickers", "create_polls"],
         ),
-        Role(name="Programme Team", color=GREY, mentionable=True),
+        Role(name="Programme Team", color=COLOR_GREY, mentionable=True),
         Role(
             name="@everyone",
-            color=GREY,
+            color=COLOR_GREY,
             permissions=[
                 "view_channel",
                 "change_nickname",
