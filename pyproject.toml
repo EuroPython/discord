@@ -48,8 +48,6 @@ ignore = [
     "D100", "D101", "D102", "D103", "D104", "D105", "D106", "D107",
     # don't require trailing commas everywhere (incompatible with `ruff format`)
     "COM812",
-    # deprecated rules
-    "UP038",
     # string formatting in exception messages and logging
     "EM101", "EM102", "TRY003", "G004",
     # require TYPE_CHECKING blocks for typing-only imports
