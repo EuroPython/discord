@@ -128,7 +128,7 @@ class PermissionOverwrite(BaseModel):
 
 class Role(BaseModel):
     name: str
-    color: str = Field(default=GREY, pattern="#[0-9A-F]{6}")
+    color: str = Field(pattern="#[0-9A-F]{6}")
     hoist: bool = False
     mentionable: bool = False
     permissions: list[Permission] = Field(default_factory=list)
@@ -284,8 +284,8 @@ SERVER_CONFIG = GuildConfig(
             hoist=True,
             mentionable=True,
         ),
-        Role(name="Onsite Volunteers"),
-        Role(name="Remote Volunteers"),
+        Role(name="Onsite Volunteers", color=GREY),
+        Role(name="Remote Volunteers", color=GREY),
         Role(
             name=ROLE_SPEAKERS,
             color=BLUE,
@@ -305,17 +305,18 @@ SERVER_CONFIG = GuildConfig(
             mentionable=True,
             permissions=["use_external_emojis", "use_external_stickers", "create_polls"],
         ),
-        Role(name="Onsite Participants"),
-        Role(name="Remote Participants"),
+        Role(name="Onsite Participants", color=GREY),
+        Role(name="Remote Participants", color=GREY),
         Role(
             name=ROLE_BEGINNERS_DAY,
             color=DARK_PURPLE,
             mentionable=True,
             permissions=["use_external_emojis", "use_external_stickers", "create_polls"],
         ),
-        Role(name="Programme Team", mentionable=True),
+        Role(name="Programme Team", color=GREY, mentionable=True),
         Role(
             name="@everyone",
+            color=GREY,
             permissions=[
                 "view_channel",
                 "change_nickname",
