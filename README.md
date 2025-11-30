@@ -146,7 +146,7 @@ Please refer to the [uv documentation](https://docs.astral.sh/uv) or `uv help` f
 # activate uv-generated virtual environment ("venv")
 . .venv/bin/activate  # Windows: '.venv/Scripts/activate'
 
-# create/synchronize venv based on uv.lock file
+# create/synchronize venv based on uv.lock, update uv.lock based on pyproject.toml
 uv sync
 uv sync --dev  # include dev dependencies
 
