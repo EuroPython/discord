@@ -5,8 +5,6 @@
 #   "pydantic>=2.8.2",
 # ]
 # ///
-"""Script to export all guild members and their roles to per-guild .csv files."""
-
 from __future__ import annotations
 
 import argparse
