@@ -166,7 +166,7 @@ PRETIX_ORDERS = {
 
 
 class RequestHandler(http.server.BaseHTTPRequestHandler):
-    def do_GET(self) -> None:  # noqa: N802 (function name should be lowercase)
+    def do_GET(self) -> None:
         """Handle GET requests."""
         path = urlparse(self.path).path  # strip query parameters
 
