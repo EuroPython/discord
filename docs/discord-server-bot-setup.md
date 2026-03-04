@@ -102,39 +102,42 @@ Copy your new token and store it somewhere safe.
 ![Bot: Copy Token](img/bot-copy-token.png)
 
 To confirm the installation, install the Python package [discord.py](https://pypi.org/project/discord.py/)
-(e.g. with `pip install discord.py`), and run the following script (add your bot token at `BOT_TOKEN = "..."`):
+(e.g. with `pip install discord.py`), run the following script, and enter your bot token when prompted:
 
 ```python
+# /// script
+# dependencies = ["discord-py"]
+# ///
 import asyncio
 
 import discord
 from discord.ext import commands
 
-BOT_TOKEN = "..."
-
 
 class Bot(commands.Bot):
     async def on_ready(self):
-        print("ready", self.user.name, self.user.id)
+        print(f"Bot is running as user {self.user.name!r}.")
+        print("Post $ping in any channel on your server to test the bot.")
+        print("Press Ctrl+C to stop the bot.")
 
 
 class Ping(commands.Cog):
-    @commands.hybrid_command(name="ping")
+    @commands.command(name="ping")
     async def ping(self, context):
         await context.send("Pong!")
 
 
-async def main():
-    prefix = commands.when_mentioned_or("$")
-
+async def main(token: str) -> None:
     intents = discord.Intents(messages=True, message_content=True)
-    async with Bot(command_prefix=prefix, intents=intents) as bot:
+    async with Bot(command_prefix="$", intents=intents) as bot:
         await bot.add_cog(Ping())
-        await bot.start(BOT_TOKEN)
+        await bot.start(token)
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    bot_token = input("Please enter your bot token: ").strip()
+    print("Bot is starting, please wait...")
+    asyncio.run(main(bot_token))
 ```
 
 In Discord, go to your server and write the message `$ping` in a text channel.
