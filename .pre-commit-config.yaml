@@ -9,9 +9,9 @@ repos:
       - id: check-added-large-files
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.14.7
+    rev: v0.15.4
     hooks:
-      - id: ruff
+      - id: ruff-check
         # fix imports:
         # - I001: Bad import order or format
         # - F401: Unused import

@@ -109,7 +109,7 @@ def _format_room(rooms: list[str]) -> str:
     :return: The name of a room or a placeholder value.
     """
     room = ", ".join(rooms)
-    return room if room else _FIELD_VALUE_EMPTY
+    return room or _FIELD_VALUE_EMPTY
 
 
 def _format_track(track: str | None) -> str:
