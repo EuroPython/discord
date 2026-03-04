@@ -27,5 +27,6 @@ class Ticket(BaseModel):
     variation: str | None
 
     @computed_field
+    @property
     def key(self) -> str:
         return generate_ticket_key(order=self.order, name=self.name)

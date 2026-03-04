@@ -38,7 +38,7 @@ def session() -> Session:
                 website_url="https://example.com/speaker2",
             ),
         ],
-        start="2024-07-10T08:00:00+00:00",
+        start=datetime.fromisoformat("2024-07-10T08:00:00+00:00"),
         title="Example Session",
         track=None,
         tweet="",
@@ -136,6 +136,8 @@ def test_embed_color(session: Session, level: str, expected_color: int) -> None:
     """Test the color of the embed based on session level."""
     session.level = level
     embed = session_to_embed.create_session_embed(session, None)
+
+    assert embed.color is not None
     assert embed.color.value == expected_color
 
 
@@ -222,6 +224,8 @@ def test_create_author_from_speakers(session: Session) -> None:
     session.speakers[1].avatar = "https://example.com/avatar2.jpg"
     author = session_to_embed._create_author_from_speakers(session.speakers)
 
+    assert author is not None
+
     # Should combine the names of all speakers
     assert author["name"] == "Jane Doe, John Doe"
 
@@ -238,6 +242,7 @@ def test_create_author_from_speakers_with_no_avatar(session: Session) -> None:
     session.speakers[1].avatar = ""
 
     author = session_to_embed._create_author_from_speakers(session.speakers)
+    assert author is not None
     assert author["icon_url"] is None
 
 
@@ -250,6 +255,7 @@ def test_create_author_with_long_name(session: Session) -> None:
     assert len(session.speakers[0].name) > _AUTHOR_WIDTH
 
     author = session_to_embed._create_author_from_speakers(session.speakers)
+    assert author is not None
     assert author["name"] == (
         "This is a very long speaker name which exceeds our maximum author name length, "
         "so we expect it to be shortened by our [...]"

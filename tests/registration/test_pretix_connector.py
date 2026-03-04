@@ -454,7 +454,7 @@ async def test_cancelled_orders_are_removed(aiohttp_client, unused_tcp_port_fact
 
     # insert previously paid ticket
     ticket = Ticket(order="ABC01", name="Jane Doe", type="Business", variation=None)
-    pretix_connector.tickets_by_key[ticket.key] = [ticket]
+    pretix_connector.tickets_by_key[ticket.key] = {ticket}
 
     # fetch pretix data: ticket was cancelled
     await pretix_connector.fetch_pretix_data()
