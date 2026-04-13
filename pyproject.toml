@@ -14,7 +14,7 @@ dependencies = [
     "discord-py>=2.7.1",
     "aiofiles>=25.1.0",
     "aiohttp>=3.13.2",
-    "pydantic>=2.12.5",
+    "pydantic>=2.13.0",
     "unidecode>=1.4.0",
 ]
 
