@@ -82,7 +82,6 @@ async def pretix_mock(aiohttp_client, unused_tcp_port_factory) -> PretixMock:
     )
 
 
-@pytest.mark.asyncio
 async def test_pretix_items(pretix_mock):
     pretix_connector = PretixConnector(url=pretix_mock.base_url, token=PRETIX_API_TOKEN)
 
@@ -99,7 +98,6 @@ async def test_pretix_items(pretix_mock):
     assert item_names_by_id[163253] == "Combined (Conference + Tutorials)"
 
 
-@pytest.mark.asyncio
 async def test_pretix_orders(pretix_mock):
     pretix_connector = PretixConnector(url=pretix_mock.base_url, token=PRETIX_API_TOKEN)
 
@@ -298,7 +296,6 @@ async def test_pagination(aiohttp_client, unused_tcp_port_factory):
     )
 
 
-@pytest.mark.asyncio
 async def test_consecutive_fetches_are_prevented(pretix_mock):
     pretix_connector = PretixConnector(url=pretix_mock.base_url, token=PRETIX_API_TOKEN)
     requests = pretix_mock.requests
@@ -317,7 +314,6 @@ async def test_consecutive_fetches_are_prevented(pretix_mock):
     assert len(requests) == 0
 
 
-@pytest.mark.asyncio
 async def test_consecutive_fetches_after_some_time_fetch_updates(pretix_mock):
     pretix_connector = PretixConnector(url=pretix_mock.base_url, token=PRETIX_API_TOKEN)
     requests = pretix_mock.requests
@@ -344,7 +340,6 @@ async def test_consecutive_fetches_after_some_time_fetch_updates(pretix_mock):
     assert datetime.fromisoformat(requests[1].url.query["modified_since"]) == three_minutes_before
 
 
-@pytest.mark.asyncio
 async def test_api_error_responses_are_raised(aiohttp_client, unused_tcp_port_factory):
     pretix_mock = await create_pretix_app_mock(
         response_factories={
@@ -368,7 +363,6 @@ async def test_api_error_responses_are_raised(aiohttp_client, unused_tcp_port_fa
     assert e.value.status == HTTPStatus.INTERNAL_SERVER_ERROR
 
 
-@pytest.mark.asyncio
 async def test_multiple_tickets(aiohttp_client, unused_tcp_port_factory):
     pretix_mock = await create_pretix_app_mock(
         {

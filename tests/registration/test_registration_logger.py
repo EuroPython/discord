@@ -24,7 +24,6 @@ def test_with_existing_file(tmp_path: Path) -> None:
     )
 
 
-@pytest.mark.asyncio
 async def test_register_ticket_on_empty_log(tmp_path: Path) -> None:
     logger = RegistrationLogger(tmp_path / "registrations.txt")
 
@@ -36,7 +35,6 @@ async def test_register_ticket_on_empty_log(tmp_path: Path) -> None:
     assert (tmp_path / "registrations.txt").read_text() == "ABC01-johndoe\n"
 
 
-@pytest.mark.asyncio
 async def test_register_ticket_with_existing_file(tmp_path: Path) -> None:
     logger = RegistrationLogger(tmp_path / "registrations.txt")
 
@@ -48,7 +46,6 @@ async def test_register_ticket_with_existing_file(tmp_path: Path) -> None:
     assert (tmp_path / "registrations.txt").read_text() == "ABC01-johndoe\n"
 
 
-@pytest.mark.asyncio
 async def test_register_ticket_with_existing_log(tmp_path: Path) -> None:
     (tmp_path / "registrations.txt").write_text("ABC01-johndoe\n")
 
@@ -62,7 +59,6 @@ async def test_register_ticket_with_existing_log(tmp_path: Path) -> None:
     assert (tmp_path / "registrations.txt").read_text() == "ABC01-johndoe\nABC02-janedoe\n"
 
 
-@pytest.mark.asyncio
 async def test_register_already_registered_ticket(tmp_path: Path) -> None:
     logger = RegistrationLogger(tmp_path / "registrations.txt")
 
