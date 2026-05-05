@@ -45,9 +45,6 @@ class Session(BaseModel):
     website_url: str
     duration: int
 
-    def __hash__(self) -> int:
-        return hash(self.code + str(self.start))
-
 
 class Speaker(BaseModel):
     """Speaker of a Session."""
