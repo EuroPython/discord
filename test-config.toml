@@ -27,7 +27,12 @@ pretix_cache_file = "pretix_cache.json"
 # speakers
 "Presenter" = ["Participants", "Onsite Participants", "Speakers"]
 # onsite volunteers
-"On-site Volunteer" = ["Participants", "Onsite Participants", "Volunteers", "Onsite Volunteers"]
+"On-site Volunteer" = [
+    "Participants",
+    "Onsite Participants",
+    "Volunteers",
+    "Onsite Volunteers",
+]
 # beginners' day
 "Beginners’ Day Unconference / Humble Data Access" = ["Beginners Day"]
 
@@ -60,3 +65,11 @@ fast_mode = true
 
 [guild_statistics]
 required_role = "Organizers"
+
+[dog]
+error_messages = [
+    "The dogs are on strike today! Try again later. 🐾🪧",
+    "A wild error appeared! The dog got away... 🐕💨",
+    "Dog API is fetching a stick. Throw it again! 🦴",
+    "404: Dog not found. Have you checked under the couch? 🛋️",
+]

@@ -15,6 +15,8 @@ from pydantic import BaseModel
 
 from europython_discord.cogs.guild_statistics import GuildStatisticsCog, GuildStatisticsConfig
 from europython_discord.cogs.ping import PingCog
+from europython_discord.dog.cog import DogCog
+from europython_discord.dog.config import DogConfig
 from europython_discord.program_notifications.cog import ProgramNotificationsCog
 from europython_discord.program_notifications.config import ProgramNotificationsConfig
 from europython_discord.registration.cog import RegistrationCog
@@ -32,6 +34,7 @@ class Config(BaseModel):
     registration: RegistrationConfig
     program_notifications: ProgramNotificationsConfig
     guild_statistics: GuildStatisticsConfig
+    dog: DogConfig = DogConfig()
 
 
 async def run_bot(config: Config, auth_token: str) -> None:
@@ -44,6 +47,7 @@ async def run_bot(config: Config, auth_token: str) -> None:
 
     async with commands.Bot(intents=intents, command_prefix="$") as bot:
         await bot.add_cog(PingCog(bot))
+        await bot.add_cog(DogCog(bot, config.dog))
         await bot.add_cog(RegistrationCog(bot, config.registration))
         await bot.add_cog(ProgramNotificationsCog(bot, config.program_notifications))
         await bot.add_cog(GuildStatisticsCog(bot, config.guild_statistics))
