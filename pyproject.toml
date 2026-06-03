@@ -13,7 +13,7 @@ requires-python = ">=3.11"
 dependencies = [
     "discord-py>=2.7.1",
     "aiofiles>=25.1.0",
-    "aiohttp>=3.13.5",
+    "aiohttp>=3.14.0",
     "pydantic>=2.13.3",
     "unidecode>=1.4.0",
 ]
