@@ -13,9 +13,6 @@ class DogClient:
     def __init__(self) -> None:
         self._session = aiohttp.ClientSession()
 
-    async def close(self) -> None:
-        await self._session.close()
-
     async def fetch_random_dog(self) -> str | None:
         try:
             async with self._session.get(DOG_API_URL) as response:
