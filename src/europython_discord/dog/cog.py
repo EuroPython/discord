@@ -32,6 +32,6 @@ class DogCog(commands.Cog):
             await ctx.send(message)
             return
 
-        embed = discord.Embed()
+        embed = discord.Embed(description="A random dog image")
         embed.set_image(url=image_url)
         await ctx.send(embed=embed)
