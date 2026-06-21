@@ -38,6 +38,7 @@ def cog(bot: MagicMock, config: DogConfig, mock_client: DogClient) -> DogCog:
 @pytest.fixture
 def ctx() -> AsyncMock:
     mock = AsyncMock(spec=commands.Context)
+    mock.channel.name = "pet-appreciation"
     mock.send = AsyncMock()
     return mock
 
@@ -59,3 +60,17 @@ async def test_dog_command_api_error(cog: DogCog, ctx: AsyncMock, mock_client: D
     text = ctx.send.call_args.args[0]
 
     assert text in cog.config.error_messages
+
+
+@pytest.mark.parametrize(
+    "channel_name",
+    ["wrong-channel", "general", ""],
+)
+async def test_dog_command_wrong_channel(cog: DogCog, channel_name: str) -> None:
+    ctx = AsyncMock(spec=commands.Context)
+    ctx.channel.name = channel_name
+    ctx.send = AsyncMock()
+
+    await cog.dog_command.callback(cog, ctx)
+
+    ctx.send.assert_not_awaited()
