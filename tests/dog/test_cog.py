@@ -19,14 +19,9 @@ def bot() -> MagicMock:
 
 
 @pytest.fixture
-def dog_url() -> str:
-    return "https://images.dog.ceo/dog.jpg"
-
-
-@pytest.fixture
-def mock_client(dog_url: str) -> DogClient:
+def mock_client() -> DogClient:
     client = MagicMock(spec=DogClient)
-    client.fetch_random_dog.return_value = dog_url
+    client.fetch_random_dog.return_value = "https://images.dog.ceo/dog.jpg"
     return client
 
 
@@ -43,12 +38,12 @@ def ctx() -> AsyncMock:
     return mock
 
 
-async def test_dog_command_success(cog: DogCog, ctx: AsyncMock, dog_url: str) -> None:
+async def test_dog_command_success(cog: DogCog, ctx: AsyncMock) -> None:
     await cog.dog_command.callback(cog, ctx)
 
     ctx.send.assert_awaited_once()
     embed = ctx.send.call_args.kwargs["embed"]
-    assert embed.image.url == dog_url
+    assert embed.image.url == "https://images.dog.ceo/dog.jpg"
 
 
 async def test_dog_command_api_error(cog: DogCog, ctx: AsyncMock, mock_client: DogClient) -> None:
