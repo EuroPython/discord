@@ -37,25 +37,24 @@ pretix_cache_file = "pretix_cache.json"
 
 [program_notifications]
 # UTC offset in hours (e.g. 2 for CEST)
-api_url = "https://static.europython.eu/programme/ep2025/releases/current/schedule.json"
+api_url = "https://static.europython.eu/programme/ep2026/releases/current/schedule.json"
 schedule_cache_file = "schedule_cache.json"
 livestream_url_file = "test-livestreams.toml"
 main_notification_channel_name = "programme-notifications"
 
 # optional simulated start time for testing program notifications
-simulated_start_time = "2025-07-14T09:15:00+02:00"
+simulated_start_time = "2026-07-13T09:15:00+02:00"
 
 # optional fast mode for faster testing of program notifications
 # will only take effect if simulated_start_time is set
 fast_mode = true
 
 [program_notifications.rooms_to_channel_names]
-"Forum Hall" = "forum-hall"
-"South Hall 2A" = "south-hall-2a"
-"South Hall 2B" = "south-hall-2b"
-"North Hall" = "north-hall"
-"Terrace 2A" = "terrace-2a"
-"Terrace 2B" = "terrace-2b"
+"S1" = "s1"
+"S2" = "s2"
+"S3A" = "s3a"
+"S3B" = "s3b"
+"S4" = "s4"
 "Exhibit Hall" = "exhibit-hall"
 
 [guild_statistics]

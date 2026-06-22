@@ -17,10 +17,10 @@ _logger = logging.getLogger(__name__)
 
 # Discord's colon-syntax `:point_left:` does not work in button labels, so we use `\N{...}` here
 REGISTRATION_BUTTON_LABEL = "Register here \N{WHITE LEFT POINTING BACKHAND INDEX}"
-WELCOME_MESSAGE_TITLE = "## Welcome to EuroPython 2025 on Discord! :tada::snake:"
+WELCOME_MESSAGE_TITLE = "## Welcome to EuroPython 2026 on Discord! :tada::snake:"
 
 
-class RegistrationForm(discord.ui.Modal, title="EuroPython 2025 Registration"):
+class RegistrationForm(discord.ui.Modal, title="EuroPython 2026 Registration"):
     def __init__(
         self,
         config: RegistrationConfig,
@@ -206,7 +206,7 @@ class RegistrationCog(commands.Cog):
             :two: Fill in your Order ID and the name on your ticket. You can find them
             * Printed on your ticket
             * Printed on your badge
-            * In the email "[EuroPython 2025] Your order: XXXXX" from support@pretix.eu
+            * In the email "[EuroPython 2026] Your order: XXXXX" from support@pretix.eu
 
             :three: Click "Submit".
 
@@ -216,7 +216,7 @@ class RegistrationCog(commands.Cog):
             * In the {reg_help_channel.mention} channel
             * By speaking to a volunteer in a yellow t-shirt
 
-            Enjoy our EuroPython 2025 Community Server! :snake::computer::tada:
+            Enjoy our EuroPython 2026 Community Server! :snake::computer::tada:
             """
         )
 

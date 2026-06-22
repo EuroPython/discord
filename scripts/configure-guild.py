@@ -465,7 +465,7 @@ SERVER_CONFIG = GuildConfig(
             ],
         ),
         Category(
-            name="EuroPython 2025",
+            name="EuroPython 2026",
             channels=[
                 TextChannel(
                     name="announcements",
@@ -577,12 +577,11 @@ SERVER_CONFIG = GuildConfig(
                         PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["send_messages"])
                     ],
                 ),
-                TextChannel(name="forum-hall", topic="Livestream: [TBA]"),
-                TextChannel(name="south-hall-2a", topic="Livestream: [TBA]"),
-                TextChannel(name="south-hall-2b", topic="Livestream: [TBA]"),
-                TextChannel(name="north-hall", topic="Livestream: [TBA]"),
-                TextChannel(name="terrace-2a", topic="Livestream: [TBA]"),
-                TextChannel(name="terrace-2b", topic="Livestream: [TBA]"),
+                TextChannel(name="s1", topic="Livestream: [TBA]"),
+                TextChannel(name="s2", topic="Livestream: [TBA]"),
+                TextChannel(name="s3a", topic="Livestream: [TBA]"),
+                TextChannel(name="s3b", topic="Livestream: [TBA]"),
+                TextChannel(name="s4", topic="Livestream: [TBA]"),
                 TextChannel(
                     name="exhibit-hall", topic="For conversations related to the exhibit hall."
                 ),
@@ -624,7 +623,7 @@ SERVER_CONFIG = GuildConfig(
                     name="beginners-day",
                     topic=(
                         "Channel for the Beginners' Day: "
-                        "https://ep2025.europython.eu/beginners-day/"
+                        "https://ep2026.europython.eu/beginners-day/"
                     ),
                     permission_overwrites=[
                         PermissionOverwrite(
