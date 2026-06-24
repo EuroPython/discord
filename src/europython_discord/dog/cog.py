@@ -43,9 +43,8 @@ class DogCog(commands.Cog):
             return
 
         embed = discord.Embed()
-        embed.description = "A random dog image"
+        embed.description = "A random dog image from https://dog.ceo"
         embed.set_image(url=image_url)
-        embed.set_footer(text="Powered by dog.ceo")
 
         self._update_rate_limit_cache(ctx.author.id)
         await ctx.send(embed=embed)
