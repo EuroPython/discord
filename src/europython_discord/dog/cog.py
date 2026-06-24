@@ -26,7 +26,7 @@ class DogCog(commands.Cog):
         self.bot = bot
         self.config = config
         self._client = client or DogClient()
-        self._last_used: OrderedDict[int, float] = OrderedDict()
+        self._last_usage_timestamp_by_user_id: OrderedDict[int, float] = OrderedDict()
         _logger.info("Cog 'Dog' has been initialized")
 
     @commands.hybrid_command(name="dog", description="Get a random dog picture")
@@ -51,11 +51,14 @@ class DogCog(commands.Cog):
         await ctx.send(embed=embed)
 
     def _is_rate_limited(self, user_id: int) -> bool:
-        last = self._last_used.get(user_id)
-        return bool(last is not None and time.time() - last < self.config.cooldown_seconds)
+        last_usage_timestamp = self._last_usage_timestamp_by_user_id.get(user_id, 0)
+        return last_usage_timestamp + self.config.cooldown_seconds > time.time()
 
     def _update_rate_limit_cache(self, user_id: int) -> None:
-        self._last_used[user_id] = time.time()
-        self._last_used.move_to_end(user_id)
-        if len(self._last_used) > _MAX_COOLDOWN_TRACKING:
-            self._last_used.popitem(last=False)
+        # update cache
+        self._last_usage_timestamp_by_user_id[user_id] = time.time()
+
+        # trim cache
+        self._last_usage_timestamp_by_user_id.move_to_end(user_id)
+        if len(self._last_usage_timestamp_by_user_id) > _MAX_COOLDOWN_TRACKING:
+            self._last_usage_timestamp_by_user_id.popitem(last=False)
