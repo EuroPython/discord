@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+from datetime import datetime
 
 from discord import Client, TextChannel
 from discord.ext import commands, tasks
@@ -9,6 +10,7 @@ from discord.utils import get as discord_get
 from europython_discord.program_notifications import session_to_embed
 from europython_discord.program_notifications.config import ProgramNotificationsConfig
 from europython_discord.program_notifications.livestream_connector import LivestreamConnector
+from europython_discord.program_notifications.models import Session
 from europython_discord.program_notifications.program_connector import ProgramConnector
 
 _logger = logging.getLogger(__name__)
@@ -27,7 +29,7 @@ class ProgramNotificationsCog(commands.Cog):
 
         self.livestream_connector = LivestreamConnector(self.config.livestream_url_file)
 
-        self.notified_sessions = set()
+        self.notified_sessions: set[tuple[str, datetime]] = set()
         _logger.info("Cog 'Program Notifications' has been initialized")
 
     @commands.Cog.listener()
@@ -77,7 +79,7 @@ class ProgramNotificationsCog(commands.Cog):
         # determine sessions to send notifications for
         sessions_to_notify = []
         for session in await self.program_connector.get_upcoming_sessions():
-            if session in self.notified_sessions:
+            if _get_session_key(session) in self.notified_sessions:
                 continue  # already notified
             if len(session.rooms) > 1:
                 continue  # announcement or coffee/lunch break
@@ -95,13 +97,15 @@ class ProgramNotificationsCog(commands.Cog):
             room_name = session.rooms[0]
             room_channel = self._get_room_channel(room_name)
 
-            # update room's livestream URL
             livestream_url = await self.livestream_connector.get_livestream_url(
                 room_name, session.start.date()
             )
             embed = session_to_embed.create_session_embed(session, livestream_url)
 
+            # send session notification message to room and main channel
             await main_notification_channel.send(embed=embed)
+
+            # update room's livestream URL
             if room_channel is not None:
                 await room_channel.edit(
                     topic=f"Livestream: [YouTube]({livestream_url})" if livestream_url else ""
@@ -111,9 +115,8 @@ class ProgramNotificationsCog(commands.Cog):
                     embed=embed,
                 )
 
-            # send session notification message to room and main channel
-
-            self.notified_sessions.add(session)
+            # mark session as notified
+            self.notified_sessions.add(_get_session_key(session))
 
     async def purge_all_room_channels(self) -> None:
         _logger.info("Purging all room channels...")
@@ -129,3 +132,8 @@ class ProgramNotificationsCog(commands.Cog):
             return None
 
         return discord_get(self.bot.get_all_channels(), name=channel_name)
+
+
+def _get_session_key(session: Session) -> tuple[str, datetime]:
+    """Get a unique key per session."""
+    return session.code, session.start
