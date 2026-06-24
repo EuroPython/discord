@@ -43,7 +43,7 @@ livestream_url_file = "test-livestreams.toml"
 main_notification_channel_name = "programme-notifications"
 
 # optional simulated start time for testing program notifications
-simulated_start_time = "2026-07-13T09:15:00+02:00"
+simulated_start_time = "2026-07-15T08:50:00+02:00"
 
 # optional fast mode for faster testing of program notifications
 # will only take effect if simulated_start_time is set
