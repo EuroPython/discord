@@ -10,7 +10,7 @@ from europython_discord.dog.dogclient import DogClient
 
 @pytest.fixture
 def config() -> DogConfig:
-    return DogConfig()
+    return DogConfig(channel_name="animal-appreciation")
 
 
 @pytest.fixture
@@ -33,7 +33,7 @@ def cog(bot: MagicMock, config: DogConfig, mock_client: DogClient) -> DogCog:
 @pytest.fixture
 def ctx() -> AsyncMock:
     mock = AsyncMock(spec=commands.Context)
-    mock.channel.name = "pet-appreciation"
+    mock.channel.name = "animal-appreciation"
     mock.send = AsyncMock()
     return mock
 

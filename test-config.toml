@@ -66,6 +66,7 @@ fast_mode = true
 required_role = "Organizers"
 
 [dog]
+channel_name = "animal-appreciation"
 cooldown_seconds = 10
 error_messages = [
     "The dogs are on strike today! Try again later. 🐾🪧",

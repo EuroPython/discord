@@ -34,7 +34,7 @@ class Config(BaseModel):
     registration: RegistrationConfig
     program_notifications: ProgramNotificationsConfig
     guild_statistics: GuildStatisticsConfig
-    dog: DogConfig = DogConfig()
+    dog: DogConfig
 
 
 async def run_bot(config: Config, auth_token: str) -> None:
