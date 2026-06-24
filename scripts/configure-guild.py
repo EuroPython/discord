@@ -542,6 +542,10 @@ SERVER_CONFIG = GuildConfig(
                         "Please bring found items to the registration desk."
                     ),
                 ),
+                TextChannel(
+                    name="pet-appreciation",
+                    topic="A place to share pictures and stories about your pets!",
+                ),
             ],
             permission_overwrites=[
                 PermissionOverwrite(roles=[ROLE_EVERYONE], deny=["view_channel"]),
