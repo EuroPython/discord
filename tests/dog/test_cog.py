@@ -9,16 +9,6 @@ from europython_discord.dog.dogclient import DogClient
 
 
 @pytest.fixture
-def config() -> DogConfig:
-    return DogConfig(channel_name="animal-appreciation")
-
-
-@pytest.fixture
-def bot() -> MagicMock:
-    return MagicMock(spec=commands.Bot)
-
-
-@pytest.fixture
 def mock_client() -> DogClient:
     client = MagicMock(spec=DogClient)
     client.fetch_random_dog.return_value = "https://images.dog.ceo/dog.jpg"
@@ -26,7 +16,9 @@ def mock_client() -> DogClient:
 
 
 @pytest.fixture
-def cog(bot: MagicMock, config: DogConfig, mock_client: DogClient) -> DogCog:
+def cog(mock_client: DogClient) -> DogCog:
+    bot = MagicMock(spec=commands.Bot)
+    config = DogConfig(channel_name="animal-appreciation")
     return DogCog(bot, config, client=mock_client)
 
 
@@ -57,10 +49,7 @@ async def test_dog_command_api_error(cog: DogCog, ctx: AsyncMock, mock_client: D
     assert text in cog.config.error_messages
 
 
-@pytest.mark.parametrize(
-    "channel_name",
-    ["wrong-channel", "general", ""],
-)
+@pytest.mark.parametrize("channel_name", ["wrong-channel", "general", ""])
 async def test_dog_command_wrong_channel(cog: DogCog, channel_name: str) -> None:
     ctx = AsyncMock(spec=commands.Context)
     ctx.channel.name = channel_name
