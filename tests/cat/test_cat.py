@@ -3,9 +3,9 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 from discord.ext import commands
 
+from europython_discord.cat.catclient import CatClient
 from europython_discord.cat.cog import CatCog
 from europython_discord.cat.config import CatConfig
-from europython_discord.cat.catclient import CatClient
 
 
 @pytest.fixture

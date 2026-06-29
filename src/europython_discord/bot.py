@@ -13,16 +13,16 @@ import discord
 from discord.ext import commands
 from pydantic import BaseModel
 
-from europython_discord.cogs.guild_statistics import GuildStatisticsCog, GuildStatisticsConfig
 from europython_discord.cat.cog import CatCog
 from europython_discord.cat.config import CatConfig
+from europython_discord.cogs.guild_statistics import GuildStatisticsCog, GuildStatisticsConfig
+from europython_discord.cogs.ping import PingCog
+from europython_discord.dog.cog import DogCog
+from europython_discord.dog.config import DogConfig
 from europython_discord.duck.cog import DuckCog
 from europython_discord.duck.config import DuckConfig
 from europython_discord.fox.cog import FoxCog
 from europython_discord.fox.config import FoxConfig
-from europython_discord.cogs.ping import PingCog
-from europython_discord.dog.cog import DogCog
-from europython_discord.dog.config import DogConfig
 from europython_discord.program_notifications.cog import ProgramNotificationsCog
 from europython_discord.program_notifications.config import ProgramNotificationsConfig
 from europython_discord.registration.cog import RegistrationCog

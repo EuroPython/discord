@@ -8,8 +8,8 @@ from collections import OrderedDict
 import discord
 from discord.ext import commands
 
-from europython_discord.cat.config import CatConfig
 from europython_discord.cat.catclient import CatClient
+from europython_discord.cat.config import CatConfig
 
 _logger = logging.getLogger(__name__)
 

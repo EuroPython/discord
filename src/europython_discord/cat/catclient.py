@@ -35,5 +35,5 @@ class CatClient:
             if url.startswith("http"):
                 return url
             return f"https://cataas.com{url}"
-        
+
         return None
