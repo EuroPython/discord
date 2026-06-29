@@ -64,9 +64,11 @@ main_notification_channel_name = "programme-notifications"
 [guild_statistics]
 required_role = "Organizers"
 
-[dog]
+[animals]
 channel_name = "animal-appreciation"
 cooldown_seconds = 10
+
+[animals.dog]
 error_messages = [
     "The dogs are on strike today! Try again later. 🐾🪧",
     "A wild error appeared! The dog got away... 🐕💨",
@@ -74,9 +76,7 @@ error_messages = [
     "404: Dog not found. Have you checked under the couch? 🛋️",
 ]
 
-[cat]
-channel_name = "animal-appreciation"
-cooldown_seconds = 10
+[animals.cat]
 error_messages = [
     "The cats are on strike today! Try again later. 🐾🪧",
     "A wild error appeared! The cat got away... 😿💨",
@@ -84,9 +84,7 @@ error_messages = [
     "404: Cat not found. Have you checked inside a cardboard box? 📦",
 ]
 
-[duck]
-channel_name = "animal-appreciation"
-cooldown_seconds = 10
+[animals.duck]
 error_messages = [
     "The ducks are on strike today! Try again later. 🐾🪧",
     "A wild error appeared! The duck got away... 🦆💨",
@@ -94,9 +92,7 @@ error_messages = [
     "Quack! The duck API seems to be having an off day.",
 ]
 
-[fox]
-channel_name = "animal-appreciation"
-cooldown_seconds = 10
+[animals.fox]
 error_messages = [
     "The foxes are on strike today! Try again later. 🐾🪧",
     "A wild error appeared! The fox got away... 🦊💨",
