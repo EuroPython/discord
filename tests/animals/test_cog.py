@@ -1,3 +1,4 @@
+import time
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
@@ -90,9 +91,7 @@ async def test_animal_command_rate_limit(cog: AnimalsCog, ctx: AsyncMock) -> Non
     await cog.dog_command.callback(cog, ctx)
     assert ctx.send.call_count == 1  # Still 1, didn't increase
 
-    # Fast forward time to bypass cooldown
-    import time
-
+    # Time travel
     cog._last_usage_timestamp_by_user_id[ctx.author.id] = time.time() - 20
 
     # Third call succeeds
