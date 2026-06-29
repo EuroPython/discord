@@ -43,7 +43,9 @@ def ctx() -> AsyncMock:
     return mock
 
 
-@pytest.mark.parametrize("command_name", ["dog_command", "cat_command", "duck_command", "fox_command"])
+@pytest.mark.parametrize(
+    "command_name", ["dog_command", "cat_command", "duck_command", "fox_command"]
+)
 async def test_animal_commands_success(cog: AnimalsCog, ctx: AsyncMock, command_name: str) -> None:
     command = getattr(cog, command_name)
     await command.callback(cog, ctx)
@@ -54,7 +56,9 @@ async def test_animal_commands_success(cog: AnimalsCog, ctx: AsyncMock, command_
     assert "friendly" in embed.description
 
 
-async def test_animal_command_api_error(cog: AnimalsCog, ctx: AsyncMock, mock_client: AnimalClient) -> None:
+async def test_animal_command_api_error(
+    cog: AnimalsCog, ctx: AsyncMock, mock_client: AnimalClient
+) -> None:
     mock_client.fetch_image = AsyncMock(return_value=None)
 
     await cog.dog_command.callback(cog, ctx)
@@ -81,15 +85,16 @@ async def test_animal_command_rate_limit(cog: AnimalsCog, ctx: AsyncMock) -> Non
     # First call succeeds
     await cog.dog_command.callback(cog, ctx)
     assert ctx.send.call_count == 1
-    
+
     # Second call right after fails due to rate limit
     await cog.dog_command.callback(cog, ctx)
     assert ctx.send.call_count == 1  # Still 1, didn't increase
-    
+
     # Fast forward time to bypass cooldown
     import time
+
     cog._last_usage_timestamp_by_user_id[ctx.author.id] = time.time() - 20
-    
+
     # Third call succeeds
     await cog.dog_command.callback(cog, ctx)
     assert ctx.send.call_count == 2
