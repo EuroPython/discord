@@ -67,10 +67,12 @@ required_role = "Organizers"
 
 [dog]
 channel_name = "animal-appreciation"
-cooldown_seconds = 10
-error_messages = [
-    "The dogs are on strike today! Try again later. 🐾🪧",
-    "A wild error appeared! The dog got away... 🐕💨",
-    "Dog API is fetching a stick. Throw it again! 🦴",
-    "404: Dog not found. Have you checked under the couch? 🛋️",
-]
+
+[cat]
+channel_name = "animal-appreciation"
+
+[duck]
+channel_name = "animal-appreciation"
+
+[fox]
+channel_name = "animal-appreciation"
