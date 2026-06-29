@@ -238,7 +238,7 @@ COLOR_DARK_PURPLE = "#658B34"
 
 ROLE_COC = "Code of Conduct Committee"
 ROLE_MODERATORS = "Moderators"
-ROLE_ORGANIZERS = "Organizers"
+ROLE_ORGANISERS = "Organisers"
 ROLE_VOLUNTEERS = "Volunteers"
 ROLE_SPEAKERS = "Speakers"
 ROLE_SPONSORS = "Sponsors"
@@ -248,10 +248,10 @@ ROLE_BEGINNERS_DAY = "Beginners Day"
 
 ROLES_COC = [ROLE_COC]
 ROLES_MODERATORS = [ROLE_MODERATORS, *ROLES_COC]
-ROLES_ORGANIZERS = [ROLE_ORGANIZERS, *ROLES_MODERATORS]
-ROLES_VOLUNTEERS = [ROLE_VOLUNTEERS, *ROLES_ORGANIZERS]
-ROLES_SPEAKERS = [ROLE_SPEAKERS, *ROLES_ORGANIZERS]
-ROLES_SPONSORS = [ROLE_SPONSORS, *ROLES_ORGANIZERS]
+ROLES_ORGANISERS = [ROLE_ORGANISERS, *ROLES_MODERATORS]
+ROLES_VOLUNTEERS = [ROLE_VOLUNTEERS, *ROLES_ORGANISERS]
+ROLES_SPEAKERS = [ROLE_SPEAKERS, *ROLES_ORGANISERS]
+ROLES_SPONSORS = [ROLE_SPONSORS, *ROLES_ORGANISERS]
 ROLES_REGISTERED = [
     ROLE_PARTICIPANTS,
     ROLE_SPONSORS,
@@ -291,7 +291,7 @@ SERVER_CONFIG = GuildConfig(
             ],
         ),
         Role(
-            name=ROLE_ORGANIZERS,
+            name=ROLE_ORGANISERS,
             color=COLOR_DARK_YELLOW,
             permissions=["mention_everyone", "use_external_apps", "manage_roles"],
         ),
@@ -474,7 +474,7 @@ SERVER_CONFIG = GuildConfig(
                         PermissionOverwrite(
                             roles=[ROLE_EVERYONE], deny=["send_messages", "create_public_threads"]
                         ),
-                        PermissionOverwrite(roles=[ROLE_ORGANIZERS], allow=["send_messages"]),
+                        PermissionOverwrite(roles=[ROLE_ORGANISERS], allow=["send_messages"]),
                     ],
                 ),
                 TextChannel(
@@ -487,9 +487,9 @@ SERVER_CONFIG = GuildConfig(
                 ForumChannel(
                     name="support",
                     topic="""
-                        Use this forum channel to create support tickets if you **need support from the conference organization**. Please don't open forum threads related to other topics, as that makes it difficult for the organizers to keep track of support tickets that need their attention.
+                        Use this forum channel to create support tickets if you **need support from the conference organization**. Please don't open forum threads related to other topics, as that makes it difficult for the organisers to keep track of support tickets that need their attention.
 
-                        If you to make a report to the Code of Conduct Committee, please use coc@europython.eu or contact an organizer at the conference.
+                        If you to make a report to the Code of Conduct Committee, please use coc@europython.eu or contact an organiser at the conference.
                         """,  # noqa: E501 (line too long)
                     tags=["Remote Support", "On-Site Support"],
                     require_tag=True,
@@ -756,7 +756,7 @@ SERVER_CONFIG = GuildConfig(
                             roles=[ROLE_EVERYONE], deny=["send_messages", "create_public_threads"]
                         ),
                         PermissionOverwrite(roles=ROLES_REGISTERED, deny=["view_channel"]),
-                        PermissionOverwrite(roles=ROLES_ORGANIZERS, allow=["view_channel"]),
+                        PermissionOverwrite(roles=ROLES_ORGANISERS, allow=["view_channel"]),
                     ],
                 ),
                 TextChannel(
@@ -767,7 +767,7 @@ SERVER_CONFIG = GuildConfig(
                             roles=[ROLE_EVERYONE], deny=["send_messages", "create_public_threads"]
                         ),
                         PermissionOverwrite(roles=ROLES_REGISTERED, deny=["view_channel"]),
-                        PermissionOverwrite(roles=ROLES_ORGANIZERS, allow=["view_channel"]),
+                        PermissionOverwrite(roles=ROLES_ORGANISERS, allow=["view_channel"]),
                     ],
                 ),
                 ForumChannel(
@@ -779,7 +779,7 @@ SERVER_CONFIG = GuildConfig(
                         """,  # noqa: E501 (line too long)
                     permission_overwrites=[
                         PermissionOverwrite(roles=ROLES_REGISTERED, deny=["view_channel"]),
-                        PermissionOverwrite(roles=ROLES_ORGANIZERS, allow=["view_channel"]),
+                        PermissionOverwrite(roles=ROLES_ORGANISERS, allow=["view_channel"]),
                     ],
                 ),
                 TextChannel(

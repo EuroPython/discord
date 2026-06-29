@@ -37,24 +37,24 @@ pretix_cache_file = "pretix_cache.json"
 "Beginners’ Day Unconference / Humble Data Access" = ["Beginners Day"]
 
 [registration.variation_to_roles]
-# organizers
-"Volunteer" = ["Organizers", "Volunteers", "Onsite Volunteers"]
+# organisers
+"Volunteer" = ["Organisers", "Volunteers", "Onsite Volunteers"]
 
-[program_notifications]
+[programme_notifications]
 # UTC offset in hours (e.g. 2 for CEST)
 api_url = "https://static.europython.eu/programme/ep2026/releases/current/schedule.json"
 schedule_cache_file = "schedule_cache.json"
 livestream_url_file = "test-livestreams.toml"
 main_notification_channel_name = "programme-notifications"
 
-# optional simulated start time for testing program notifications
+# optional simulated start time for testing programme notifications
 simulated_start_time = "2026-07-15T08:50:00+02:00"
 
-# optional fast mode for faster testing of program notifications
+# optional fast mode for faster testing of programme notifications
 # will only take effect if simulated_start_time is set
 fast_mode = true
 
-[program_notifications.rooms_to_channel_names]
+[programme_notifications.rooms_to_channel_names]
 "S1" = "s1"
 "S2" = "s2"
 "S3A" = "s3a"
@@ -63,7 +63,7 @@ fast_mode = true
 "Exhibit Hall" = "exhibit-hall"
 
 [guild_statistics]
-required_role = "Organizers"
+required_role = "Organisers"
 
 [dog]
 channel_name = "animal-appreciation"

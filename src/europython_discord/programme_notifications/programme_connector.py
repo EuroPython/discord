@@ -9,12 +9,12 @@ from pathlib import Path
 import aiofiles
 import aiohttp
 
-from europython_discord.program_notifications.models import Break, Schedule, Session
+from europython_discord.programme_notifications.models import Break, Schedule, Session
 
 _logger = logging.getLogger(__name__)
 
 
-class ProgramConnector:
+class ProgrammeConnector:
     def __init__(
         self,
         api_url: str,
@@ -51,7 +51,7 @@ class ProgramConnector:
         return sessions_by_day
 
     async def fetch_schedule(self) -> None:
-        """Fetch schedule data from the Program API and write it to a file as backup."""
+        """Fetch schedule data from the Programme  API and write it to a file as backup."""
         async with self._fetch_lock:
             try:
                 async with (
