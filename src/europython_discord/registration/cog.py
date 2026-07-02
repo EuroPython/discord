@@ -244,7 +244,7 @@ class RegistrationCog(commands.Cog):
         await reg_channel.send(
             f"{WELCOME_MESSAGE_TITLE}\n"
             "The registration bot is currently offline. "
-            "We apologize for the inconvenience and are working hard to fix the issue."
+            "We apologise for the inconvenience and are working hard to fix the issue."
         )
 
     @tasks.loop(minutes=5)

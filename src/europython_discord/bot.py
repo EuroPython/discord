@@ -17,8 +17,8 @@ from europython_discord.cogs.guild_statistics import GuildStatisticsCog, GuildSt
 from europython_discord.cogs.ping import PingCog
 from europython_discord.dog.cog import DogCog
 from europython_discord.dog.config import DogConfig
-from europython_discord.program_notifications.cog import ProgramNotificationsCog
-from europython_discord.program_notifications.config import ProgramNotificationsConfig
+from europython_discord.programme_notifications.cog import ProgrammeNotificationsCog
+from europython_discord.programme_notifications.config import ProgrammeNotificationsConfig
 from europython_discord.registration.cog import RegistrationCog
 from europython_discord.registration.config import RegistrationConfig
 
@@ -32,7 +32,7 @@ _logger = logging.getLogger(__name__)
 class Config(BaseModel):
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
     registration: RegistrationConfig
-    program_notifications: ProgramNotificationsConfig
+    programme_notifications: ProgrammeNotificationsConfig
     guild_statistics: GuildStatisticsConfig
     dog: DogConfig
 
@@ -49,7 +49,7 @@ async def run_bot(config: Config, auth_token: str) -> None:
         await bot.add_cog(PingCog(bot))
         await bot.add_cog(DogCog(bot, config.dog))
         await bot.add_cog(RegistrationCog(bot, config.registration))
-        await bot.add_cog(ProgramNotificationsCog(bot, config.program_notifications))
+        await bot.add_cog(ProgrammeNotificationsCog(bot, config.programme_notifications))
         await bot.add_cog(GuildStatisticsCog(bot, config.guild_statistics))
 
         await bot.start(auth_token)

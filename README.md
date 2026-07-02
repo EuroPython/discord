@@ -12,7 +12,7 @@ The scripts work standalone and only require an Auth token. Please find more doc
 The bot has the following extensions ("Cogs"):
 
 * Ping: To check if the bot is running, write `$ping` in any channel. The bot will respond with `Pong!`.
-* Guild Statistics: As an organizer, write `$participants` in an organizer-only channel. The bot will respond with a list of roles, and the number of members per role.
+* Guild Statistics: As an organiser, write `$participants` in an organiser-only channel. The bot will respond with a list of roles, and the number of members per role.
 * Registration: On startup, the bot posts a registration form. New users must register using their Pretix ticket data. On success, the bot assigns the appropriate roles.
 * Programme Notifications: Before each session, the bot posts a session summary and updates the livestream URLs.
 
@@ -193,4 +193,4 @@ Related files:
     * `/root/livestreams.toml`: Livestream URL configuration
     * `/home/bot/registered_log.txt`: Registration log
     * `/home/bot/pretix_cache.json`: Pretix cache
-    * `/home/bot/schedule_cache.json`: Program cache
+    * `/home/bot/schedule_cache.json`: Programme cache
