@@ -8,7 +8,7 @@ from typing import Final
 from discord import Embed
 from discord.utils import escape_markdown, format_dt
 
-from europython_discord.program_notifications.models import Session, Speaker
+from europython_discord.programme_notifications.models import Session, Speaker
 
 _AUTHOR_WIDTH: Final = 128
 _TWEET_WIDTH: Final = 200

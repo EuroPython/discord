@@ -7,20 +7,20 @@ from discord import Client, TextChannel
 from discord.ext import commands, tasks
 from discord.utils import get as discord_get
 
-from europython_discord.program_notifications import session_to_embed
-from europython_discord.program_notifications.config import ProgramNotificationsConfig
-from europython_discord.program_notifications.livestream_connector import LivestreamConnector
-from europython_discord.program_notifications.models import Session
-from europython_discord.program_notifications.program_connector import ProgramConnector
+from europython_discord.programme_notifications import session_to_embed
+from europython_discord.programme_notifications.config import ProgrammeNotificationsConfig
+from europython_discord.programme_notifications.livestream_connector import LivestreamConnector
+from europython_discord.programme_notifications.models import Session
+from europython_discord.programme_notifications.programme_connector import ProgrammeConnector
 
 _logger = logging.getLogger(__name__)
 
 
-class ProgramNotificationsCog(commands.Cog):
-    def __init__(self, bot: Client, config: ProgramNotificationsConfig) -> None:
+class ProgrammeNotificationsCog(commands.Cog):
+    def __init__(self, bot: Client, config: ProgrammeNotificationsConfig) -> None:
         self.bot = bot
         self.config = config
-        self.program_connector = ProgramConnector(
+        self.programme_connector = ProgrammeConnector(
             api_url=self.config.api_url,
             cache_file=self.config.schedule_cache_file,
             simulated_start_time=self.config.simulated_start_time,
@@ -30,7 +30,7 @@ class ProgramNotificationsCog(commands.Cog):
         self.livestream_connector = LivestreamConnector(self.config.livestream_url_file)
 
         self.notified_sessions: set[tuple[str, datetime]] = set()
-        _logger.info("Cog 'Program Notifications' has been initialized")
+        _logger.info("Cog 'Programme Notifications' has been initialized")
 
     @commands.Cog.listener()
     async def on_ready(self) -> None:
@@ -42,7 +42,7 @@ class ProgramNotificationsCog(commands.Cog):
             _logger.debug(f"Fast mode: {self.config.fast_mode}")
         _logger.info("Starting the session notifier...")
         self.notify_sessions.start()
-        _logger.info("Cog 'Program Notifications' is ready")
+        _logger.info("Cog 'Programme Notifications' is ready")
 
     async def cog_load(self) -> None:
         """Start schedule updater task."""
@@ -66,7 +66,7 @@ class ProgramNotificationsCog(commands.Cog):
     @tasks.loop(minutes=5)
     async def fetch_schedule(self) -> None:
         _logger.info("Starting the periodic schedule update...")
-        await self.program_connector.fetch_schedule()
+        await self.programme_connector.fetch_schedule()
 
     @tasks.loop(minutes=5)
     async def fetch_livestreams(self) -> None:
@@ -78,7 +78,7 @@ class ProgramNotificationsCog(commands.Cog):
     async def notify_sessions(self) -> None:
         # determine sessions to send notifications for
         sessions_to_notify = []
-        for session in await self.program_connector.get_upcoming_sessions():
+        for session in await self.programme_connector.get_upcoming_sessions():
             if _get_session_key(session) in self.notified_sessions:
                 continue  # already notified
             if len(session.rooms) > 1:

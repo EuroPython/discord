@@ -6,7 +6,7 @@ from pathlib import Path
 from pydantic import AwareDatetime, BaseModel
 
 
-class ProgramNotificationsConfig(BaseModel):
+class ProgrammeNotificationsConfig(BaseModel):
     api_url: str
     schedule_cache_file: Path
     livestream_url_file: Path
