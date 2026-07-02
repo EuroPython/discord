@@ -3,7 +3,7 @@
 A suite of tools for managing the EuroPython Conference Discord server:
 
 * [src/europython_discord](./src/europython_discord): Discord bot
-* [scripts/configure-guild.py](./scripts/configure-guild.py): Configure channels and roles of a Discord server
+* [discord-guild-configurator](https://github.com/europython/discord-guild-configurator): Configure channels and roles of a Discord server
 * [scripts/export-members.py](./scripts/export-members.py): Export a list of all server members and their roles
 * [scripts/pretix-mock.py](./scripts/pretix-mock.py): Mock Pretix server for development purposes
 
@@ -98,8 +98,8 @@ Expected outcome: You have a Discord Bot Token and can run a Discord Bot on a Di
 
 ### Discord Server Configuration
 
-Follow [Discord Server Configuration](docs/discord-server-configuration.md)
-to configure your existing Discord Server with the expected channels, roles and messages.
+See [discord-guild-configurator](https://github.com/europython/discord-guild-configurator)
+to configure your Discord Server with the expected channels, roles, and messages.
 
 Expected outcome: A Discord Server ready to be used for this bot.
 
