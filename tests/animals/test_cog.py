@@ -4,15 +4,17 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 from discord.ext import commands
 
-from europython_discord.animals.clients import AnimalClient
-from europython_discord.animals.cog import AnimalsCog
+from europython_discord.animals.clients import AnimalClient, ImageResult
+from europython_discord.animals.cog import AnimalsCog, _make_animality_command
 from europython_discord.animals.config import AnimalsConfig, AnimalSpecificConfig
 
 
 @pytest.fixture
 def mock_client() -> AnimalClient:
     client = MagicMock(spec=AnimalClient)
-    client.fetch_image = AsyncMock(return_value="https://example.com/animal.jpg")
+    client.fetch_image = AsyncMock(
+        return_value=ImageResult("https://example.com/animal.jpg", "https://example.com")
+    )
     return client
 
 
@@ -97,3 +99,29 @@ async def test_animal_command_rate_limit(cog: AnimalsCog, ctx: AsyncMock) -> Non
     # Third call succeeds
     await cog.dog_command.callback(cog, ctx)
     assert ctx.send.call_count == 2
+
+
+@pytest.mark.parametrize("animal", ["panda", "penguin"])
+async def test_animality_command_success(cog: AnimalsCog, ctx: AsyncMock, animal: str) -> None:
+    cmd = _make_animality_command(animal, cog)
+    await cmd.callback(ctx)
+
+    ctx.send.assert_awaited_once()
+    embed = ctx.send.call_args.kwargs["embed"]
+    assert embed.image.url == "https://example.com/animal.jpg"
+    assert "friendly" in embed.description
+    assert animal in embed.description
+
+
+@pytest.mark.parametrize("channel_name", ["wrong-channel", "general", ""])
+async def test_animality_command_wrong_channel(cog: AnimalsCog, channel_name: str) -> None:
+    ctx = AsyncMock(spec=commands.Context)
+    ctx.channel.name = channel_name
+    ctx.author = MagicMock()
+    ctx.author.id = 12345
+    ctx.send = AsyncMock()
+
+    cmd = _make_animality_command("panda", cog)
+    await cmd.callback(ctx)
+
+    ctx.send.assert_not_awaited()
