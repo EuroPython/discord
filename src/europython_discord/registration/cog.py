@@ -198,7 +198,8 @@ class RegistrationCog(commands.Cog):
 
             :three: Click "Submit".
 
-            These steps will assign the correct server permissions and set your server nickname.
+            These steps will assign the correct server permissions and set your server nickname
+            to the name on your conference badge. You can change your server nickname afterwards.
 
             Experiencing trouble? Please contact us
             * In the {reg_help_channel.mention} channel
