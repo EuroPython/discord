@@ -55,6 +55,9 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2026 Registration"):
         order = self.order_field.value
 
         _logger.info(f"Registration attempt: {order=}, {name=}")
+
+        # send initial reaction so Discord doesn't drop the interaction after 3 seconds
+        interaction.response.defer(ephemeral=True, thinking=True)
         tickets = self.pretix_connector.get_tickets(order=order, name=name)
 
         if not tickets:
@@ -127,13 +130,13 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2026 Registration"):
 
     @staticmethod
     async def log_registration_to_user(interaction: Interaction, *, name: str) -> None:
-        await interaction.response.send_message(
-            f"Thank you {name}, you are now registered!\n\n"
-            f"Also, your nickname was changed to the name you used to register your ticket. "
-            f"This is also the name that would be on your conference badge, which means that "
-            f"your nickname can be your 'virtual conference badge'.",
-            ephemeral=True,
-            delete_after=None,
+        await interaction.edit_original_response(
+            content=(
+                f"Thank you {name}, you are now registered!\n\n"
+                f"Also, your nickname was changed to the name you used to register your ticket. "
+                f"This is also the name that would be on your conference badge, which means that "
+                f"your nickname can be your 'virtual conference badge'."
+            )
         )
 
     async def log_registration_to_channel(
@@ -152,10 +155,8 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2026 Registration"):
         reg_help_channel = discord_get(
             interaction.guild.channels, name=self.config.registration_help_channel_name
         )
-        await interaction.response.send_message(
-            f"{message} If you need help, please contact us in {reg_help_channel.mention}.",
-            ephemeral=True,
-            delete_after=None,
+        await interaction.edit_original_response(
+            content=f"{message} If you need help, please contact us in {reg_help_channel.mention}.",
         )
 
     async def log_error_to_channel(self, interaction: Interaction, message: str) -> None:
