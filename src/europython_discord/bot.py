@@ -47,7 +47,7 @@ async def run_bot(config: Config, auth_token: str) -> None:
 
     async with commands.Bot(intents=intents, command_prefix="$") as bot:
         await bot.add_cog(PingCog(bot))
-        await bot.add_cog(AnimalsCog.from_config(bot, config.animals))
+        await bot.add_cog(AnimalsCog(bot, config.animals))
         await bot.add_cog(RegistrationCog(bot, config.registration))
         await bot.add_cog(ProgrammeNotificationsCog(bot, config.programme_notifications))
         await bot.add_cog(GuildStatisticsCog(bot, config.guild_statistics))

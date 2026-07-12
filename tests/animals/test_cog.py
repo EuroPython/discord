@@ -1,148 +1,127 @@
+import time
 from unittest.mock import AsyncMock, MagicMock
 
+import pytest
 from discord.ext import commands
-from discord.ext.commands import Context
 
-from europython_discord.animals.cog import AnimalsCog
-from europython_discord.animals.config import AnimalsConfig
-from europython_discord.animals.providers import AnimalImageProvider
-from europython_discord.animals.providers.animal_image_provider import AnimalImage
-from europython_discord.animals.rate_limiter import RateLimiter
-
-DEFAULT_CHANNEL_NAME = "animal-channel"
-DEFAULT_AUTHOR_ID = 12345
-DEFAULT_ANIMAL = "cat"
-DEFAULT_IMAGE_URL = "https://example.com/cat.jpg"
-DEFAULT_IMAGE_SOURCE = "https://example.com"
+from europython_discord.animals.clients import AnimalClient, ImageResult
+from europython_discord.animals.cog import AnimalsCog, _make_animality_command
+from europython_discord.animals.config import AnimalsConfig, AnimalSpecificConfig
 
 
-class FakeProvider(AnimalImageProvider):
-    async def generate_image(self) -> AnimalImage | None:
-        return AnimalImage(url=DEFAULT_IMAGE_URL, source=DEFAULT_IMAGE_SOURCE)
+@pytest.fixture
+def mock_client() -> AnimalClient:
+    client = MagicMock(spec=AnimalClient)
+    client.fetch_image = AsyncMock(
+        return_value=ImageResult("https://example.com/animal.jpg", "https://example.com")
+    )
+    return client
 
 
-class FakeConfig(AnimalsConfig):
-    channel_name: str = "animal-appreciation"
-    cooldown_seconds: int = 10
-
-
-def create_fake_cog(
-    bot: commands.Bot | None = None,
-    providers_by_animal: dict[str, list[AnimalImageProvider]] | None = None,
-    rate_limiter: RateLimiter | None = None,
-    channel_name: str = DEFAULT_CHANNEL_NAME,
-) -> AnimalsCog:
-    providers = {DEFAULT_ANIMAL: [FakeProvider()]}
-    return AnimalsCog(
-        bot=MagicMock() if bot is None else bot,
-        channel_name=channel_name,
-        providers_by_animal=providers if providers_by_animal is None else providers_by_animal,
-        rate_limiter=RateLimiter(cooldown_seconds=10) if rate_limiter is None else rate_limiter,
+@pytest.fixture
+def config() -> AnimalsConfig:
+    return AnimalsConfig(
+        channel_name="animal-appreciation",
+        cooldown_seconds=10,
+        dog=AnimalSpecificConfig(error_messages=["dog error"]),
+        cat=AnimalSpecificConfig(error_messages=["cat error"]),
+        duck=AnimalSpecificConfig(error_messages=["duck error"]),
+        fox=AnimalSpecificConfig(error_messages=["fox error"]),
     )
 
 
-def create_fake_context(
-    channel_name: str = DEFAULT_CHANNEL_NAME,
-    author_id: int = DEFAULT_AUTHOR_ID,
-) -> Context:
-    context = AsyncMock(spec=commands.Context)
-    context.author.id = author_id
-    context.channel.name = channel_name
-    context.send = AsyncMock()
-    return context
+@pytest.fixture
+def cog(mock_client: AnimalClient, config: AnimalsConfig) -> AnimalsCog:
+    bot = MagicMock(spec=commands.Bot)
+    return AnimalsCog(bot, config, client=mock_client)
 
 
-async def test_command_success() -> None:
-    cog = create_fake_cog()
-    ctx = create_fake_context()
+@pytest.fixture
+def ctx() -> AsyncMock:
+    mock = AsyncMock(spec=commands.Context)
+    mock.channel.name = "animal-appreciation"
+    mock.author = MagicMock()
+    mock.author.id = 12345
+    mock.send = AsyncMock()
+    return mock
 
-    await cog.post_animal_picture(DEFAULT_ANIMAL, ctx=ctx)
+
+@pytest.mark.parametrize(
+    "command_name", ["dog_command", "cat_command", "duck_command", "fox_command"]
+)
+async def test_animal_commands_success(cog: AnimalsCog, ctx: AsyncMock, command_name: str) -> None:
+    command = getattr(cog, command_name)
+    await command.callback(cog, ctx)
 
     ctx.send.assert_awaited_once()
     embed = ctx.send.call_args.kwargs["embed"]
-    assert embed.image.url == DEFAULT_IMAGE_URL
-    assert embed.description == f"Behold! A friendly cat appeared from {DEFAULT_IMAGE_SOURCE}"
+    assert embed.image.url == "https://example.com/animal.jpg"
+    assert "friendly" in embed.description
 
 
-async def test_command_wrong_channel() -> None:
-    cog = create_fake_cog(channel_name="channel-1")
-    ctx = create_fake_context(channel_name="channel-2")
+async def test_animal_command_api_error(
+    cog: AnimalsCog, ctx: AsyncMock, mock_client: AnimalClient
+) -> None:
+    mock_client.fetch_image = AsyncMock(return_value=None)
 
-    await cog.post_animal_picture(DEFAULT_ANIMAL, ctx=ctx)
+    await cog.dog_command.callback(cog, ctx)
 
-    ctx.send.assert_not_called()
-
-
-async def test_rate_limiting() -> None:
-    cog = create_fake_cog(rate_limiter=RateLimiter(cooldown_seconds=10))
-
-    # first call
-    ctx_1 = create_fake_context()
-    await cog.post_animal_picture(DEFAULT_ANIMAL, ctx=ctx_1)
-    ctx_1.send.assert_awaited_once()
-
-    # second call with same user
-    ctx_2 = create_fake_context()
-    await cog.post_animal_picture(DEFAULT_ANIMAL, ctx=ctx_2)
-    ctx_2.send.assert_not_awaited()
+    ctx.send.assert_awaited_once()
+    text = ctx.send.call_args.args[0]
+    assert text in cog.config.dog.error_messages
 
 
-async def test_rate_limiting_different_user() -> None:
-    cog = create_fake_cog(rate_limiter=RateLimiter(cooldown_seconds=10))
+@pytest.mark.parametrize("channel_name", ["wrong-channel", "general", ""])
+async def test_animal_command_wrong_channel(cog: AnimalsCog, channel_name: str) -> None:
+    ctx = AsyncMock(spec=commands.Context)
+    ctx.channel.name = channel_name
+    ctx.author = MagicMock()
+    ctx.author.id = 12345
+    ctx.send = AsyncMock()
 
-    # first call
-    ctx_1 = create_fake_context(author_id=111)
-    await cog.post_animal_picture(DEFAULT_ANIMAL, ctx=ctx_1)
-    ctx_1.send.assert_awaited_once()
+    await cog.dog_command.callback(cog, ctx)
 
-    # second call with different user
-    ctx_2 = create_fake_context(author_id=222)
-    await cog.post_animal_picture(DEFAULT_ANIMAL, ctx=ctx_2)
-    ctx_2.send.assert_awaited_once()
-
-
-async def test_rate_limiting_after_cooldown_period() -> None:
-    rate_limiter = RateLimiter(cooldown_seconds=10)
-    cog = create_fake_cog(rate_limiter=rate_limiter)
-
-    # first call
-    ctx_1 = create_fake_context()
-    rate_limiter.get_current_timestamp = lambda: 60
-    await cog.post_animal_picture(DEFAULT_ANIMAL, ctx=ctx_1)
-    ctx_1.send.assert_awaited_once()
-
-    # second call with same user after 15 seconds
-    ctx_2 = create_fake_context()
-    rate_limiter.get_current_timestamp = lambda: 75
-    await cog.post_animal_picture(DEFAULT_ANIMAL, ctx=ctx_2)
-    ctx_2.send.assert_awaited_once()
+    ctx.send.assert_not_awaited()
 
 
-async def test_provider_error() -> None:
-    class BrokenProvider(AnimalImageProvider):
-        async def generate_image(self) -> AnimalImage | None:
-            raise RuntimeError("Boom!")
+async def test_animal_command_rate_limit(cog: AnimalsCog, ctx: AsyncMock) -> None:
+    # First call succeeds
+    await cog.dog_command.callback(cog, ctx)
+    assert ctx.send.call_count == 1
 
-    cog = create_fake_cog(providers_by_animal={DEFAULT_ANIMAL: [BrokenProvider()]})
-    ctx = create_fake_context()
+    # Second call right after fails due to rate limit
+    await cog.dog_command.callback(cog, ctx)
+    assert ctx.send.call_count == 1  # Still 1, didn't increase
 
-    await cog.post_animal_picture(DEFAULT_ANIMAL, ctx=ctx)
+    # Time travel
+    cog._last_usage_timestamp_by_user_id[ctx.author.id] = time.time() - 20
 
-    ctx.send.assert_called_once()
-    (message,) = ctx.send.call_args.args
-    assert message == f"Failed to fetch {DEFAULT_ANIMAL} picture. Internal error, please report it."
+    # Third call succeeds
+    await cog.dog_command.callback(cog, ctx)
+    assert ctx.send.call_count == 2
 
 
-async def test_provider_unsuccessful() -> None:
-    class BrokenProvider(AnimalImageProvider):
-        async def generate_image(self) -> AnimalImage | None:
-            return None
+@pytest.mark.parametrize("animal", ["panda", "penguin"])
+async def test_animality_command_success(cog: AnimalsCog, ctx: AsyncMock, animal: str) -> None:
+    cmd = _make_animality_command(animal, cog)
+    await cmd.callback(ctx)
 
-    cog = create_fake_cog(providers_by_animal={DEFAULT_ANIMAL: [BrokenProvider()]})
-    ctx = create_fake_context()
+    ctx.send.assert_awaited_once()
+    embed = ctx.send.call_args.kwargs["embed"]
+    assert embed.image.url == "https://example.com/animal.jpg"
+    assert "friendly" in embed.description
+    assert animal in embed.description
 
-    await cog.post_animal_picture(DEFAULT_ANIMAL, ctx=ctx)
 
-    ctx.send.assert_called_once()
-    (message,) = ctx.send.call_args.args
-    assert message == f"Failed to fetch {DEFAULT_ANIMAL} picture."
+@pytest.mark.parametrize("channel_name", ["wrong-channel", "general", ""])
+async def test_animality_command_wrong_channel(cog: AnimalsCog, channel_name: str) -> None:
+    ctx = AsyncMock(spec=commands.Context)
+    ctx.channel.name = channel_name
+    ctx.author = MagicMock()
+    ctx.author.id = 12345
+    ctx.send = AsyncMock()
+
+    cmd = _make_animality_command("panda", cog)
+    await cmd.callback(ctx)
+
+    ctx.send.assert_not_awaited()
