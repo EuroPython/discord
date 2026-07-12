@@ -55,6 +55,7 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2026 Registration"):
         order = self.order_field.value
 
         _logger.info(f"Registration attempt: {order=}, {name=}")
+        await interaction.response.defer(ephemeral=True, thinking=True)
         tickets = self.pretix_connector.get_tickets(order=order, name=name)
 
         if not tickets:
@@ -108,6 +109,11 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2026 Registration"):
         await self.log_registration_to_channel(interaction, name=name, order=order, roles=roles)
         await self.registration_logger.mark_as_registered(tickets[0])
         _logger.info(f"Registration successful: {order=}, {name=}")
+        await interaction.edit_original_response(
+            content=(
+                "You are now registered!\n\nYour nickname was changed to the name on your ticket."
+            )
+        )
 
     async def on_error(self, interaction: Interaction, error: Exception) -> None:
         user_is_admin = any(role.name == "Admin" for role in interaction.user.roles)
@@ -140,10 +146,10 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2026 Registration"):
         reg_help_channel = discord_get(
             interaction.guild.channels, name=self.config.registration_help_channel_name
         )
-        await interaction.response.send_message(
-            f"{message} If you need help, please contact us in {reg_help_channel.mention}.",
-            ephemeral=True,
-            delete_after=None,
+        await interaction.edit_original_response(
+            content=(
+                f"{message} If you need help, please contact us in {reg_help_channel.mention}."
+            )
         )
 
     async def log_error_to_channel(self, interaction: Interaction, message: str) -> None:
