@@ -2,103 +2,76 @@ from __future__ import annotations
 
 import logging
 import random
-import time
-from collections import OrderedDict
+from typing import Self
 
 import discord
 from discord.ext import commands
 
-from europython_discord.animals.clients import AnimalClient
-from europython_discord.animals.config import AnimalKind, AnimalsConfig
+from europython_discord.animals import providers
+from europython_discord.animals.config import AnimalsConfig
+from europython_discord.animals.providers import AnimalImageProvider
+from europython_discord.animals.rate_limiter import RateLimiter
 
 _logger = logging.getLogger(__name__)
-
-_MAX_COOLDOWN_TRACKING = 100
 
 
 class AnimalsCog(commands.Cog):
     def __init__(
         self,
         bot: commands.Bot,
-        config: AnimalsConfig,
-        client: AnimalClient | None = None,
+        providers_by_animal: dict[str, list[AnimalImageProvider]],
+        rate_limiter: RateLimiter,
+        channel_name: str,
     ) -> None:
-        self.bot = bot
-        self.config = config
-        self._client = client or AnimalClient()
-        self._last_usage_timestamp_by_user_id: OrderedDict[int, float] = OrderedDict()
+        self._bot = bot
+        self._channel_name = channel_name
+        self._providers = providers_by_animal
+        self._rate_limiter = rate_limiter
+
+        for animal in self._providers:
+            self._bot.add_command(self._create_animal_command(animal))
+
         _logger.info("Cog 'Animals' has been initialized")
 
-    async def handle_animal_command(self, ctx: commands.Context, animal: AnimalKind) -> None:
-        if ctx.channel.name != self.config.channel_name:
+    async def post_animal_picture(self, animal: str, ctx: commands.Context) -> None:
+        if ctx.channel.name != self._channel_name:
+            return
+        if self._rate_limiter.is_rate_limited(ctx.author.id):
+            return
+        if animal not in self._providers:
             return
 
-        if self._is_rate_limited(ctx.author.id):
+        provider = random.choice(self._providers[animal])  # noqa: S311 suspicious-non-cryptographic-random-usage
+        try:
+            image = await provider.generate_image()
+        except Exception:
+            _logger.exception("Error while generating %s image", animal)
+            await ctx.send(f"Failed to fetch {animal} picture. Internal error, please report it.")
             return
 
-        result = await self._client.fetch_image(animal)
-        if result is not None:
-            embed = discord.Embed()
-            embed.description = f"Behold! A friendly {animal} appeared from {result.source}"
-            embed.set_image(url=result.url)
-            self._update_rate_limit_cache(ctx.author.id)
-            await ctx.send(embed=embed)
+        if image is None:
+            _logger.error("Failed to fetch %s pictures", animal)
+            await ctx.send(f"Failed to fetch {animal} picture.")
             return
 
-        await ctx.send(self._error_message_for(animal))
+        embed = discord.Embed()
+        embed.description = f"Behold! A friendly {animal} appeared from {image.source}"
+        embed.set_image(url=image.url)
+        self._rate_limiter.register_usage(ctx.author.id)
+        await ctx.send(embed=embed)
 
-    @commands.hybrid_command(name="dog", description="Get a random dog picture")
-    async def dog_command(self, ctx: commands.Context) -> None:
-        await self.handle_animal_command(ctx, AnimalKind.DOG)
+    def _create_animal_command(self, animal: str) -> commands.HybridCommand:
+        @commands.hybrid_command(name=animal, description=f"Get a random {animal} picture")
+        async def callback(ctx: commands.Context) -> None:
+            await self.post_animal_picture(animal, ctx)
 
-    @commands.hybrid_command(name="cat", description="Get a random cat picture")
-    async def cat_command(self, ctx: commands.Context) -> None:
-        await self.handle_animal_command(ctx, AnimalKind.CAT)
+        return callback
 
-    @commands.hybrid_command(name="duck", description="Get a random duck picture")
-    async def duck_command(self, ctx: commands.Context) -> None:
-        await self.handle_animal_command(ctx, AnimalKind.DUCK)
-
-    @commands.hybrid_command(name="fox", description="Get a random fox picture")
-    async def fox_command(self, ctx: commands.Context) -> None:
-        await self.handle_animal_command(ctx, AnimalKind.FOX)
-
-    async def cog_load(self) -> None:
-        existing = {"dog", "cat", "duck", "fox"}
-        for animal in AnimalKind:
-            if animal in existing:
-                continue
-            cmd = _make_animality_command(animal, self)
-            self.bot.add_command(cmd)
-
-    def _error_message_for(self, animal: AnimalKind) -> str:
-        if animal_config := self.config.config_by_kind.get(animal):
-            return random.choice(animal_config.error_messages)  # noqa: S311
-
-        if not self.config.animality_error_messages:
-            return f"Couldn't find a {animal} picture right now."
-        plural = f"{animal}s" if animal != "fish" else "fish"
-        return random.choice(self.config.animality_error_messages).format(  # noqa: S311
-            animal=animal, plural=plural
+    @classmethod
+    def from_config(cls, bot: commands.Bot, config: AnimalsConfig) -> Self:
+        return cls(
+            bot=bot,
+            providers_by_animal=providers.get_all_providers(),
+            rate_limiter=RateLimiter(config.cooldown_seconds),
+            channel_name=config.channel_name,
         )
-
-    def _is_rate_limited(self, user_id: int) -> bool:
-        last_usage_timestamp = self._last_usage_timestamp_by_user_id.get(user_id, 0)
-        return last_usage_timestamp + self.config.cooldown_seconds > time.time()
-
-    def _update_rate_limit_cache(self, user_id: int) -> None:
-        # update cache
-        self._last_usage_timestamp_by_user_id[user_id] = time.time()
-
-        # trim cache
-        self._last_usage_timestamp_by_user_id.move_to_end(user_id)
-        if len(self._last_usage_timestamp_by_user_id) > _MAX_COOLDOWN_TRACKING:
-            self._last_usage_timestamp_by_user_id.popitem(last=False)
-
-
-def _make_animality_command(name: AnimalKind, cog: AnimalsCog) -> commands.HybridCommand:
-    @commands.hybrid_command(name=name, description=f"Get a random {name} picture")
-    async def callback(ctx: commands.Context) -> None:
-        await cog.handle_animal_command(ctx, name)
-
-    return callback
