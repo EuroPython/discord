@@ -106,6 +106,7 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2026 Registration"):
         await interaction.user.add_roles(*roles)
 
         await self.log_registration_to_channel(interaction, name=name, order=order, roles=roles)
+        await self.log_registration_to_user(interaction, name=nickname)
         await self.registration_logger.mark_as_registered(tickets[0])
         _logger.info(f"Registration successful: {order=}, {name=}")
 
@@ -123,6 +124,17 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2026 Registration"):
             _logger.exception("An error occurred!")
             await self.log_error_to_user(interaction, "Something went wrong.")
             await self.log_error_to_channel(interaction, f"{error.__class__.__name__}: {error}")
+
+    @staticmethod
+    async def log_registration_to_user(interaction: Interaction, *, name: str) -> None:
+        await interaction.response.send_message(
+            f"Thank you {name}, you are now registered!\n\n"
+            f"Also, your nickname was changed to the name you used to register your ticket. "
+            f"This is also the name that would be on your conference badge, which means that "
+            f"your nickname can be your 'virtual conference badge'.",
+            ephemeral=True,
+            delete_after=None,
+        )
 
     async def log_registration_to_channel(
         self, interaction: Interaction, *, name: str, order: str, roles: list[Role]
