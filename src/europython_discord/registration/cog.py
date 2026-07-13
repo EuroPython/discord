@@ -57,7 +57,7 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2026 Registration"):
         _logger.info(f"Registration attempt: {order=}, {name=}")
 
         # send initial reaction so Discord doesn't drop the interaction after 3 seconds
-        interaction.response.defer(ephemeral=True, thinking=True)
+        await interaction.response.defer(ephemeral=True, thinking=True)
         tickets = self.pretix_connector.get_tickets(order=order, name=name)
 
         if not tickets:
