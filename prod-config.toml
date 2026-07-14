@@ -67,35 +67,3 @@ required_role = "Organisers"
 [animals]
 channel_name = "animal-appreciation"
 cooldown_seconds = 10
-
-[animals.dog]
-error_messages = [
-    "The dogs are on strike today! Try again later. 🐾🪧",
-    "A wild error appeared! The dog got away... 🐕💨",
-    "Dog API is fetching a stick. Throw it again! 🦴",
-    "404: Dog not found. Have you checked under the couch? 🛋️",
-]
-
-[animals.cat]
-error_messages = [
-    "The cats are on strike today! Try again later. 🐾🪧",
-    "A wild error appeared! The cat got away... 😿💨",
-    "Cat API is fetching a mouse. Throw it again! 🦴",
-    "404: Cat not found. Have you checked inside a cardboard box? 📦",
-]
-
-[animals.duck]
-error_messages = [
-    "The ducks are on strike today! Try again later. 🐾🪧",
-    "A wild error appeared! The duck got away... 🦆💨",
-    "Duck API is in a bit of a pond situation. Try again later! 🦆",
-    "Quack! The duck API seems to be having an off day.",
-]
-
-[animals.fox]
-error_messages = [
-    "The foxes are on strike today! Try again later. 🐾🪧",
-    "A wild error appeared! The fox got away... 🦊💨",
-    "Fox API is fetching a chicken. Try again later! 🦴",
-    "404: Fox not found. Have you checked under the bush? 🌳",
-]
