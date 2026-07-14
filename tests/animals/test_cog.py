@@ -49,6 +49,14 @@ def create_fake_context(
     context.author.id = author_id
     context.channel.name = channel_name
     context.send = AsyncMock()
+    context.defer = AsyncMock()
+    # Provide a synchronous guild.channels list so discord.utils.get works.
+    guild = MagicMock()
+    fake_channel = MagicMock()
+    fake_channel.name = DEFAULT_CHANNEL_NAME
+    fake_channel.mention = f"#{DEFAULT_CHANNEL_NAME}"
+    guild.channels = [fake_channel]
+    context.guild = guild
     return context
 
 
@@ -58,6 +66,7 @@ async def test_command_success() -> None:
 
     await cog.post_animal_picture(DEFAULT_ANIMAL, ctx=ctx)
 
+    ctx.defer.assert_awaited_once()
     ctx.send.assert_awaited_once()
     embed = ctx.send.call_args.kwargs["embed"]
     assert embed.image.url == DEFAULT_IMAGE_URL
@@ -65,12 +74,15 @@ async def test_command_success() -> None:
 
 
 async def test_command_wrong_channel() -> None:
-    cog = create_fake_cog(channel_name="channel-1")
-    ctx = create_fake_context(channel_name="channel-2")
+    cog = create_fake_cog(channel_name=DEFAULT_CHANNEL_NAME)
+    ctx = create_fake_context(channel_name="some-other-channel")
 
     await cog.post_animal_picture(DEFAULT_ANIMAL, ctx=ctx)
 
-    ctx.send.assert_not_called()
+    ctx.defer.assert_awaited_once()
+    ctx.send.assert_awaited_once()
+    (message,) = ctx.send.call_args.args
+    assert message == f"This command can only be used in #{DEFAULT_CHANNEL_NAME}."
 
 
 async def test_rate_limiting() -> None:
@@ -80,11 +92,14 @@ async def test_rate_limiting() -> None:
     ctx_1 = create_fake_context()
     await cog.post_animal_picture(DEFAULT_ANIMAL, ctx=ctx_1)
     ctx_1.send.assert_awaited_once()
+    assert "embed" in ctx_1.send.call_args.kwargs
 
-    # second call with same user
+    # second call with same user - rate limited, ephemeral error message
     ctx_2 = create_fake_context()
     await cog.post_animal_picture(DEFAULT_ANIMAL, ctx=ctx_2)
-    ctx_2.send.assert_not_awaited()
+    ctx_2.send.assert_awaited_once()
+    (message,) = ctx_2.send.call_args.args
+    assert message == "You are being rate limited. Please try again later."
 
 
 async def test_rate_limiting_different_user() -> None:
@@ -145,4 +160,7 @@ async def test_provider_unsuccessful() -> None:
 
     ctx.send.assert_called_once()
     (message,) = ctx.send.call_args.args
-    assert message == f"Failed to fetch {DEFAULT_ANIMAL} picture."
+    assert message == (
+        f"Failed to fetch {DEFAULT_ANIMAL} picture. If this happens repeatedly, please report it."
+    )
+    assert ctx.send.call_args.kwargs.get("ephemeral") is True

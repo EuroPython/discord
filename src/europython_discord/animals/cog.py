@@ -6,6 +6,7 @@ from typing import Self
 
 import discord
 from discord.ext import commands
+from discord.utils import get as discord_get
 
 from europython_discord.animals import providers
 from europython_discord.animals.config import AnimalsConfig
@@ -28,17 +29,31 @@ class AnimalsCog(commands.Cog):
         self._providers = providers_by_animal
         self._rate_limiter = rate_limiter
 
-        for animal in self._providers:
-            self._bot.add_command(self._create_animal_command(animal))
-
         _logger.info("Cog 'Animals' has been initialized")
 
+    @commands.Cog.listener()
+    async def on_ready(self) -> None:
+        # (re-) register commands on each connected guild
+        for guild in self._bot.guilds:
+            self._bot.tree.clear_commands(guild=guild)
+            for animal in self._providers:
+                self._bot.tree.add_command(self._create_animal_command(animal), guild=guild)
+            synced_commands = await self._bot.tree.sync(guild=guild)
+            _logger.info(
+                "Synced %d application command(s) to guild %s", len(synced_commands), guild.id
+            )
+
     async def post_animal_picture(self, animal: str, ctx: commands.Context) -> None:
+        # send typing indicator
+        await ctx.defer(ephemeral=False)
+
+        # check if command shall be executed
         if ctx.channel.name != self._channel_name:
+            channel = discord_get(ctx.guild.channels, name=self._channel_name)
+            await ctx.send(f"This command can only be used in {channel.mention}.")
             return
         if self._rate_limiter.is_rate_limited(ctx.author.id):
-            return
-        if animal not in self._providers:
+            await ctx.send("You are being rate limited. Please try again later.")
             return
 
         provider = random.choice(self._providers[animal])  # noqa: S311 suspicious-non-cryptographic-random-usage
@@ -51,7 +66,13 @@ class AnimalsCog(commands.Cog):
 
         if image is None:
             _logger.error("Failed to fetch %s pictures", animal)
-            await ctx.send(f"Failed to fetch {animal} picture.")
+            await ctx.send(
+                (
+                    f"Failed to fetch {animal} picture. "
+                    f"If this happens repeatedly, please report it."
+                ),
+                ephemeral=True,
+            )
             return
 
         embed = discord.Embed()
@@ -60,9 +81,10 @@ class AnimalsCog(commands.Cog):
         self._rate_limiter.register_usage(ctx.author.id)
         await ctx.send(embed=embed)
 
-    def _create_animal_command(self, animal: str) -> commands.HybridCommand:
-        @commands.hybrid_command(name=animal, description=f"Get a random {animal} picture")
-        async def callback(ctx: commands.Context) -> None:
+    def _create_animal_command(self, animal: str) -> discord.app_commands.Command:
+        @discord.app_commands.command(name=animal, description=f"Get a random {animal} picture")
+        async def callback(interaction: discord.Interaction) -> None:
+            ctx = await self._bot.get_context(interaction)
             await self.post_animal_picture(animal, ctx)
 
         return callback
