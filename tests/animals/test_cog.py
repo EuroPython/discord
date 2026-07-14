@@ -94,12 +94,12 @@ async def test_rate_limiting() -> None:
     ctx_1.send.assert_awaited_once()
     assert "embed" in ctx_1.send.call_args.kwargs
 
-    # second call with same user - rate limited, ephemeral error message
+    # second call with same user
     ctx_2 = create_fake_context()
     await cog.post_animal_picture(DEFAULT_ANIMAL, ctx=ctx_2)
     ctx_2.send.assert_awaited_once()
     (message,) = ctx_2.send.call_args.args
-    assert message == "You are being rate limited. Please try again later."
+    assert message == "Sorry, you are being rate-limited. Try again in 10 seconds."
 
 
 async def test_rate_limiting_different_user() -> None:
@@ -163,4 +163,3 @@ async def test_provider_unsuccessful() -> None:
     assert message == (
         f"Failed to fetch {DEFAULT_ANIMAL} picture. If this happens repeatedly, please report it."
     )
-    assert ctx.send.call_args.kwargs.get("ephemeral") is True

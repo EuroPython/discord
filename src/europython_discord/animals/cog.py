@@ -53,7 +53,11 @@ class AnimalsCog(commands.Cog):
             await ctx.send(f"This command can only be used in {channel.mention}.")
             return
         if self._rate_limiter.is_rate_limited(ctx.author.id):
-            await ctx.send("You are being rate limited. Please try again later.")
+            seconds_to_cooldown = self._rate_limiter.get_seconds_until_cooldown(ctx.author.id)
+            await ctx.send(
+                f"Sorry, you are being rate-limited. "
+                f"Try again in {seconds_to_cooldown:.0f} seconds."
+            )
             return
 
         provider = random.choice(self._providers[animal])  # noqa: S311 suspicious-non-cryptographic-random-usage
@@ -71,7 +75,6 @@ class AnimalsCog(commands.Cog):
                     f"Failed to fetch {animal} picture. "
                     f"If this happens repeatedly, please report it."
                 ),
-                ephemeral=True,
             )
             return
 

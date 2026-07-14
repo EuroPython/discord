@@ -66,4 +66,4 @@ required_role = "Organisers"
 
 [animals]
 channel_name = "animal-appreciation"
-cooldown_seconds = 10
+cooldown_seconds = 30
