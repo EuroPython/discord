@@ -117,6 +117,7 @@ class ProgrammeNotificationsCog(commands.Cog):
 
             # mark session as notified
             self.notified_sessions.add(_get_session_key(session))
+            _logger.info(f"Marked session {session.code} as notified: {session.title}")
 
     async def purge_all_room_channels(self) -> None:
         _logger.info("Purging all room channels...")
