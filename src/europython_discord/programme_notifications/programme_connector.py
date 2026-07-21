@@ -97,7 +97,7 @@ class ProgrammeConnector:
             _logger.exception("Schedule cache file not found and no schedule is already loaded.")
         return None
 
-    async def _get_now(self) -> datetime:
+    async def get_current_time(self) -> datetime:
         """Get the current time in the conference timezone."""
         if self._simulated_start_time:
             elapsed = datetime.now(tz=UTC) - self._real_start_time
@@ -126,7 +126,7 @@ class ProgrammeConnector:
     async def get_upcoming_sessions(self) -> list[Session]:
         # upcoming sessions are those that start in 5 minutes or less
         # and the start time is after the current time
-        now = await self._get_now()
+        now = await self.get_current_time()
 
         if self._simulated_start_time:
             _logger.debug(f"Simulated time now: {now}")
