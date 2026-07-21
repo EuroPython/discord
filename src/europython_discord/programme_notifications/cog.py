@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from discord import Client, TextChannel
 from discord.ext import commands, tasks
@@ -14,6 +14,16 @@ from europython_discord.programme_notifications.models import Session
 from europython_discord.programme_notifications.programme_connector import ProgrammeConnector
 
 _logger = logging.getLogger(__name__)
+
+_WEEKDAYS = {
+    0: "Monday",
+    1: "Tuesday",
+    2: "Wednesday",
+    3: "Thursday",
+    4: "Friday",
+    5: "Saturday",
+    6: "Sunday",
+}
 
 
 class ProgrammeNotificationsCog(commands.Cog):
@@ -40,21 +50,25 @@ class ProgrammeNotificationsCog(commands.Cog):
             await self.purge_all_room_channels()
             _logger.debug(f"Simulated start time: {self.config.simulated_start_time}")
             _logger.debug(f"Fast mode: {self.config.fast_mode}")
+
+        _logger.info("Starting the livestream notifier...")
+        self.notify_livestreams.start()
         _logger.info("Starting the session notifier...")
         self.notify_sessions.start()
         _logger.info("Cog 'Programme Notifications' is ready")
 
     async def cog_load(self) -> None:
         """Start schedule updater task."""
-        _logger.info(
-            "Starting the schedule updater and setting the interval for the session notifier..."
-        )
+        _logger.info("Starting the schedule updater and setting the interval for the notifiers...")
         self.fetch_schedule.start()
         self.fetch_livestreams.start()
+        self.notify_livestreams.change_interval(
+            seconds=2 if self.config.fast_mode and self.config.simulated_start_time else 60
+        )
         self.notify_sessions.change_interval(
             seconds=2 if self.config.fast_mode and self.config.simulated_start_time else 60
         )
-        _logger.info("Schedule updater started and interval set for the session notifier")
+        _logger.info("Schedule updater started and interval set for the notifiers")
 
     async def cog_unload(self) -> None:
         """Stop all tasks."""
@@ -73,6 +87,36 @@ class ProgrammeNotificationsCog(commands.Cog):
         _logger.info("Starting the periodic livestream update...")
         await self.livestream_connector.fetch_livestreams()
         _logger.info("Finished the periodic livestream update.")
+
+    @tasks.loop()
+    async def notify_livestreams(self) -> None:
+        livestreams_by_room = self.livestream_connector.livestreams_by_room
+        if livestreams_by_room is None:
+            return
+
+        for room_name in self.config.rooms_to_channel_names:
+            room_channel = self._get_room_channel(room_name)
+            if room_channel is None:
+                continue
+
+            _urls_by_date = livestreams_by_room.get(room_name)
+            if not _urls_by_date:
+                continue
+            urls_by_date = sorted(_urls_by_date.items())  # sort by date
+
+            # don't notify of stream if the first stream is multiple days away
+            today = (await self.programme_connector.get_current_time()).date()
+            first_streaming_day = urls_by_date[0][0]
+            if first_streaming_day - today > timedelta(days=1):
+                topic = f"Channel for room {room_name}"
+            else:
+                livestreams_text = "\n".join(
+                    f"Livestream {_WEEKDAYS[day.timetuple().tm_wday]}: [YouTube]({url})"
+                    for day, url in urls_by_date
+                )
+                topic = f"Channel for room {room_name}\n\n{livestreams_text}"
+
+            await room_channel.edit(topic=topic)
 
     @tasks.loop()
     async def notify_sessions(self) -> None:
@@ -105,11 +149,8 @@ class ProgrammeNotificationsCog(commands.Cog):
             # send session notification message to room and main channel
             await main_notification_channel.send(embed=embed)
 
-            # update room's livestream URL
+            # send session notification message to room
             if room_channel is not None:
-                await room_channel.edit(
-                    topic=f"Livestream: [YouTube]({livestream_url})" if livestream_url else ""
-                )
                 await room_channel.send(
                     content=f"# Starting in 5 minutes @ {session.rooms[0]}",
                     embed=embed,

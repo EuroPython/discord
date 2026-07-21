@@ -186,11 +186,11 @@ async def test_get_now_with_simulation(programme_connector):
     # ensure time is ticking between start and finish of this test
     await asyncio.sleep(0.001)
 
-    assert await programme_connector._get_now() > simulated_start_time
+    assert await programme_connector.get_current_time() > simulated_start_time
 
 
 async def test_get_now_without_simulation(programme_connector):
-    now = await programme_connector._get_now()
+    now = await programme_connector.get_current_time()
 
     # ensure time is ticking between start and finish of this test
     await asyncio.sleep(0.001)
