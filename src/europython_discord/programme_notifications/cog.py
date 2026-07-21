@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from discord import Client, TextChannel
 from discord.ext import commands, tasks
@@ -99,14 +99,23 @@ class ProgrammeNotificationsCog(commands.Cog):
             if room_channel is None:
                 continue
 
-            urls_by_date = livestreams_by_room.get(room_name)
-            if not urls_by_date:
+            _urls_by_date = livestreams_by_room.get(room_name)
+            if not _urls_by_date:
                 continue
+            urls_by_date = sorted(_urls_by_date.items())  # sort by date
 
-            topic = "\n".join(
-                f"Livestream {_WEEKDAYS[day.timetuple().tm_wday]}: [YouTube]({url})"
-                for day, url in sorted(urls_by_date.items())
-            )
+            # don't notify of stream if the first stream is multiple days away
+            today = (await self.programme_connector.get_current_time()).date()
+            first_streaming_day = urls_by_date[0][0]
+            if first_streaming_day - today > timedelta(days=1):
+                topic = f"Channel for room {room_name}"
+            else:
+                livestreams_text = "\n".join(
+                    f"Livestream {_WEEKDAYS[day.timetuple().tm_wday]}: [YouTube]({url})"
+                    for day, url in urls_by_date
+                )
+                topic = f"Channel for room {room_name}\n\n{livestreams_text}"
+
             await room_channel.edit(topic=topic)
 
     @tasks.loop()
