@@ -41,7 +41,7 @@ class ProgrammeNotificationsCog(commands.Cog):
             _logger.debug(f"Simulated start time: {self.config.simulated_start_time}")
             _logger.debug(f"Fast mode: {self.config.fast_mode}")
         _logger.info("Posting livestream URLs for all rooms...")
-        await self.post_all_livestream_urls()
+        await self.notify_livestreams()
         _logger.info("Starting the session notifier...")
         self.notify_sessions.start()
         _logger.info("Cog 'Programme Notifications' is ready")
@@ -76,7 +76,7 @@ class ProgrammeNotificationsCog(commands.Cog):
         await self.livestream_connector.fetch_livestreams()
         _logger.info("Finished the periodic livestream update.")
 
-    async def post_all_livestream_urls(self) -> None:
+    async def notify_livestreams(self) -> None:
         if self.livestream_connector.livestreams_by_room is None:
             await self.livestream_connector.fetch_livestreams()
 
