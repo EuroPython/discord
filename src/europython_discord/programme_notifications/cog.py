@@ -15,6 +15,16 @@ from europython_discord.programme_notifications.programme_connector import Progr
 
 _logger = logging.getLogger(__name__)
 
+_WEEKDAYS = {
+    0: "Monday",
+    1: "Tuesday",
+    2: "Wednesday",
+    3: "Thursday",
+    4: "Friday",
+    5: "Saturday",
+    6: "Sunday",
+}
+
 
 class ProgrammeNotificationsCog(commands.Cog):
     def __init__(self, bot: Client, config: ProgrammeNotificationsConfig) -> None:
@@ -93,9 +103,8 @@ class ProgrammeNotificationsCog(commands.Cog):
             if not urls_by_date:
                 continue
 
-            # '%A': Weekday, e.g. 'Monday'
             topic = "\n".join(
-                f"Livestream {day.strftime('%A')}: [YouTube]({url})"
+                f"Livestream {_WEEKDAYS[day.timetuple().tm_wday]}: [YouTube]({url})"
                 for day, url in sorted(urls_by_date.items())
             )
             await room_channel.edit(topic=topic)
