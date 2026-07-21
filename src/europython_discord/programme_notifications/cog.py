@@ -46,24 +46,6 @@ class ProgrammeNotificationsCog(commands.Cog):
         self.notify_sessions.start()
         _logger.info("Cog 'Programme Notifications' is ready")
 
-    async def post_all_livestream_urls(self) -> None:
-        if self.livestream_connector.livestreams_by_room is None:
-            await self.livestream_connector.fetch_livestreams()
-
-        for room_name in self.config.rooms_to_channel_names:
-            room_channel = self._get_room_channel(room_name)
-            if room_channel is None:
-                continue
-
-            urls_by_date = self.livestream_connector.livestreams_by_room.get(room_name)
-            if not urls_by_date:
-                continue
-
-            topic = "\n".join(
-                f"Stream {day.strftime('%A')}: {url}" for day, url in sorted(urls_by_date.items())
-            )
-            await room_channel.edit(topic=topic)
-
     async def cog_load(self) -> None:
         """Start schedule updater task."""
         _logger.info(
@@ -93,6 +75,24 @@ class ProgrammeNotificationsCog(commands.Cog):
         _logger.info("Starting the periodic livestream update...")
         await self.livestream_connector.fetch_livestreams()
         _logger.info("Finished the periodic livestream update.")
+
+    async def post_all_livestream_urls(self) -> None:
+        if self.livestream_connector.livestreams_by_room is None:
+            await self.livestream_connector.fetch_livestreams()
+
+        for room_name in self.config.rooms_to_channel_names:
+            room_channel = self._get_room_channel(room_name)
+            if room_channel is None:
+                continue
+
+            urls_by_date = self.livestream_connector.livestreams_by_room.get(room_name)
+            if not urls_by_date:
+                continue
+
+            topic = "\n".join(
+                f"Stream {day.strftime('%A')}: {url}" for day, url in sorted(urls_by_date.items())
+            )
+            await room_channel.edit(topic=topic)
 
     @tasks.loop()
     async def notify_sessions(self) -> None:
