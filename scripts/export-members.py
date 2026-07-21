@@ -1,7 +1,7 @@
 # /// script
 # requires-python = ">=3.11"
 # dependencies = [
-#   "discord-py>=2.3.1",
+#   "discord-py>=2.7.1",
 # ]
 # ///
 """Script to export all guild members and their roles to per-guild .csv files."""
