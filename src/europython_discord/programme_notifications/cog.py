@@ -81,7 +81,7 @@ class ProgrammeNotificationsCog(commands.Cog):
     @tasks.loop()
     async def notify_livestreams(self) -> None:
         if self.livestream_connector.livestreams_by_room is None:
-            await self.livestream_connector.fetch_livestreams()
+            return
 
         for room_name in self.config.rooms_to_channel_names:
             room_channel = self._get_room_channel(room_name)
