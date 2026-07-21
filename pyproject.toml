@@ -35,7 +35,7 @@ asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 filterwarnings = [
     "error",
-    "ignore:'audioop' is deprecated:DeprecationWarning",
+    "ignore:'audioop' is deprecated:DeprecationWarning",  # Only applies to Python < 3.13 (https://github.com/Rapptz/discord.py/issues/9477)
 ]
 
 [tool.ruff]
