@@ -93,8 +93,10 @@ class ProgrammeNotificationsCog(commands.Cog):
             if not urls_by_date:
                 continue
 
+            # '%A': Weekday, e.g. 'Monday'
             topic = "\n".join(
-                f"Stream {day.strftime('%A')}: {url}" for day, url in sorted(urls_by_date.items())
+                f"Livestream {day.strftime('%A')}: [YouTube]({url})"
+                for day, url in sorted(urls_by_date.items())
             )
             await room_channel.edit(topic=topic)
 
