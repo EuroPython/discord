@@ -40,23 +40,25 @@ class ProgrammeNotificationsCog(commands.Cog):
             await self.purge_all_room_channels()
             _logger.debug(f"Simulated start time: {self.config.simulated_start_time}")
             _logger.debug(f"Fast mode: {self.config.fast_mode}")
-        _logger.info("Posting livestream URLs for all rooms...")
-        await self.notify_livestreams()
+
+        _logger.info("Starting the livestream notifier...")
+        self.notify_livestreams.start()
         _logger.info("Starting the session notifier...")
         self.notify_sessions.start()
         _logger.info("Cog 'Programme Notifications' is ready")
 
     async def cog_load(self) -> None:
         """Start schedule updater task."""
-        _logger.info(
-            "Starting the schedule updater and setting the interval for the session notifier..."
-        )
+        _logger.info("Starting the schedule updater and setting the interval for the notifiers...")
         self.fetch_schedule.start()
         self.fetch_livestreams.start()
+        self.notify_livestreams.change_interval(
+            seconds=2 if self.config.fast_mode and self.config.simulated_start_time else 60
+        )
         self.notify_sessions.change_interval(
             seconds=2 if self.config.fast_mode and self.config.simulated_start_time else 60
         )
-        _logger.info("Schedule updater started and interval set for the session notifier")
+        _logger.info("Schedule updater started and interval set for the notifiers")
 
     async def cog_unload(self) -> None:
         """Stop all tasks."""
@@ -76,6 +78,7 @@ class ProgrammeNotificationsCog(commands.Cog):
         await self.livestream_connector.fetch_livestreams()
         _logger.info("Finished the periodic livestream update.")
 
+    @tasks.loop()
     async def notify_livestreams(self) -> None:
         if self.livestream_connector.livestreams_by_room is None:
             await self.livestream_connector.fetch_livestreams()
