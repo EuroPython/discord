@@ -1,4 +1,4 @@
-FROM python:3.11.15-slim
+FROM python:3.14.5-slim
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/
 
 RUN groupadd --gid 1000 bot && \

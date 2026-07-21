@@ -87,7 +87,7 @@ uv run run-bot --config-file your-config-file.toml
 ## Development Setup
 
 NOTE: This project uses [uv](https://docs.astral.sh/uv/) to manage Python versions and dependencies.
-  If you don't plan to add/remove/update dependencies, you can also use [pip](https://pip.pypa.io/en/stable/), and any Python version >= 3.11.
+  If you don't plan to add/remove/update dependencies, you can also use [pip](https://pip.pypa.io/en/stable/), Python >= 3.14.
 
 ### Discord Server and Bot Setup
 
