@@ -9,7 +9,7 @@ from pathlib import Path
 import aiofiles
 import aiohttp
 
-from europython_discord.programme_notifications.models import Break, Schedule, Session
+from europython_discord.programme_notifications.models import Break, Schedule, Session, ScheduleChange
 
 _logger = logging.getLogger(__name__)
 
@@ -50,7 +50,37 @@ class ProgrammeConnector:
 
         return sessions_by_day
 
-    async def fetch_schedule(self) -> None:
+    def compare_schedules(
+            self,
+            old_schedule: dict[date, list[Session]],
+            new_schedule: dict[date, list[Session]]
+    ) -> list[ScheduleChange]:
+        changes = []
+        session_lookup = {}
+        for  day, new_sessions in new_schedule.items():
+            for session in new_sessions:
+                session_lookup[session.code] = session
+        for day, sessions in old_schedule.items():
+            for session in sessions:
+                if session.code in session_lookup:
+                    new_session = session_lookup[session.code]
+                    if (
+                        new_session.start != session.start 
+                        or new_session.rooms != session.rooms 
+                        or new_session.duration != session.duration
+                    ):
+
+                        changes.append(
+                            ScheduleChange(
+                                old_session=session,
+                                new_session=new_session
+                            )
+                        )
+        return changes
+
+                 
+
+    async def fetch_schedule(self) -> list[ScheduleChange]:
         """Fetch schedule data from the Programme  API and write it to a file as backup."""
         async with self._fetch_lock:
             try:
@@ -66,11 +96,11 @@ class ProgrammeConnector:
 
                 if self.sessions_by_day is not None:
                     _logger.info("Schedule not updated, using the one loaded in memory.")
-                    return
+                    return []
 
                 self.sessions_by_day = await self._get_schedule_from_cache()
                 _logger.info("Schedule loaded from cache file.")
-                return
+                return []
 
             _logger.info("Schedule fetched successfully.")
 
@@ -80,9 +110,20 @@ class ProgrammeConnector:
             async with aiofiles.open(self._cache_file, "w") as f:
                 await f.write(json.dumps(schedule, indent=2))
             _logger.info("Schedule written to cache file.")
+            new_schedule = await self.parse_schedule(schedule)
 
-            self.sessions_by_day = await self.parse_schedule(schedule)
+            if self.sessions_by_day is not None:
+                changes = self.compare_schedules(
+                self.sessions_by_day,
+                new_schedule
+                )
+            else:
+                changes = []
+                
+             
+            self.sessions_by_day = new_schedule
             _logger.info("Schedule parsed and loaded.")
+            return changes
 
     async def _get_schedule_from_cache(self) -> dict[date, list[Session]] | None:
         """Get the schedule data from the cache file."""
