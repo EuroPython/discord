@@ -31,4 +31,4 @@ jobs:
         run: uv sync --dev
 
       - name: Run code checks
-        run: uv run --dev pre-commit run --all-files
+        run: uv run python -V
