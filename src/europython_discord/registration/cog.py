@@ -116,7 +116,7 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2026 Registration"):
     async def on_error(self, interaction: Interaction, error: Exception) -> None:
         user_is_admin = any(role.name == "Admin" for role in interaction.user.roles)
         if isinstance(error, Forbidden) and user_is_admin:
-            _logger.exception("An error occurred (user is admin)")
+            _logger.error("An error occurred (user is admin)", exc_info=error)
             await self.log_error_to_user(interaction, "Admins cannot be registered via the bot.")
             await self.log_error_to_channel(
                 interaction,
@@ -124,7 +124,7 @@ class RegistrationForm(discord.ui.Modal, title="EuroPython 2026 Registration"):
             )
 
         else:
-            _logger.exception("An error occurred!")
+            _logger.error("An error occurred!", exc_info=error)
             await self.log_error_to_user(interaction, "Something went wrong.")
             await self.log_error_to_channel(interaction, f"{error.__class__.__name__}: {error}")
 
