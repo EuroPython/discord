@@ -1,14 +1,15 @@
 from __future__ import annotations
 
 from datetime import date
+from typing import Annotated
 
-from pydantic import AwareDatetime, BaseModel
+from pydantic import AwareDatetime, BaseModel, Field, computed_field
 
 
 class DaySchedule(BaseModel):
     """Schedule of a single day of EuroPython."""
 
-    rooms: list[str]
+    rooms: Annotated[list[str], Field(min_length=1)]
     events: list[Session | Break]
 
 
@@ -24,7 +25,7 @@ class Break(BaseModel):
     event_type: str
     title: str
     duration: int
-    rooms: list[str]
+    rooms: Annotated[list[str], Field(min_length=1)]
     start: AwareDatetime
 
 
@@ -40,10 +41,20 @@ class Session(BaseModel):
     tweet: str
     level: str
     track: str | None
-    rooms: list[str]
+    rooms: Annotated[list[str], Field(min_length=1)]
     start: AwareDatetime
     website_url: str
     duration: int
+
+    @property
+    @computed_field
+    def room(self) -> str:
+        return self.rooms[0]
+
+    @property
+    @computed_field
+    def is_break(self) -> bool:
+        return len(self.rooms) > 1
 
 
 class Speaker(BaseModel):

@@ -2,8 +2,17 @@ from __future__ import annotations
 
 import logging
 from datetime import datetime, timedelta
+from typing import Any
 
-from discord import Client, TextChannel
+from discord import (
+    CategoryChannel,
+    Client,
+    Embed,
+    ForumChannel,
+    StageChannel,
+    TextChannel,
+    VoiceChannel,
+)
 from discord.ext import commands, tasks
 from discord.utils import get as discord_get
 
@@ -24,6 +33,9 @@ _WEEKDAYS = {
     5: "Saturday",
     6: "Sunday",
 }
+
+# see also: https://docs.discord.com/developers/resources/channel#channel-object
+MAX_TITLE_LENGTH = 100
 
 
 class ProgrammeNotificationsCog(commands.Cog):
@@ -121,44 +133,71 @@ class ProgrammeNotificationsCog(commands.Cog):
     @tasks.loop()
     async def notify_sessions(self) -> None:
         # determine sessions to send notifications for
+        sessions_to_notify = await self.get_sessions_to_notify()
+        if not sessions_to_notify:
+            return
+
+        main_notification_channel = await self._get_main_notification_channel()
+        await main_notification_channel.send(content="# Sessions starting in 5 minutes:")
+
+        for session in sessions_to_notify:
+            await self.send_session_notifications(session)
+
+    async def send_session_notifications(self, session: Session) -> None:
+        embed = await self._create_session_embed(session)
+
+        await self.send_session_notification_to_main_channel(embed)
+        await self.send_session_notification_to_room_channel(
+            embed, title=session.title, room=session.room
+        )
+
+        # mark session as notified
+        self.notified_sessions.add(_get_session_key(session))
+        _logger.info(f"Marked session {session.code} as notified: {session.title}")
+
+    async def send_session_notification_to_main_channel(self, embed: Embed) -> None:
+        main_notification_channel = await self._get_main_notification_channel()
+        await main_notification_channel.send(embed=embed)
+
+    async def send_session_notification_to_room_channel(
+        self, embed: Embed, title: str, room: str
+    ) -> None:
+        room_channel = self._get_room_channel(room)
+        if not room_channel:
+            return
+
+        message = await room_channel.send(
+            content=f"# Starting in 5 minutes @ {room}",
+            embed=embed,
+        )
+
+        qa_title = f"Q&A: {title}"
+        if len(qa_title) > MAX_TITLE_LENGTH:
+            qa_title = qa_title[: MAX_TITLE_LENGTH - 3] + "..."
+        await message.create_thread(name=qa_title)
+
+    async def _create_session_embed(self, session: Session) -> Embed:
+        livestream_url = await self.livestream_connector.get_livestream_url(
+            session.room, session.start.date()
+        )
+        return session_to_embed.create_session_embed(session, livestream_url)
+
+    async def _get_main_notification_channel(
+        self,
+    ) -> VoiceChannel | StageChannel | ForumChannel | TextChannel | CategoryChannel | None:
+        return discord_get(
+            self.bot.get_all_channels(), name=self.config.main_notification_channel_name
+        )
+
+    async def get_sessions_to_notify(self) -> list[Any]:
         sessions_to_notify = []
         for session in await self.programme_connector.get_upcoming_sessions():
             if _get_session_key(session) in self.notified_sessions:
                 continue  # already notified
-            if len(session.rooms) > 1:
+            if session.is_break:
                 continue  # announcement or coffee/lunch break
             sessions_to_notify.append(session)
-
-        if not sessions_to_notify:
-            return
-
-        main_notification_channel = discord_get(
-            self.bot.get_all_channels(), name=self.config.main_notification_channel_name
-        )
-        await main_notification_channel.send(content="# Sessions starting in 5 minutes:")
-
-        for session in sessions_to_notify:
-            room_name = session.rooms[0]
-            room_channel = self._get_room_channel(room_name)
-
-            livestream_url = await self.livestream_connector.get_livestream_url(
-                room_name, session.start.date()
-            )
-            embed = session_to_embed.create_session_embed(session, livestream_url)
-
-            # send session notification message to room and main channel
-            await main_notification_channel.send(embed=embed)
-
-            # send session notification message to room
-            if room_channel is not None:
-                await room_channel.send(
-                    content=f"# Starting in 5 minutes @ {session.rooms[0]}",
-                    embed=embed,
-                )
-
-            # mark session as notified
-            self.notified_sessions.add(_get_session_key(session))
-            _logger.info(f"Marked session {session.code} as notified: {session.title}")
+        return sessions_to_notify
 
     async def purge_all_room_channels(self) -> None:
         _logger.info("Purging all room channels...")
