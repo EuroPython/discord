@@ -18,6 +18,12 @@ class Schedule(BaseModel):
 
     days: dict[date, DaySchedule]
 
+class ScheduleChange(BaseModel):
+    """Change in the EuroPython schedule."""
+
+    old_session: Session | None
+    new_session: Session | None
+
 
 class Break(BaseModel):
     """Break in the EuroPython schedule."""

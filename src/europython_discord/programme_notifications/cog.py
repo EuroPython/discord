@@ -19,7 +19,7 @@ from discord.utils import get as discord_get
 from europython_discord.programme_notifications import session_to_embed
 from europython_discord.programme_notifications.config import ProgrammeNotificationsConfig
 from europython_discord.programme_notifications.livestream_connector import LivestreamConnector
-from europython_discord.programme_notifications.models import Session
+from europython_discord.programme_notifications.models import ScheduleChange, Session
 from europython_discord.programme_notifications.programme_connector import ProgrammeConnector
 
 _logger = logging.getLogger(__name__)
@@ -92,7 +92,26 @@ class ProgrammeNotificationsCog(commands.Cog):
     @tasks.loop(minutes=5)
     async def fetch_schedule(self) -> None:
         _logger.info("Starting the periodic schedule update...")
-        await self.programme_connector.fetch_schedule()
+        changes = await self.programme_connector.fetch_schedule()
+
+        if not changes:
+            return
+        
+        _logger.info(f"Found {len(changes)} schedule changes.")
+
+        schedule_updates_channel = discord_get(
+            self.bot.get_all_channels(),
+            name=self.config.schedule_updates_channel_name,
+        )
+
+        if schedule_updates_channel is None:
+            _logger.warning("Schedule updates channel not found.")
+            return
+
+        for change in changes:
+            message = _format_schedule_change(change)
+            await schedule_updates_channel.send(content=message)
+            _logger.info(f"Sent schedule change notification for session {change.new_session.code}")
 
     @tasks.loop(minutes=5)
     async def fetch_livestreams(self) -> None:
@@ -214,6 +233,33 @@ class ProgrammeNotificationsCog(commands.Cog):
 
         return discord_get(self.bot.get_all_channels(), name=channel_name)
 
+def _format_schedule_change(change: ScheduleChange) -> str:
+    old = change.old_session
+    new = change.new_session
+
+    messages = []
+
+    if old.rooms != new.rooms:
+        messages.append(
+            f"Room changed: {old.rooms} → {new.rooms}"
+        )
+
+    if old.start != new.start:
+        messages.append(
+            f"Time changed: {old.start} → {new.start}"
+        )
+
+    if old.duration != new.duration:
+        messages.append(
+            f"Duration changed: {old.duration} → {new.duration} minutes"
+        )
+
+    return "\n".join(
+        [
+            f"**Schedule update: {old.title}**",
+            *messages,
+        ]
+    )
 
 def _get_session_key(session: Session) -> tuple[str, datetime]:
     """Get a unique key per session."""

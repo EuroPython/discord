@@ -8,7 +8,7 @@ import aiofiles
 import pytest
 from aiohttp import web
 from aiohttp.test_utils import TestServer
-
+from europython_discord.programme_notifications.models import Session
 from europython_discord.programme_notifications.programme_connector import ProgrammeConnector
 
 mock_schedule_file = Path(__file__).parent / "mock_schedule.json"
@@ -66,6 +66,19 @@ async def test_fetch_schedule(programme_connector, mock_schedule_url, cache_file
         cached_data = json.loads(await f.read())
         assert cached_data == mock_schedule
 
+async def test_compare_schedules_detects_changes(programme_connector, mock_schedule):
+    old_schedule = await programme_connector.parse_schedule(mock_schedule)
+
+    new_schedule = await programme_connector.parse_schedule(mock_schedule)
+
+    new_schedule[date(2024, 7, 10)][0].duration += 10
+
+    changes = programme_connector.compare_schedules(
+        old_schedule,
+        new_schedule,
+    )
+
+    assert len(changes) == 1
 
 async def test_get_schedule_from_cache(programme_connector, mock_schedule, cache_file):
     async with aiofiles.open(cache_file, "w") as f:
