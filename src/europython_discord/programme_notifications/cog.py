@@ -19,8 +19,9 @@ from discord.utils import get as discord_get
 from europython_discord.programme_notifications import session_to_embed
 from europython_discord.programme_notifications.config import ProgrammeNotificationsConfig
 from europython_discord.programme_notifications.livestream_connector import LivestreamConnector
-from europython_discord.programme_notifications.models import Session
+from europython_discord.programme_notifications.models import ScheduleChange, Session
 from europython_discord.programme_notifications.programme_connector import ProgrammeConnector
+from europython_discord.programme_notifications.schedule_comparison import compare_schedules
 
 _logger = logging.getLogger(__name__)
 
@@ -91,8 +92,35 @@ class ProgrammeNotificationsCog(commands.Cog):
 
     @tasks.loop(minutes=5)
     async def fetch_schedule(self) -> None:
-        _logger.info("Starting the periodic schedule update...")
-        await self.programme_connector.fetch_schedule()
+        old_schedule = self.programme_connector.sessions_by_day
+        new_schedule = await self.programme_connector.fetch_schedule()
+
+        if old_schedule is None or new_schedule is None:
+            return
+
+        changes = compare_schedules(old_schedule, new_schedule)
+
+        if not changes:
+            return
+
+        _logger.info(f"Found {len(changes)} schedule changes.")
+
+        schedule_updates_channel = discord_get(
+            self.bot.get_all_channels(),
+            name=self.config.schedule_updates_channel_name,
+        )
+
+        if schedule_updates_channel is None:
+            _logger.warning("Schedule updates channel not found.")
+            return
+
+        for change in changes:
+            message = _format_schedule_change(change)
+            await schedule_updates_channel.send(content=message)
+            if change.new_session is not None:
+               _logger.info(
+                   f"Sent schedule change notification for session {change.new_session.code}"
+                )
 
     @tasks.loop(minutes=5)
     async def fetch_livestreams(self) -> None:
@@ -213,6 +241,64 @@ class ProgrammeNotificationsCog(commands.Cog):
             return None
 
         return discord_get(self.bot.get_all_channels(), name=channel_name)
+
+def _format_schedule_change(change: ScheduleChange) -> str:
+    old = change.old_session
+    new = change.new_session
+    if old is None and new is not None:
+     new_end = new.start + timedelta(minutes=new.duration)
+     messages = [
+
+        f"New Session added: {new.title}",
+        f"Speakers: {', '.join(speaker.name for speaker in new.speakers)}",
+        f"New Room: {', '.join(new.rooms)}",
+        f"Time: {new.start.strftime('%d %B %H:%M')} - {new_end.strftime('%d %B %H:%M')}",
+    ]
+    elif old is not None and new is None:
+     old_end = old.start + timedelta(minutes=old.duration)
+     messages = [
+
+         f"Session cancelled: {old.title}",
+         f"Speakers: {', '.join(speaker.name for speaker in old.speakers)}",
+         f"Room: {', '.join(old.rooms)}",
+         f"Time: {old.start.strftime('%d %B %H:%M')} - {old_end.strftime('%d %B %H:%M')}",
+     ]
+    else:
+        new_end = new.start + timedelta(minutes=new.duration)
+        old_end = old.start + timedelta(minutes=old.duration)
+        messages = [
+                    f"Session: {new.title}",
+                    f"Speakers: {', '.join(speaker.name for speaker in new.speakers)}",
+                    f"Time: {new.start.strftime('%d %B %H:%M')} - {new_end.strftime('%d %B %H:%M')}",
+                    f"Room: {', '.join(new.rooms)}",
+                    "Changes:",
+                    ]
+        if old.title != new.title:
+            messages.append(
+                f"Session title changed: {old.title} -> {new.title}"
+            )
+        if old.speakers != new.speakers:
+            messages.append(
+                f"Speakers changed: "
+                f" {', '.join(speaker.name for speaker in old.speakers)} ->"
+                f" {', '.join(speaker.name for speaker in new.speakers)}"
+            )
+        if old.rooms != new.rooms:
+            messages.append(
+                f"Room changed: "
+                f"{', '.join(old.rooms)} -> "
+                f"{', '.join(new.rooms)}"
+            )
+        if old.start != new.start or old.duration != new.duration:
+            messages.append(
+                f"Time changed: {old.start.strftime('%d %B %H:%M')} - "
+                f"{old_end.strftime('%d %B %H:%M')} -> "
+                f"{new.start.strftime('%d %B %H:%M')} - "
+                f"{new_end.strftime('%d %B %H:%M')}"
+            )
+
+    return "\n".join(messages)
+
 
 
 def _get_session_key(session: Session) -> tuple[str, datetime]:

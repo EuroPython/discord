@@ -45,6 +45,7 @@ api_url = "https://static.europython.eu/programme/ep2026/releases/current/schedu
 schedule_cache_file = "schedule_cache.json"
 livestream_url_file = "livestreams.toml"
 main_notification_channel_name = "programme-notifications"
+schedule_updates_channel_name = "schedule-updates"
 
 # optional simulated start time for testing programme notifications
 # simulated_start_time = "2026-07-15T08:50:00+02:00"
